@@ -1,4 +1,5 @@
-#### Google-Chrome-PointerLock-MouseMovement-Bug-Resolution
+#### Google Chrome PointerLock MouseMovement Bug Resolution.js
+
 This code resolution a bug that jumps when using point lock mouse actions in Chrome.
 
 But it is not perfect.
