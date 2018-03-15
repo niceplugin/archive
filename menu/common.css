@@ -1,0 +1,130 @@
+/* ==================================================
+** reset
+** ==================================================*/
+* {
+    font-family: '굴림',Gulim,Helvetica,sans-serif;
+    font-size: 12px;
+    color: #231916;
+    margin: 0;
+    padding: 0;
+}
+ul, ol {
+    list-style: none;
+}
+
+/* ==================================================
+** layout
+** ==================================================*/
+#menu_container {
+    position: relative;
+    width: 1160px;
+    margin: 24px;
+    border: 1px solid #2572a5;
+    background: #297fb8
+}
+#menu_container form {
+    position: absolute;
+    display: inline-block;
+    top: 50%;
+    right: 23px;
+    transform: translateY(-50%)
+}
+
+/* ==================================================
+** menubar
+** ==================================================*/
+#menubar {
+    display: inline-block
+}
+#menubar a {
+    display: inline-block;
+    padding: 13px 23px;
+    color: #ffffff;
+    text-decoration: none
+}
+#menubar>.menuitem {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+}
+#menubar>.menuitem:not(.nomenu) {
+    margin-bottom: -1px;
+    border-right: 1px solid #2572a5;
+    border-bottom: 1px solid #2572a5;
+}
+#menubar .menu {
+    position: absolute;
+    display: none;
+    top: 100%;
+    left: -1px;
+    margin-top: 1px;
+    background-color: #f7f7f7;
+    border: 1px solid #2572a5;
+    border-top: none;
+    min-width: 100%
+}
+#menubar .menu a {
+    display: block;
+    color: #231916;
+}
+#menubar .menu>.menuitem:not(:first-child) {
+    border-top: 1px solid #e6e6e6;
+}
+
+/* about tooltip */
+#menutooltip {
+    position: fixed;
+    display: none;
+    top: 35%;
+    left: 50%;
+    width: 288px;
+    height: 112px;
+    transform: translateX(-50%);
+    background-image: url(menu_tooltip.png)
+}
+.menutooltip {
+    display: block!important;
+    animation: menutooltip 2.6s ease;
+}
+@keyframes menutooltip {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* 매뉴 관련 호버 || 포커스 시 */
+/* 대매뉴 li */
+#menubar:not(.menukeyctrl)>.menuitem:hover:not(.nomenu),
+#menubar .menufocus:not(.nomenu) {
+    border-bottom-color: #e6e6e6;
+}
+/* 대매뉴 a */
+#menubar:not(.menukeyctrl)>.menuitem:hover:not(.nomenu)>a,
+#menubar .menufocus:not(.nomenu)>a {
+    background-color: #f7f7f7;
+    color: #231916;
+}
+/* 소매뉴(하위매뉴)가 없는 대매뉴 */
+#menubar:not(.menukeyctrl) .nomenu a:hover,
+#menubar.menukeyctrl .nomenu a:focus {
+    color: #231916;
+}
+/* 소매뉴 ul */
+#menubar:not(.menukeyctrl)>.menuitem:hover .menu,
+#menubar .menufocus .menu {
+    display: block;
+}
+/* 소매뉴 a */
+#menubar:not(.menukeyctrl) .menu a:hover,
+#menubar .menufocus .menu a:focus {
+    background-color: #ffffff
+}
