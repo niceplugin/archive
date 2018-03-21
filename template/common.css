@@ -644,12 +644,12 @@ footer p {
     z-index: 2;
 }
 .screen-loader::before, .screen-loader::after {
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    transform: translateY(0);
+    transform: translateY(0%);
     border: 3em solid #ffffff;
     background-color: #444444;
     z-index: -1;
@@ -665,10 +665,10 @@ footer p {
     top: 3em;
     border-top: none;
 }
-.loaded::before {
+.loaded.screen-loader::before {
     transform: translateY(-100%);
 }
-.loaded::after {
+.loaded.screen-loader::after {
     transform: translateY(100%);
 }
 #loader-text {
