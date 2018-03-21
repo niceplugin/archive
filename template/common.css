@@ -340,9 +340,6 @@ button.ani-shake, .ani-shake::before {
 #layer2 {
     background-color: #eeeeee
 }
-#layer ul {
-    overflow: hidden
-}
 #layer2 li {
     position: relative;
     display: inline-block;
@@ -636,19 +633,20 @@ footer p {
 .screen-loader {
     position: fixed;
     top: 0;
-    bottom: 0;
     left: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
     color: #ffffff;
     font-weight: 700;
     z-index: 2;
 }
 .screen-loader::before, .screen-loader::after {
-    position: fixed;
+    box-sizing: border-box;
+    position: absolute;
     top: 0;
-    bottom: 0;
     left: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
     transform: translateY(0%);
     border: 3em solid #ffffff;
     background-color: #444444;
@@ -725,8 +723,14 @@ footer p {
         width: 80%!important;
         padding-top: 16%!important
     }
+    .screen-loader::before, .screen-loader::after {
+        border-width: 2em;
+    }
     #myTyping {
         letter-spacing: .2em
+    }
+    #loader-text {
+        font-size: 2em
     }
     #center-link {
         display: none
