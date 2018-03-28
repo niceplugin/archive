@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pixel UFO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <style>
+        @font-face{font-family:'FSEX300'; src:url('/res/FSEX300.ttf')}
+        * {
+            margin: 0;
+            padding: 0;
+            background-color: #888888
+        }
+        body {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden
+        }
+        canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: deeppink
+            /* 
+            * The css size attribute is 100% based on the height and width of the canvas, whichever is longer.
+            * This way, the desktop user has a fixed canvas size that is not affected by the zoom in/out value of the browser.
+            * If you want to set a full screen regardless of the canvas aspect ratio, set both the width and height properties to 100%.
+            * Recalculate the aspect ratio with the window.innerXXX property of the JavaScript at window resize.
+            */
+/*
+            width: 100%;
+            height: 100%
+*/
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="1280px" height="720px"></canvas>
+<script src="/app.js"></script>
+</body>
+</html>
