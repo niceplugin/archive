@@ -1,6 +1,6 @@
 # nTyping.js
 
-데모페이지를 보려면 [여기](https://niceplugin.github.io/nTyping)를 클릭하세요.
+데모페이지를 보려면 [여기](https://niceplugin.github.io/OldProject_2017/nTyping)를 클릭하세요.
 
 타이핑 이펙트로 인상적인 효과를 주기위해 만든 plug-in입니다.
 

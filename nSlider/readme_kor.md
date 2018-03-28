@@ -1,6 +1,6 @@
 # nSlider.js
 
-데모페이지를 보려면 [여기](https://niceplugin.github.io/nSlider)를 클릭하세요.
+데모페이지를 보려면 [여기](https://niceplugin.github.io/OldProject_2017/nSlider)를 클릭하세요.
 
 쉽고 빠르게 슬라이드 컨텐츠를 제작하기 위해 만든 plug-in입니다.
 

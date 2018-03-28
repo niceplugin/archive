@@ -1,6 +1,6 @@
 # nSticky.js
 
-데모페이지를 보려면 [여기](https://niceplugin.github.io/nSticky)를 클릭하세요.
+데모페이지를 보려면 [여기](https://niceplugin.github.io/OldProject_2017/nSticky)를 클릭하세요.
 
 페이지 스크롤시 셀렉터(매뉴바 같은)를 쉽고 편리하게 동적으로 고정시키기 위해 만든 plug-in입니다.
 

@@ -1,6 +1,6 @@
 # nShowUp.js
 
-데모페이지를 보려면 [여기](https://niceplugin.github.io/nShowUp)를 클릭하세요.
+데모페이지를 보려면 [여기](https://niceplugin.github.io/OldProject_2017/nShowUp)를 클릭하세요.
 
 스크롤하여 화면에 element가 노출될 때 커스텀 이펙트를 쉽고 편리하게 제어하기 위해 만든 plugin입니다.
 

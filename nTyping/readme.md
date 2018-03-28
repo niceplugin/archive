@@ -1,6 +1,6 @@
 # nTyping.js
 
-Click [here](https://niceplugin.github.io/nTyping) to view demo page.
+Click [here](https://niceplugin.github.io/OldProject_2017/nTyping) to view demo page.
 
 It is a plug-in created to give impressive typing effects.
 

@@ -1,6 +1,6 @@
 # nCookie.js
 
-Click [here](https://niceplugin.github.io/nCookie) to view demo page.
+Click [here](https://niceplugin.github.io/OldProject_2017/nCookie) to view demo page.
 
 It is a plug-in created to manage cookies easily and conveniently without jQuery.
 

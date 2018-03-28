@@ -1,6 +1,6 @@
 # nSlider.js
 
-Click [here](https://niceplugin.github.io/nSlider) to view demo page.
+Click [here](https://niceplugin.github.io/OldProject_2017/nSlider) to view demo page.
 
 It is a plug-in created to make slide contents easily and quickly.
 

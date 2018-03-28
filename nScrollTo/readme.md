@@ -1,6 +1,6 @@
 # nScrollTo.js
 
-Click [here](https://niceplugin.github.io/nScrollTo) to view demo page.
+Click [here](https://niceplugin.github.io/OldProject_2017/nScrollTo) to view demo page.
 
 It is a plug-in that expands the functionality of `<a href='#id'>` easily and conveniently.
 

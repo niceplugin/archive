@@ -1,6 +1,6 @@
 # nScrollTo.js
 
-데모페이지를 보려면 [여기](https://niceplugin.github.io/nScrollTo)를 클릭하세요.
+데모페이지를 보려면 [여기](https://niceplugin.github.io/OldProject_2017/nScrollTo)를 클릭하세요.
 
 jQuery없이 쉽고 편리하게 `<a href='#id'>`의 기능을 확장시켜주는 plug-in입니다.
 

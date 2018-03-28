@@ -1,6 +1,6 @@
 # nSticky.js
 
-Click [here](https://niceplugin.github.io/nSticky) to view demo page.
+Click [here](https://niceplugin.github.io/OldProject_2017/nSticky) to view demo page.
 
 It is a plug-in created to auto fixed the selector (like menu-bar) easily and conveniently when the page is scrolled.
 

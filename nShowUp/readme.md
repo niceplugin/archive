@@ -1,6 +1,6 @@
 # nShowUp.js
 
-Click [here](https://niceplugin.github.io/nShowUp) to view demo page.
+Click [here](https://niceplugin.github.io/OldProject_2017/nShowUp) to view demo page.
 
 nShowUp.js plug-in is created for easy and convenient control of custom effects when elements are exposed on the screen by scrolling.
 
