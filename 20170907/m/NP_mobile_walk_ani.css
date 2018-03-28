@@ -1,0 +1,257 @@
+/* 띵굴마님 애니 */
+[id^='m_walk_ani'], [id^='m_walking'], [id^='m_shaking'] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation-duration: 30s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+[id^='m_walking'] {
+    width: 97px;
+    height: 208px;
+    overflow: hidden;
+}
+[id^='m_walking']::before {
+    position: absolute;
+    width: 485px;
+    height: 416px;
+    background-image: url(main/walk_485_416.png);
+    animation: walkAniL 5s steps(1) infinite;
+    content: ''
+}
+[id^='m_walkingR']::before {
+    animation: walkAniR 5s steps(1) infinite;
+}
+[id^='m_shaking']::before {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 105px;
+    height: 208px;
+    background-image: url(main/shake_126_208.png);
+    background-position: 0px 0px;
+    content: ''
+}
+[id^='m_shaking']::after {
+    position: absolute;
+    top: 18px;
+    left: 0px;
+    width: 21px;
+    height: 53px;
+    background-image: url(main/shake_126_208.png);
+    background-position: -105px 0px;
+    animation: shakeAni 1s linear infinite;
+    transform-origin: left bottom;
+    content: ''
+}
+@keyframes walkAniL {
+    0%, 100% {
+        transform: translate(0px, 0px)
+    }
+    12.5%, 87.5% {
+        transform: translate(-97px, 0px)
+    }
+    25%, 75% {
+        transform: translate(-194px, 0px)
+    }
+    37.5%, 62.5% {
+        transform: translate(-291px, 0px)
+    }
+    50% {
+        transform: translate(-388px, 0px)
+    }
+}
+@keyframes walkAniR {
+    0%, 100% {
+        transform: translate(0px, -208px)
+    }
+    12.5%, 87.5% {
+        transform: translate(-97px, -208px)
+    }
+    25%, 75% {
+        transform: translate(-194px, -208px)
+    }
+    37.5%, 62.5% {
+        transform: translate(-291px, -208px)
+    }
+    50% {
+        transform: translate(-388px, -208px)
+    }
+}
+@keyframes shakeAni {
+    0%, 100% {
+        transform: rotate(-10deg)
+    }
+    50% {
+        transform: rotate(-40deg)
+    }
+}
+/* layer 1 area */
+#m_walk_ani1 {
+    animation-name: walk_ani1;
+}
+#m_walking1 {
+    animation-name: w1Fade;
+}
+#m_walkingR1 {
+    animation-name: w1FadeR;
+}
+#m_shaking1 {
+    animation-name: f1Fade;
+}
+@keyframes walk_ani1 {
+    0%, 5.5% {
+        transform: translate(230px, 290px) scale(.8)
+    }
+    9.5% {
+        transform: translate(185px, 350px) scale(.8)
+    }
+    12.5% {
+        transform: translate(215px, 435px) scale(.8)
+    }
+    16.5%, 27.5% {
+        transform: translate(380px, 500px) scale(.8)
+    }
+    33.5% {
+        transform: translate(610px, 570px) scale(.8)
+    }
+    35.5%, 100% {
+        transform: translate(625px, 645px) scale(.8)
+    }
+}
+@keyframes w1Fade {
+    0%, 4.5%, 9.501%, 100% {
+        opacity: 0
+    }
+    5.5%, 9.5% {
+        opacity: 1
+    }
+}
+@keyframes w1FadeR {
+    0%, 9.5%, 17.5%, 26.5%, 35.501%, 100% {
+        opacity: 0
+    }
+    9.501%, 16.5%, 27.5%, 35.5% {
+        opacity: 1
+    }
+}
+@keyframes f1Fade {
+    0%, 5.5%, 16.5%, 27.5%, 100% {
+        opacity: 0
+    }
+    1%, 4.5%, 17.5%, 26.5% {
+        opacity: 1
+    }
+}
+/* layer 2 area */
+#m_walk_ani2 {
+    animation-name: walk_ani2;
+}
+#m_walking2 {
+    animation-name: w2Fade;
+}
+#m_walkingR2 {
+    animation-name: w2FadeR;
+}
+#m_shaking2 {
+    animation-name: f2Fade;
+}
+@keyframes walk_ani2 {
+    0%, 35.5% {
+        transform: translate(625px, 645px) scale(.8)
+    }
+    37.5% {
+        transform: translate(620px, 715px) scale(.8)
+    }
+    41.5% {
+        transform: translate(540px, 810px) scale(.8)
+    }
+    47.5%, 58.5% {
+        transform: translate(295px, 910px) scale(.8)
+    }
+    64.5% {
+        transform: translate(140px, 1070px) scale(.8)
+    }
+    65.5%, 100% {
+        transform: translate(170px, 1120px) scale(.8)
+    }
+}
+@keyframes w2Fade {
+     0%, 37.5%, 48.5%, 57.5%, 64.501%, 100%{
+        opacity: 0
+    }
+    37.501%, 47.5%, 58.5%, 64.5% {
+        opacity: 1
+    }
+}
+@keyframes w2FadeR {
+    0%, 35.5%, 37.501%, 64.5%, 65.501%, 100% {
+        opacity: 0
+    }
+    35.501%, 37.5%, 64.501%, 65.5% {
+        opacity: 1
+    }
+}
+@keyframes f2Fade {
+    0%, 47.5%, 58.5%, 100% {
+        opacity: 0
+    }
+    48.5%, 57.5% {
+        opacity: 1
+    }
+}
+/* layer 3 area */
+#m_walk_ani3 {
+    animation-name: walk_ani3;
+}
+#m_walking3 {
+    animation-name: w3Fade;
+}
+#m_walkingR3 {
+    animation-name: w3FadeR;
+}
+#m_shaking3 {
+    animation-name: f3Fade;
+}
+@keyframes walk_ani3 {
+    0%, 65.5% {
+        transform: translate(170px, 1120px) scale(.8)
+    }
+    71.5%, 82.5% {
+        transform: translate(340px, 1240px) scale(.8)
+    }
+    86.5% {
+        transform: translate(460px, 1380px) scale(.8)
+    }
+    90.5% {
+        transform: translate(405px, 1565px) scale(.8)
+    }
+    94.5%, 100% {
+        transform: translate(230px, 1655px) scale(.8)
+    }
+}
+@keyframes w3Fade {
+    0%, 86.5%, 95.5%, 100% {
+        opacity: 0
+    }
+    86.501%, 94.5% {
+        opacity: 1
+    }
+}
+@keyframes w3FadeR {
+    0%, 65.5%, 72.5%, 81.5%, 86.501%, 100% {
+        opacity: 0
+    }
+    65.501%, 71.5%, 82.5%, 86.5% {
+        opacity: 1
+    }
+}
+@keyframes f3Fade {
+    0%, 71.5%, 82.5%, 94.5%, 100% {
+        opacity: 0
+    }
+    72.5%, 81.5%, 95.5%, 99% {
+        opacity: 1
+    }
+}
