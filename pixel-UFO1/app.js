@@ -759,22 +759,22 @@
         g.app();
         
         g.addRes('se', [
-            '/res/click1.mp3',
-            '/res/click2.mp3',
-            '/res/click3.mp3',
-            '/res/item.mp3',
-            '/res/laser.mp3',
-            '/res/boom.mp3',
-            '/res/launch.mp3',
-            '/res/shoot.mp3'
+            './res/click1.mp3',
+            './res/click2.mp3',
+            './res/click3.mp3',
+            './res/item.mp3',
+            './res/laser.mp3',
+            './res/boom.mp3',
+            './res/launch.mp3',
+            './res/shoot.mp3'
         ]);
         g.addRes('bgm', [
-            '/res/intro.mp3',
-            '/res/Beethoven_Virus.mp3'
+            './res/intro.mp3',
+            './res/Beethoven_Virus.mp3'
         ]);
         g.addRes('img', [
-            '/res/sprite_x5_alpha.png',
-            '/res/btn_x5_alpha.png'
+            './res/sprite_x5_alpha.png',
+            './res/btn_x5_alpha.png'
         ]);
 //        g.playAudio(r.bgm.intro);
         
@@ -2607,35 +2607,3 @@
     }
     
 })(window, g8b, g8b.ctx, g8b.res, g8b.system);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -35,3 +35,5 @@ pixel_UFO 프로젝트의 app.js가 가 구현된 엔진이므로 이곳에서 �
 이후 켄버스 게임 엔진 만들겠다고 전환.
 
 혹시라도 추후 다시 해볼수 있어서 아까워 백업해둔 자료.
+
+[결과물 링크](https://niceplugin.github.io/myGit/pixel-UFO1/)
