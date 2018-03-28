@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="IE=edge" >
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box}
+        .section {padding: 5%; width: 100%; border: 4px solid tomato}
+        pre {margin: 4px; padding: 4px;  width: 100%; border: 1px solid gray; border-radius: 4px; background-color: gainsboro}
+        q {display: block; margin-left: 2em; margin-right: 1em; padding: 1em; border-left: 4px solid gray; background-color: gainsboro}
+        q:before {content: ''}
+        q:after {content: ''}
+    </style>
+    <script src="./nTyping.js"></script>
+    <title>nTyping Demo</title>
+</head>
+<body>
+    <div class="section">
+        <p>If we want the search engine to read the information we intended, and we want that the information has typing effect, write code as follows.</p>
+        <pre><code>&#60;h1&#62;&#60;span id='demo1'&#62;Hello World.&#60;/span&#62;&#60;/h1&#62;
+&#60;script&#62;
+NP.Typing.set({
+    id: 'demo1',
+    content: '/d12/Hello World.'
+});
+&#60;/script&#62;</code></pre>
+        <p>/d$/ is immediate delete the text. $ is the number of characters to delete.</p>
+        <p>Therefore, we can deliver the information we intend in search engine or javascript disabled.</p>
+        <p>If you replay using /l/, ignore /d$/ from the second play.</p>
+        <q><h1><span id="demo1">Hello World.</span></h1></q>
+    </div>
+    
+    <div class="section">
+        <p>You can disable the cursor by writing code as follows.</p>
+        <pre><code>&#60;h1&#62;&#60;span id='demo2'&#62;I like codding!&#60;/span&#62;&#60;/h1&#62;
+&#60;script&#62;
+NP.Typing.set({
+    id: 'demo2',
+    content: '/d14/I like coding!/s1500//c/'
+});
+&#60;/script&#62;</code></pre>
+        <p>/s$/ is typing pause and $ is the number of milliseconds to pause.</p>
+        <p>If you want,can be disabled the cursor using /c/.</p>
+        <p>Note: Once disabled, the cursor can not be re enabled.</p>
+        <q><h1><span id="demo2">I like coding!</span></h1></q>
+    </div>
+    
+    <div class="section">
+        <p>You can write code to set the loop as follows.</p>
+        <pre><code>&#60;h1&#62;&#60;span id='demo3'&#62;I can be typing infinitely!&#60;/span&#62;&#60;/h1&#62;
+&#60;script&#62;
+NP.Typing.set({
+    id: 'demo3',
+    content: '/d11/infinitely!/l/'
+});
+&#60;/script&#62;</code></pre>
+        <p>Ignore /d$/ from the second play.</p>
+        <q><h1><span id="demo3">I can be typing infinitely!</span></h1></q>
+    </div>
+    
+    <div class="section">
+        <p>If you want to write /, write the following code.</p>
+        <pre><code>&#60;h1&#62;&#60;span id='demo4'&#62;&#60;/span&#62;&#60;/h1&#62;
+&#60;script&#62;
+NP.Typing.set({
+    id: 'demo4',
+    content: 'I can write // and &#60;&#60; !!/s1000//l/'
+});
+&#60;/script&#62;</code></pre>
+        <q><h1><span id="demo4"></span></h1></q>
+    </div>
+    
+    <div class="section">
+        <p>If you want to use tag, write the following code.</p>
+        <pre><code>&#60;h1&#62;&#60;span id='demo5'&#62;&#60;/span&#62;&#60;/h1&#62;
+&#60;script&#62;
+NP.Typing.set({
+    id: 'demo5',
+    content: 'I can to use &#60;s&#62;tabg&#60;/s&#62;.&#60;br&#62;Its/b7/g&#60;/b&#62;.&#60;br&#62;Its perfect!/l/'
+});
+&#60;/script&#62;</code></pre>
+        <p>If backspace from outside to inside the tag, you must to re-declare the closing tag of that tag.</p>
+        <p>Unclosed tag type is recognized as a one character.</p>
+        <q><h1><span id="demo5"></span></h1></q>
+    </div>
+    
+    <div class="section">
+        <p>If you want to set the replacement text, write like as follows code.</p>
+        <pre><code>&#60;h1&#62;&#60;span id='demo6'&#62;&#60;/span&#62;&#60;/h1&#62;
+&#60;script&#62;
+NP.Typing.set({
+    id: 'demo6',
+    content: 'Check with screen reader./l/',
+    altText: 'I love coding.'
+});
+&#60;/script&#62;</code></pre>
+        <q><h1><span id="demo6"></span></h1></q>
+    </div>
+    
+    <div class="section">
+        <p>A custom function can be used by writing like the following code.</p>
+        <pre><code>&#60;h1&#62;&#60;span id='demo7'&#62;&#60;/span&#62;&#60;/h1&#62;
+&#60;script&#62;
+NP.Typing.set({
+    id: 'demo7',
+    content: 'Cus/e/tom/e/ function./e//l/',
+    typeSpeed: 500,
+    event: myFunc1
+});
+function myFunc1(obj) {
+    console.log('Run!');
+    console.log(obj);
+}
+&#60;/script&#62;</code></pre>
+        <p>Returns the selector object as the first argument.</p>
+        <q><h1><span id="demo7"></span></h1></q>
+    </div>
+    
+    <script>
+        NP.Typing.set({
+            id: 'demo1',
+            content: '/d12/Hello World.'
+        });
+        NP.Typing.set({
+            id: 'demo2',
+            content: '/d14/I like coding!/s1500//c/'
+        });
+        NP.Typing.set({
+            id: 'demo3',
+            content: '/d11/infinitely!/s1000//l/'
+        });
+        NP.Typing.set({
+            id: 'demo4',
+            content: 'I can write // and << !!/s1000//l/'
+        });
+        NP.Typing.set({
+            id: 'demo5',
+            content: 'I can to use <s>tabg</s>.<br>Its/b7/g</b>.<br>Its perfect!/l/'
+        });
+        NP.Typing.set({
+            id: 'demo6',
+            content: 'Check with screen reader./l/',
+            altText: 'I love coding.'
+        });
+        NP.Typing.set({
+            id: 'demo7',
+            content: 'Cus/e/tom/e/ function./e//l/',
+            typeSpeed: 500,
+            event: myFunc1
+        });
+        function myFunc1(obj) {
+            console.log('Run!');
+            console.log(obj);
+        }
+    </script>
+</body>
+</html>

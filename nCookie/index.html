@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="IE=edge" >
+    <style>
+        #message {display: inline-block; margin: 4px; padding: 4px; border-radius: 10px; background-color: tomato; font-weight: bold}
+    </style>
+    <script src="./nCookie.js"></script>
+    <title>nCookie Demo</title>
+</head>
+<body>
+    <div id="wrap">
+        <button onclick="myfunc(1)">Create session cookie named 'demo'</button>
+        <button onclick="myfunc(2)">Create expires in 1 minute cookie named 'demo'</button>
+        <button onclick="myfunc(3)">Delete the cookie named 'demo'</button>
+        <button onclick="myfunc(4)">Get information to the console log for cookie name is 'demo'</button>
+    </div>
+    <p>Can not be create cookies on local.</p>
+    <p>Please create or delete cookies and refresh.</p>
+    <p id="message">This message is only displayed when there is no cookie.</p>
+    <script>
+        if (NP.Cookie.get('demo')) document.getElementById('message').style.display = 'none';
+        function myfunc(i) {
+            if (i == 1) NP.Cookie.set({
+                name: 'demo',
+                value: 'This cookie is session cookie.'
+            });
+            else if (i == 2) NP.Cookie.set({
+                name: 'demo',
+                value: 'This cookie expires in 1 minute from create date.',
+                term: 1/60
+            });
+            else if (i == 3) NP.Cookie.remove({
+                name: 'demo'
+            });
+            else if (i == 4) {
+                alert('Check the console log');
+                console.log(NP.Cookie.get('demo'));
+            }
+        }
+    </script>
+</body>
+</html>
+
+

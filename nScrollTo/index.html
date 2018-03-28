@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="IE=edge" >
+    <style>
+        body {padding: 100% 100%}
+        #wrap {position: fixed; left: 100px; top: 100px}
+        #here {width: 300px; height: 300px; background-color: tomato}
+        a {display: block; margin: 4px; padding: 4px; color: white; font-weight: bold; text-align: center; background-color: black; border-radius: 6px}
+    </style>
+    <script src="./nScrollTo.js"></script>
+    <title>ScrollTo Demo</title>
+</head>
+<body>
+    <span id="wrap">
+        <a id="demo1" href="#here">normal</a>
+        <a id="demo2" href="#here">duration is 2000</a>
+        <a id="demo3" href="#here">run custom function</a>
+        <a id="demo4" href="#here">intervalX [100, 'px']</a>
+        <a id="demo5" href="#here">intervalY [50, '%']</a>
+        <a id="demo6" href="#here">hold true</a>
+    </span>
+    <div id="here">ID='here'</div>
+    
+    <script>
+        NP.ScrollTo.set(
+            {
+                content: '#demo1'
+            },
+            {
+                content: '#demo2',
+                duration: 2000
+            },
+            {
+                content: '#demo3',
+                duration: 1000,
+                event: myFunc
+            },
+            {
+                content: '#demo4',
+                intervalX: [100, 'px']
+            },
+            {
+                content: '#demo5',
+                intervalY: [50, '%']
+            },
+            {
+                content: '#demo6',
+                duration: 5000,
+                hold: true
+            }
+        );
+
+        function myFunc(obj) {
+            alert('Check the console log!');
+            console.log('Run myFunc! The first argument returned is: ');
+            console.log(obj);
+        }
+    </script>
+</body>
+</html>

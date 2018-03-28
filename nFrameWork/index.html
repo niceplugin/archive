@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./temp/nFrameWork.min.css">
+    <link rel="stylesheet" href="./temp/nIcons.min.css">
+    <link rel="stylesheet" href="./temp/common.css">
+    <link rel="stylesheet" href="./temp/monokai-sublime.min.css">
+    <script src="./temp/nFrameWork.min.js"></script>
+    <script src="./temp/highlight.pack.js"></script>
+    <title>Nice Plug-in.js</title>
+</head>
+<body>
+    <span id="tooltip"></span>
+    <div id="wrap">
+        <nav id="index-nav">
+            <ul class="menubar fs-h4 col-blue">
+                <li><a href="./">nFrameWork</a></li><li class="drop-br">
+                    <span>Plug-in</span>
+                    <ul>
+                        <li><a href="https://github.com/niceplugin/nSlider">nSlider.js</a></li>
+                        <li><a href="https://github.com/niceplugin/nTyping">nTyping.js</a></li>
+                        <li><a href="https://github.com/niceplugin/nSticky">nSticky.js</a></li>
+                        <li><a href="https://github.com/niceplugin/nShowUp">nShowUp.js</a></li>
+                        <li><a href="https://github.com/niceplugin/nScrollTo">nScrollTo.js</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <article>
+            <script src="./temp/nSticky.min.js"></script>
+            <script>hljs.initHighlightingOnLoad();</script>
+            <header id="index-header" class="ta-c fs-h2 bg-blue col-white">
+                <h1 id="index-h1">nFrameWork</h1>
+                <p>빠른 웹 개발을 위한 커스터마이징 프레임워크</p>
+                <div class="ta-c">
+                    <a href="https://github.com/niceplugin/nFrameWork" target="_blank" class="col-white gotogit">Go to Git!</a>
+                    <a href="https://github.com/niceplugin/nFrameWork/archive/master.zip" target="_blank" class="col-white gotogit">nFrameWork.zip <span class="ico-download"><span class="fs-none">download</span></span></a>
+                </div>
+            </header>
+            <div id="article-inside-wrap">
+                <nav id="article-nav">
+                    <ul id="spy-box" class="fs-s" data-np-spyoffset="32px">
+                        <li>
+                            <a href="#l1">CSS</a>
+                            <ul>
+                                <li>
+                                    <a href="#l1-1">font</a>
+                                    <ul>
+                                        <li><a href="#l1-1-1">font size</a></li>
+                                        <li><a href="#l1-1-2">text align</a></li>
+                                        <li><a href="#l1-1-3">text transform</a></li>
+                                        <li><a href="#l1-1-4">font color</a></li>
+                                        <li><a href="#l1-1-5">bg color</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#l1-2">form</a>
+                                    <ul>
+                                        <li><a href="#l1-2-1">check box</a></li>
+                                        <li><a href="#l1-2-2">radio</a></li>
+                                        <li><a href="#l1-2-3">toggle</a></li>
+                                        <li><a href="#l1-2-4">text radio</a></li>
+                                        <li><a href="#l1-2-5">input</a></li>
+                                        <li><a href="#l1-2-6">button</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#l1-3">custom</a>
+                                    <ul>
+                                        <li><a href="#l1-3-1">table</a></li>
+                                        <li><a href="#l1-3-2">fieldset</a></li>
+                                        <li><a href="#l1-3-3">note box</a></li>
+                                        <li><a href="#l1-3-4">footer</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#l2">Plug-in</a>
+                            <ul>
+                                <li><a href="#l2-1">tool tip</a></li>
+                                <li><a href="#l2-2">layer popup</a></li>
+                                <li><a href="#l2-3">tab panel</a></li>
+                                <li><a href="#l2-4">drop down</a></li>
+                                <li><a href="#l2-5">accordion</a></li>
+                                <li><a href="#l2-6">slide</a></li>
+                                <li><a href="#l2-7">spy</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#l3">Icons</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div id="section-wrap">
+                    <section class="index-section">
+                        <h2 id="l1">CSS</h2>
+                        <p>nFrameWork.css는 디자인되지 않은 기본 프레임만 제공합니다.</p>
+                        <div class="note-box tm-red fs-s">
+                            <p>MS의 경우 IE9+ 부터 지원합니다.</p>
+                        </div>
+                        <h3 id="l1-1">font</h3>
+                        <p>문서의 기본 폰트 크기는 20px로 설정되어 있습니다.</p>
+                        <h4 id="l1-1-1">font size</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>&#60;h1&#62; 또는 class="fs-h1"</td><td><span class="fs-h1">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>&#60;h2&#62; 또는 class="fs-h2"</td><td><span class="fs-h2">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>&#60;h3&#62; 또는 class="fs-h3"</td><td><span class="fs-h3">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>&#60;h4&#62; 또는 class="fs-h4"</td><td><span class="fs-h4">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>&#60;h5&#62; 또는 class="fs-h5"</td><td><span class="fs-h5">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>&#60;h6&#62; 또는 class="fs-h6"</td><td><span class="fs-h6">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="fs-xl"</td><td><span class="fs-xl">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="fs-l"</td><td><span class="fs-l">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="fs-n"</td><td><span class="fs-n">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="fs-s"</td><td><span class="fs-s">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="fs-xs"</td><td><span class="fs-xs">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="fs-none"</td><td><span class="fs-none">Text</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 id="l1-1-2">text align</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>class="ta-l"</td><td class="ta-l">Left</td>
+                                </tr>
+                                <tr>
+                                    <td>class="ta-c"</td><td class="ta-c">Center</td>
+                                </tr>
+                                <tr>
+                                    <td>class="ta-r"</td><td class="ta-r">Right</td>
+                                </tr>
+                                <tr>
+                                    <td>class="ta-j"</td><td class="ta-j">Justify</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 id="l1-1-3">text transform</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>class="tt-c"</td><td class="tt-c">capitalize</td>
+                                </tr>
+                                <tr>
+                                    <td>class="tt-u"</td><td class="tt-u">uppercase</td>
+                                </tr>
+                                <tr>
+                                    <td>class="tt-l"</td><td class="tt-l">lowercase</td>
+                                </tr>
+                                <tr>
+                                    <td>class="tt-n"</td><td class="tt-n">none</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 id="l1-1-4">font color</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>class="col-black"</td><td class="col-black">black</td>
+                                </tr>
+                                <tr>
+                                    <td>class="col-white"</td><td class="col-white">white</td>
+                                </tr>
+                                <tr>
+                                    <td>class="col-red"</td><td class="col-red">red</td>
+                                </tr>
+                                <tr>
+                                    <td>class="col-green"</td><td class="col-green">green</td>
+                                </tr>
+                                <tr>
+                                    <td>class="col-blue"</td><td class="col-blue">blue</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 id="l1-1-5">bg color</h4>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>class="bg-black"</td><td><span class="bg-black col-white">black</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="bg-white"</td><td><span class="bg-white">white</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="bg-red"</td><td><span class="bg-red">red</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="bg-green"</td><td><span class="bg-green">green</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="bg-blue"</td><td><span class="bg-blue">blue</span></td>
+                                </tr>
+                                <tr>
+                                    <td>class="bg-yellow"</td><td><span class="bg-yellow">yellow</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3 id="l1-2">form</h3>
+                        <p>클레스네임을 추가하여 커스텀 디자인 된 폼을 사용할 수 있습니다.</p>
+                        <p>폰트사이즈 클레스네임을 추가하여 손쉽게 폼의 크기를 조정 할 수 있습니다.</p>
+                        <p>또한 일부 폼은 테마 클레스네임을 추가하여 색상변경을 할 수 있습니다.</p>
+                        <h4 id="l1-2-1">check box</h4>
+                        <table class="table-code">
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo1" type="checkbox" name="foo1"&#62;&#60;label for="foo1" class="checkbox-right"&#62;checkbox&#60;/label&#62;</code></pre></td><td><input id="foo1" type="checkbox" name="foo1"><label for="foo1" class="checkbox-right">checkbox</label></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo2" type="checkbox" name="foo2"&#62;&#60;label for="foo2" class="checkbox-left"&#62;checkbox&#60;/label&#62;</code></pre></td><td><input id="foo2" type="checkbox" name="foo2"><label for="foo2" class="checkbox-left">checkbox</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 id="l1-2-2">radio</h4>
+                        <table class="table-code">
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo3" type="radio" name="foo3"&#62;&#60;label for="foo3" class="radio-right"&#62;radio&#60;/label&#62;</code></pre></td><td><input id="foo3" type="radio" name="foo3"><label for="foo3" class="radio-right">radio</label></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo4" type="radio" name="foo3"&#62;&#60;label for="foo4" class="radio-left"&#62;radio&#60;/label&#62;</code></pre></td><td><input id="foo4" type="radio" name="foo3"><label for="foo4" class="radio-left">radio</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 id="l1-2-3">toggle</h4>
+                        <table class="table-code">
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo5" type="checkbox" name="foo5"&#62;&#60;label for="foo5" class="toggle-right"&#62;toggle&#60;/label&#62;</code></pre></td><td><input id="foo5" type="checkbox" name="foo5"><label for="foo5" class="toggle-right">toggle</label></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo6" type="checkbox" name="foo6"&#62;&#60;label for="foo6" class="toggle-left"&#62;toggle&#60;/label&#62;</code></pre></td><td><input id="foo6" type="checkbox" name="foo6"><label for="foo6" class="toggle-left">toggle</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>클레스 추가로 기본 제공되는 테마를 적용할 수 있습니다.</p>
+                        <table class="table-code">
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo7" type="checkbox" name="foo7"&#62;&#60;label for="foo7" class="toggle-right tm-red"&#62;tm-red&#60;/label&#62;</code></pre></td><td><input id="foo7" type="checkbox" name="foo7"><label for="foo7" class="toggle-right tm-red">tm-red</label></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo8" type="checkbox" name="foo8"&#62;&#60;label for="foo8" class="toggle-right tm-green"&#62;tm-green&#60;/label&#62;</code></pre></td><td><input id="foo8" type="checkbox" name="foo8"><label for="foo8" class="toggle-right tm-green">tm-green</label></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo9" type="checkbox" name="foo9"&#62;&#60;label for="foo9" class="toggle-right tm-blue"&#62;tm-blue&#60;/label&#62;</code></pre></td><td><input id="foo9" type="checkbox" name="foo9"><label for="foo9" class="toggle-right tm-blue">tm-blue</label></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo10" type="checkbox" name="foo10"&#62;&#60;label for="foo10" class="toggle-right tm-yellow"&#62;tm-yellow&#60;/label&#62;</code></pre></td><td><input id="foo10" type="checkbox" name="foo10"><label for="foo10" class="toggle-right tm-yellow">tm-yellow</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 id="l1-2-4">text radio</h4>
+                        <table class="table-code">
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input id="foo11" type="radio" name="foo11"&#62;&#60;label for="foo11" class="radiobox"&#62;MEN&#60;/label&#62;<br>&#60;input id="foo12" type="radio" name="foo11"&#62;&#60;label for="foo12" class="radiobox"&#62;WOMEN&#60;/label&#62;</code></pre></td><td><input id="foo11" type="radio" name="foo11"><label for="foo11" class="radiobox">MEN</label><input id="foo12" type="radio" name="foo11"><label for="foo12" class="radiobox">WOMEN</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p><code class="xml">name=""</code>값이 같은 라디오박스를 감싼 후 한번의 클레스 추가로 기본 제공되는 테마를 적용할 수 있습니다.</p>
+                        <table class="table-code">
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><pre><code class="xml">tm-red&#60;br&#62;<br>&#60;div class="tm-red"&#62;<br>&#09;&#60;input id="foo13" type="radio" name="foo13"&#62;&#60;label for="foo13" class="radiobox"&#62;MEN&#60;/label&#62;<br>&#09;&#60;input id="foo14" type="radio" name="foo13"&#62;&#60;label for="foo14" class="radiobox"&#62;WOMEN&#60;/label&#62;<br>&#60;/div&#62;</code></pre></td><td class="tm-red">tm-red<br><input id="foo13" type="radio" name="foo13"><label for="foo13" class="radiobox">MEN</label><input id="foo14" type="radio" name="foo13"><label for="foo14" class="radiobox">WOMEN</label></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">tm-green&#60;br&#62;<br>&#60;div class="tm-green"&#62;<br>&#09;&#60;input id="foo15" type="radio" name="foo15"&#62;&#60;label for="foo15" class="radiobox"&#62;MEN&#60;/label&#62;<br>&#09;&#60;input id="foo16" type="radio" name="foo15"&#62;&#60;label for="foo16" class="radiobox"&#62;WOMEN&#60;/label&#62;<br>&#60;/div&#62;</code></pre></td><td class="tm-green">tm-green<br><input id="foo15" type="radio" name="foo15"><label for="foo15" class="radiobox">MEN</label><input id="foo16" type="radio" name="foo15"><label for="foo16" class="radiobox">WOMEN</label></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">tm-blue&#60;br&#62;<br>&#60;div class="tm-blue"&#62;<br>&#09;&#60;input id="foo17" type="radio" name="foo17"&#62;&#60;label for="foo17" class="radiobox"&#62;MEN&#60;/label&#62;<br>&#09;&#60;input id="foo18" type="radio" name="foo17"&#62;&#60;label for="foo18" class="radiobox"&#62;WOMEN&#60;/label&#62;<br>&#60;/div&#62;</code></pre></td><td class="tm-blue">tm-blue<br><input id="foo17" type="radio" name="foo17"><label for="foo17" class="radiobox">MEN</label><input id="foo18" type="radio" name="foo17"><label for="foo18" class="radiobox">WOMEN</label></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">tm-yellow&#60;br&#62;<br>&#60;div class="tm-yellow"&#62;<br>&#09;&#60;input id="foo19" type="radio" name="foo19"&#62;&#60;label for="foo19" class="radiobox"&#62;MEN&#60;/label&#62;<br>&#09;&#60;input id="foo20" type="radio" name="foo19"&#62;&#60;label for="foo20" class="radiobox"&#62;WOMEN&#60;/label&#62;<br>&#60;/div&#62;</code></pre></td><td class="tm-yellow">tm-yellow<br><input id="foo19" type="radio" name="foo19"><label for="foo19" class="radiobox">MEN</label><input id="foo20" type="radio" name="foo19"><label for="foo20" class="radiobox">WOMEN</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 id="l1-2-5">input</h4>
+                        <p><code class="xml">&#60;input&#62;</code>테그의 <code class="xml">type="text, search, tel, url, email, password, number"</code>은 모두 동일한 디자인을 가집니다.</p>
+                        <p><code class="xml">disabled</code>속성이 있을 경우 마우스 커서가 변경됩니다.</p>
+                        <table class="table-code">
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input type="text" placeholder="text"&#62;</code></pre></td><td><input type="text" placeholder="text"></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input type="text" placeholder="text" disabled&#62;</code></pre></td><td><input type="text" placeholder="text" disabled></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p><code class="xml">&#60;textarea&#62;</code>는 높이를 자동 조절합니다.</p>
+                        <div class="note-box tm-red fs-s">
+                            <p>해당 기능은 nFrameWork.js를 사용할 경우에만 적용됩니다.</p>
+                        </div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>코드</th>
+                                    <td><pre><code class="xml">&#60;textarea&#62;&#60;/textarea&#62;</code></pre></td>
+                                </tr>
+                                <tr>
+                                    <th>결과</th>
+                                    <td><textarea></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>해당 기능을 원치 않을 경우 클레스네임을 추가해야 합니다.</p>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>코드</th>
+                                    <td><pre><code class="xml">&#60;textarea class="not-auto-resize"&#62;&#60;/textarea&#62;</code></pre></td>
+                                </tr>
+                                <tr>
+                                    <th>결과</th>
+                                    <td><textarea class="not-auto-resize"></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4 id="l1-2-6">button</h4>
+                        <p><code class="xml">&#60;button&#62;</code> 또는 <code class="xml">&#60;input&#62;</code>테그의 <code class="xml">type="button, submit, reset"</code>은 모두 동일한 디자인을 가집니다.</p>
+                        <p><code class="xml">disabled</code>속성이 있을 경우 마우스 커서가 변경됩니다.</p>
+                        <table class="table-code">
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input type="button"  value="button"&#62;</code></pre></td><td><input type="button" value="button"></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input type="button"  value="disabled" disabled&#62;</code></pre></td><td><input type="button" value="disabled" disabled></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>클레스 추가로 기본 제공되는 테마를 적용할 수 있습니다.</p>
+                        <table class="table-code">
+                            <thead>
+                                <tr>
+                                    <th>코드</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input type="button"  value="tm-red" class="tm-red"&#62;</code></pre></td><td><input type="button" value="tm-red" class="tm-red"></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input type="button"  value="tm-green" class="tm-green"&#62;</code></pre></td><td><input type="button" value="tm-green" class="tm-green"></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input type="button"  value="tm-blue" class="tm-blue"&#62;</code></pre></td><td><input type="button" value="tm-blue" class="tm-blue"></td>
+                                </tr>
+                                <tr>
+                                    <td><pre><code class="xml">&#60;input type="button"  value="tm-yellow" class="tm-yellow"&#62;</code></pre></td><td><input type="button" value="tm-yellow" class="tm-yellow"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>사용자 입력을 받는 <code class="xml">&#60;input&#62;</code> 테그에 이어붙일수 있도록 디자인 된 버튼이 있습니다.</p>
+                        <p>클레스네임을 추가하여 사용하며 테마는 적용되지 않습니다.</p>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>코드</th>
+                                    <td><pre><code class="xml">&#60;input type="text" placeholder="text"&#62;<br>&#60;input type="button"  value="button" class="input-btn"&#62;</code></pre></td>
+                                </tr>
+                                <tr>
+                                    <th>결과</th>
+                                    <td><input type="text" placeholder="text"><input type="button" value="button" class="input-btn"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3 id="l1-3">custom</h3>
+                        <p>nFrameWork는 디자인과 그리드를 지원하지 않지만 예외적으로 디자인 된 테그와 커스터마이징 셀렉터가 있습니다.</p>
+                        <h4 id="l1-3-1">table</h4>
+                        <p><code>&#60;caption&#62;</code>의 기본 폰트 사이즈는 <code>&#60;h3&#62;</code>와 동일합니다.</p>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-1" class="tabhead" data-no-for="panel-1">코드</li>
+                                <li id="tab-2" class="tabhead" data-no-for="panel-2">결과</li>
+                            </ul>
+                            <div id="panel-1" class="tabbody" data-np-for="tab-1">
+                                <pre><code class="xml">&#60;table&#62;
+&#09;&#60;caption&#62;Table caption&#60;/caption&#62;
+&#09;&#60;thead&#62;
+&#09;&#09;&#60;tr&#62;&#60;th&#62;&#60;/th&#62;&#60;th&#62;&#60;/th&#62;&#60;th&#62;&#60;/th&#62;&#60;/tr&#62;
+&#09;&#60;/thead&#62;
+&#09;&#60;tbody&#62;
+&#09;&#09;&#60;tr&#62;&#60;th&#62;&#60;/th&#62;&#60;td&#62;&#60;/td&#62;&#60;td&#62;&#60;/td&#62;&#60;/tr&#62;
+&#09;&#09;&#60;tr&#62;&#60;th&#62;&#60;/th&#62;&#60;td&#62;&#60;/td&#62;&#60;td&#62;&#60;/td&#62;&#60;/tr&#62;
+&#09;&#09;&#60;tr&#62;&#60;th&#62;&#60;/th&#62;&#60;td&#62;&#60;/td&#62;&#60;td&#62;&#60;/td&#62;&#60;/tr&#62;
+&#09;&#09;&#60;tr&#62;&#60;th&#62;&#60;/th&#62;&#60;td&#62;&#60;/td&#62;&#60;td&#62;&#60;/td&#62;&#60;/tr&#62;
+&#09;&#60;/tbody&#62;
+&#60;/table&#62;</code></pre>
+                            </div>
+                            <div id="panel-2" class="tabbody" data-np-for="tab-2">
+                                <table>
+                                    <caption>Table caption</caption>
+                                    <thead>
+                                        <tr><th></th><th></th><th></th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><th></th><td></td><td></td></tr>
+                                        <tr><th></th><td></td><td></td></tr>
+                                        <tr><th></th><td></td><td></td></tr>
+                                        <tr><th></th><td></td><td></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <h4 id="l1-3-2">fieldset</h4>
+                        <p><code>&#60;legend&#62;</code>의 기본 폰트 사이즈는 <code>&#60;h4&#62;</code>와 동일합니다.</p>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-3" class="tabhead" data-no-for="panel-3">코드</li>
+                                <li id="tab-4" class="tabhead" data-no-for="panel-4">결과</li>
+                            </ul>
+                            <div id="panel-3" class="tabbody" data-np-for="tab-3">
+                                <pre><code class="xml">&#60;fieldset&#62;
+&#09;&#60;legend&#62;legend&#60;/legend&#62;
+&#09;content
+&#60;/fieldset&#62;</code></pre>
+                            </div>
+                            <div id="panel-4" class="tabbody" data-np-for="tab-4">
+                                <fieldset>
+                                    <legend>legend</legend>
+                                    content
+                                </fieldset>
+                            </div>
+                        </div>
+                        <h4 id="l1-3-3">note box</h4>
+                        <p>알림 메세지를 표현하기 위해 구현되었으며 테마를 사용할 수 있습니다.</p>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-5" class="tabhead" data-no-for="panel-5">코드</li>
+                                <li id="tab-6" class="tabhead" data-no-for="panel-6">결과</li>
+                            </ul>
+                            <div id="panel-5" class="tabbody" data-np-for="tab-5">
+                                <pre><code class="xml">&#60;div class="note-box"&#62;default note box.&#60;/div&#62;
+&#60;div class="note-box tm-red"&#62;red note box.&#60;/div&#62;
+&#60;div class="note-box tm-green"&#62;green note box.&#60;/div&#62;
+&#60;div class="note-box tm-blue"&#62;blue note box.&#60;/div&#62;
+&#60;div class="note-box tm-yellow"&#62;yellow note box.&#60;/div&#62;</code></pre>
+                            </div>
+                            <div id="panel-6" class="tabbody" data-np-for="tab-6">
+                                <div class="note-box">default note box.</div>
+                                <div class="note-box tm-red">red note box.</div>
+                                <div class="note-box tm-green">green note box.</div>
+                                <div class="note-box tm-blue">blue note box.</div>
+                                <div class="note-box tm-yellow">yellow note box.</div>
+                            </div>
+                        </div>
+                        <h4 id="l1-3-4">footer</h4>
+                        <p>문서의 내용이 없더라도 푸터가 항상 문서 하단에 위치하도록 설정 되어있습니다.</p>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>코드</th>
+                                    <td><pre><code class="xml">&#60;footer&#62;footer content&#60;/footer&#62;</code></pre>
+또는
+<pre><code class="xml">&#60;div class="footer"&#62;footer content&#60;/div&#62;</code></pre></td>
+                                </tr>
+                                <tr>
+                                    <th>결과</th>
+                                    <td>이 홈페이지의 푸터 참고</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section class="index-section">
+                        <h2 id="l2">Plug-in</h2>
+                        <p>nFrameWork.js는 테그에 <code>class=""</code>와 <code>data-np-foo=""</code> 속성 추가로 간단하게 기능을 구현하는 플러그인입니다.</p>
+                        <p>웹 접근성을 고려하여 설계되어있어 추가적인 접근성 보완을 필요로 하지 않습니다.</p>
+                        <div class="note-box tm-green fs-s">
+                            <p>WAI-ARIA 속성이 자동완성 됩니다.</p>
+                        </div>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>단독으로 nFrameWork.js만 사용할 수 있습니다.</p>
+                        </div>
+                        <div class="note-box tm-red fs-s">
+                            <p>MS의 경우 IE9+ 부터 지원합니다.</p>
+                        </div>
+                        <h3 id="l2-1">tool tip</h3>
+                        <p>툴팁을 사용하기 위해서 우선 <code>&#60;body&#62;</code>의 직계 자손을 선언해야 합니다.</p>
+                        <p><code>&#60;body&#62;</code>의 직계 자손이라면 몇 번째 인지는 상관없으며 단 한번만 선언하면 됩니다.</p>
+                        <p>클레스 네임에 테마를 추가하여 색상을 변경 할 수도 있습니다.</p>
+                        <pre><code class="xml">&#60;body&#62;
+&#09;&#60;span id="tooltip"&#62;&#60;/span&#62;
+&#60;/body&#62;</code></pre><br>
+                        <p>이후 툴팁이 표시되길 원하는 테그에 <code>class="tooltip-t, r, b, l"</code>와 <code>data-np-tooltip='content'</code> 속성을 설정하니다.</p>
+                        <p><code>t, r, b, l</code>은 툴팁이 표시될 방향을 의미합니다.</p>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-9" class="tabhead" data-no-for="panel-9">코드</li>
+                                <li id="tab-10" class="tabhead" data-no-for="panel-10">결과</li>
+                            </ul>
+                            <div id="panel-9" class="tabbody" data-np-for="tab-9">
+                                <pre><code class="xml">&#60;span class="tooltip-t" data-np-tooltip="show to top"&#62;into&#60;/span&#62;&#60;br&#62;
+&#60;span class="tooltip-r" data-np-tooltip="show to right"&#62;into&#60;/span&#62;&#60;br&#62;
+&#60;span class="tooltip-b" data-np-tooltip="show to bottom"&#62;into&#60;/span&#62;&#60;br&#62;
+&#60;span class="tooltip-l" data-np-tooltip="show to left"&#62;into&#60;/span&#62;&#60;br&#62;</code></pre>
+                            </div>
+                            <div id="panel-10" class="tabbody ta-c" data-np-for="tab-10">
+                                <span class="tooltip-t" data-np-tooltip="show to top">into</span><br>
+                                <span class="tooltip-r" data-np-tooltip="show to right">into</span><br>
+                                <span class="tooltip-b" data-np-tooltip="show to bottom">into</span><br>
+                                <span class="tooltip-l" data-np-tooltip="show to left">into</span><br>
+                            </div>
+                        </div>
+                        <div class="note-box tm-green fs-s">
+                            <p>툴팁의 내용을 스크린리더가 인식하고 읽습니다.</p>
+                        </div>
+                        <h3 id="l2-2">layer popup</h3>
+                        <p>레이어 팝업은 부트스트랩의 모달과 동일한 목적과 기능을 가집니다.</p>
+                        <p>팝업을 실행시킬 테그에 <code>data-np-popup="foo"</code> 속성을 추가합니다.</p>
+                        <p>여기서 속성값은 팝업창의 <code>id=""</code>값을 가리킵니다.</p>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-11" class="tabhead" data-no-for="panel-11">코드</li>
+                                <li id="tab-12" class="tabhead" data-no-for="panel-12">결과</li>
+                            </ul>
+                            <div id="panel-11" class="tabbody" data-np-for="tab-11">
+                                <pre><code class="xml">&#60;input data-np-popup="foo21" type="button" value="Popup Button!"&#62;</code></pre>
+                            </div>
+                            <div id="panel-12" class="tabbody ta-c" data-np-for="tab-12">
+                                <input data-np-popup="foo21" type="button" value="Popup Button!">
+                            </div>
+                        </div>
+                        <p>다음으로 팝업이 실행될 시 표시될 테그에 지정한 <code>id=""</code>값과 <code>class="popup-box"</code>값을 입력합니다.</p>
+                        <p>팝업 내부에 팝업을 닫는 테그를 설정하고 싶을 경우 해당 테그에 <code>data-np-popup=""</code>과 같이 빈 문자열의 속성을 추가합니다.</p>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-13" class="tabhead" data-no-for="panel-13">코드</li>
+                                <li id="tab-14" class="tabhead" data-no-for="panel-14">결과</li>
+                            </ul>
+                            <div id="panel-13" class="tabbody" data-np-for="tab-13">
+                                <pre><code class="xml">&#60;div id="foo21" class="popup-box"&#62;
+&#09;content&#60;br&#62;
+&#09;&#60;input data-np-popup="" type="button" value="Close Popup Button!"&#62;
+&#60;/div&#62;</code></pre>
+                            </div>
+                            <div id="panel-14" class="tabbody ta-c" data-np-for="tab-14">
+                                <p>이전 예시 코드의 결과탭에서 팝업버튼을 클릭하여 확인하세요.</p>
+                            </div>
+                            <div id="foo21" class="popup-box">
+                                content<br>
+                                <input data-np-popup="" type="button" value="Close Popup Button!">
+                            </div>
+                        </div>
+                        <div class="note-box tm-yellow fs-s">
+                            <p><code>class="popup-box"</code>는 UI 디자인 되어있지 않습니다.</p>
+                            <p>반드시 사용자 css 디자인이 설정되어야 합니다.</p>
+                        </div>
+                        <h3 id="l2-3">tab panel</h3>
+                        <p>텝 페널은 제한된 공간에 여러 컨텐츠를 제공해야 할 경우 유용하게 사용할 수 있습니다.</p>
+                        <p>우선 텝페널을 감쌀 테그를 <code>class="tabwrap"</code>속성을 포함하여 생성합니다.</p>
+                        <p>이후 내부에 텝 헤더부분을 <code>&#60;ul&#62;&#60;li&#62;</code> 테그를 사용하여 생성합니다.</p>
+                        <p>이때 <code>&#60;li&#62;</code>는 <code>class="tabhead"</code> 속성을 포함하여야 합니다.</p>
+                        <p>마지막으로 텝 헤더에 해당하는 페널부분을 <code>class="tabbody"</code>속성을 포함하여 생성합니다.</p>
+                        <div class="note-box tm-yellow fs-s">
+                            <p><code>class="tabwrap"</code>에 테마 클레스 네임을 추가하여 텝 헤더 부분의 비활성화 상태일 때의 색상을 변경 할 수도 있습니다.</p>
+                        </div>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>해더와 페널에는 <code>id=""</code>와 <code>data-np-for=""</code>속성과 값을 반드시 선언하여 각각의 상속관계를 나타내야 합니다.</p>
+                        </div>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-15" class="tabhead" data-no-for="panel-15">코드</li>
+                                <li id="tab-16" class="tabhead" data-no-for="panel-16">결과</li>
+                            </ul>
+                            <div id="panel-15" class="tabbody" data-np-for="tab-15">
+                                <pre><code class="xml">&#60;div class="tabwrap"&#62;
+    &#60;ul&#62;
+        &#60;li id="tab-17" class="tabhead" data-no-for="panel-17"&#62;header 1&#60;/li&#62;
+        &#60;li id="tab-18" class="tabhead" data-no-for="panel-18"&#62;header 2&#60;/li&#62;
+    &#60;/ul&#62;
+    &#60;div id="panel-17" class="tabbody" data-np-for="tab-17"&#62;
+        panel 1
+    &#60;/div&#62;
+    &#60;div id="panel-18" class="tabbody" data-np-for="tab-18"&#62;
+        panel 2
+    &#60;/div&#62;
+&#60;/div&#62;</code></pre>
+                            </div>
+                            <div id="panel-16" class="tabbody" data-np-for="tab-16">
+                                <div class="tabwrap">
+                                    <ul>
+                                        <li id="tab-17" class="tabhead" data-no-for="panel-17">header 1</li>
+                                        <li id="tab-18" class="tabhead" data-no-for="panel-18">header 2</li>
+                                    </ul>
+                                    <div id="panel-17" class="tabbody" data-np-for="tab-17">
+                                        panel 1
+                                    </div>
+                                    <div id="panel-18" class="tabbody" data-np-for="tab-18">
+                                        panel 2
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="note-box tm-green fs-s">
+                            <p>텝 헤더부분은 키보드 <kbd>←</kbd> <kbd>→</kbd> 컨트롤을 지원합니다.</p>
+                        </div>
+                        <h3 id="l2-4">drop down</h3>
+                        <p>드롭다운 메뉴는 <code>&#60;ul class="menubar"&#62;</code>테그 선언으로 시작합니다.</p>
+                        <p>이후 <code>&#60;li&#62;</code>테그로 목록을 구성하며 하위 목록을 소유하고 있을 경우 <code>class="drop-*"</code> 클레스 네임을 선언합니다.</p>
+                        <p>클레스 명의 <code>*</code>에 해당하는 문자열은 하위메뉴가 드롭될 상세 방향을 말합니다.</p>
+                        <p>예를 들어 하위 목록이 아래로 그리고 왼쪽에서 오른쪽으로 전개된다면 <code>*</code>에 해당하는 문자열은 <code>br</code>(bottom right)가 됩니다.</p>
+                        <div class="note-box tm-yellow fs-s">
+                            <p><code>&#60;li&#62;</code>테그 내부에 들어갈 text content는 반드시 <code>&#60;a&#62;</code> 또는 <code>&#60;span&#62;</code>로 감싸주어야 합니다.</p>
+                        </div>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-19" class="tabhead" data-no-for="panel-19">코드</li>
+                                <li id="tab-20" class="tabhead" data-no-for="panel-20">결과</li>
+                            </ul>
+                            <div id="panel-19" class="tabbody" data-np-for="tab-19">
+                                <pre><code class="xml">&#60;ul class="menubar fs-s"&#62;
+&#09;&#60;li class="drop-tr"&#62;
+&#09;&#09;&#60;span&#62;Top right&#60;/span&#62;
+&#09;&#09;&#60;ul&#62;
+&#09;&#09;&#09;&#60;li class="drop-rt"&#62;
+&#09;&#09;&#09;&#09;&#60;span&#62;Right top&#60;/span&#62;
+&#09;&#09;&#09;&#09;&#60;ul&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#60;/ul&#62;
+&#09;&#09;&#09;&#60;/li&#62;
+&#09;&#09;&#60;/ul&#62;
+&#09;&#60;/li&#62;
+&#09;&#60;li class="drop-bl"&#62;
+&#09;&#09;&#60;span&#62;Bottom left&#60;/span&#62;
+&#09;&#09;&#60;ul&#62;
+&#09;&#09;&#09;&#60;li class="drop-lb"&#62;
+&#09;&#09;&#09;&#09;&#60;span&#62;Left bottom&#60;/span&#62;
+&#09;&#09;&#09;&#09;&#60;ul&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#60;/ul&#62;
+&#09;&#09;&#09;&#60;/li&#62;
+&#09;&#09;&#60;/ul&#62;
+&#09;&#60;/li&#62;
+&#09;&#60;li class="drop-br"&#62;
+&#09;&#09;&#60;span&#62;Bottom right&#60;/span&#62;
+&#09;&#09;&#60;ul&#62;
+&#09;&#09;&#09;&#60;li class="drop-rb"&#62;
+&#09;&#09;&#09;&#09;&#60;span&#62;Right bottom&#60;/span&#62;
+&#09;&#09;&#09;&#09;&#60;ul&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#60;/ul&#62;
+&#09;&#09;&#09;&#60;/li&#62;
+&#09;&#09;&#60;/ul&#62;
+&#09;&#60;/li&#62;
+&#09;&#60;li class="drop-tl"&#62;
+&#09;&#09;&#60;span&#62;Top left&#60;/span&#62;
+&#09;&#09;&#60;ul&#62;
+&#09;&#09;&#09;&#60;li class="drop-lt"&#62;
+&#09;&#09;&#09;&#09;&#60;span&#62;Left top&#60;/span&#62;
+&#09;&#09;&#09;&#09;&#60;ul&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#09;&#60;li&#62;&#60;span&#62;content&#60;/span&#62;&#60;/li&#62;
+&#09;&#09;&#09;&#09;&#60;/ul&#62;
+&#09;&#09;&#09;&#60;/li&#62;
+&#09;&#09;&#60;/ul&#62;
+&#09;&#60;/li&#62;
+&#60;/ul&#62;</code></pre>
+                            </div>
+                            <div id="panel-20" class="tabbody" data-np-for="tab-20">
+                                <ul class="menubar fs-s">
+                                    <li class="drop-tr">
+                                        <span>Top right</span>
+                                        <ul>
+                                            <li class="drop-rt">
+                                                <span>Right top</span>
+                                                <ul>
+                                                    <li><span>content</span></li>
+                                                    <li><span>content</span></li>
+                                                    <li><span>content</span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="drop-bl">
+                                        <span>Bottom left</span>
+                                        <ul>
+                                            <li class="drop-lb">
+                                                <span>Left bottom</span>
+                                                <ul>
+                                                    <li><span>content</span></li>
+                                                    <li><span>content</span></li>
+                                                    <li><span>content</span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="drop-br">
+                                        <span>Bottom right</span>
+                                        <ul>
+                                            <li class="drop-rb">
+                                                <span>Right bottom</span>
+                                                <ul>
+                                                    <li><span>content</span></li>
+                                                    <li><span>content</span></li>
+                                                    <li><span>content</span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="drop-tl">
+                                        <span>Top left</span>
+                                        <ul>
+                                            <li class="drop-lt">
+                                                <span>Left top</span>
+                                                <ul>
+                                                    <li><span>content</span></li>
+                                                    <li><span>content</span></li>
+                                                    <li><span>content</span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="note-box tm-green fs-s">
+                            <p>키보드 <kbd>↑</kbd> <kbd>→</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>Tab</kbd> <kbd>Space</kbd> <kbd>Esc</kbd> 컨트롤을 지원합니다.</p>
+                        </div>
+                        <h3 id="l2-5">accordion</h3>
+                        <p><code>&#60;div class="accwrap"&#62;</code>과 같이 클레스 네임을 할당하여 아코디언 영역을 선언합니다.</p>
+                        <p>다음으로 아코디언 영역 내부에 <code>&#60;div id="foo1" class="acchead" data-np-for="foo2"&#62;</code>와 같이 3개의 속성과 값을 할당하여 아코디언의 헤더를 선언합니다.</p>
+                        <p>헤더에 대한 본문의 경우 아코디언 영역 내부에 <code>&#60;div id="foo2" class="accbody" data-np-for="foo1"&#62;</code>과 같이 3개의 속성과 값을 할당하여 선언합니다.</p>
+                        <div class="note-box tm-yellow fs-s">
+                            <p><code>class="acchead"</code>에 테마 클레스 네임을 추가하여 아코디언 헤더의 색상을 변경 할 수도 있습니다.</p>
+                        </div>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>해더와 바디에는 <code>id=""</code>와 <code>data-np-for=""</code>속성과 값을 반드시 선언하여 각각의 상속관계를 나타내야 합니다.</p>
+                        </div>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>문서에는 여러개의 아코디언 영역을 만들 수 있으며, 하나의 영역 안에는 여러개의 아코디언 헤더와 바디를 만들 수 있습니다.</p>
+                        </div>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-21" class="tabhead" data-no-for="panel-21">코드</li>
+                                <li id="tab-22" class="tabhead" data-no-for="panel-22">결과</li>
+                            </ul>
+                            <div id="panel-21" class="tabbody" data-np-for="tab-21">
+                                <pre><code class="xml">&#60;div class="accwrap"&#62;
+&#09;&#60;div id="acchead1" class="acchead" data-np-for="accbody1"&#62;accordion head 1&#60;/div&#62;
+&#09;&#60;div id="accbody1" class="accbody" data-np-for="acchead1"&#62;content&#60;/div&#62;
+&#09;&#60;div id="acchead2" class="acchead tm-blue" data-np-for="accbody2"&#62;accordion head 2&#60;/div&#62;
+&#09;&#60;div id="accbody2" class="accbody" data-np-for="acchead2"&#62;content&#60;/div&#62;
+&#60;/div&#62;
+&#60;div class="accwrap"&#62;
+&#09;&#60;div id="acchead3" class="acchead tm-green" data-np-for="accbody3"&#62;accordion head 3&#60;/div&#62;
+&#09;&#60;div id="accbody3" class="accbody" data-np-for="acchead3"&#62;content&#60;/div&#62;
+&#60;/div&#62;</code></pre>
+                            </div>
+                            <div id="panel-22" class="tabbody" data-np-for="tab-22">
+                                <div class="accwrap">
+                                    <div id="acchead1" class="acchead" data-np-for="accbody1">accordion head 1</div>
+                                    <div id="accbody1" class="accbody" data-np-for="acchead1">content</div>
+                                    <div id="acchead2" class="acchead tm-blue" data-np-for="accbody2">accordion head 2</div>
+                                    <div id="accbody2" class="accbody" data-np-for="acchead2">content</div>
+                                </div>
+                                <div class="accwrap">
+                                    <div id="acchead3" class="acchead tm-green" data-np-for="accbody3">accordion head 3</div>
+                                    <div id="accbody3" class="accbody" data-np-for="acchead3">content</div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 id="l2-6">slide</h3>
+                        <p><code>&#60;div class="slide-box"&#62;</code>와 같이 클레스 네임을 할당하여 슬라이드 영역을 선언합니다.</p>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>슬라이드 자동전환(재생) 시간의 기본값은 4000ms 입니다.</p>
+                            <p>전환 시간을 조절하고 싶을 경우 슬라이드 영역 테그에 <code>data-np-slide-speed="*"</code> 속성과 값을 추가합니다.</p>
+                            <p>여기서 <code>*</code>는 희망하는 밀리초(ms)단위의 시간을 말합니다.</p>
+                        </div>
+                        <p>다음으로 슬라이드 영역 내부에 <code>&#60;ul class="slide-item"&#62;</code>과 같이 클레스 네임을 할당하여 컨텐츠 영역을 선언하고, 그 내부에 컨텐츠 수량만큼의 <code>&#60;li&#62;</code>를 선언하고 컨텐츠를 삽입합니다.</p>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>기본적으로 슬라이드 자동전환(재생)은 정지상태 입니다.</p>
+                            <p>자동재생 상태를 희망할 경우 컨텐츠 영역에 <code>class="played"</code>값을 추가로 할당해야 합니다.</p>
+                        </div>
+                        <div class="note-box tm-red fs-s">
+                            <p>슬라이드의 기본 크기는 <code>width: 100%</code>에 16:9 비율로 설정되어 있으며 문서 크기에 따라 자동 조절 됩니다.</p>
+                            <p>슬라이더의 크기를 설정해야 할 경우 css를 이용하여 <code>&#60;div class="slide-box"&#62;</code>셀렉터에 <code>max-width</code>, <code>max-height</code>를 % 또는 px 단위로 통일하여 값으로 할당해주어야 합니다.</p>
+                        </div>
+                        <p>이전, 다음 버튼이 필요할 경우 슬라이드 영역 내부에 <code>&#60;ul class="slide-btn-prne"&#62;</code>와 같이 이전, 다음 버튼영역을 선언하고 내부에 비어있는 <code>&#60;li&#62;</code> 두개를 선언합니다. (선택)</p>
+                        <p>리스트 바로가기 버튼이 필요할 경우 슬라이드 영역 내부에 <code>&#60;ul class="slide-btn-goto"&#62;</code>와 같이 리스트 바로가기 버튼영역을 선언하고 내부에 비어있는 <code>&#60;li&#62;</code>를 컨텐츠 수량만큼 선언합니다. (선택)</p>
+                        <p>슬라이드 재생, 정지 버튼이 필요할 경우 <code>&#60;div class="slide-btn-play"&#62;</code>와 같이 선언합니다. (선택)</p>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>코드</th>
+                                    <td>
+                                        <pre><code class="xml">&#60;div class="slide-box" data-np-slide-speed="1000"&#62;
+&#09;&#60;ul class="slide-item played"&#62;
+&#09;&#09;&#60;li&#62;content1&#60;/li&#62;
+&#09;&#09;&#60;li&#62;content2&#60;/li&#62;
+&#09;&#09;&#60;li&#62;content3&#60;/li&#62;
+&#09;&#60;/ul&#62;
+&#09;&#60;ul class="slide-btn-prne"&#62;
+&#09;&#09;&#60;li&#62;&#60;/li&#62;
+&#09;&#09;&#60;li&#62;&#60;/li&#62;
+&#09;&#60;/ul&#62;
+&#09;&#60;div class="slide-btn-goto"&#62;
+&#09;&#09;&#60;li&#62;&#60;/li&#62;
+&#09;&#09;&#60;li&#62;&#60;/li&#62;
+&#09;&#09;&#60;li&#62;&#60;/li&#62;
+&#09;&#60;/div&#62;
+&#09;&#60;div class="slide-btn-play"&#62;&#60;/div&#62;
+&#60;/div&#62;</code></pre>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>결과</th>
+                                    <td>
+                                        <div class="slide-box" data-np-slide-speed="1000">
+                                            <ul class="slide-item played">
+                                                <li>content1</li><li>
+                                                content2</li><li>
+                                                content3</li>
+                                            </ul>
+                                            <ul class="slide-btn-prne">
+                                                <li></li>
+                                                <li></li>
+                                            </ul>
+                                            <div class="slide-btn-goto">
+                                                <li></li>
+                                                <li></li>
+                                                <li></li>
+                                            </div>
+                                            <div class="slide-btn-play"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="note-box tm-green fs-s">
+                            <h6>일반 사용자 UX</h6>
+                            <p>슬라이드가 자동재생 상태이더라도 컨텐츠 위에 마우스가 위치할 경우 마우스가 컨텐츠에서 이탈할 때까지 일시정지 상태가 됩니다.</p>
+                            <p>이러한 이유는 사용자가 집중하고 있는 컨텐츠가 자동재생에 의한 몰입방해로부터 보호하기 위함입니다.</p>
+                        </div>
+                        <div class="note-box tm-green fs-s">
+                            <h6>키보드 사용자</h6>
+                            <p>불필요하고 과도한 포커스 순서를 피하기 위해 컨트롤러 버튼에 포커스 할 수 없게 설정되어 있습니다.</p>
+                            <p>대신 해당하는 컨텐츠 또는 컨텐츠 내부의 포커스 가능한 요소가 포커스 되어있을 경우 해당 컨텐츠로 화면이 전환됩니다.</p>
+                            <p>이후 포커스 된 해당 요소가 포커스를 잃을때까지 자동재생 상태이더라도 화면전환은 이루어지지 않습니다.</p>
+                        </div>
+                        <div class="note-box tm-green fs-s">
+                            <h6>스크린 리더</h6>
+                            <p>슬라이드를 <code>&#60;ul&#62;</code>, <code>&#60;li&#62;</code>로 구성된 컨텐츠로 인식합니다.</p>
+                            <p>따라서 스크린리더에 의존하는 사용자가 컨트롤 버튼을 인식하여 혼란스러워 하지 않도록 하기위해 컨트롤 버튼은 스크린리더가 인식하지 못하도록 설정되어 있습니다.</p>
+                        </div>
+                        <div class="note-box tm-red fs-s">
+                            <p><strong>nFrameWork.js</strong>에 내장되어 있는 slide는 기본기능만 지원합니다.</p>
+                            <p>자바스크립트 API를 통해 슬라이드의 고급기능을 사용해야 할 경우 <strong>nSlider.js</strong>라는 별도의 슬라이드 플러그인을 사용해야 합니다.</p>
+                        </div>
+                        <h3 id="l2-7">spy</h3>
+                        <p>spy는 현재 문서의 <code>id="foo"</code> 값을 추적하여 해당 테그영역이 화면에 노출되는 동안만 <code>&#60;a href="#foo"&#62;</code> 테그에 <code>class="spied"</code>값을 부여합니다.</p>
+                        <p>즉, 부트스트랩의 스크롤스파이와 동일한 기능을 구현합니다.</p>
+                        <p><code>&#60;ul id="spy-box"&#62;</code>와 같이 아이디를 할당하여 스파이 영역을 선언합니다.</p>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>스파이 영역은 문서에 한번만 선언할 수 있습니다.</p>
+                        </div>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>링크를 클릭하여 화면에 노출될 때 스크린 상단으로부터 오프셋 보정이 필요할 경우 <code>data-np-spyoffset="*px"</code>속성과 값을 추가합니다.</p>
+                            <p>여기서 <code>*</code>은 실수값 입니다.</p>
+                        </div>
+                        <p>다음으로 영역 내에 <code>&#60;li&#62; &#60;a href="#foo"&#62;</code>를 선언합니다.</p>
+                        <div class="note-box tm-yellow fs-s">
+                            <p><code>&#60;a&#62;</code>의 <code>href=""</code>속성 양식이 <code>#</code>이 아니거나 문서 내 해당 값의 셀렉터를 찾을 수 없는 경우 해당 링크는 무시합니다.</p>
+                        </div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>코드</th>
+                                    <td>
+                                        <pre><code class="xml">&#60;ul id="spy-box" data-np-spyoffset="32px"&#62;
+&#09;&#60;li&#62;&#60;a href="#foo1"&#62;link&#60;/a&#62;&#60;/li&#62;
+&#09;&#60;li&#62;&#60;a href="#foo2"&#62;link&#60;/a&#62;&#60;/li&#62;
+&#09;&#60;li&#62;&#60;a href="#foo3"&#62;link&#60;/a&#62;&#60;/li&#62;
+&#60;/ul&#62;</code></pre>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>결과</th>
+                                    <td>이 문서의 우측 네비게이션 참고</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section class="index-section">
+                        <h2 id="l3">Icons</h2>
+                        <p>nIcons.css는 클레스네임 추가로 간단하게 사용가능한 아이콘을 제공합니다.</p>
+                        <p>아이콘의 크기는 폰트사이즈를 상속받으며 크기를 변경하더라도 svg 형식처럼 해상도 깨짐현상이 없습니다.</p>
+                        <p>웹 접근성을 고려하여 아이콘 설명이 필요할 경우 해당 테그 내에 <code>font-size: 0</code>속성을 가진 테그를 추가하여 텍스트 삽입하는 것을 권장합니다.</p>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>WAI-ARIA 또는 <code>title=""</code> 속성을 사용해도 되지만 스크린 리더에 따라 해당 구문을 읽지 못하는 경우가 있기 때문입니다.</p>
+                        </div>
+                        <div class="note-box tm-yellow fs-s">
+                            <p>색상 변경은 지원되지 않으므로 필요시 커스터마이징 해야 합니다. <br>nIcons.css는 <code>#000000</code> 색상값만 사용되었습니다.</p>
+                        </div>
+                        <div class="note-box tm-red fs-s">
+                            <p>MS의 경우 IE9+ 부터 지원합니다.</p>
+                        </div>
+                        <div class="tabwrap">
+                            <ul>
+                                <li id="tab-7" class="tabhead" data-no-for="panel-7">코드</li>
+                                <li id="tab-8" class="tabhead" data-no-for="panel-8">결과</li>
+                            </ul>
+                            <div id="panel-7" class="tabbody" data-np-for="tab-7">
+                                <pre><code class="xml">&#60;span class="ico-share1"&#62;&#60;/span&#62;
+&#60;p class="fs-h1"&#62;It's &#60;span class="ico-music"&#62;&#60;span class="fs-none"&#62;music&#60;/span&#62;&#60;/span&#62;&#60;/p&#62;</code></pre>
+                            </div>
+                            <div id="panel-8" class="tabbody" data-np-for="tab-8">
+                                <span class="ico-share1"></span>
+                                <p class="fs-h1">It's <span class="ico-music"><span class="fs-none">music</span></span></p>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>클레스 네임</th><th>결과</th><th>클레스 네임</th><th>결과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ico-home</td><td><span class="ico-home"></span></td><td>ico-mail</td><td><span class="ico-mail"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-check</td><td><span class="ico-check"></span></td><td>ico-cross</td><td><span class="ico-cross"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-plus</td><td><span class="ico-plus"></span></td><td>ico-minus</td><td><span class="ico-minus"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-rss</td><td><span class="ico-rss"></span></td><td>ico-caretTop</td><td><span class="ico-caretTop"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-caretRight</td><td><span class="ico-caretRight"></span></td><td>ico-caretBottom</td><td><span class="ico-caretBottom"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-caretLeft</td><td><span class="ico-caretLeft"></span></td><td>ico-arrowTop</td><td><span class="ico-arrowTop"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-arrowRight</td><td><span class="ico-arrowRight"></span></td><td>ico-arrowBottom</td><td><span class="ico-arrowBottom"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-arrowLeft</td><td><span class="ico-arrowLeft"></span></td><td>ico-play</td><td><span class="ico-play"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-stop</td><td><span class="ico-stop"></span></td><td>ico-pause</td><td><span class="ico-pause"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-next</td><td><span class="ico-next"></span></td><td>ico-previous</td><td><span class="ico-previous"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-forward</td><td><span class="ico-forward"></span></td><td>ico-rewind</td><td><span class="ico-rewind"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-download</td><td><span class="ico-download"></span></td><td>ico-upload</td><td><span class="ico-upload"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-flag</td><td><span class="ico-flag"></span></td><td>ico-tag</td><td><span class="ico-tag"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-tags</td><td><span class="ico-tags"></span></td><td>ico-bookmark</td><td><span class="ico-bookmark"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-ellipsis</td><td><span class="ico-ellipsis"></span></td><td>ico-ellipsis2</td><td><span class="ico-ellipsis2"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-file</td><td><span class="ico-file"></span></td><td>ico-picture</td><td><span class="ico-picture"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-repeat</td><td><span class="ico-repeat"></span></td><td>ico-reset</td><td><span class="ico-reset"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-reset2</td><td><span class="ico-reset2"></span></td><td>ico-gear</td><td><span class="ico-gear"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-zoomin</td><td><span class="ico-zoomin"></span></td><td>ico-zoomout</td><td><span class="ico-zoomout"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-search</td><td><span class="ico-search"></span></td><td>ico-calendar</td><td><span class="ico-calendar"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-volumeNone</td><td><span class="ico-volumeNone"></span></td><td>ico-volumeLow</td><td><span class="ico-volumeLow"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-volumeMiddle</td><td><span class="ico-volumeMiddle"></span></td><td>ico-volumeHigh</td><td><span class="ico-volumeHigh"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-mic</td><td><span class="ico-mic"></span></td><td>ico-chartBar</td><td><span class="ico-chartBar"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-chartLine</td><td><span class="ico-chartLine"></span></td><td>ico-chartArea</td><td><span class="ico-chartArea"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-chartPie</td><td><span class="ico-chartPie"></span></td><td>ico-folderClose</td><td><span class="ico-folderClose"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-folderOpen</td><td><span class="ico-folderOpen"></span></td><td>ico-clip</td><td><span class="ico-clip"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-link</td><td><span class="ico-link"></span></td><td>ico-video</td><td><span class="ico-video"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-music</td><td><span class="ico-music"></span></td><td>ico-print</td><td><span class="ico-print"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-tile2x2</td><td><span class="ico-tile2x2"></span></td><td>ico-tile3x3</td><td><span class="ico-tile3x3"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-list</td><td><span class="ico-list"></span></td><td>ico-share1</td><td><span class="ico-share1"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-share2</td><td><span class="ico-share2"></span></td><td>ico-power</td><td><span class="ico-power"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-pin</td><td><span class="ico-pin"></span></td><td>ico-trashcan</td><td><span class="ico-trashcan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-desktop</td><td><span class="ico-desktop"></span></td><td>ico-laptop</td><td><span class="ico-laptop"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-tablet</td><td><span class="ico-tablet"></span></td><td>ico-mobile</td><td><span class="ico-mobile"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ico-block</td><td><span class="ico-block"></span></td><td>ico-comment</td><td><span class="ico-comment"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+        </article>
+        <footer id="index-footer" class="bg-blue">
+            Copyright 2017-2018. <span class="col-white">niceplugin@gmail.com</span> all rights reserved.
+        </footer>
+    </div>
+    <script>
+        NP.Sticky.set('#article-nav');
+    </script>
+</body>
+</html>
