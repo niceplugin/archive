@@ -864,7 +864,7 @@
         }
         info.touchSensitivity = 10;
         
-        map.current_map = 7; // @+ 개발용으로 코드쓰는중 끝나면 0으로 바꿀것
+        map.current_map = 1; // @+ 개발용으로 코드쓰는중 끝나면 1으로 바꿀것
         deleteTemp();
     }
     
@@ -1007,7 +1007,7 @@
             t[0] = 0;
             t[1] = false;
             c.fillStyle = 'rgba(255, 255, 255, 1)';
-//            g.playAudio(r.bgm.intro);
+            g.playAudio(r.bgm.intro);
             c.textAlign = 'center';
             c.textBaseline = 'middle';
             c.font = '80px FSEX300';
