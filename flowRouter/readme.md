@@ -25,7 +25,7 @@ URL을 변경하거나 반응적으로 URL 데이터를 가지고 올 수 있도
 * [Hashbang URLs](#hashbang-urls)
 * [Prefixed paths (경로 접두사)](#prefixed-paths)
 * [Add-ons](#add-ons)
-* [Difference with Iron Router](#difference-with-iron-router)
+* [Iron Router(아이언 라우터)와 다른점](#difference-with-iron-router)
 * [Migrating into 2.0](#migrating-into-20)
 
 ## 미티어 라우팅 가이드
@@ -44,7 +44,8 @@ FlowRouter를 나의 앱에 추가하는 방법:
 meteor add kadira:flow-router
 ~~~
 
-이제 라우터를 사용하는 코드를 짜봅시다. (우선 `lib/router.js` 경로에 파일을 만듭니다.)
+이제 라우터를 사용하는 코드를 짜봅시다.
+(우선 `lib/router.js` 경로에 파일을 만듭니다.)
 
 ~~~js
 FlowRouter.route('/blog/:postId', {
@@ -704,47 +705,73 @@ In cases you wish to run multiple web application on the same domain name, you�
 
 ## Add-ons
 
-Router is a base package for an app. Other projects like [useraccounts](http://useraccounts.meteor.com/)  should have support for FlowRouter. Otherwise, it's hard to use  FlowRouter in a real project. Now a lot of packages have [started to support FlowRouter](https://kadira.io/blog/meteor/addon-packages-for-flowrouter).
+라우터는 앱의 기본 페키지입니다.
+[useraccounts](http://useraccounts.meteor.com/)와 같은 다른 프로젝트는 FlowRouter를 지원합니다.
+그렇지 않으면 실제 프로젝트에서 FlowRouter를 사용하기 어렵습니다.
+지금은 많은 [페키지가 FlowRouter를 지원](https://kadira.io/blog/meteor/addon-packages-for-flowrouter)하기 시작했습니다.
 
-So, you can use your your favorite package with FlowRouter as well. If not, there is an [easy process](https://kadira.io/blog/meteor/addon-packages-for-flowrouter#what-if-project-xxx-still-doesn-t-support-flowrouter-) to convert them to FlowRouter.
+따라서 FlowRouter에서도 원하는 패키지를 사용할 수 있습니다.
+그렇지 않은 경우 FlowRouter로 변환하기 쉬운 [프로세스](https://kadira.io/blog/meteor/addon-packages-for-flowrouter#what-if-project-xxx-still-doesn-t-support-flowrouter-)가 있습니다.
 
 **Add-on API**
 
-We have also released a [new API](https://github.com/kadirahq/flow-router#flowrouteronrouteregistercb) to support add-on developers. With that add-on packages can get a notification, when the user created a route in their app.
+원문:
+
+We have also released a [new API](https://github.com/kadirahq/flow-router#flowrouteronrouteregistercb) to support add-on developers.
+With that add-on packages can get a notification, when the user created a route in their app.
 
 If you've more ideas for the add-on API, [let us know](https://github.com/kadirahq/flow-router/issues).
 
-## Difference with Iron Router
+번역:
 
-FlowRouter and Iron Router are two different routers. Iron Router tries to be a full featured solution. It tries to do everything including routing, subscriptions, rendering and layout management.
+우리는 에드온 개발자를 위해 [새로운 API](https://github.com/kadirahq/flow-router#flowrouteronrouteregistercb) 지원합니다.
+이 부가기능의 페키지를 사용하면 사용자가 라우터를 생성할 때 알람을 받을 수 있습니다.
 
-FlowRouter is a minimalistic solution focused on routing with UI performance in mind. It exposes APIs for related functionality.
+만약 당신이 에드온 API에 대한 더 좋은 아이디어가 있다면 [우리에게 알려주십시요](https://github.com/kadirahq/flow-router/issues).
 
-Let's learn more about the differences:
+## Iron Router(아이언 라우터)와 다른점
 
-### Rendering
+FlowRouter와 Iron Router는 두개의 다른점이 있습니다.
+Iron Router는 라우팅, 서브스크립션, 렌더링, 레이아웃 메니저(routing, subscriptions, rendering, layout management)와 같이 모든 기능을 갖춘 솔루션을 제공합니다.
 
-FlowRouter doesn't handle rendering. By decoupling rendering from the router it's possible to use any rendering framework, such as [Blaze Layout](https://github.com/kadirahq/blaze-layout) to render with Blaze's Dynamic Templates. Rendering calls are made in the the route's action. We have a layout manager for [React](https://github.com/kadirahq/meteor-react-layout) as well.
+FLowRouter는 UI 퍼포먼스에 중점을 둔 최소한의 솔루션입니다.
 
-### Subscriptions
+그 차이점에 대해 좀 더 자세히 알아봅시다.
 
-With FlowRouter, we highly suggest using template/component layer subscriptions. But, if you need to do routing in the router layer, FlowRouter has [subscription registration](#subscription-management) mechanism. Even with that, FlowRouter never waits for the subscriptions and view layer to do it.
+### Rendering(렌더링)
+
+FlowRouter는 렌더링을 처리하지 않습니다.
+라우터에서 렌더링을 분리하면 [Blaze Layout](https://github.com/kadirahq/blaze-layout)과 같은 렌더링 프레임워크를 사용하여 Blaze의 동적 템플릿(Dynamic Templates)과 같은 것들을 활용할 수 있습니다.
+렌더링이 실행되는 시점은 라우터의 `action`이 실행될 때 입니다.
+우리는 [React](https://github.com/kadirahq/meteor-react-layout)에 대한 레이아웃 메니저도 가지고 있습니다.
+
+### Subscriptions(서브스크립션 === 구독)
+
+FlowRouter에서는 템플릿/컴포넌트 레이아웃 서브스크립션을 사용하는 것이 좋습니다.
+그러나 라우터 계층에서 라우팅을 수행해야 할 경우 [서브스크립션 등록](#subscription-management) 메커니즘이 있습니다.
+이것을 활용하여 FlowRouter는 서브스크립션(완료)를 기다리지 않고도 레이아웃을 보여줄 수 있습니다.
 
 ### Reactive Content
 
-In Iron Router you can use reactive content inside the router, but any hook or method can re-run in an unpredictable manner. FlowRouter limits reactive data sources to a single run; when it is first called.
+Iron Router에서는 라우터 내부에서 반응형 컨텐츠를 사용할 수 있지만, 모든 후크 또는 메소드는 예측할 수없는 방식으로 재실행 될 수 있습니다.
+FlowRouter는 반응적인 데이터 소스가 처음 호출 될 때 한번만 실행되도록 제한합니다.
 
-We think that's the way to go. Router is just a user action. We can work with reactive content in the rendering layer.
+우리는 라우터는 단순히 사용자의 액션이라 생각합니다.
+렌더링 레이아웃 내에서 반응적 컨텐츠를 작업할 수 있습니다.
 
-### router.current() is evil
+### router.current()는 좋지 않습니다.
 
-`Router.current()` is evil. Why? Let's look at following example. Imagine we have a route like this in our app:
+`Router.current()`는 좋지 않습니다.
+왜일까요?
+아래 예제를 살펴봅시다.
 
 ~~~
+// 앱에 다음과 같은 경로가 있다고 가정해 봅시다.
 /apps/:appId/:section
 ~~~
 
-Now let's say, we need to get `appId` from the URL. Then we will do, something like this in Iron Router.
+이제, 우리는 URL에서 `appId`를 얻으려고 합니다.
+그러면 Iron Router에서는 아래와 같은 코드를 사용해야 합니다.
 
 ~~~js
 Templates['foo'].helpers({
@@ -755,11 +782,17 @@ Templates['foo'].helpers({
 });
 ~~~
 
-Let's say we changed `:section` in the route. Then the above helper also gets rerun. If we add a query param to the URL, it gets rerun. That's because `Router.current()` looks for changes in the route(or URL). But in any of above cases, `appId` didn't get changed.
+Let's say we changed `:section` in the route.
+Then the above helper also gets rerun.
+If we add a query param to the URL, it gets rerun.
+That's because `Router.current()` looks for changes in the route(or URL).
+But in any of above cases, `appId` didn't get changed.
 
-Because of this, a lot parts of our app get re-run and re-rendered. This creates unpredictable rendering behavior in our app.
+Because of this, a lot parts of our app get re-run and re-rendered.
+This creates unpredictable rendering behavior in our app.
 
-FlowRouter fixes this issue by providing the `Router.getParam()` API. See how to use it:
+FlowRouter fixes this issue by providing the `Router.getParam()` API.
+See how to use it:
 
 ~~~js
 Templates['foo'].helpers({
@@ -772,43 +805,56 @@ Templates['foo'].helpers({
 
 ### No data context
 
-FlowRouter does not have a data context. Data context has the same problem as reactive `.current()`. We believe, it'll possible to get data directly in the template (component) layer.
+FlowRouter does not have a data context.
+Data context has the same problem as reactive `.current()`.
+We believe, it'll possible to get data directly in the template (component) layer.
 
 ### Built in Fast Render Support
 
-FlowRouter has built in [Fast Render](https://github.com/meteorhacks/fast-render) support. Just add Fast Render to your app and it'll work. Nothing to change in the router.
+FlowRouter has built in [Fast Render](https://github.com/meteorhacks/fast-render) support.
+Just add Fast Render to your app and it'll work.
+Nothing to change in the router.
 
 For more information check [docs](#fast-render).
 
 ### Server Side Routing
 
-FlowRouter is a client side router and it **does not** support server side routing at all. But `subscriptions` run on the server to enable Fast Render support.
+FlowRouter is a client side router and it **does not** support server side routing at all.
+But `subscriptions` run on the server to enable Fast Render support.
 
 #### Reason behind that
 
-Meteor is not a traditional framework where you can send HTML directly from the server. Meteor needs to send a special set of HTML to the client initially. So, you can't directly send something to the client yourself.
+Meteor is not a traditional framework where you can send HTML directly from the server.
+Meteor needs to send a special set of HTML to the client initially.
+So, you can't directly send something to the client yourself.
 
-Also, in the server we need look for different things compared with the client. For example:
+Also, in the server we need look for different things compared with the client.
+For example:
 
 * In the server we have to deal with headers.
 * In the server we have to deal with methods like `GET`, `POST`, etc.
 * In the server we have Cookies.
 
-So, it's better to use a dedicated server-side router like [`meteorhacks:picker`](https://github.com/meteorhacks/picker). It supports connect and express middlewares and has a very easy to use route syntax.
+So, it's better to use a dedicated server-side router like [`meteorhacks:picker`](https://github.com/meteorhacks/picker).
+It supports connect and express middlewares and has a very easy to use route syntax.
 
 ### Server Side Rendering
 
-FlowRouter 3.0 will have server side rendering support. We've already started the initial version and check our [`ssr`](https://github.com/meteorhacks/flow-router/tree/ssr) branch for that.
+FlowRouter 3.0 will have server side rendering support.
+We've already started the initial version and check our [`ssr`](https://github.com/meteorhacks/flow-router/tree/ssr) branch for that.
 
 It's currently very usable and Kadira already using it for <https://kadira.io>
 
 ### Better Initial Loading Support
 
-In Meteor, we have to wait until all the JS and other resources send before rendering anything. This is an issue. In 3.0, with the support from Server Side Rendering we are going to fix it.
+In Meteor, we have to wait until all the JS and other resources send before rendering anything.
+This is an issue.
+In 3.0, with the support from Server Side Rendering we are going to fix it.
 
 ## Migrating into 2.0
 
-Migrating into version 2.0 is easy and you don't need to change any application code since you are already using 2.0 features and the APIs. In 2.0, we've changed names and removed some deprecated APIs.
+Migrating into version 2.0 is easy and you don't need to change any application code since you are already using 2.0 features and the APIs.
+In 2.0, we've changed names and removed some deprecated APIs.
 
 Here are the steps to migrate your app into 2.0.
 
@@ -823,6 +869,9 @@ Here are the steps to migrate your app into 2.0.
 * You need to use `BlazeLayout.render()` instead of `FlowLayout.render()`
 
 #### Stop using deprecated Apis
-* There is no middleware support. Use triggers instead.
+* There is no middleware support.
+Use triggers instead.
 * There is no API called `.reactiveCurrent()`, use `.watchPathChange()` instead.
-* Earlier, you can access query params with `FlowRouter.current().params.query`. But, now you can't do that. Use `FlowRouter.current().queryParams` instead.
+* Earlier, you can access query params with `FlowRouter.current().params.query`.
+But, now you can't do that.
+Use `FlowRouter.current().queryParams` instead.
