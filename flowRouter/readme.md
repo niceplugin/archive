@@ -18,7 +18,7 @@ URL을 변경하거나 반응적으로 URL 데이터를 가지고 올 수 있도
 * [경로(라우터) 그룹화](#group-routes)
 * [렌더링 및 레이아웃 관리](#rendering-and-layout-management)
 * [트리거 (Triggers)](#triggers)
-* [Not Found Routes](#not-found-routes)
+* [찾을 수 없는 페이지 라우터 설정](#not-found-routes)
 * [API](#api)
 * [Subscription Management](#subscription-management)
 * [IE9 Support](#ie9-support)
@@ -244,13 +244,15 @@ FlowRouter.triggers.enter([trackRouteEntry], {only: ["home"]});
 FlowRouter.triggers.exit([trackRouteExit], {except: ["home"]});
 ~~~
 
-As you can see from the last two examples, you can filter routes using the `only` or `except` keywords. But, you can't use both `only` and `except` at once.
+위 두 예제에서 알 수 있듯이 'only'또는 'except'키워드를 사용하여 경로를 필터링 할 수 있습니다.
+그러나 한 번에 `only`와 `except`를 모두 사용할 수는 없습니다.
 
-> If you'd like to learn more about triggers and design decisions, visit [here](https://github.com/meteorhacks/flow-router/pull/59).
+> 만약 당신이 트리거와 설계결정에 대한 더 자세한 내용을 보려면 [여기](https://github.com/meteorhacks/flow-router/pull/59)를 방문하십시요.
 
-#### Redirecting With Triggers
+#### 트리거로 리디렉션(Redirecting)
 
-You can redirect to a different route using triggers. You can do it from both enter and exit triggers. See how to do it:
+`enter` 또는 `exit` 트리거를 사용하여 다른 라우터로 리디렉션 할 수 있습니다.
+그 방법은 다음과 같습니다:
 
 ~~~js
 FlowRouter.route('/', {
@@ -258,22 +260,25 @@ FlowRouter.route('/', {
     redirect('/some-other-path');
   }],
   action: function(_params) {
-    throw new Error("this should not get called");
+    throw new Error("이 부분은 실행되지 않습니다.");
   }
 });
 ~~~
 
-Every trigger callback comes with a second argument: a function you can use to redirect to a different route. Redirect also has few properties to make sure it's not blocking the router.
+위에서 본 바와 같이 모든 트리거 메소드에는 리디렉션에 사용할 수 있는 함수를 두번째 인자로 전달합니다.
+리디렉션이 (에러없이) 확실히 동작하기 위해서는 다음 몇몇을 준수해야 합니다.
 
-* redirect must be called with an URL
-* redirect must be called within the same event loop cycle (no async or called inside a Tracker)
-* redirect cannot be called multiple times
+* 리디렉션 시 반드시 URL을 명시해야 함
+* 리디렉션은 반드시 동일한 이벤트 루프 사이클에서 실행되어야 함 (동기적(no async) 또는 트레커(Tracker) 내부에서 실행되어야 함)
+* 리디렉션을 한 번에 여러번 호출(실행)해선 안됨
 
-Check this [PR](https://github.com/meteorhacks/flow-router/pull/172) to learn more about our redirect API.
+우리의 리디렉션 API에 대해 더 알아보고 싶다면 [여기](https://github.com/meteorhacks/flow-router/pull/172)를 방문하십시요.
 
-#### Stopping the Callback With Triggers
+#### 트리거를 사용하여 콜백을 정지시키기
 
-In some cases, you may need to stop the route callback from firing using triggers. You can do this in **before** triggers, using the third argument: the `stop` function. For example, you can check the prefix and if it fails, show the notFound layout and stop before the action fires.
+경우에 따라서 당신은 트리거를 이용하여 해당 라우터 콜벡을 중지시켜야 할 필요성이 있을 수도 있습니다.
+이것은 `enter` 트리거의 세번째 인자인 `stop` 함수를 사용하여 실행할 수 있습니다.
+예를들어, 접두사(prefix)를 체크하고 경우에 따라서 `action`이 실행되기 전에 중지 할 수 있습니다.
 
 ```js
 var localeGroup = FlowRouter.group({
@@ -297,15 +302,16 @@ function localeCheck(context, redirect, stop) {
 }
 ```
 
-> **Note**: When using the stop function, you should always pass the second **redirect** argument, even if you won't use it.
+> **참고**: `stop` 함수를 사용할 경우, 두번째 인자 `redirect` 함수를 사용하지 않더라도 반드시 명시해주어야 함.
 
-## Not Found Routes
+## 찾을 수 없는 페이지 라우터 설정
 
+찾을 수 없는 페이지(404 not found)에 대한 라우터 설정은 아래처럼 하면 됩니다:
 You can configure Not Found routes like this:
 
 ~~~js
 FlowRouter.notFound = {
-    // Subscriptions registered here don't have Fast Render support.
+    // 여기에 등록된 `subscriptions`은 `Fast Render`가 지원되지 않습니다.
     subscriptions: function() {
 
     },
@@ -317,37 +323,37 @@ FlowRouter.notFound = {
 
 ## API
 
-FlowRouter has a rich API to help you to navigate the router and reactively get information from the router.
+FlowRouter에는 라우터를 탐색하고 반응적으로 정보를 얻는데 도움이 되는 많은 API가 있습니다.
 
 #### FlowRouter.getParam(paramName);
 
-Reactive function which you can use to get a parameter from the URL.
+URL로부터 파라미터를 가지고 옴. **[반응형 메서드]**
 
 ~~~js
-// route def: /apps/:appId
+// 라우터 설정: /apps/:appId
 // url: /apps/this-is-my-app
 
 var appId = FlowRouter.getParam("appId");
-console.log(appId); // prints "this-is-my-app"
+console.log(appId); // "this-is-my-app"
 ~~~
 
 #### FlowRouter.getQueryParam(queryStringKey);
 
-Reactive function which you can use to get a value from the queryString.
+쿼리파람의 값을 가지고 옴 **[반응형 메서드]**
 
 ~~~js
-// route def: /apps/:appId
+// 라우터 설정: /apps/:appId
 // url: /apps/this-is-my-app?show=yes&color=red
 
 var color = FlowRouter.getQueryParam("color");
-console.log(color); // prints "red"
+console.log(color); // "red"
 ~~~
 
 #### FlowRouter.path(pathDef, params, queryParams)
 
-Generate a path from a path definition. Both `params` and `queryParams` are optional.
+경로를 설정하는 함수. `params`와 `queryParams`는 선택사항.
 
-Special characters in `params` and `queryParams` will be URL encoded.
+`params`와 `queryParams`에 들어간 특수문자는 URL 형식으로 인코딩 됨.
 
 ~~~js
 var pathDef = "/blog/:cat/:id";
@@ -355,14 +361,16 @@ var params = {cat: "met eor", id: "abc"};
 var queryParams = {show: "y+e=s", color: "black"};
 
 var path = FlowRouter.path(pathDef, params, queryParams);
-console.log(path); // prints "/blog/met%20eor/abc?show=y%2Be%3Ds&color=black"
+console.log(path); // "/blog/met%20eor/abc?show=y%2Be%3Ds&color=black"
 ~~~
 
-If there are no params or queryParams, this will simply return the pathDef as it is.
+만약 `params` 또는 `queryParams`를 지정하지 않았었다면, `pathDef` 값만 반환합니다.
 
-##### Using Route name instead of the pathDef
+##### 경로(pathDef) 대신 라우터네임 사용하기
 
-You can also use the route's name instead of the pathDef. Then, FlowRouter will pick the pathDef from the given route. See the following example:
+경로 대신 라우터네임을 사용할 수 있습니다.
+FlowRouter는 `pathDef`갑에 부합하는 라우터를 찾은 후 선택합니다.
+아래 예제를 참조하십시요.
 
 ~~~js
 FlowRouter.route("/blog/:cat/:id", {
@@ -375,15 +383,16 @@ FlowRouter.route("/blog/:cat/:id", {
 var params = {cat: "meteor", id: "abc"};
 var queryParams = {show: "yes", color: "black"};
 
+// 첫번째 인자로 경로가 아닌 라우터네임을 전달함
 var path = FlowRouter.path("blogPostRoute", params, queryParams);
-console.log(path); // prints "/blog/meteor/abc?show=yes&color=black"
+console.log(path); // "/blog/meteor/abc?show=yes&color=black"
 ~~~
 
 #### FlowRouter.go(pathDef, params, queryParams);
 
-This will get the path via `FlowRouter.path` based on the arguments and re-route to that path.
+`FlowRouter.path` 메서드에 인자를 전달하는 것과 동일하게 인자를 전달하면 해당 경로로 리디렉션한다.
 
-You can call `FlowRouter.go` like this as well:
+아래처럼 사용하면 됩니다.
 
 ~~~js
 FlowRouter.go("/blog");
@@ -392,39 +401,39 @@ FlowRouter.go("/blog");
 
 #### FlowRouter.url(pathDef, params, queryParams)
 
-Just like `FlowRouter.path`, but gives the absolute url. (Uses `Meteor.absoluteUrl` behind the scenes.)
+`FlowRouter.path`와 비슷하지만, 절대 url을 제공합니다. (뒤에서 `Meteor.absoluteUrl`에 대해 다룹니다.)
 
 #### FlowRouter.setParams(newParams)
 
-This will change the current params with the newParams and re-route to the new path.
+현제 경로의 파람을 `newParams`으로 변경후 해당 경로로 리디렉션한다.
 
 ~~~js
-// route def: /apps/:appId
+// 라우터 설정: /apps/:appId
 // url: /apps/this-is-my-app?show=yes&color=red
 
 FlowRouter.setParams({appId: "new-id"});
-// Then the user will be redirected to the following path
+// 이후 사용자는 아래 주석과 같은 경로로 리디렉션 됨
 //      /apps/new-id?show=yes&color=red
 ~~~
 
 #### FlowRouter.setQueryParams(newQueryParams)
 
-Just like `FlowRouter.setParams`, but for queryString params.
+`FlowRouter.setParams`과 비슷하지만, `newQueryParams` 쿼리파람 형식이어야 한다.
 
-To remove a query param set it to `null` like below:
+아래처럼 쿼리파람의 값을 `null`로 설정할 경우 해당하는 쿼리파람을 삭제한다.
 
 ~~~js
-FlowRouter.setQueryParams({paramToRemove: null});
+FlowRouter.setQueryParams({삭제할쿼리파람키: null});
 ~~~
 
 #### FlowRouter.getRouteName()
 
-To get the name of the route reactively.
+라우터네임을 가지고 온다. **[반응형]**
 
 ~~~js
 Tracker.autorun(function() {
   var routeName = FlowRouter.getRouteName();
-  console.log("Current route name is: ", routeName);
+  console.log("현재 라우터의 이름: ", routeName);
 });
 ~~~
 
