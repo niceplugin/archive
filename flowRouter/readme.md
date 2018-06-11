@@ -1,22 +1,23 @@
 # FlowRouter [![Build Status](https://travis-ci.org/kadirahq/flow-router.svg?branch=master)](https://travis-ci.org/kadirahq/flow-router) [![Stories in Ready](https://badge.waffle.io/kadirahq/flow-router.svg?label=doing&title=Activities)](http://waffle.io/kadirahq/flow-router)
 
+FlowRouter는 Meteor용 클라이언트 라우터로 신중하게 설계되었다.
 
-Carefully Designed Client Side Router for Meteor.
+클라이언트 측 앱 라우팅을 수행하며 렌더링 처리는 하지않는 간단한 라우터입니다.
 
-FlowRouter is a very simple router for Meteor. It does routing for client-side apps and does not handle rendering itself.
+URL을 변경하거나 반응적으로 URL 데이터를 가지고 올 수 있도록 훌륭한 API를 제공합니다.
+그러나 라우터 자체가 반응적이지는 않습니다.
+가장 중요한 점은 FLowRouter는 최고의 라우팅 성능을 낼 수 있도록 초점을 두고 설계되었다는 것입니다.
 
-It exposes a great API for changing the URL and reactively getting data from the URL. However, inside the router, it's not reactive. Most importantly, FlowRouter is designed with performance in mind and it focuses on what it does best: **routing**.
-
-> We've released 2.0 and follow this [migration guide](#migrating-into-20) if you are already using FlowRouter.
+> 이미 FLowRouter를 사용중이라면 [2.0 릴리즈 가이드](#migrating-into-20)를 참고하십시요.
 
 ## TOC
 
-* [Meteor Routing Guide](#meteor-routing-guide)
-* [Getting Started](#getting-started)
-* [Routes Definition](#routes-definition)
-* [Group Routes](#group-routes)
-* [Rendering and Layout Management](#rendering-and-layout-management)
-* [Triggers](#triggers)
+* [미티어 라우팅 가이드](#meteor-routing-guide)
+* [시작하](#getting-started)
+* [경로(라우터) 정의](#routes-definition)
+* [경로(라우터) 그룹화](#group-routes)
+* [렌더링 및 레이아웃 관리](#rendering-and-layout-management)
+* [트리거 (Triggers)](#triggers)
 * [Not Found Routes](#not-found-routes)
 * [API](#api)
 * [Subscription Management](#subscription-management)
@@ -27,97 +28,103 @@ It exposes a great API for changing the URL and reactively getting data from the
 * [Difference with Iron Router](#difference-with-iron-router)
 * [Migrating into 2.0](#migrating-into-20)
 
-## Meteor Routing Guide
+## 미티어 라우팅 가이드
 
-[Meteor Routing Guide](https://kadira.io/academy/meteor-routing-guide) is a completed guide into **routing** and related topics in Meteor. It talks about how to use FlowRouter properly and use it with **Blaze and React**. It also shows how to manage **subscriptions** and implement **auth logic** in the view layer.
+[Meteor Routing Guide](https://kadira.io/academy/meteor-routing-guide)는 **Routing** 및 **Meteor**에 관련된 주제에 대한 완벽한 가이드입니다.
+FlowRouter를 올바르게 사용하는 방법과 **Blaze 그리고 React**와 함께 사용하는 방법에 대해 설명합니다.
+또한 **서브스크립션(구독)**을 관리하고 뷰 계층에 **인증 논리**를 구현하는 방법을 보여줍니다.
 
 [![Meteor Routing Guide](https://cldup.com/AxlPfoxXmR.png)](https://kadira.io/academy/meteor-routing-guide)
 
-## Getting Started
+## 시작하기
 
-Add FlowRouter to your app:
+FlowRouter를 나의 앱에 추가하는 방법:
 
 ~~~shell
 meteor add kadira:flow-router
 ~~~
 
-Let's write our first route (add this file to `lib/router.js`):
+이제 라우터를 사용하는 코드를 짜봅시다. (우선 `lib/router.js` 경로에 파일을 만듭니다.)
 
 ~~~js
 FlowRouter.route('/blog/:postId', {
     action: function(params, queryParams) {
-        console.log("Yeah! We are on the post:", params.postId);
+        console.log("성공~! 현재 postId: ", params.postId);
     }
 });
 ~~~
 
-Then visit `/blog/my-post-id` from the browser or invoke the following command from the browser console:
+그런 다음 브라우저 주소창에 `/blog/my-post-id`를 입력하거나 브라우저 개발자 콘솔에서 다음 명령을 호출하십시오.
 
 ~~~js
 FlowRouter.go('/blog/my-post-id');
 ~~~
 
-Then you can see some messages printed in the console.
+이 후 당신은 콘솔에 출력되는 메세지를 볼 수 있습니다.
 
-## Routes Definition
+## 경로(라우터) 정의
 
-FlowRouter routes are very simple and based on the syntax of [path-to-regexp](https://github.com/pillarjs/path-to-regexp) which is used in both [Express](http://expressjs.com/) and `iron:router`.
+FlowRouter 라우트는 매우 단순하며 [Express](http://expressjs.com/)와 'Iron : Router'에서 모두 사용되는 [path-to-regexp](https://github.com/pillarjs/path-to-regexp) 문법을 기반으로합니다.
 
-Here's the syntax for a simple route:
+아래는 경로에 관한 간단한 문법입니다.
 
 ~~~js
 FlowRouter.route('/blog/:postId', {
-    // do some action for this route
+    // 현재 라우터(경로)에서 실행될 것들
     action: function(params, queryParams) {
-        console.log("Params:", params);
-        console.log("Query Params:", queryParams);
+        console.log("파람:", params);
+        console.log("쿼리 파람:", queryParams);
     },
-
-    name: "<name for the route>" // optional
+    name: "현재 라우터의 이름" // 선택사항
 });
 ~~~
 
-So, this route will be activated when you visit a url like below:
+그리고나서 아래의 URL경를 방문하면 해당 라우터(위에서 설정한 코드)가 실행됩니다.
 
 ~~~js
 FlowRouter.go('/blog/my-post?comments=on&color=dark');
 ~~~
 
-After you've visit the route, this will be printed in the console:
+당신이 해당 라우터에 접속한 후, 아래와 같이 콘솔에 메세지가 출력될 것입니다.
 
 ~~~
-Params: {postId: "my-post"}
-Query Params: {comments: "on", color: "dark"}
+파람: {postId: "my-post"}
+쿼리 파람: {comments: "on", color: "dark"}
 ~~~
 
-For a single interaction, the router only runs once. That means, after you've visit a route, first it will call `triggers`, then `subscriptions` and finally `action`. After that happens, none of those methods will be called again for that route visit.
+단일 상호 작용의 경우 라우터는 한 번만 실행됩니다.
+즉, 경로를 방문한 후 첫번째로 'triggers'를 호출하고 이어서 'subscriptions' 그리고 마지막으로 'action'을 호출합니다.
+그런 다음 다시 이 경로로 방문하더라도 해당 메소드를 다시 호출하지 않습니다.
 
-You can define routes anywhere in the `client` directory. But, we recommend to add them in the `lib` directory. Then `fast-render` can detect subscriptions and send them for you (we'll talk about this is a moment).
+`client` 디렉토리(폴더) 어디서나 경로를 정의 할 수 있습니다.
+그러나`lib` 디렉토리에 추가하는 것을 권장합니다.
+그러면 `subscriptions`을 감지하여 'fast-render'를 할 수 있습니다.(이부분은 추후 설명합니다.)
 
-### Group Routes
+### 경로(라우터) 그룹화
 
-You can group routes for better route organization. Here's an example:
+
+당신은 더 나은 라우터 구성을 위해 라우터를 그룹화 할 수 있습니다. 아래는 그 예입니다:
 
 ~~~js
 var adminRoutes = FlowRouter.group({
   prefix: '/admin',
   name: 'admin',
   triggersEnter: [function(context, redirect) {
-    console.log('running group triggers');
+    console.log('그룹화 트리거가 실행됨.');
   }]
 });
 
-// handling /admin route
+// `/admin` 라우터(경로)를 컨트롤
 adminRoutes.route('/', {
   action: function() {
     BlazeLayout.render('componentLayout', {content: 'admin'});
   },
   triggersEnter: [function(context, redirect) {
-    console.log('running /admin trigger');
+    console.log('/admin 트리거가 실행됨.');
   }]
 });
 
-// handling /admin/posts
+// `/admin/posts` 라우터(경로)를 컨트롤
 adminRoutes.route('/posts', {
   action: function() {
     BlazeLayout.render('componentLayout', {content: 'posts'});
@@ -125,9 +132,9 @@ adminRoutes.route('/posts', {
 });
 ~~~
 
-**All of the options for the `FlowRouter.group()` are optional.**
+**`FlowRouter.group()`의 모든 옵션은 선택사항입니다.**
 
-You can even have nested group routes as shown below:
+당신은 아래와 같이 라우터 그룹화를 중첩되게 만들수도 있다:
 
 ~~~js
 var adminRoutes = FlowRouter.group({
@@ -140,7 +147,7 @@ var superAdminRoutes = adminRoutes.group({
     name: "superadmin"
 });
 
-// handling /admin/super/post
+// /admin/super/post 컨트롤
 superAdminRoutes.route('/post', {
     action: function() {
 
@@ -148,28 +155,30 @@ superAdminRoutes.route('/post', {
 });
 ~~~
 
-You can determine which group the current route is in using:
+당신은 현재 라우터(경로)에 적용된 그룹정보를 알 수 있습니다:
 
 ~~~js
 FlowRouter.current().route.group.name
 ~~~
 
-This can be useful for determining if the current route is in a specific group (e.g. *admin*, *public*, *loggedIn*) without needing to use prefixes if you don't want to. If it's a nested group, you can get the parent group's name with:
+만약 현재 라우터(경로)가 접두사를 사용하지 않는 특별한 그룹일 경우 (예: *admin*, *public*, *loggedIn* ...), 상위 그룹의 이름을 조회할 수 있습니다.
 
 ~~~js
 FlowRouter.current().route.group.parent.name
 ~~~
 
-As with all current route properties, these are not reactive, but can be combined with `FlowRouter.watchPathChange()` to get group names reactively.
+현재(current())에 관련된 모든 속성은 반응형(reactive)이 아닙니다.
+하지만 `FlowRouter.watchPathChange()`를 사용(결합)하여 반응형으로 사용할 수 있습니다.
 
-## Rendering and Layout Management
+## 렌더링 및 레이아웃 관리
 
-FlowRouter does not handle rendering or layout management. For that, you can use:
+FlowRouter는 렌더링 또는 레이아웃 관리를 헨들링(조작 또는 컨트롤)하지 않습니다.
+이것을 하기 위해서 당신은 아래와 같은 레이아웃 메니저를 사용해야 합니다:
 
   * [Blaze Layout for Blaze](https://github.com/kadirahq/blaze-layout)
   * [React Layout for React](https://github.com/kadirahq/meteor-react-layout)
 
-Then you can invoke the layout manager inside the `action` method in the router.
+그런 다음 라우터의 `action` 메서드에서 레이아웃 메니저를 호출할 수 있습니다.
 
 ~~~js
 FlowRouter.route('/blog/:postId', {
@@ -179,28 +188,27 @@ FlowRouter.route('/blog/:postId', {
 });
 ~~~
 
-## Triggers
+## 트리거 (Triggers)
 
-Triggers are the way FlowRouter allows you to perform tasks before you **enter** into a route and after you **exit** from a route.
+트리거는 FlowRouter를 사용하여 어떠한 라우터(경로)에 접속하기 전 또는 이탈 후에 어떠한 작업을 수행할 수 있습니다.
 
-#### Defining triggers for a route
+#### 라우터의 트리거 정의
 
-Here's how you can define triggers for a route:
+아래는 라우터의 트리거를 정의하는 방법입니다:
 
 ~~~js
 FlowRouter.route('/home', {
-  // calls just before the action
+  // `action`을 실행하기 전에 호출된다.
   triggersEnter: [trackRouteEntry],
   action: function() {
-    // do something you like
+    // 당신이 정의한 무엇인가를 실행한다.
   },
-  // calls when we decide to move to another route
-  // but calls before the next route started
+  // 다른 라우터로 이동할 때 호출되며, 이동 될 라우터가 실행되기 전에 실행된다.
   triggersExit: [trackRouteClose]
 });
 
 function trackRouteEntry(context) {
-  // context is the output of `FlowRouter.current()`
+  // `context`는 `FlowRouter.current()`에 대한 객체입니다.
   Mixpanel.track("visit-to-home", context.queryParams);
 }
 
@@ -209,9 +217,9 @@ function trackRouteClose(context) {
 }
 ~~~
 
-#### Defining triggers for a group route
+#### 그룹 라우터에서 트리거 정의
 
-This is how you can define triggers on a group definition.
+아래는 그룹을 정의할 때 트리거를 정의한 것입니다.
 
 ~~~js
 var adminRoutes = FlowRouter.group({
@@ -221,11 +229,11 @@ var adminRoutes = FlowRouter.group({
 });
 ~~~
 
-> You can add triggers to individual routes in the group too.
+> 그룹 내 각각의 개별 경로(라우터)에도 트리거를 추가 할 수 있습니다.
 
-#### Defining Triggers Globally
+#### 전역 트리거 정의
 
-You can also define triggers globally. Here's how to do it:
+당신은 전역 트리거를 정의 할 수도 있습니다. 방법은 다음과 같습니다:
 
 ~~~js
 FlowRouter.triggers.enter([cb1, cb2]);
