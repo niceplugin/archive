@@ -20,10 +20,10 @@ URL을 변경하거나 반응적으로 URL 데이터를 가지고 올 수 있도
 * [트리거 (Triggers)](#triggers)
 * [찾을 수 없는 페이지 라우터 설정](#not-found-routes)
 * [API](#api)
-* [Subscription Management](#subscription-management)
-* [IE9 Support](#ie9-support)
+* [Subscription(구독) 관리](#subscription-management)
+* [IE9 지원](#ie9-support)
 * [Hashbang URLs](#hashbang-urls)
-* [Prefixed paths](#prefixed-paths)
+* [Prefixed paths (경로 접두사)](#prefixed-paths)
 * [Add-ons](#add-ons)
 * [Difference with Iron Router](#difference-with-iron-router)
 * [Migrating into 2.0](#migrating-into-20)
@@ -428,7 +428,7 @@ FlowRouter.setQueryParams({삭제할쿼리파람키: null});
 
 #### FlowRouter.getRouteName()
 
-라우터네임을 가지고 온다. **[반응형]**
+라우터네임을 조회한다. **[반응형]**
 
 ~~~js
 Tracker.autorun(function() {
@@ -439,19 +439,19 @@ Tracker.autorun(function() {
 
 #### FlowRouter.current()
 
-Get the current state of the router. **This API is not reactive**.
-If you need to watch the changes in the path simply use `FlowRouter.watchPathChange()`.
+라우터의 현재 상태를 조회한다. **(주의: 반응형 아님)**
+반응형으로 사용하고 싶을 경우 `FlowRouter.watchPathChange()`를 사용하십시요.
 
-This gives an object like this:
+실행시 아래와 같은 객체를 반환한다:
 
 ~~~js
-// route def: /apps/:appId
+// 라우터 설정: /apps/:appId
 // url: /apps/this-is-my-app?show=yes&color=red
 
 var current = FlowRouter.current();
 console.log(current);
 
-// prints following object
+// 출력되는 결과(객체)
 // {
 //     path: "/apps/this-is-my-app?show=yes&color=red",
 //     params: {appId: "this-is-my-app"},
@@ -462,19 +462,20 @@ console.log(current);
 
 #### FlowRouter.watchPathChange()
 
-Reactively watch the changes in the path. If you need to simply get the params or queryParams use dedicated APIs like `FlowRouter.getQueryParam()`.
+경로 변경을 **반응형**으로 감지하도록 합니다.
+만약 당신이 `FlowRouter.getQueryParam()`와 같은 API를 사용하여 파람 또는 쿼리파람을 반응형으로 조회해야 할 경우 아래와 같이 사용하면 됩니다.
 
 ~~~js
 Tracker.autorun(function() {
   FlowRouter.watchPathChange();
   var currentContext = FlowRouter.current();
-  // do anything with the current context
-  // or anything you wish
 });
 ~~~
 
 #### FlowRouter.withReplaceState(fn)
-Normally, all the route changes made via APIs like `FlowRouter.go` and `FlowRouter.setParams()` add a URL item to the browser history. For example, run the following code:
+
+일반적으로 라우터 변경은 `FlowRouter.go` 또는 `FlowRouter.setParams`와 같은 API를 통해 이루어 지며, 변경된 URL 항목은 브라우저 히스토리에 추가됩니다.
+아래 코드는 그 예입니다.
 
 ~~~js
 FlowRouter.setParams({id: "the-id-1"});
@@ -482,9 +483,11 @@ FlowRouter.setParams({id: "the-id-2"});
 FlowRouter.setParams({id: "the-id-3"});
 ~~~
 
-Now you can hit the back button of your browser two times. This is normal behavior since users may click the back button and expect to see the previous state of the app.
+이제 당신은 브라우저의 뒤로가기 버튼을 두번 누를 수 있습니다.
+이것은 사용자가 뒤로가기 버튼을 눌러 앱의 이전 상태를 볼 것으로 예상되므로 정상적인 동작입니다.
 
-But sometimes, this is not something you want. You don't need to pollute the browser history. Then, you can use the following syntax.
+하지만 어떠한 경우에 당신은 이러하 동작을 원치 않을 수 있습니다.
+브라우저 히스토리에 추가되길 원치 않는다면, 아래와 같은 문법을 사용하면 됩니다.
 
 ~~~js
 FlowRouter.withReplaceState(function() {
@@ -494,23 +497,32 @@ FlowRouter.withReplaceState(function() {
 });
 ~~~
 
-Now, there is no item in the browser history. Just like `FlowRouter.setParams`, you can use any FlowRouter API inside `FlowRouter.withReplaceState`.
+이제 브라우저 히스토리에 기록되지 않습니다.
+`FlowRouter.setParams`처럼 `FlowRouter.withReplaceState` 내에 어떠한 FlowRouter API라도 사용할 수 있습니다.
 
-> We named this function as `withReplaceState` because, replaceState is the underline API used for this functionality. Read more about [replace state & the history API](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history).
+> `withReplaceState`라고 이름지은 이유는 replaceState 기능 내에 API 들이 사용되기 때문입니다. [API 상태 및 히스토리](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history)에 대해 자세 알아보기.
 
 #### FlowRouter.reload()
 
-FlowRouter routes are idempotent. That means, even if you call `FlowRouter.go()` to the same URL multiple times, it only activates in the first run. This is also true for directly clicking on paths.
+FLowRouter의 라우터들은 멱등성(idempotent) 입니다.
+즉, `FlowRouter.go()`를 이용하여 같은 URL을 한번에 여러번 호출 하더라도 라우터는 최초 한번만 실행 됩니다.
+경로를 직접 클릭하는 경우도 마찬가지 입니다.
 
-So, if you really need to reload the route, this is the API you want.
+그렇기 때문에 정말 리로드를 원할 경우, 이 API를 사용해야 합니다.
 
-#### FlowRouter.wait() and FlowRouter.initialize()
+> 멱등성: 연산을 여러번 적용하더라도 결과가 달라지지 않는 성질
 
-By default, FlowRouter initializes the routing process in a `Meteor.startup()` callback. This works for most of the apps. But, some apps have custom initializations and FlowRouter needs to initialize after that.
+#### FlowRouter.wait() 그리고 FlowRouter.initialize()
 
-So, that's where `FlowRouter.wait()` comes to save you. You need to call it directly inside your JavaScript file. After that, whenever your app is ready call `FlowRouter.initialize()`.
+기본적으로 FLowRouter는 `Meteor.startup()`에서 라우팅 프로세서를 초기화 합니다.
+이 기능은 거의 모든 앱에서 작동합니다.
+하지만 일부 앱은 사용자 정의 초기화 후 FLowRouter를 초기화 해야 할 필요성이 있을 수 있습니다.
 
-eg:-
+그럴때 `FlowRouter.wait()`를 사용합니다.
+이것은 자바스크립트 파일 내에서 직접 호출해야 합니다.
+이후 준비가 되면 `FlowRouter.initialize()`를 호출합니다.
+
+예:
 
 ~~~js
 // file: app.js
@@ -520,20 +532,22 @@ WhenEverYourAppIsReady(function() {
 });
 ~~~
 
-For more information visit [issue #180](https://github.com/meteorhacks/flow-router/issues/180).
+더 자세한 정보는 [issue #180](https://github.com/meteorhacks/flow-router/issues/180)에서 확인하십시요.
 
 #### FlowRouter.onRouteRegister(cb)
 
-This API is specially designed for add-on developers. They can listen for any registered route and add custom functionality to FlowRouter. This works on both server and client alike.
+이 API는 add-on 개발자를 위해 설계되었습니다.
+등록된 라우터를 수신하고 FlowRouter에 사용자 정의 기능을 추가할 수 있습니다.
+이것은 서버와 클라이언트 모두에서 작동합니다.
 
 ~~~js
 FlowRouter.onRouteRegister(function(route) {
-  // do anything with the route object
+  // route 객체로 무엇이든 할 수 있습니다.
   console.log(route);
 });
 ~~~
 
-Let's say a user defined a route like this:
+예를 들어 사용자가 다음과 같이 경로를 정의했다고 가정해 보겠습니다:
 
 ~~~js
 FlowRouter.route('/blog/:post', {
@@ -546,7 +560,7 @@ FlowRouter.route('/blog/:post', {
 });
 ~~~
 
-Then the route object will be something like this:
+그러면 콘솔로 출력되는 route 객체는 다음과 같습니다:
 
 ~~~js
 {
@@ -556,15 +570,23 @@ Then the route object will be something like this:
 }
 ~~~
 
-So, it's not the internal route object we are using.
+따라서 이것은 우리가 기본적으로 사용하는 FlowRouter.route 객체가 아닙니다.
 
-## Subscription Management
+## Subscription(구독) 관리
 
-For Subscription Management, we highly suggest you to follow [Template/Component level subscriptions](https://kadira.io/academy/meteor-routing-guide/content/subscriptions-and-data-management). Visit this [guide](https://kadira.io/academy/meteor-routing-guide/content/subscriptions-and-data-management) for that.
+Subscription 관리의 경우 [Template/Component level subscriptions](https://kadira.io/academy/meteorrorouting-guide/content/subscriptions-and-data-management)을 따르는 것이 좋습니다.
+[guide](https://kadira.io/academy/meteor-routing-guide/content/subscriptions-and-data-management)를 방문하십시오.
 
-FlowRouter also has it's own subscription registration mechanism. We will remove this in version 3.0. We don't remove or deprecate it in version 2.x because this is the easiest way to implement FastRender support for your app. In 3.0 we've better support for FastRender with Server Side Rendering.
+FlowRouter는 자체적인 subscription 등록 메커니즘이 있습니다.
+우리는 3.0 버전에서 이것을 제거할 예정입니다.
+그러나 'Fast-Render'를 앱에 구현하기 가장 간편한 방법이므로 2.x 버전에서 이것을 제거하거나 비추천 하진 않습니다.
+3.0 버전에서는 'Fast-Render'와 'Server Side Render'에 대한 지원이 향상되었습니다.
 
-FlowRouter only deals with registration of subscriptions. It does not wait until subscription becomes ready. This is how to register a subscription.
+> 역주: FlowRouter 프로젝트는 2017년 5월 15일 지원이 공식 중단되어 최종버전은 2.x 인 것 같다.
+
+FlowRouter는 오직 subscription 등록만 처리합니다.
+subscription이 준비되었는지 기다리지 않습니다.
+subscription을 등록하는 방법입니다.
 
 ~~~js
 FlowRouter.route('/blog/:postId', {
@@ -574,7 +596,7 @@ FlowRouter.route('/blog/:postId', {
 });
 ~~~
 
-We can also register global subscriptions like this:
+또는 아래처럼 글로벌 subscriptions을 등록할 수 있습니다:
 
 ~~~js
 FlowRouter.subscriptions = function() {
@@ -582,54 +604,57 @@ FlowRouter.subscriptions = function() {
 };
 ~~~
 
-All these global subscriptions run on every route. So, pay special attention to names when registering subscriptions.
+이러한 모든 글로벌 subscription은 모든 라우터에서 실행됩니다.
+따라서 글로벌 subscription을 등록할 때에는 작명에 특히 주의 하십시요.
 
-After you've registered your subscriptions, you can reactively check for the status of those subscriptions like this:
+subscription 등록후에, 아래와 같이 이것을 반응적으로 채크할수 있습니다:
 
 ~~~js
 Tracker.autorun(function() {
-    console.log("Is myPost ready?:", FlowRouter.subsReady("myPost"));
-    console.log("Are all subscriptions ready?:", FlowRouter.subsReady());
+    console.log("myPost가 준비 되었나?:", FlowRouter.subsReady("myPost"));
+    console.log("모든 subscriptions가 준비 되었나?:", FlowRouter.subsReady());
 });
 ~~~
 
-So, you can use `FlowRouter.subsReady` inside template helpers to show the loading status and act accordingly.
+따라서 템플릿 헬퍼 내부에서 `FlowRouter.subsReady`를 사용하여 로딩상태 여부에 따라 특정 행동을 지정 할 수 있습니다.
 
-### FlowRouter.subsReady() with a callback
+### FlowRouter.subsReady()에서 콜백함수 사용하기
 
-Sometimes, we need to use `FlowRouter.subsReady()` in places where an autorun is not available. One such example is inside an event handler. For such places, we can use the callback API of `FlowRouter.subsReady()`.
+때로는 이벤트 헨들러와 같이 `autorun`을 사용할 수 없는 곳에서 `FlowRouter.subsReady()`를 사용해야 할 때도 있습니다.
+이러한 경우의 문제는 `Flowrouter.subsReady()` 내에서 콜백 API를 사용하여 해결할 수 있습니다.
 
 ~~~js
 Template.myTemplate.events({
    "click #id": function(){
       FlowRouter.subsReady("myPost", function() {
-         // do something
+         // 실행될 코드
       });
   }
 });
 ~~~
 
-> Arunoda has discussed more about Subscription Management in FlowRouter in [this](https://meteorhacks.com/flow-router-and-subscription-management.html#subscription-management) blog post about [FlowRouter and Subscription Management](https://meteorhacks.com/flow-router-and-subscription-management.html).
+> Arunoda는 [FlowRouter와 Subscription 메니저](https://meteorhacks.com/flow-router-and-subscription-management.html)라는 블로그 포스터에서 Subscription 내 FlowRouter 내 [this](https://meteorhacks.com/flow-router-and-subscription-management.html#subscription-management)에 대해 더 자세하게 토론하였습니다.
 
-> He's showing how to build an app like this:
+> 그는 다음과 같이 앱을 만드는 방법을 보여줍니다.
 
 >![FlowRouter's Subscription Management](https://cldup.com/esLzM8cjEL.gif)
 
 #### Fast Render
-FlowRouter has built in support for [Fast Render](https://github.com/meteorhacks/fast-render).
+
+FlowRouter는 [Fast Render](https://github.com/meteorhacks/fast-render)를 지원합니다.
 
 - `meteor add meteorhacks:fast-render`
-- Put `router.js` in a shared location. We suggest `lib/router.js`.
+- `router.js` 파일을 공유되는 위치에 두십시요. `lib/router.js`를 추천합니다.
 
-You can exclude Fast Render support by wrapping the subscription registration in an `isClient` block:
+subscription 등록 내부에서 `isClient` 블럭으로 Fast-Render 지원을 제외할 수 있습니다.
 
 ~~~js
 FlowRouter.route('/blog/:postId', {
     subscriptions: function(params, queryParams) {
-        // using Fast Render
+        // Fast Render를 사용합니다.
         this.register('myPost', Meteor.subscribe('blogPost', params.postId));
 
-        // not using Fast Render
+        // Fast Render를 사용하지 않습니다.
         if(Meteor.isClient) {
             this.register('data', Meteor.subscribe('bootstrap-data');
         }
@@ -637,15 +662,18 @@ FlowRouter.route('/blog/:postId', {
 });
 ~~~
 
-#### Subscription Caching
+#### Subscription 캐싱
 
-You can also use [Subs Manager](https://github.com/meteorhacks/subs-manager) for caching subscriptions on the client. We haven't done anything special to make it work. It should work as it works with other routers.
+[Subs Manager](https://github.com/meteorhacks/subs-manager)를 이용하여 클라이언트에서 subscription을 캐싱할 수 있습니다.
+우리는 그것이 작동할 수 있도록 특별히 무엇인가 만들어두진 않았습니다.
+이것은 다른 라우터에서도 작동합니다.
 
-## IE9 Support
+## IE9 지원
 
-FlowRouter has IE9 support. But it does not ship the **HTML5 history polyfill** out of the box. That's because most apps do not require it.
+FlowRouter는 IE9를 지원합니다.
+하지만 대부분의 앱에서 필요로 하지 않기 때문에 **HTML5 history polyfill**을 지원하진 않습니다.
 
-If you need to support IE9, add the **HTML5 history polyfill** with the following package.
+만약 IE9에서 **HTML5 history polyfill** 지원이 필요할 경우 아래 페키지를 설치하십시요.
 
 ~~~shell
 meteor add tomwasd:history-polyfill
@@ -653,7 +681,7 @@ meteor add tomwasd:history-polyfill
 
 ## Hashbang URLs
 
-To enable hashbang urls like `mydomain.com/#!/mypath` simple set the `hashbang` option to `true` in the initialize function:
+`mydomain.com/#!/mypath`과 같은 해시뱅 URLs를 사용하려면 아래 코드처럼 `initialize` 함수의 옵션중 `hashbang`을 `true`로 설정합니다:
 
 ~~~js
 // file: app.js
@@ -663,9 +691,16 @@ WhenEverYourAppIsReady(function() {
 });
 ~~~
 
-## Prefixed paths
+## Prefixed paths (경로 접두사)
+
+원문:
 
 In cases you wish to run multiple web application on the same domain name, you’ll probably want to serve your particular meteor application under a sub-path (eg `example.com/myapp`). In this case simply include the path prefix in the meteor `ROOT_URL` environment variable and FlowRouter will handle it transparently without any additional configuration.
+
+번역문:
+
+동일한 도메인에서 여러 웹앱을 실행하고자 하는 경우(예: example.com/myapp), 해당 하위 경로에서 지정한 meteor 앱을 제공하고 싶을 것입니다.
+이러한 경우에는 `ROOT_URL`이라는 환경변수와 FlowRouter에 경로 접두사를 추가하면, 추가적인 구성없이 처리됩니다.
 
 ## Add-ons
 
