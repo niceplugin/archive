@@ -803,6 +803,9 @@ Templates['foo'].helpers({
 });
 ~~~
 
+> 역주: FlowRouter의 [`router.current()`](#flowroutercurrent)는 **반응형이 아닙니다.**
+이 섹션에서 언급하는 `router.current()`는 Iron Router의 **반응형메서드** 입니다.
+
 ### 데이터 컨텍스트 없음
 
 원문:
