@@ -8,6 +8,7 @@
   * [신조](#신조)
   * [페키지](#페키지)
   * [우리의 계획](#우리의-계획)
+  
 **가이드**
 * [소개](#소개)
 * [Spacebars templates](#Spacebars-templates)
@@ -16,6 +17,7 @@
 * [Blaze에서 코드 재사용하기](#Blaze에서-코드-재사용하기)
 * [Blaze 이해하기](#Blaze-이해하기)
 * [라우터](#라우터)
+
 **API**
 * [Templates](#Templates)
 * [Blaze](#Blaze)
