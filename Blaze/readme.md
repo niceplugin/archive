@@ -201,6 +201,20 @@ JavaScript 코드로 구성요소를 짜내는 React와 비교하여 Blaze는 HT
 JavaScript 코드보다 HTML템플릿이 가독성, 수정, CSS수정 등이 더 쉽습니다.
 React는 트레커를 사용하지 않으므로 대신 효율적인 렌더링을 구현하기 위해 "setState" 호출 및 다른 데이터 모델 조합에 의존합니다.
 
+# 페키지
+
+* blaze
+* blaze-tools
+* html-tools
+* htmljs
+* spacebars
+* spacebars-compiler
+
+*****
+
+> 역주: 2017년 5월 이후로 프로젝트 팀이 해체되어 더이상 진행되지 않으므로 아래 내용은 번역하지 아니함.
+
+
 ## 우리의 계획
 
 ### Components (구성요소)
@@ -242,13 +256,21 @@ Rails나 Django와 같은 서버 측 프레임워크는 이를 위해 잘 정돈
 
 Meteor 개발자는 이미 양식과 유효성 검사를 처리 할 수 있는 방법과 패키지를 찾았지만(?), Meteor의 핵심 부분의 기능을 구현할 수있는 좋은 기회라 생각합니다.
 
-### Mobile and Animation
+### 모바일과 애니메이션
+
+원문:
 
 Blaze will cater to the needs of the mobile web, including enhanced performance and patterns for touch and other mobile interaction.
 
 We'll also improve the ease with which developers can integrate animated transitions into their apps.
 
-### JavaScript Expressions in Templates
+번역:
+
+Blaze는 터치 및 기타 모바일 상호 작용을 위해 향상된 성능 및 패턴을 내포하여 모바일 웹의 요구를 충족시켜줍니다.
+
+또한 개발자가 애니메이션 전환을 앱에서 할 수 있도록 편의성을 향상시킬 것 입니다.
+
+### 템플릿 내에서 JavaScript 표현방법
 
 We plan to support JavaScript expressions in templates.
 This will make templates more expressive, and it will further shorten application code by eliminating the need for a certain class of one-line helpers.
@@ -288,17 +310,10 @@ The Blaze team experimented with dropping jQuery and talking directly to "modern
 
 Blaze will get better support for using it outside of Meteor, such as regular stand-alone builds.
 
-# Resources
+# 리소스
 
 * [Templates API](../api/templates.html)
 * [Blaze API](../api/blaze.html)
 * [Spacebars syntax](../api/spacebars.html)
 
-# 페키지
-
-* blaze
-* blaze-tools
-* html-tools
-* htmljs
-* spacebars
-* spacebars-compiler
+> 역주: 원본 깃허브에서도 이 링크는 모두 끊겨있는 상태이다.
