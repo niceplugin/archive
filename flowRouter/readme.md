@@ -25,7 +25,7 @@ URL을 변경하거나 반응적으로 URL 데이터를 가지고 올 수 있도
 * [Hashbang URLs](#hashbang-urls)
 * [Prefixed paths (경로 접두사)](#prefixed-paths-경로-접두사)
 * [Add-ons](#add-ons)
-* [Iron Router(아이언 라우터)와 다른점](#iron-router-아이언-라우터와-다른점)
+* [Iron Router(아이언 라우터)와 다른점](#iron-router아이언-라우터와-다른점)
 * [Migrating into 2.0](#migrating-into-20)
 
 ## 미티어 라우팅 가이드
