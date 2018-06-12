@@ -12,20 +12,20 @@ URL을 변경하거나 반응적으로 URL 데이터를 가지고 올 수 있도
 
 ## TOC
 
-* [미티어 라우팅 가이드](#meteor-routing-guide)
-* [시작하](#getting-started)
-* [경로(라우터) 정의](#routes-definition)
-* [경로(라우터) 그룹화](#group-routes)
-* [렌더링 및 레이아웃 관리](#rendering-and-layout-management)
-* [트리거 (Triggers)](#triggers)
-* [찾을 수 없는 페이지 라우터 설정](#not-found-routes)
+* [미티어 라우팅 가이드](#미티어 라우팅 가이드)
+* [시작하기](#시작하기)
+* [경로(라우터) 정의](#경로라우터-정의)
+* [경로(라우터) 그룹화](#경로라우터-그룹화)
+* [렌더링 및 레이아웃 관리](#렌더링-및-레이아웃-관리)
+* [트리거 (Triggers)](#트리거-triggers)
+* [찾을 수 없는 페이지 라우터 설정](#찾을-수-없는-페이지-라우터-설정)
 * [API](#api)
-* [Subscription(구독) 관리](#subscription-management)
-* [IE9 지원](#ie9-support)
+* [Subscription(구독) 관리](#subscription구독-관리)
+* [IE9 지원](#ie9-지원)
 * [Hashbang URLs](#hashbang-urls)
-* [Prefixed paths (경로 접두사)](#prefixed-paths)
+* [Prefixed paths (경로 접두사)](#prefixed-paths-경로-접두사)
 * [Add-ons](#add-ons)
-* [Iron Router(아이언 라우터)와 다른점](#difference-with-iron-router)
+* [Iron Router(아이언 라우터)와 다른점](#iron-router-아이언-라우터와-다른점)
 * [Migrating into 2.0](#migrating-into-20)
 
 ## 미티어 라우팅 가이드
@@ -748,7 +748,7 @@ FlowRouter는 렌더링을 처리하지 않습니다.
 ### Subscriptions(서브스크립션 === 구독)
 
 FlowRouter에서는 템플릿/컴포넌트 레이아웃 서브스크립션을 사용하는 것이 좋습니다.
-그러나 라우터 계층에서 라우팅을 수행해야 할 경우 [서브스크립션 등록](#subscription-management) 메커니즘이 있습니다.
+그러나 라우터 계층에서 라우팅을 수행해야 할 경우 [서브스크립션 등록](#subscription구독-관리) 메커니즘이 있습니다.
 이것을 활용하여 FlowRouter는 서브스크립션(완료)를 기다리지 않고도 레이아웃을 보여줄 수 있습니다.
 
 ### Reactive Content
@@ -782,17 +782,17 @@ Templates['foo'].helpers({
 });
 ~~~
 
-Let's say we changed `:section` in the route.
-Then the above helper also gets rerun.
-If we add a query param to the URL, it gets rerun.
-That's because `Router.current()` looks for changes in the route(or URL).
-But in any of above cases, `appId` didn't get changed.
+이번에는 라우터(경로)에서 `:section` 부분을 변경했다고 칩시다.
+그러면 위 헬퍼 `someData`는 다시 실행됩니다.
+만약 URL에 쿼리파람을 추가하게 되도 역시 다시 실행됩니다.
+왜냐하면 `Router.current()`가 라우터(URL)이 변경됨을 감지하기 때문입니다.
+하지만 `appId` 값은 변경되지 않았습니다.
 
-Because of this, a lot parts of our app get re-run and re-rendered.
-This creates unpredictable rendering behavior in our app.
+이러한 이유로 앱은 계속해서 다시 실행되고 다시 렌더링 됩니다.
+이렇게 되면 앱에서는 예측하지 못한 렌더링이 발생하게 됩니다.
 
-FlowRouter fixes this issue by providing the `Router.getParam()` API.
-See how to use it:
+FLowRouter는 이러한 문제를 해결하기 위해 `Router.getParam()` API를 제공합니다.
+아래는 그 사용 예입니다:
 
 ~~~js
 Templates['foo'].helpers({
@@ -803,75 +803,88 @@ Templates['foo'].helpers({
 });
 ~~~
 
-### No data context
+### 데이터 컨텍스트 없음
+
+원문:
 
 FlowRouter does not have a data context.
 Data context has the same problem as reactive `.current()`.
 We believe, it'll possible to get data directly in the template (component) layer.
 
-### Built in Fast Render Support
+번역:
 
-FlowRouter has built in [Fast Render](https://github.com/meteorhacks/fast-render) support.
-Just add Fast Render to your app and it'll work.
-Nothing to change in the router.
+FlowRouter는 데이터 컨텍스트가 없습니다.
+데이터 컨텍스트는 반응형 `.current()`와 같은 문제가 있습니다.
+우리는 템플릿 계층에서 데이터를 가지고 올 수 있다고 믿습니다.
 
-For more information check [docs](#fast-render).
 
-### Server Side Routing
+### Fast Render 내장 지원
 
-FlowRouter is a client side router and it **does not** support server side routing at all.
-But `subscriptions` run on the server to enable Fast Render support.
+FlowRouter는 [Fast Render](https://github.com/meteorhacks/fast-render)를 내장 지원합니다.
+단지 Fast Render를 추가하기만 하면 동작합니다.
+라우터에서 무엇인가 변경할 필요가 없습니다.
 
-#### Reason behind that
+좀 더 자세한 정보는 [여기](#fast-render)에서 확인하십시요.
 
-Meteor is not a traditional framework where you can send HTML directly from the server.
-Meteor needs to send a special set of HTML to the client initially.
-So, you can't directly send something to the client yourself.
+### Server Side Routing (서버 사이드 라우팅)
 
-Also, in the server we need look for different things compared with the client.
-For example:
+FlowRouter는 클라이언트 측 라우터이며, 서버측에서 라우팅에 대해 전혀 지원하지 않습니다.
+하지만 Fast Render의 지원으로 `subscriptions`을 서버에서 활성화 할 수 있습니다.
 
-* In the server we have to deal with headers.
-* In the server we have to deal with methods like `GET`, `POST`, etc.
-* In the server we have Cookies.
+#### 이러한 이유
 
-So, it's better to use a dedicated server-side router like [`meteorhacks:picker`](https://github.com/meteorhacks/picker).
-It supports connect and express middlewares and has a very easy to use route syntax.
+Meteor는 서버에서 직접 HTML을 전송하는 전통적인 프레임워크가 아닙니다.
+Meteor는 특수하게 세팅한 HTML을 클라이언트에 보내야 합니다.
+그렇기 때문에 당신은 직접 클라이언트에 무엇인가를 보낼 수 없습니다.
 
-### Server Side Rendering
+또한, 서버에서는 클라이언트 측과 다른 무엇인가를 찾아야 합니다.
+아래는 몇가지 예입니다:
+
+* 서버에서는 해더를 처리해야 합니다.
+* 서버에서는 `GET`, `POST` 등과 같은 메소드를 처리해야 합니다.
+* 서버에는 쿠키가 있습니다.
+
+그렇기 때문에 [`meteorhacks:picker`](https://github.com/meteorhacks/picker)과 같은 전용 서버 사이드 라우터를 사용해야 합니다.
+이것은 커넥트와 익스프레스 미들웨어를 지원하며 사용하기 위한 문법이 쉽습니다.
+
+### Server Side Rendering (서버 사이드 렌더링 === SSR)
+
+FlowRouter 3.0은 SSR을 지원할 예정입니다.
+우리는 이미 개발에 착수하였으며 [`ssr`](https://github.com/meteorhacks/flow-router/tree/ssr) 브런치에서 확인 가능합니다.
 
 FlowRouter 3.0 will have server side rendering support.
 We've already started the initial version and check our [`ssr`](https://github.com/meteorhacks/flow-router/tree/ssr) branch for that.
 
-It's currently very usable and Kadira already using it for <https://kadira.io>
+이것은 매우 유용하며 Kadira의 <https://kadira.io>는 이미 이것을 사용하고 있습니다.
 
-### Better Initial Loading Support
+### 초기 로딩 개선 지원
 
-In Meteor, we have to wait until all the JS and other resources send before rendering anything.
-This is an issue.
-In 3.0, with the support from Server Side Rendering we are going to fix it.
+Meteor는 렌더링하기 전에 모든 JS 및 다른 리소스가 로드 될 때까지 기다립니다.
+이것이 문제입니다.
+3.0 버전에서는 SSR 지원으로 이것을 해결할 것입니다.
 
 ## Migrating into 2.0
 
-Migrating into version 2.0 is easy and you don't need to change any application code since you are already using 2.0 features and the APIs.
-In 2.0, we've changed names and removed some deprecated APIs.
+버전 2.0으로의 마이그레이션은 쉽고 이미 2.0 기능과 API를 사용하고 있기 때문에 애플리케이션 코드를 변경할 필요가 없습니다.
+2.0에서는 이름을 변경하고 일부 비추천 API를 삭제했습니다.
 
-Here are the steps to migrate your app into 2.0.
+다음은 앱을 2.0으로 이전하는 단계입니다.
 
-#### Use the New FlowRouter Package
-* Now FlowRouter comes as `kadira:flow-router`
-* So, remove `meteorhacks:flow-router` with : `meteor remove meteorhacks:flow-router`
-* Then, add `kadira:flow-router` with `meteor add kadira:flow-router`
+#### 새로운 FlowRouter 페키지 사용하기
 
-#### Change FlowLayout into BlazeLayout
-* We've also renamed FlowLayout as [BlazeLayout](https://github.com/kadirahq/blaze-layout).
-* So, remove `meteorhacks:flow-layout` and add `kadira:blaze-layout` instead.
-* You need to use `BlazeLayout.render()` instead of `FlowLayout.render()`
+* 이제 FlowRouter는 `kadira:flow-router`입니다.
+* 그러므로 `meteor remove meteorhacks:flow-router`라고 입력하여 `meteorhacks:flow-router`를 제거합니다.
+* 그리고나서 `meteor add kadira:flow-router`라고 입력하여 `kadira:flow-router`를 설치합니다.
 
-#### Stop using deprecated Apis
-* There is no middleware support.
-Use triggers instead.
-* There is no API called `.reactiveCurrent()`, use `.watchPathChange()` instead.
-* Earlier, you can access query params with `FlowRouter.current().params.query`.
-But, now you can't do that.
-Use `FlowRouter.current().queryParams` instead.
+#### FlowLayout을 BlazeLayout로 변경하기
+
+* 우리는 FlowLayout을 [BlazeLayout](https://github.com/kadirahq/blaze-layout)으로 개명하였습니다.
+* 그러므로 `meteorhacks:flow-layout`를 지우고 `kadira:blaze-layout`를 추가합니다.
+* 따라서 `FlowLayout.render()` 대신 `BlazeLayout.render()`를 사용해야 합니다.
+
+#### 비추천 API 사용 중지하기
+
+* 미들웨어를 지원하지 않으므로 트리거를 사용하십시요.
+* `.reactiveCurrent()`라는 API는 이제 없으므로 `.watchPathChange()`를 대신 사용하십시요.
+* 이전에는 `FlowRouter.current().params.query`과 같은 방식으로 쿼리파람에 접근 할 수 있었습니다.
+하지만 지금은 `FlowRouter.current().queryParams`를 사용하여 접근해야 합니다.
