@@ -159,51 +159,88 @@ Blaze는 다른 프레임워크를 사용한 개발자도 깨끗하고 읽기 �
 또한 템플릿은 일반적으로 최적화된 방법으로 컴파일되어 있으므로 원시템플릿 소스코드를 브라우저에서 분석 할 수 있는지 여부는 중요하지 않습니다.
 그러나 템플릿을 읽고, 쓰고, 유지관리하는 개발자 경험은 대단히 중요합니다.
 
-### Plugin Interoperability
+# 플러그인 상호 운용성.
 
-Web developers often share snippets of HTML, JavaScript, and CSS, or publish them as libraries, widgets, or jQuery plugins.
-They want to embed videos, maps, and other third-party content.
+웹 개발자는 종종 HTML, JavaScript, CSS로 만든 작은 결과물을 서로 공유하거나 라이브러리, 위젯 또는 jQuery 플러그인으로 게시합니다.
+또는 동영상,지도 및 기타 제 3자 콘텐츠를 퍼가려고합니다.
+
+미번역 부분:
 
 Blaze doesn't assume it owns the whole DOM, and it tries to make as few assumptions as possible about the DOM outside of its updates.
 It hooks into jQuery's clean-up routines to prevent memory leaks, and it preserves classes, attributes, and styles added to elements by jQuery or any third-party library.
 
 While it's certainly possible for Blaze and jQuery to step on each other's toes if you aren't careful, there are established patterns for keeping the peace, and Blaze developers rightfully expect to be able to use the various widgets and enhancements cooked up by the broader web community in their apps.
 
-## Comparisons to other libraries
+## 다른 라이브러리와의 비교
 
-Compared to Backbone and other libraries that simply re-render templates, Blaze does much less re-rendering and doesn't suffer from the dreaded "nested view" problem, which is when two templates can't be updated independently of each other because one is nested inside the other.
-In addition, Blaze automatically determines when re-rendering must occur, using Tracker.
+Blaze는 Backbone 또는 다른 라이브러리보다 훨씬 적은 재 렌더링을 수행하며, 한 페이지에서 여러개의 템플릿이 독립적으로 업데이트 될 수 없는 "nested view" 문제로 고심하지 않아도 됩니다.
+또한 Blaze는 트래커를 사용하여 다시 렌더링 해야 할 시기를 자동으로 결정합니다.
+
+원문:
 
 Compared to Ember, Blaze offers finer-grained, automatic DOM updates.
 Because Blaze uses Tracker's transparent reactivity, you don't have to perform explicit "data-binding" to get data into your template, or declare the data dependencies of each template helper.
 
-Compared to Angular and Polymer, Blaze has a gentler learning curve, simpler concepts, and nicer template syntax that cleanly separates template directives and HTML.
-Also, Blaze is targeted at today's browsers and not designed around a hypothetical "browser of the future."
+번역:
+
+Blaze는 Ember 보다 정교하고 자동적인 DOM 업데이트를 제공합니다.
+Blaze는 트레커의 직관적인 반응성을 사용하기 때문에 "데이터 바인딩"을 사용하여 템플릿으로 데이터를 가져오거나 각 템플릿 헬퍼에 종속성을 선언 할 필요가 없습니다.
+
+Blaze는 Angular 및 Polymer 보다 쉽게 학습할 수 있으며 개념이 단순하고 템플릿 문법과 HTML 구분이 깔끔하여 더 좋습니다.
+또한 Blaze는 "미래지향적 브라우저"가 아닌 현시점의 브라우저를 대상으로 설계되었습니다.
+
+원문:
 
 Compared to React, Blaze emphasizes HTML templates rather than JavaScript component classes.
 Templates are more approachable than JavaScript code and easier to read, write, and style with CSS.
 Instead of using Tracker, React relies on a combination of explicit "setState" calls and data-model diffing in order to achieve efficient rendering.
 
-## Future Work
+번역:
 
-### Components
+JavaScript 코드로 구성요소를 짜내는 React와 비교하여 Blaze는 HTML템플릿을 강조합니다.
+JavaScript 코드보다 HTML템플릿이 가독성, 수정, CSS수정 등이 더 쉽습니다.
+React는 트레커를 사용하지 않으므로 대신 효율적인 렌더링을 구현하기 위해 "setState" 호출 및 다른 데이터 모델 조합에 의존합니다.
+
+## 우리의 계획
+
+### Components (구성요소)
+
+Blaze는 재사용 가능한 UI 컴포넌트를 만들기 위한 더 좋은 패턴을 얻을 것입니다.
+템플릿은 이미 재사용 가능한 구성 요소로 제공됩니다.
+앞으로의 개선사항은 다음에 중점을 둡니다:
+
+* 
+* 
+* 
+* 
+* 
 
 Blaze will get better patterns for creating reusable UI components.
 Templates already serve as reusable components, to a point.
 Improvements will focus on:
 
-* Argument-handling
-* Local reactive state
+* Argument handling (역주: 매개변수의 값 핸들링)
+* Local reactive state (지역적인 반응형 상태)
 * "Methods" that are callable from other components and have side effects, versus the current "helpers" which are called from the template language and are "pure"
 * Scoping and the lookup chain
-* Inheritance and configuration
+* Inheritance and configuration (상속과 구성)
 
-### Forms
+### 양식
+
+원본:
 
 Most applications have a lot of forms, where input fields and other widgets are used to enter data, which must then be validated and turned into database changes.
 Server-side frameworks like Rails and Django have well-honed patterns for this, but client-side frameworks are typically more lacking, perhaps because they are more estranged from the database.
 
 Meteor developers have already found ways and built packages to deal with forms and validation, but we think there's a great opportunity to make this part of the core, out-of-the-box Meteor experience.
+
+번역:
+
+대부분의 앱에는 입력 필드 및 기타 위젯을 사용하여 데이터를 입력하는 양식이 많습니다.
+그런 다음 유효성을 검사하고 데이터베이스에 있는 정보를 변경합니다.
+Rails나 Django와 같은 서버 측 프레임워크는 이를 위해 잘 정돈 된 패턴을 가지고 있지만 클라이언트 측 프레임워크는 일반적으로 데이터베이스와 거리가 멀기때문에 잘 정돈 된 패턴이 부족합니다.
+
+Meteor 개발자는 이미 양식과 유효성 검사를 처리 할 수 있는 방법과 패키지를 찾았지만(?), Meteor의 핵심 부분의 기능을 구현할 수있는 좋은 기회라 생각합니다.
 
 ### Mobile and Animation
 
@@ -257,7 +294,7 @@ Blaze will get better support for using it outside of Meteor, such as regular st
 * [Blaze API](../api/blaze.html)
 * [Spacebars syntax](../api/spacebars.html)
 
-# Packages
+# 페키지
 
 * blaze
 * blaze-tools
