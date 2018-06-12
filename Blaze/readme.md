@@ -11,17 +11,17 @@
   
 **가이드**
 * [소개](#소개)
-* [Spacebars templates](#Spacebars-templates)
-* [Blaze에서 사용가능한 컨포넌트](#Blaze에서-사용가능한-컨포넌트)
-* [Blaze로 스마트 컴포넌트 작성하기](#Blaze로-스마트-컴포넌트-작성하기)
-* [Blaze에서 코드 재사용하기](#Blaze에서-코드-재사용하기)
-* [Blaze 이해하기](#Blaze-이해하기)
+* [Spacebars templates](#spacebars-templates)
+* [Blaze에서 사용가능한 컨포넌트](#blaze에서-사용가능한-컨포넌트)
+* [Blaze로 스마트 컴포넌트 작성하기](#blaze로-스마트-컴포넌트-작성하기)
+* [Blaze에서 코드 재사용하기](#blaze에서-코드-재사용하기)
+* [Blaze 이해하기](#blaze-이해하기)
 * [라우터](#라우터)
 
 **API**
-* [Templates](#Templates)
-* [Blaze](#Blaze)
-* [Spacebars](#Spacebars)
+* [Templates](#templates)
+* [Blaze](#blaze)
+* [Spacebars](#spacebars)
 
 # 개요
 
