@@ -232,8 +232,7 @@ React는 트레커를 사용하지 않으므로 대신 효율적인 렌더링을
 
 *****
 
-> 역주: 2017년 5월 이후로 프로젝트 팀이 해체되어 더이상 진행되지 않으므로 아래 내용은 번역하지 아니함.
-
+> 역주: 2017년 5월 이후로 프로젝트 팀이 해체되어 더이상 진행되지 않으므로 아래의 "우리의 계획"섹션은 번역하지 아니함.
 
 ## 우리의 계획
 
@@ -242,16 +241,6 @@ React는 트레커를 사용하지 않으므로 대신 효율적인 렌더링을
 Blaze는 재사용 가능한 UI 컴포넌트를 만들기 위한 더 좋은 패턴을 얻을 것입니다.
 템플릿은 이미 재사용 가능한 구성 요소로 제공됩니다.
 앞으로의 개선사항은 다음에 중점을 둡니다:
-
-* 
-* 
-* 
-* 
-* 
-
-Blaze will get better patterns for creating reusable UI components.
-Templates already serve as reusable components, to a point.
-Improvements will focus on:
 
 * Argument handling (역주: 매개변수의 값 핸들링)
 * Local reactive state (지역적인 반응형 상태)
@@ -340,18 +329,28 @@ Blaze will get better support for using it outside of Meteor, such as regular st
 
 # 소개
 
-How to use Blaze, Meteor's frontend rendering system, to build usable and maintainable user interfaces.
+Meteor의 프론트 엔드 렌더링 시스템 인 Blaze를 사용하여 사용 가능하고 관리 가능한 사용자 인터페이스를 구축하는 방법.
 
-After reading this guide, you'll know:
+이 가이드를 읽으면 다음을 알 수 있습니다.
 
-1. How to use the Spacebars language to define templates rendered by the Blaze engine.
-2. Best practices for writing reusable components in Blaze.
-3. How the Blaze rendering engine works under the hood and some advanced techniques for using it.
-4. How to test Blaze templates.
+1. Spacebars 언어를 사용하여 Blaze 엔진으로 템플릿을 렌더링하는 방법.
+2. Blaze에서 재사용 가능한 컴포넌트를 작성하는 모범 사례.
+3. Blaze 렌더링 엔진이 내부적으로 작동하는 방식과 이를 사용하는 몇 가지 고급 기술.
+4. Blaze 템플릿을 테스트하는 방법.
 
-Blaze is Meteor's built-in reactive rendering library. Usually, templates are written in [Spacebars](../guide/spacebars.html), a variant of [Handlebars](http://handlebarsjs.com) designed to take advantage of [Tracker](https://github.com/meteor/meteor/tree/devel/packages/tracker), Meteor's reactivity system. These templates are compiled into JavaScript UI components that are rendered by the Blaze library.
+Blaze는 Meteor에 내장 된 반응형 렌더링 라이브러리입니다.
+일반적으로 템플릿은 [Spacebars](#Spacebars-templates)로 작성되며, Meteor의 반응형 시스템인 [Tracker](https://github.com/meteor/meteor/tree/devel/packages/tracker)를 활용하도록 설계된 [Handlebars](http://handlebarsjs.com)의 변형입니다.
+이러한 템플릿은 Blaze 라이브러리에서 렌더링되어 JavaScript UI 컴포넌트(구성요소)로 컴파일됩니다.
+
+원문:
 
 Blaze is not required to build applications in Meteor---you can also easily use [React](http://react-in-meteor.readthedocs.org/en/latest/) or [Angular](http://www.angular-meteor.com) to develop your UI. However, this particular article will take you through best practices in building an application in Blaze, which is used as the UI engine in all of the other articles.
+
+번역:
+
+Blaze는 Meteor에서 앱으로 빌드 할 필요가 없으며 [React](http://react-in-meteor.readthedocs.org/en/latest/)나 [Angular](http://www.angular-meteor.com)를 사용하여 UI를 쉽게 개발할 수 있습니다.
+그러나 이 섹션에서는 Blaze에서 앱을 빌드하는 모범 사례를 안내합니다.
+다른 모든 섹션에서 UI 엔진으로 사용합니다.
 
 # Spacebars templates
 
