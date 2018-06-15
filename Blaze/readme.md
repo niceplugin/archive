@@ -447,19 +447,24 @@ Template.Todos_item.helpers({
 });
 ```
 
-Note that using keyword arguments to helpers is a little awkward, so in general it's usually easier to avoid them. This feature was included for historical reasons to match the way keyword arguments work in Handlebars.
+일반적으로 헬퍼에서 키워드 인자를 사용하는 것은 익숙치 않기 때문에 기피하게 됩니다.
+이 기능은 handlebar 템플릿에서 작동하는 방식이기에 포함되어 있습니다.
 
-You can also pass the output of a helper to a template inclusion or other helper. To do so, use parentheses to show precedence:
+출력된 헬퍼는 다른 템플릿이나 헬퍼로 전달할 수 있습니다.
+이러한 방법을 사용하려면 괄호를 사용하여 우선순위를 정해야 합니다.
 
 ```html
 {{> Todos_item (todoArgs todo)}}
 ```
+`todo`를 `todoArgs`라는 헬퍼에 인자로 전달하고 그 결과값을 `Todos_item`이라는 템플릿으로 전달합니다.
 
-Here the `todo` is passed as argument to the `todoArgs` helper, then the output is passed into the `Todos_item` template.
+## Template 추가하기
 
-## Template inclusion
+`{{> }}`문법을 통하여 하위 구성요소(템플릿)을 추가할 수 있습니다.
 
-You "include" a sub-component with the `{{> }}` syntax. By default, the sub-component will gain the data context of the caller, although it's usually a good idea to be explicit. You can provide a single object which will become the entire data context (as we did with the object returned by the `todoArgs` helper above), or provide a list of keyword arguments which will be put together into one object, like so:
+
+You "include" a sub-component with the `{{> }}` syntax.
+By default, the sub-component will gain the data context of the caller, although it's usually a good idea to be explicit. You can provide a single object which will become the entire data context (as we did with the object returned by the `todoArgs` helper above), or provide a list of keyword arguments which will be put together into one object, like so:
 
 ```html
 {{> subComponent arg1="value-of-arg1" arg2=helperThatReturnsValueOfArg2}}
