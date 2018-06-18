@@ -450,7 +450,8 @@ Template.Todos_item.helpers({
 일반적으로 헬퍼에서 키워드 인자를 사용하는 것은 익숙치 않기 때문에 기피하게 됩니다.
 이 기능은 handlebar 템플릿에서 작동하는 방식이기에 포함되어 있습니다.
 
-> 역주: 헬퍼에 일반적인 인자(a)와 키워드 인자(b)를 동시에 전달할 경우에는 아래와 같이 항상 a는 b앞에 위치해야 하는 순서를 지켜야 한다.
+> 역주:
+> 헬퍼에 일반적인 인자(a)와 키워드 인자(b)를 동시에 전달할 경우에는 아래와 같이 항상 a는 b앞에 위치해야 하는 순서를 지켜야 한다.
 > 그렇지 않을 경우 애러가 발생한다.
 > ```{{나의헬퍼 a a a b b b}}```
 > 그리고 헬퍼측에서 인자를 받을 때 여러개의 b 경우는 하나의 인자로 받아 `b.hash.키워드`와 같이 조회한다.
@@ -467,27 +468,38 @@ Template.Todos_item.helpers({
 ## Template 추가하기
 
 `{{> }}`문법을 통하여 하위 구성요소(템플릿)을 추가할 수 있습니다.
-
-
-You "include" a sub-component with the `{{> }}` syntax.
-By default, the sub-component will gain the data context of the caller, although it's usually a good idea to be explicit. You can provide a single object which will become the entire data context (as we did with the object returned by the `todoArgs` helper above), or provide a list of keyword arguments which will be put together into one object, like so:
+기본적으로 하위 구성요소는 호출자(부모)의 데이터 컨텍스트를 가지고 올 수 있지만, 대개는 명시적이어야 합니다.
+위의 `todoArgs todo`와 같이 헬퍼에 의해 반환된 하나의 객체를 단일 데이터 컨텍스트로 제공 할 수 있습니다.
+또는 아래와 같이 키워드 인수목록을 데이터 컨텍스트로 제공 할 수 있습니다.
 
 ```html
-{{> subComponent arg1="value-of-arg1" arg2=helperThatReturnsValueOfArg2}}
+{{> mySubTemplate1 'it`s string!'}}
+{{> mySubTemplate2 myStr="my string" myNum=123}}
 ```
 
-In this case, the `subComponent` component can expect a data context of the form:
+이러할 경우 각각의 서브템플릿의 헬퍼에서는 다음과 같이 데이터 컨텍스트를 참조할 수 있습니다:
 
 ```js
-{
-  arg1: ...,
-  arg2: ...
-}
+Template.mySubTemplate1.helpers({
+  myHelper() {
+    // 콘솔로그에 단일 객체가 출력된다. 아래는 원시데이터 문자열이 아닌 문자열 객체가 출력된다.
+    console.log(this) // String: 'it`s string!'
+    return
+  }
+});
+Template.mySubTemplate2.helpers({
+  myHelper() {
+    // 콘솔로그에 키템플릿이 받은 워드 인수를 키와 값으로 하는 객체가 출력된다.
+    console.log(this) // {myStr: "my string", myNum: 123}
+    return
+  }
+});
 ```
 
-## Attribute Helpers
+## 헬퍼를 이용한 속성 설정
 
-We saw above that using a helper (or data context lookup) in the form `checked={{todo.checked}}` will add the checked property to the HTML tag if `todo.checked` evaluates to true. Also, you can directly include an object in the attribute list of an HTML element to set multiple attributes at once:
+위의 첫번째 [예제](#spacebars-templates)에서 `checked={{todo.checked}}`부분은 `todo.checked`가 `true`일 경우 HTML에 `checked` 속성을 추가합니다.
+또는 여러 개의 속성을 한번에 설정해야 한다면 다음과 같은 방법을 사용 할 수 있습니다:
 
 ```html
 <a {{attributes}}>My Link</a>

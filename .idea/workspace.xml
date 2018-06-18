@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fdd9093-dc38-4209-9ace-bc37aeda2617" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Blaze/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Blaze/readme.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -20,8 +19,8 @@
       <file leaf-file-name="readme.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="456" column="36" lean-forward="true" selection-start-line="456" selection-start-column="36" selection-end-line="456" selection-end-column="36" />
+            <state relative-caret-position="353">
+              <caret line="523" selection-start-line="523" selection-end-line="523" />
             </state>
           </provider>
         </entry>
@@ -32,7 +31,12 @@
     <findStrings>
       <find>선택사항</find>
       <find>왜일까요?</find>
+      <find>[^0-9가-힣]{0,0}\.\s</find>
+      <find>Validate data</find>
     </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,7 +46,6 @@
       <list>
         <option value="$PROJECT_DIR$/BlazeLayout/readme.md" />
         <option value="$PROJECT_DIR$/flowRouter/readme.md" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/Blaze/readme.md" />
       </list>
     </option>
@@ -53,10 +56,13 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="877" />
+    <option name="width" value="1366" />
+    <option name="height" value="745" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -117,12 +123,10 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1528677830437</updated>
-      <workItem from="1528677831875" duration="44030000" />
-      <workItem from="1529021514057" duration="1774000" />
-      <workItem from="1529050708143" duration="192000" />
-      <workItem from="1529051059620" duration="1776000" />
-      <workItem from="1529168441957" duration="224000" />
-      <workItem from="1529280199603" duration="1222000" />
+      <workItem from="1528677831875" duration="42805000" />
+      <workItem from="1528936482746" duration="2416000" />
+      <workItem from="1528964089618" duration="5968000" />
+      <workItem from="1529281844861" duration="4211000" />
     </task>
     <task id="LOCAL-00001" summary="add FLowRouter readme.md">
       <created>1528677943254</created>
@@ -201,40 +205,33 @@
       <option name="project" value="LOCAL" />
       <updated>1528769712312</updated>
     </task>
-    <task id="LOCAL-00012" summary="temp">
-      <created>1528784723542</created>
+    <task id="LOCAL-00012" summary=".">
+      <created>1528970145725</created>
       <option name="number" value="00012" />
       <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
-      <updated>1528784723542</updated>
+      <updated>1528970145725</updated>
     </task>
-    <task id="LOCAL-00013" summary=".">
-      <created>1529053139007</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1529053139007</updated>
-    </task>
-    <option name="localTasksCounter" value="14" />
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49218000" />
+    <option name="totallyTimeSpent" value="55400000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="877" extended-state="0" />
+    <frame x="0" y="23" width="1366" height="745" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24947146" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24907063" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5003524" side_tool="true" weight="0.32948717" />
-      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32948717" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49964765" visible="true" weight="0.32948717" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49964765" visible="true" weight="0.3287037" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -278,22 +275,21 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add FLowRouter readme.md" />
-    <MESSAGE value="temp" />
     <MESSAGE value="." />
     <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
+    <entry file="file://$PROJECT_DIR$/flowRouter/readme.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6795">
-          <caret line="453" column="13" selection-start-line="453" selection-start-column="13" selection-end-line="453" selection-end-column="13" />
+        <state relative-caret-position="150">
+          <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7020">
-          <caret line="468" column="7" lean-forward="true" selection-start-line="468" selection-start-column="7" selection-end-line="468" selection-end-column="7" />
+        <state relative-caret-position="6720">
+          <caret line="448" lean-forward="true" selection-start-line="448" selection-end-line="448" />
         </state>
       </provider>
     </entry>
@@ -306,27 +302,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5355">
-          <caret line="357" lean-forward="true" selection-start-line="357" selection-end-line="357" />
+        <state relative-caret-position="5670">
+          <caret line="378" lean-forward="true" selection-start-line="378" selection-end-line="378" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore" />
-    <entry file="file://$PROJECT_DIR$/flowRouter/readme.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5355">
-          <caret line="357" lean-forward="true" selection-start-line="357" selection-end-line="357" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore" />
     <entry file="file://$PROJECT_DIR$/flowRouter/readme.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -336,8 +316,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37455">
-          <caret line="2497" column="58" lean-forward="true" selection-start-line="2497" selection-start-column="58" selection-end-line="2497" selection-end-column="58" />
+        <state relative-caret-position="2565">
+          <caret line="171" selection-start-line="161" selection-end-line="171" />
         </state>
       </provider>
     </entry>
@@ -355,11 +335,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore" />
     <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="456" column="36" lean-forward="true" selection-start-line="456" selection-start-column="36" selection-end-line="456" selection-end-column="36" />
+        <state relative-caret-position="353">
+          <caret line="523" selection-start-line="523" selection-end-line="523" />
         </state>
       </provider>
     </entry>
