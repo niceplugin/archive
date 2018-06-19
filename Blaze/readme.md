@@ -352,7 +352,7 @@ Blaze는 Meteor에서 앱으로 빌드 할 필요가 없으며 [React](http://re
 그러나 이 섹션에서는 Blaze에서 앱을 빌드하는 모범 사례를 안내합니다.
 다른 모든 섹션에서 UI 엔진으로 사용합니다.
 
-# Spacebars templates
+# 스페이스바 템플릿
 
 스페이스바는 반응형으로 변하는 데이터 컨텍스트를 렌더링하는 핸들바와 같은 템플릿 언어 입니다.
 스페이스바 템플릿은 중괄호로 구분지어놓은 간단한 HTML 테그같아 보입니다: `{{}}`
@@ -536,15 +536,6 @@ Template.foo.helpers({
 
 ## 블럭 핼퍼
 
-원문:
-
-A block helper, called with `{{# }}` is a helper that takes (and may render) a block of HTML.
-For instance, we saw the `{{#each .. in}}` helper above which repeats a given block of HTML once per item in a list.
-You can also use a template as a block helper, rendering its content via the `Template.contentBlock` and `Template.elseBlock`.
-For instance, you could create your own `{{#if}}` helper with:
-
-번역:
-
 `{{# }}`와 함께 쓰이는 헬퍼를 블럭핼퍼라고 부르며 이것은 HTML을(또는 렌더링할 어떠한 것이든) 블럭화 합니다.
 예를들어 우리는 앞서 헬퍼가 가지고 있는 리스트에서 하나하나의 HTML을 `{{#each .. in}}`을 통해 블럭화 하여 반복하는 것을 보았습니다.
 또한 `Template.contentBlock`, `Template.elseBlock`를 사용하여 블럭헬퍼를 렌더링 할 수 있습니다.
@@ -592,6 +583,8 @@ JavaScript에서 `null`, `undefined`, `0`, `''`, `NaN`, `false`를 `false`로 �
 {{/if}}
 ```
 
+> 역주: `{{#unless}}`는 'if not' 의미로 동작합니다.
+
 ### Each-in
 
 `{{#each .. in}}`헬퍼는 외부 데이터 구조를 유지하면서 리스트를 넘기는 편리한 방법입니다.
@@ -609,25 +602,29 @@ JavaScript에서 `null`, `undefined`, `0`, `''`, `NaN`, `false`를 `false`로 �
 `{{#let }}`은 해당 탬플릿에서 사용할 속성을 정의하는 것입니다.
 JavaScript에서 사용하는 `let`과 유사합니다:
 
-The `{{#let}}` helper is useful to capture the output of a helper or document subproperty within a template. Think of it just like defining a variable using JavaScript `let`.
 
 ```html
 {{#let name=person.bio.firstName color=generateColor}}
-  <div>{{name}} gets a {{color}} card!</div>
+  <div>{{name}}(은)는 {{color}}카드를 받았다!</div>
 {{/let}}
 ```
 
-Note that `name` and `color` (and `todo` above) are only added to scope in the template; they *are not* added to the data context. Specifically this means that inside helpers and event handlers, you cannot access them with `this.name` or `this.color`. If you need to access them inside a helper, you should pass them in as an argument (like we do with `(todoArgs todo)` above).
+`name`과 `color`는 해당 템플릿 상에서만 존재하며 데이터 컨텍스트에는 없습니다.
+즉, 헬퍼와 이벤트 헨들러에서 `this.name` 또는 `this.color`로 조회할 수 없다는 뜻입니다.
+만약 헬퍼 내에서 이것들을 조회해야 할 필요가 있을경우, 반드시 인자로 전달해야 합니다.(앞서 보았던 `todoArgs todo`처럼)
 
-### Each and With
+### Each와 With
 
-There are also two Spacebars built-in helpers, `{{#each}}`, and `{{#with}}`, which we do not recommend using (see [prefer using each-in](../guide/reusable-components.html#Prefer-lt-￼16-gt)). These block helpers change the data context within a template, which can be difficult to reason about.
+이 두 헬퍼는 스페이스바의 기본 헬퍼이지만, 우리는 이것을 사용하는 것을 추천하지 않습니다([`each-in`](#Prefer-lt-￼16-gt)사용 추천).
+이 블록 핼퍼들은 데이터 컨텍스트를 변형시키기 때문에 추적이 어려울 수 있습니다.
 
-Like `{{#each .. in}}`, `{{#each}}` iterates over an array or cursor, changing the data context within its content block to be the item in the current iteration. `{{#with}}` simply changes the data context inside itself to the provided object. In most cases it's better to use `{{#each .. in}}` and `{{#let}}` instead, just like it's better to declare a variable than use the JavaScript `with` keyword.
+`{{#each .. in}}`처럼 `{{#each}}`는 커서나 배열을 반복하면서 현재 반복된 항목의 내용으로 데이터 컨텍스트를 변경합니다.
+`{{#with}}`는 단순히 제공된 객체를 내부 데이터 컨텍스트로 변경합니다.
+대부분의 경우 `{{#with}}`를 사용하는 것보다 `{{#each .. in}}`이나 `{{#let}}`을 사용하는 것이 좋습니다.
 
-## Chaining of Block Helpers
+## Block Helpers 연결
  
-You can chain block helpers:
+아래처럼 블록 헬퍼를 연결하여 사용할 수 있습니다:
 
 ```html
 {{#input isRadio}}
@@ -639,7 +636,7 @@ You can chain block helpers:
 {{/foo}}
 ```
 
-This is equivalent to:
+이것은 아래와 동일합니다:
 
 ```html
 {{#input isRadio}}
@@ -653,20 +650,22 @@ This is equivalent to:
 {{/input}}
 ```
 
-## Strictness
+## 엄격함
 
-Spacebars has a very strict HTML parser. For instance, you can't self-close a `div` (`<div/>`) in Spacebars, and you need to close some tags that a browser might not require you to (such as a `<p>` tag). Thankfully, the parser will warn you when it can't understand your code with an exact line number for the error.
+스페이스바는 매우 엄격하게 HTML을 파싱하는 파서가 있습니다.
+예를들어 `div`처럼 단일 닫힘 테그가 아닌 테그가 `<div/>`와 같이 쓰였다면, 고맙게도 파서는 이러한 오류를 발생시키며 어디으 몇번째 줄에 그러한 오류가 발생했는지 알려줍니다.
 
-## Escaping
+## 무효화
 
-To insert literal curly braces: `{{ }}` and the like, add a pipe character, `|`, to the opening braces:
+`{{ }}`를 HTML로 표시하고 싶다면, 여는 괄호 다음 `|`를 입력합니다:
+
 
 ```
-<!-- will render as <h1>All about {{</h1> -->
-<h1>All about {{|</h1>
+<!-- 이것은 <h1>중괄호 예제1 {{}}</h1> 처럼 렌더링 될 것이다 -->
+<h1>중괄호 예제1 {{|}}</h1>
 
-<!-- will render as <h1>All about {{{</h1> -->
-<h1>All about {{{|</h1>
+<!-- 이것은 <h1>중괄호 예제2 {{{}}}</h1> 처럼 렌더링 될 것이다 -->
+<h1>중괄호 예제2 {{{|}}}</h1>
 ```
 
 # Blaze에서 사용가능한 컨포넌트
