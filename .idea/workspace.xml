@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fdd9093-dc38-4209-9ace-bc37aeda2617" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Blaze/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Blaze/readme.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -19,8 +20,8 @@
       <file leaf-file-name="readme.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="523" selection-start-line="523" selection-end-line="523" />
+            <state relative-caret-position="194">
+              <caret line="608" column="37" lean-forward="true" selection-start-line="608" selection-start-column="37" selection-end-line="608" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -72,6 +73,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -88,7 +90,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -126,7 +127,8 @@
       <workItem from="1528677831875" duration="42805000" />
       <workItem from="1528936482746" duration="2416000" />
       <workItem from="1528964089618" duration="5968000" />
-      <workItem from="1529281844861" duration="4211000" />
+      <workItem from="1529281844861" duration="4337000" />
+      <workItem from="1529391651182" duration="5412000" />
     </task>
     <task id="LOCAL-00001" summary="add FLowRouter readme.md">
       <created>1528677943254</created>
@@ -212,11 +214,18 @@
       <option name="project" value="LOCAL" />
       <updated>1528970145725</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary=".">
+      <created>1529288394558</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1529288394558</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55400000" />
+    <option name="totallyTimeSpent" value="60938000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1366" height="745" extended-state="0" />
@@ -226,12 +235,12 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5003524" side_tool="true" weight="0.32948717" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32948717" />
       <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32948717" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49964765" visible="true" weight="0.3287037" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -279,6 +288,13 @@
     <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7710">
+          <caret line="514" column="3" lean-forward="true" selection-start-line="514" selection-start-column="3" selection-end-line="514" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/flowRouter/readme.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -337,8 +353,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="523" selection-start-line="523" selection-end-line="523" />
+        <state relative-caret-position="194">
+          <caret line="608" column="37" lean-forward="true" selection-start-line="608" selection-start-column="37" selection-end-line="608" selection-end-column="37" />
         </state>
       </provider>
     </entry>

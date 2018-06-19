@@ -516,9 +516,11 @@ Template.foo.helpers({
 });
 ```
 
-## Rendering raw HTML
+## HTML로 렌더링하기
 
-Although by default a mustache tag will escape HTML tags to avoid [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting), you can render raw HTML with the triple-mustache: `{{{ }}}`.
+기본적으로 중괄호 태그는 [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)를 방지하기 위해 HTML태그를 이스케이프하지만, HTML로 렌더링 할 필요가 있을 경우 `{{{  }}}`와 같이 중괄호가 한번 더 들어간 태그를 이용할 수 있습니다.
+
+그러나 이 작업을 할 때에는 항상 주의해야 합니다.
 
 ```html
 {{{myHtml}}}
@@ -532,15 +534,31 @@ Template.foo.helpers({
 });
 ```
 
-You should be extremely careful about doing this, and always ensure you aren't returning user-generated content (or escape it if you do!) from such a helper.
+## 블럭 핼퍼
 
-## Block Helpers
+원문:
 
-A block helper, called with `{{# }}` is a helper that takes (and may render) a block of HTML. For instance, we saw the `{{#each .. in}}` helper above which repeats a given block of HTML once per item in a list. You can also use a template as a block helper, rendering its content via the `Template.contentBlock` and `Template.elseBlock`. For instance, you could create your own `{{#if}}` helper with:
+A block helper, called with `{{# }}` is a helper that takes (and may render) a block of HTML.
+For instance, we saw the `{{#each .. in}}` helper above which repeats a given block of HTML once per item in a list.
+You can also use a template as a block helper, rendering its content via the `Template.contentBlock` and `Template.elseBlock`.
+For instance, you could create your own `{{#if}}` helper with:
+
+번역:
+
+`{{# }}`와 함께 쓰이는 헬퍼를 블럭핼퍼라고 부르며 이것은 HTML을(또는 렌더링할 어떠한 것이든) 블럭화 합니다.
+예를들어 우리는 앞서 헬퍼가 가지고 있는 리스트에서 하나하나의 HTML을 `{{#each .. in}}`을 통해 블럭화 하여 반복하는 것을 보았습니다.
+또한 `Template.contentBlock`, `Template.elseBlock`를 사용하여 블럭헬퍼를 렌더링 할 수 있습니다.
+예를들어 `{{#if}}`를 통해 자신만의 헬퍼를 만들 수 있습니다:
 
 ```html
+<!--
+커스텀 블록 헬퍼로 사용할 템플릿을 정의 한다.
+여기에서는 커스텀 블록 헬퍼의 이름을 'myIf'로 하였다.
+이곳에서 'foo'라는 인자는 커스텀 블록 헬퍼를 사용하는 템플릿에서
+'foo'라는 이름(키워드)을 가진 키워드 인수로 전달하였기 때문이다.
+-->
 <template name="myIf">
-  {{#if condition}}
+  {{#if foo}}
     {{> Template.contentBlock}}
   {{else}}
     {{> Template.elseBlock}}
@@ -548,7 +566,7 @@ A block helper, called with `{{# }}` is a helper that takes (and may render) a b
 </template>
 
 <template name="caller">
-  {{#myIf condition=true}}
+  {{#myIf foo=true}}
     <h1>I'll be rendered!</h1>
   {{else}}
     <h1>I won't be rendered</h1>
@@ -556,13 +574,15 @@ A block helper, called with `{{# }}` is a helper that takes (and may render) a b
 </template>
 ```
 
-## Built-in Block Helpers
+## 내장된 블록 핼퍼
 
-There are a few built-in block helpers that are worth knowing about:
+아래는 알아야 할 기본 내장된 블록 핼퍼입니다:
 
 ### If / Unless
 
-The `{{#if}}` and `{{#unless}}` helpers are fairly straightforward but invaluable for controlling the control flow of a template. Both operate by evaluating and checking their single argument for truthiness. In JS `null`, `undefined`, `0`, `''`, `NaN`, and `false` are considered "falsy", and all other values are "truthy".
+`{{#if}}`와 `{{#unless}}`는 매우 간단하지만 템플릿 흐름을 제어하는데 매우 중요한 헬퍼입니다.
+이 둘은 하나의 인자에 대해서 boolean 값을 판단합니다.
+JavaScript에서 `null`, `undefined`, `0`, `''`, `NaN`, `false`를 `false`로 판단하며, 그 외의 값은 `true`로 판단합니다.
 
 ```html
 {{#if something}}
@@ -574,17 +594,20 @@ The `{{#if}}` and `{{#unless}}` helpers are fairly straightforward but invaluabl
 
 ### Each-in
 
-The `{{#each .. in}}` helper is a convenient way to step over a list while retaining the outer data context.
+`{{#each .. in}}`헬퍼는 외부 데이터 구조를 유지하면서 리스트를 넘기는 편리한 방법입니다.
 
 ```html
 {{#each todo in todos}}
   {{#each tag in todo.tags}}
-    <!-- in here, both todo and tag are in scope -->
+    <!-- 이곳에는 'todo'와 'tag' 모두 사용가능합니다. -->
   {{/each}}
 {{/each}}
 ```
 
 ### Let
+
+`{{#let }}`은 해당 탬플릿에서 사용할 속성을 정의하는 것입니다.
+JavaScript에서 사용하는 `let`과 유사합니다:
 
 The `{{#let}}` helper is useful to capture the output of a helper or document subproperty within a template. Think of it just like defining a variable using JavaScript `let`.
 
