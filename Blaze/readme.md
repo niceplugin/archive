@@ -921,7 +921,16 @@ JS파일에 이벤트 맵을 설정할 때 이벤트가 첨부되는 템플릿 �
 
 만약 상위 계층으로 구성요소를 전달해야 할 필요가 있을경우, 하위 구성요소가 콜백을 호출 할 수 있도록 하는 것이 가장 좋습니다.
 
+원본:
+
 For instance, only one todo item can be in the editing state at a time, so the `Lists_show` component manages the state of which is edited. When you focus on an item, that item needs to tell the list's component to make it the "edited" one. To do that, we pass a callback into the `Todos_item` component, and the child calls it whenever the state needs to be updated in the parent:
+
+역주:
+
+번역하지 아니함.
+이 부분은 부모 템플릿에서 자식 탬플릿으로 인자를 전달하고 자식 템플릿에서 해당 매개변수를 조작하면 (자식에게 인자로 전달했던)부모 템플릿에 있던 값이 변경된다는 소리임.
+단, 전달한 인자가 원시데이터일 경우 참조가 아닌 할당으로 되기 때문에 인자를 전달할 때에는 객체 형식으로 전달 해야 함.
+예를 들어 숫자(원시데이터)를 인자로 전달 하고 싶을 경우, 일반 변수에 할당하지 아니하고 ReactiveVar라는 일종의 반응형 객체에 래핑하여 인자로 전달하는 것을 추천.
 
 ```html
 {{> Todos_item (todoArgs todo)}}
@@ -948,17 +957,19 @@ Template.Todos_item.events({
 });
 ```
 
-## Use `onRendered()` for 3rd party libraries
+## `onRendered()`에서 제3자 라이브러리 사용하기
 
-As we mentioned above, the `onRendered()` callback is typically the right spot to call out to third party libraries that expect a pre-rendered DOM (such as jQuery plugins). The `onRendered()` callback is triggered *once* after the component has rendered and attached to the DOM for the first time.
+위에서 언급했듯이 `onRendered()`콜백은 컴포넌트가 처음 렌더링 되어 DOM에 추가된 후 *한번만 호출되므로*, 일반적으로 제3자 라이브러리를 호출하기 적당합니다(예를들어 jQuery 플러그인 호출).
 
-Occasionally, you may need to wait for data to become ready before it's time to attach the plugin (although typically it's a better idea to use a sub-component in this use case). To do so, you can setup an `autorun` in the `onRendered()` callback. For instance, in the `Lists_show_page` component, we want to wait until the subscription for the list is ready (i.e. the todos have rendered) before we hide the launch screen:
+경우에따라서는 데이터가 준비될 때까지 기다려야 할 수도 있습니다(일반적으로 이러한 경우에는 하위 컴포넌트를 사용하는 것이 적합합니다).
+그렇게 하기위해 `onRendered()`콜백에 `autorun`을 설정할 수 있습니다.
+예를들어 `Lists_show_page`컴포넌트에서 서브스크립션(subscription)이 완료될 때까지 화면을 숨기고 싶다면:
 
 ```js
 Template.Lists_show_page.onRendered(function() {
   this.autorun(() => {
     if (this.subscriptionsReady()) {
-      // Handle for launch screen defined in app-body.js
+      // app-body.js에 정의된 화면 실행 화면 컨트롤
       AppLaunchScreen.listRender.release();
     }
   });
