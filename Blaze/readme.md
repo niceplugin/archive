@@ -625,7 +625,7 @@ JavaScript에서 사용하는 `let`과 유사합니다:
 
 ### Each와 With
 
-이 두 헬퍼는 스페이스바의 기본 헬퍼이지만, 우리는 이것을 사용하는 것을 추천하지 않습니다([`each-in`](#Prefer-lt-￼16-gt)사용 추천).
+이 두 헬퍼는 스페이스바의 기본 헬퍼이지만, 우리는 이것을 사용하는 것을 추천하지 않습니다([`each-in`](#lt-￼16-gt-추천)사용 추천).
 이 블록 핼퍼들은 데이터 컨텍스트를 변형시키기 때문에 추적이 어려울 수 있습니다.
 
 `{{#each .. in}}`처럼 `{{#each}}`는 커서나 배열을 반복하면서 현재 반복된 항목의 내용으로 데이터 컨텍스트를 변경합니다.
@@ -680,17 +680,28 @@ JavaScript에서 사용하는 `let`과 유사합니다:
 
 # Blaze에서 사용가능한 컨포넌트
 
-In the [UI/UX article](https://guide.meteor.com/ui-ux.html#smart-components) we discussed the merits of creating reusable components that interact with their environment in clear and minimal ways.
+Meteor 가이드 [UI/UX](https://guide.meteor.com/ui-ux.html#smart-components) 섹션에서 명확하고 최소한의 방법으로 재사용 가능한 구성요소를 만드는 것이 장점이라고 했습니다.
 
-Although Blaze, which is a simple template-based rendering engine, doesn't enforce a lot of these principles (unlike other frameworks like React and Angular) you can enjoy most of the same benefits by following some conventions when writing your Blaze components. This section will outline some of these "best practices" for writing reusable Blaze components.
+템플릿 기반의 간단한 렌더링 엔진인 Blaze는 React나 Angular와는 달리 이러한 원칙을 적용하지는 않았지만, Blaze 구성 요소를 작성할 때 몇 가지 규칙을 따르면 대부분의 동일한 이점을 누릴 수 있습니다.
+이 섹션에서는 재사용 가능한 Blaze 구성 요소를 작성하기위한 "모범 사례"에 대해 간략히 설명합니다.
 
-Examples below will reference the `Lists_show` component from the Todos example app.
+앞으로의 예제들은 Todos라는 예제 앱의 `List_show`라는 컴포넌트를 참조할 것입니다.
 
 ## 데이터 구조 유효성검사
 
-In order to ensure your component always gets the data you expect, you should validate the data context provided to it. This is just like validating the arguments to any Meteor Method or publication, and lets you write your validation code in one place and then assume that the data is correct.
+원문:
 
-You can do this in a Blaze component's `onCreated()` callback, like so:
+In order to ensure your component always gets the data you expect, you should validate the data context provided to it.
+This is just like validating the arguments to any Meteor Method or publication, and lets you write your validation code in one place and then assume that the data is correct.
+
+You can do this in a Blaze component's onCreated() callback, like so:
+
+번역:
+
+구성 요소가 항상 원하는 데이터를 가져 오려면 제공되는 데이터 컨텍스트의 유효성을 검사해야합니다.
+이것은 Meteor Method 또는 publication의 한 곳에서 유효성 검사를 하는것과 동일하며 이 후 데이터가 올바른 것으로 가정합니다.
+
+아래와 같이 Blaze의 구성요소인 `onCreated()`콜백에서 작업할 수 있습니다.
 
 ```js
 Template.Lists_show.onCreated(function() {
@@ -704,28 +715,39 @@ Template.Lists_show.onCreated(function() {
 });
 ```
 
-We use an `autorun()` here to ensure that the data context is re-validated whenever it changes.
+`autorun()`을 사용하여 데이터 컨텍스트가 바뀔때마다 유효성 검사를 할 수 있습니다.
 
-## Name data contexts to template inclusions
+## 템플릿에 데이터 컨텍스트 추가하기
 
-It's tempting to just provide the object you're interested in as the entire data context of the template (like `{{> Todos_item todo}}`). It's better to explicitly give it a name (`{{> Todos_item todo=todo}}`). There are two primary reasons for this:
+관계성이 있는 객체를 `{{> Todos_item todo}}`처럼 템플릿의 데이터 컨텍스트로 제공하는 것이 좋습니다.
+이 때, `{{> Todos_item todo=todo}}`처럼 명시적으로 이름을 지정해주는 것이 좋습니다.
+이에 대해서는 두 개의 이유가 있습니다.
 
-1. When using the data in the sub-component, it's a lot clearer what you are accessing; `{{todo.title}}` is clearer than `{{title}}`.
-2. It's more flexible, in case you need to give the component more arguments in the future.
+1. 하위 구성요소에서 데이터를 사용할 때, `{{todo.title}}`로 참조하는 것이 `{{title}}`보다 훨씬 더 명확합니다.
+2. 많은 인자를 전달 할 때 보다 더 융통성 있습니다.
+
+원문:
 
 For instance, in the case of the `Todos_item` sub-component, we need to provide two extra arguments to control the editing state of the item, which would have been a hassle to add if the item was used with a single `todo` argument.
 
 Additionally, for better clarity, always explicitly provide a data context to an inclusion rather than letting it inherit the context of the template where it was rendered:
 
+번역:
+
+`Todos_item`에서 무엇인가를 조작하기 위해 두 개의 인수가 제공되어야 한다고 가정해 봅시다.
+이 때 단지 `todo`라고 인자를 전달해서 사용중 이었다면 인수를 추가하는데 번거로움이 있습니다.
+
+또한 명확성을 위해 데이터 컨텍스트를 상속받는 템플릿을 렌더링 할 때 데이터 컨텍스트는 명시적이여야 합니다.
+
 ```html
-<!-- bad: inherits data context, who knows what is in there! -->
+<!-- 좋지못함: 데이터 컨텍스트가 상속되었지만, 그곳에 무엇이 있는지 아무도 모른다! -->
 {{> myTemplate}}
 
-<!-- explicitly passes empty data context -->
+<!-- 명시적으로 빈 데이터 컨텍스트를 전달 -->
 {{> myTemplate ""}}
 ```
 
-## Prefer `{{#each .. in}}`
+## `{{#each .. in}}` 추천
 
 For similar reasons to the above, it's better to use `{{#each todo in todos}}` rather than the older `{{#each todos}}`. The second sets the entire data context of its children to a single `todo` object, and makes it difficult to access any context from outside of the block.
 
