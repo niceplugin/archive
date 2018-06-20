@@ -4,6 +4,7 @@
     <list default="true" id="2fdd9093-dc38-4209-9ace-bc37aeda2617" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Blaze/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Blaze/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazeLayout/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/BlazeLayout/readme.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,8 +21,8 @@
       <file leaf-file-name="readme.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="750" lean-forward="true" selection-start-line="750" selection-end-line="750" />
+            <state relative-caret-position="208">
+              <caret line="921" column="34" selection-start-line="921" selection-start-column="34" selection-end-line="921" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -42,9 +43,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/BlazeLayout/readme.md" />
         <option value="$PROJECT_DIR$/flowRouter/readme.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/BlazeLayout/readme.md" />
         <option value="$PROJECT_DIR$/Blaze/readme.md" />
       </list>
     </option>
@@ -91,6 +92,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/june/WebstormProjects/translation/BlazeLayout/readme.md" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.prettier" value="true" />
@@ -132,7 +134,7 @@
       <workItem from="1529391244096" duration="5000" />
       <workItem from="1529423853873" duration="3532000" />
       <workItem from="1529452672625" duration="715000" />
-      <workItem from="1529454200739" duration="4427000" />
+      <workItem from="1529454200739" duration="15001000" />
     </task>
     <task id="LOCAL-00001" summary="add FLowRouter readme.md">
       <created>1528677943254</created>
@@ -239,24 +241,38 @@
       <option name="project" value="LOCAL" />
       <updated>1529427689961</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary=".">
+      <created>1529462125205</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1529462125205</updated>
+    </task>
+    <task id="LOCAL-00017" summary=".">
+      <created>1529465778270</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1529465778270</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58944000" />
+    <option name="totallyTimeSpent" value="69518000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1366" height="745" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24907063" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24907063" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5003524" side_tool="true" weight="0.32948717" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32948717" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49964765" visible="true" weight="0.3287037" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49964765" visible="true" weight="0.3287037" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -333,12 +349,18 @@
     <entry file="file://$PROJECT_DIR$/flowRouter/readme.md" />
     <entry file="file://$PROJECT_DIR$/Blaze/readme.md" />
     <entry file="file://$PROJECT_DIR$/flowRouter/readme.md" />
-    <entry file="file://$PROJECT_DIR$/BlazeLayout/readme.md" />
     <entry file="file://$PROJECT_DIR$/.gitignore" />
+    <entry file="file://$PROJECT_DIR$/BlazeLayout/readme.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Blaze/readme.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="750" lean-forward="true" selection-start-line="750" selection-end-line="750" />
+        <state relative-caret-position="208">
+          <caret line="921" column="34" selection-start-line="921" selection-start-column="34" selection-end-line="921" selection-end-column="34" />
         </state>
       </provider>
     </entry>

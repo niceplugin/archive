@@ -749,9 +749,21 @@ Additionally, for better clarity, always explicitly provide a data context to an
 
 ## `{{#each .. in}}` 추천
 
-For similar reasons to the above, it's better to use `{{#each todo in todos}}` rather than the older `{{#each todos}}`. The second sets the entire data context of its children to a single `todo` object, and makes it difficult to access any context from outside of the block.
+원문:
 
-The only reason not to use `{{#each .. in}}` would be because it makes it difficult to access the `todo` symbol inside event handlers. Typically the solution to this is to use a sub-component to render the inside of the loop:
+For similar reasons to the above, it's better to use `{{#each todo in todos}}` rather than the older `{{#each todos}}`.
+The second sets the entire data context of its children to a single `todo` object, and makes it difficult to access any context from outside of the block.
+
+The only reason not to use `{{#each .. in}}` would be because it makes it difficult to access the `todo` symbol inside event handlers.
+Typically the solution to this is to use a sub-component to render the inside of the loop:
+
+번역:
+
+위와 같은 이유로 `{{#each todos}}`보다 `{{#each todo in todos}}`를 사용하는 것이 더 좋습니다.
+`todo` 객체의 자식을 하나의 데이터 컨텍스트로 세팅하며, 이것은 현재 블럭 밖에서 이것을 조회하기 어렵게 만듭니다.
+
+`{{#each .. in}}`을 사용하지 않는 유일한 이유는 이벤트 헨들러에서 `todo`의 심볼에 접근하기 어렵기 때문입니다.
+일반적으로이를 해결하려면 하위 구성 요소를 사용하여 루프 내부를 렌더링합니다:
 
 ```html
 {{#each todo in todos}}
@@ -759,17 +771,31 @@ The only reason not to use `{{#each .. in}}` would be because it makes it diffic
 {{/each}}
 ```
 
-Now you can access `this.todo` inside `Todos_item` event handlers and helpers.
+이제 `Todos_item`의 이벤트 헨들러나 헬퍼 내에서 `this.todo`로 참조할 수 있습니다.
 
-## Pass data into helpers
+## 헬퍼로 데이터 전달하기
 
-Rather than accessing data in helpers via `this`, it's better to pass the arguments in directly from the template. So our `checkedClass` helper takes the `todo` as an argument and inspects it directly, rather than implicitly using `this.todo`. We do this for similar reasons to why we always pass arguments to template inclusions, and because "template variables" (such as the iteratee of the `{{#each .. in}}` helper) are not available on `this`.
+원문:
 
-## Use the template instance
+Rather than accessing data in helpers via `this`, it's better to pass the arguments in directly from the template.
+So our `checkedClass` helper takes the `todo` as an argument and inspects it directly, rather than implicitly using `this.todo`.
+We do this for similar reasons to why we always pass arguments to template inclusions, and because "template variables" (such as the iteratee of the `{{#each .. in}}` helper) are not available on `this`.
 
-Although Blaze's simple API doesn't necessarily encourage a componentized approach, you can use the *template instance* as a convenient place to store internal functionality and state. The template instance can be accessed via `this` inside Blaze's lifecycle callbacks and as `Template.instance()` in event handlers and helpers. It's also passed as the second argument to event handlers.
+번역:
 
-We suggest a convention of naming it `instance` in these contexts and assigning it at the top of every relevant helper. For instance:
+`this`를 통해 헬퍼의 데이터를 조회하는 대신, 템플릿에 인자를 명시적으로 전달하는게 더 좋습니다.
+그래서 우리의 `checkedClass` 도우미는 `todo`를 인수로 사용하고 암묵적으로 `this.todo`를 사용하지 않고 직접 검사합니다.
+"템플릿 변수"에서 `this` 사용이 가능하지 않기 때문에 템플릿에 항상 인자를 전달하는 작업을 수행합니다.
+
+## 템플릿 인스턴스 사용하기
+
+Blaze의 간단한 API가 반드시 컴포넌트 화 된 접근 방식을 권장하지는 않습니다.
+템플릿 인스턴스를 내부 기능 및 상태를 저장하는 편리한 위치로 사용할 수 있습니다.
+템플릿 인스턴스는 Blaze의 라이프 사이클 콜백 내에서 `this`를 통해 액세스 할 수 있으며 이벤트 핸들러와 도우미에서 `Template.instance()`로 액세스 할 수 있습니다.
+또한 이벤트 핸들러에 두 번째 인수로 전달됩니다.
+
+이 컨텍스트에서 이름을 `instance`로 지정하고 모든 관련 도우미의 맨 위에 지정하는 것이 좋습니다.
+예를 들면 :
 
 ```js
 Template.Lists_show.helpers({
@@ -792,9 +818,11 @@ Template.Lists_show.events({
 });
 ```
 
-## Use a reactive dict for state
+## 상태에 따른 reactive dict 사용하기
 
-The [`reactive-dict`](https://atmospherejs.com/meteor/reactive-dict) package lets you define a simple reactive key-value dictionary. It's a convenient way to attach internal state to a component. We create the `state` dictionary in the `onCreated` callback, and attach it to the template instance:
+[`reactive-dict`](https://atmospherejs.com/meteor/reactive-dict)페키지를 사용하면 간단한 반응형 키-값으로 dict를 정의할 수 있습니다.
+구성요소에 내부 상태를 연결하는 편리한 방법입니다.
+우리는 `onCreated`의 콜백에 `state`라는 dict를 정의하고 그것을 템플릿 인스턴스에 추가합니다:
 
 ```js
 Template.Lists_show.onCreated(function() {
@@ -806,11 +834,11 @@ Template.Lists_show.onCreated(function() {
 });
 ```
 
-Once the state dictionary has been created we can access it from helpers and modify it in event handlers (see the code snippet above).
+`stats`라는 dict가 만들어지면 헬퍼나 이벤트 헨들러에서 조회 수정이 가능합니다.
 
-## Attach functions to the instance
+## 인스턴스에 함수 추가하기
 
-If you have common functionality for a template instance that needs to be abstracted or called from multiple event handlers, it's sensible to attach it as functions directly to the template instance in the `onCreated()` callback:
+만약 여러 이벤트 헨들러에서 사용되어야 하는 함수가 있을 경우, `onCreated()`의 콜백함수에서 템플릿 인스턴스에 직접 함수를 추가하는 것이 좋습니다.
 
 ```js
 import {
@@ -831,7 +859,7 @@ Template.Lists_show.onCreated(function() {
 });
 ```
 
-Then you can call that function from within an event handler:
+이제 이벤트 헨들러에서 함수를 호출할 수 있습니다:
 
 ```js
 Template.Lists_show.events({
@@ -842,11 +870,21 @@ Template.Lists_show.events({
 });
 ```
 
-## Scope DOM lookups to the template instance
+## 템플릿 인스턴스에 DOM 범위 지정하기
 
-It's a bad idea to look up things directly in the DOM with jQuery's global `$()`. It's easy to select some element on the page that has nothing to do with the current component. Also, it limits your options on rendering *outside* of the main document (see testing section below).
+jQeury의 `$()`를 이용하여 글로벌적으로 DOM을 탐색하는 것은 좋지 않습니다.
+이러한 방법은 현재 컨포넌트와 상관없는 것을 선택할 수 있습니다.
 
-Instead, Blaze gives you a way to scope a lookup to within the current template instance. Typically you use this either from a `onRendered()` callback to setup jQuery plugins (called via `Template.instance().$()` or `this.$()`), or from event handlers to call DOM functions directly (called via `Template.instance().$()` or using the event handler's second argument like `instance.$()`). For instance, when the user clicks the add todo button, we want to focus the `<input>` element:
+원문:
+Also, it limits your options on rendering *outside* of the main document (see testing section below).
+
+
+번역:
+또한 메인 다큐먼트의 렌더링 옵션을 제한합니다.
+
+대신, Blaze는 현재 템플릿 인스턴트 내에서 검색조회를 할 수 있는 방법을 제공합니다.
+일반적으로 `onRendered()`콜백에서 `Template.instance().$()` 또는 `this.$()`로 DOM을 조작할 수 있습니다.
+예를들어, 사용자가 todo 버튼을 클릭하였을때 `<input>`엘리먼트가 포커스 되길 원한다면:
 
 ```js
 Template.Lists_show.events({
@@ -856,23 +894,32 @@ Template.Lists_show.events({
 });
 ```
 
-## Use `.js-` selectors for event maps
+## 이벤트 맵에서 `.js-` 셀렉터 사용하기
 
-When you are setting up event maps in your JS files, you need to 'select' the element in the template that the event attaches to. Rather than using the same CSS class names that are used to style the elements, it's better practice to use classnames that are specifically added for those event maps. A reasonable convention is a class starting with `js-` to indicate it is used by the JavaScript. For instance `.js-todo-add` above.
+JS파일에 이벤트 맵을 설정할 때 이벤트가 첨부되는 템플릿 요소를 선택(select)해야 합니다.
+요소의 스타일을 지정하는데 사용되고 있는 CSS 클레스를 사용하는대신 이벤트헨들러에서 셀렉터로 사용할 특별한 클레스명을 사용하는 것이 좋습니다.
+관례적으로 `js-`로 시작하는 클레스 명은 Javascript에서 사용하고 있음을 나타냅니다.
+예를들어 `.js-todo-add`와 같이 명시하고 셀렉터로 사용하는 방법이 있습니다.
 
-## Passing HTML content as a template argument
+> 역주: 이벤트 핸들러 추가시 `'click .btn'`같은 경우 `.btn`은 버튼에 대한 기본 스타일을 입히기 위해 부트스트렙에서 사용하는 클레스명이다.(부트스트랩을 사용중이라 가정함)
+> 그러므로 `'click .js-btn'`과 같이 사용할 경우 부트스트랩을 사용하지 않게되어 `.btn`을 제거하더라도 개발에 혼선의 여지가 없게된다.
+> 즉, Blaze에서는 이러한 방식을 추천한다는 말이지 꼭 `.js-***`과 같이 사용할 필요는 없다.
 
-If you need to pass in content to a sub-component (for instance the content of a modal dialog), you can use the [custom block helper](../guide/spacebars.html#Block-Helpers) to provide a block of content. If you need more flexibility, typically just providing the component name as an argument is the way to go. The sub-component can then just render that component with:
+## 템플릿 인자로 HTML 컨텐츠 전달하기
+
+만약 하위 구성요소로 콘텐츠를 전달해야 하는 경우 사용자 정의 [블럭 헬퍼](#블럭-핼퍼)를 사용하여 콘텐츠 블럭을 제공할 수 있습니다.
+보다 더 유연한 방법이 필요할 경우 일반적으로 구성 요소의 이름(템플릿명)을 인수로 제공하는 것이 가장 좋습니다.
+그러면 하위 구성요소는 아래의 방법을 사용하여 해당 구성요소를 렌더링 할 수 있습니다.
 
 ```html
 {{> Template.dynamic templateName dataContext}}
 ```
 
-This is more or less the way that the [`kadira:blaze-layout`](https://atmospherejs.com/kadira/blaze-layout) package works.
+이 방법은 [`kadira:blaze-layout`](https://atmospherejs.com/kadira/blaze-layout)페키지가 작동하는 방식입니다. (한국어 docs는 [여기](#https://github.com/niceplugin/translation/tree/master/BlazeLayout))
 
-## Pass callbacks
+## 콜백 전달하기
 
-If you need to communicate *up* the component hierarchy, it's best to pass a *callback* for the sub-component to call.
+만약 상위 계층으로 구성요소를 전달해야 할 필요가 있을경우, 하위 구성요소가 콜백을 호출 할 수 있도록 하는 것이 가장 좋습니다.
 
 For instance, only one todo item can be in the editing state at a time, so the `Lists_show` component manages the state of which is edited. When you focus on an item, that item needs to tell the list's component to make it the "edited" one. To do that, we pass a callback into the `Todos_item` component, and the child calls it whenever the state needs to be updated in the parent:
 
