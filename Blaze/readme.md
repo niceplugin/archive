@@ -35,7 +35,7 @@
   * [템플릿 인자로 HTML 컨텐츠 전달하기](#템플릿-인자로-html-컨텐츠-전달하기)
   * [콜백 전달하기](#콜백-전달하기)
   * [`onRendered()`에서 제3자 라이브러리 사용하기](#onrendered에서-제3자-라이브러리-사용하기)
-* [Blaze로 스마트 컴포넌트(구성요소) 작성하기](#blaze로-스마트-컴포넌트-작성하기)
+* [Blaze로 스마트 컴포넌트(구성요소) 작성하기](#blaze로-스마트-컴포넌트구성요소-작성하기)
 * [Blaze에서 코드 재사용하기](#blaze에서-코드-재사용하기)
 * [Blaze 이해하기](#blaze-이해하기)
 * [라우터](#라우터)
@@ -905,6 +905,64 @@ Template.Lists_show.events({
   }
 });
 ```
+
+### 역주: 이번 섹션은 잘못 된 것이다.
+
+이번 섹션에서는 클라이언트 측에서의 더 나은 퍼포먼스를 위해 위와 같이 말하였지만 실험결과 잘못된 것이라 판단된다.
+
+```html
+<template name="foo">
+	<div id="foo">
+		<h1>h1</h1>
+		<p>p1</p>
+		<p>p2</p>
+		<p>p3</p>
+		<h1>h1</h1>
+		<p>p1</p>
+		<p>p2</p>
+		<p>p3</p>
+	</div>
+</template>
+```
+
+```js
+Template.foo.onRendered(function() {
+  var i;
+console.log(this);
+i = 100000;
+console.time('this.find');
+while (i--) {
+  this.find('p');
+}
+console.timeEnd('this.find');
+i = 100000;
+console.time('this.$');
+while (i--) {
+  this.$('p');
+}
+console.timeEnd('this.$');
+i = 100000;
+console.time('$');
+while (i--) {
+  $('p');
+}
+console.timeEnd('$');
+i = 100000;
+console.time('document.querySelectorAll');
+while (i--) {
+  document.querySelectorAll('p');
+}
+console.timeEnd('document.querySelectorAll');
+i = 100000;
+console.time('this.firstNode.querySelectorAll');
+while (i--) {
+  this.firstNode.querySelectorAll('p');
+}
+return console.timeEnd('this.firstNode.querySelectorAll');
+});
+```
+
+결과는 직접 실행해보자. 참고로 `this.$()`보다 `$()`가 두배가량 빠르다. (애써 생각해서 넣어놓은 빌트인 메서드가 무쓸모라는 소리)
 
 ## 이벤트 맵에서 `.js-` 셀렉터 사용하기
 
