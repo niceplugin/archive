@@ -35,7 +35,7 @@
   * [템플릿 인자로 HTML 컨텐츠 전달하기](#템플릿-인자로-html-컨텐츠-전달하기)
   * [콜백 전달하기](#콜백-전달하기)
   * [`onRendered()`에서 제3자 라이브러리 사용하기](#onrendered에서-제3자-라이브러리-사용하기)
-* [Blaze로 스마트 컴포넌트 작성하기](#blaze로-스마트-컴포넌트-작성하기)
+* [Blaze로 스마트 컴포넌트(구성요소) 작성하기](#blaze로-스마트-컴포넌트-작성하기)
 * [Blaze에서 코드 재사용하기](#blaze에서-코드-재사용하기)
 * [Blaze 이해하기](#blaze-이해하기)
 * [라우터](#라우터)
@@ -988,15 +988,17 @@ Template.Lists_show_page.onRendered(function() {
 });
 ```
 
-# Blaze로 스마트 컴포넌트 작성하기
+# Blaze로 스마트 컴포넌트(구성요소) 작성하기
 
-Some of your components will need to access state outside of their data context---for instance, data from the server via subscriptions or the contents of client-side store. As discussed in the [data loading](https://guide.meteor.com/data-loading.html#patterns) and [UI](https://guide.meteor.com/ui-ux.html#smart-components) articles, you should be careful and considered in how you use such smart components.
+일부 구성요소는 자신의 데이터 컨텍스트에 외부의 무엇인가를 참조시켜야 할 수 있습니다.(예를 들어 서버측의 서브스크립션이나 기타 데이터를 클라이언트의 저장소로)
+[데이터로드](https://guide.meteor.com/data-loading.html#patterns) 및 [UI](https://guide.meteor.com/ui-ux.html#smart-components) 섹션에서 설명한 것처럼 스마트 구성 요소를 사용하는 방법을 신중하게 고려해야합니다.
 
-All of the suggestions about reusable components apply to smart components. In addition:
+모든 재사용 가능한 구성요소는 스마트 구성요소에 적용됩니다.
 
-## Subscribe from `onCreated`
+## `onCreated`에서 서브스크립션
 
-You should subscribe to publications from the server from an `onCreated` callback (within an `autorun` block if you have reactively changing arguments). In the Todos example app, in the `Lists_show_page` template we subscribe to the `todos.inList` publication based on the current `_id` FlowRouter param:
+`onCreated` 콜백에서 서버의 퍼블리케이션(publication)을 서브스크립션 해야 합니다.
+Todos라는 예제 앱의 `Lists_show_page`템플릿에서 `todos.inList`라는 퍼블리케이션을 FlowRouter의 현재 param값 `_id`를 기반으로 서브스크립션 하였습니다:
 
 ```js
 Template.Lists_show_page.onCreated(function() {
