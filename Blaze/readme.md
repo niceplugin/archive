@@ -1068,15 +1068,16 @@ Template.Lists_show_page.onCreated(function() {
 });
 ```
 
-We use `this.subscribe()` as opposed to `Meteor.subscribe()` so that the component automatically keeps track of when the subscriptions are ready. We can use this information in our HTML template with the built-in `{{Template.subscriptionsReady}}` helper or within helpers using `instance.subscriptionsReady()`.
+`Meteor.subscribe()` 대신 `this.subscribe()`를 사용하면 서브스크립션이 준비되었을때 컴포넌트는 변화여부를 자동적으로 추적하기 시작합니다.
+우리는 이러한 정보를 HTML 템플릿의 기본 내장헬퍼인 `{{Template.subscriptionsReady}}`나 `instance.subscriptionsReady()`을 통해 알 수 있습니다.
 
-Notice that in this component we are also accessing the global client-side state store `FlowRouter`, which we wrap in a instance method called `getListId()`. This instance method is called both from the `autorun` in `onCreated`, and from the `listIdArray` helper:
+이 컴포넌트는 글로벌 클라이언트 사이드의 저장소인 `FlowRouter`를 이 인스턴스 메소드인 `getListId()`의 콜벡함수로 감싸고 있다.
+이 인스턴스 메소드는 `listIdArray`라는 헬퍼 또는 `onCreated` 내부의 `autorun`에 의해 호출된다.
 
 ```js
 Template.Lists_show_page.helpers({
-  // We use #each on an array of one item so that the "list" template is
-  // removed and a new copy is added when changing lists, which is
-  // important for animation purposes.
+  // #each를 통해 'list'라는 템플릿이 지워지거나 생깁니다.
+  // 이것은 시각적인 효과에서도 중요합니다.
   listIdArray() {
     const instance = Template.instance();
     const listId = instance.getListId();
@@ -1085,15 +1086,24 @@ Template.Lists_show_page.helpers({
 });
 ```
 
-## Fetch in helpers
+## 헬퍼에서 추출(Fetch)하기
+
+원문:
 
 As described in the [UI/UX article](https://guide.meteor.com/ui-ux.html#smart-components), you should fetch data in the same component where you subscribed to that data. In a Blaze smart component, it's usually simplest to fetch the data in a helper, which you can then use to pass data into a reusable child component. For example, in the `Lists_show_page`:
+
+번역:
+
+[UI/UX 섹션](https://guide.meteor.com/ui-ux.html#smart-components)에서 언급한대로, 서브스크립션한 데이터를 동일한 구성요소에 추출해야 합니다.
+Blaze 스마트 구성요소에서는 일반적으로 헬퍼에서 데이터를 가져오는 것이 가장 간단합니다.
+그런 다음 재사용 가능한 하위 구성요소로 데이터를 전달하는 데 사용할 수 있습니다.
+예를 들어 `Lists_show_page`에서:
 
 ```html
 {{> Lists_show_page (listArgs listId)}}
 ```
 
-The `listArgs` helper fetches the data that we've subscribed to above:
+`listArgs`라는 헬퍼는 우리가 서브스크립션한 데이터를 추출합니다.
 
 ```js
 Template.Lists_show_page.helpers({
@@ -1101,16 +1111,26 @@ Template.Lists_show_page.helpers({
     const instance = Template.instance();
     return {
       todosReady: instance.subscriptionsReady(),
+      // 원문:
       // We pass `list` (which contains the full list, with all fields, as a function
       // because we want to control reactivity. When you check a todo item, the
       // `list.incompleteCount` changes. If we didn't do this the entire list would
       // re-render whenever you checked an item. By isolating the reactiviy on the list
       // to the area that cares about it, we stop it from happening.
+      // 번역:
+      // 우리는 반응을 제어하기를 원하기 때문에 전체 목록을 모든 필드와 함께 포함하는`list`를 함수로 전달합니다.
+      // 'todo'항목을 체크하면`list.incompleteCount`가 바뀝니다.
+      // 이 작업을 수행하지 않으면 항목을 검사 할 때마다 전체 목록이 다시 렌더링됩니다.
+      // 목록에있는 반응을 관심있는 영역으로 격리시킴으로써 우리는 그것이 일어나지 않도록합니다.
       list() {
         return Lists.findOne(listId);
       },
+      // 원문:
       // By finding the list with only the `_id` field set, we don't create a dependency on the
       // `list.incompleteCount`, and avoid re-rendering the todos when it changes
+      // 번역:
+      // `_id` 필드만 설정된리스트를 찾음으로써 우리는`list.incompleteCount`에 의존성을
+      // 생성하지않고 변경될 때 todos를 다시 렌더링하는 것을 피합니다
       todos: Lists.findOne(listId, {fields: {_id: true}}).todos()
     };
   }
