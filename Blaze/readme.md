@@ -22,7 +22,7 @@
   * [block helpers 연결](#block-helpers-연결)
   * [엄격함](#엄격함)
   * [무효화](#무효화)
-* [Blaze에서 사용가능한 컨포넌트](#blaze에서-사용가능한-컨포넌트)
+* [Blaze에서 재사용가능한 컨포넌트](#blaze에서-재사용가능한-컨포넌트)
   * [데이터 구조 유효성검사](#데이터-구조-유효성검사)
   * [템플릿에 데이터 컨텍스트 추가하기](#템플릿에-데이터-컨텍스트-추가하기)
   * [`{{#each .. in}}`추천](#each--in-추천)
@@ -692,7 +692,7 @@ JavaScript에서 사용하는 `let`과 유사합니다:
 <h1>중괄호 예제2 {{{|}}}</h1>
 ```
 
-# Blaze에서 사용가능한 컨포넌트
+# Blaze에서 재사용가능한 컨포넌트
 
 Meteor 가이드 [UI/UX](https://guide.meteor.com/ui-ux.html#smart-components) 섹션에서 명확하고 최소한의 방법으로 재사용 가능한 구성요소를 만드는 것이 장점이라고 했습니다.
 
@@ -1142,13 +1142,18 @@ Template.Lists_show_page.helpers({
 
 # Blaze에서 코드 재사용하기
 
-It's common to want to reuse code between two otherwise unrelated components. There are two main ways to do this in Blaze.
+서로 관련이없는 두 구성요소간에 코드를 재사용하려는 경우가 일반적입니다.
+Blaze에서 이 작업을 수행하는 주요 두 방법을 소개합니다.
 
-## Composition
+## 구성
 
-If possible, it's usually best to try and abstract out the reusable part of the two components that need to share functionality into a new, smaller component. If you follow the patterns for [reusable components](../guide/reusable-components.html), it should be simple to reuse this sub-component everywhere you need this functionality.
 
-For instance, suppose you have many places in your application where you need an input to blur itself when you click the "esc" key. If you were building an autocomplete widget that also wanted this functionality, you could compose a `blurringInput` inside your `autocompleteInput`:
+가능한 경우 일반적으로 두 구성요소의 재사용 가능한 부분을 추출하여 독립화 하는 것이 가장 좋습니다.
+이를 위해 기능을 새롭고 더 작은 구성요소로 공유해야합니다.
+[재사용 가능한 구성요소](#blaze에서-사용가능한-컨포넌트)에 대한 패턴을 따르는 경우, 이 기능이 필요한 모든 곳에서이 하위 구성요소를 재사용하는 것이 간단해야합니다.
+
+앱의 많은 부분에서 "esc"키를 누르면 `<input>`에서 blur(포커싱해제)되도록 되어있다고 가정해 봅시다.
+만약 당신이 자동완성 기능을 만들었거나 원한다면, `autocompleteInput`템플릿 안에 `blurringInput`을 작성할 수 있습니다:
 
 ```html
 <template name="autocompleteInput">
@@ -1159,26 +1164,41 @@ For instance, suppose you have many places in your application where you need an
 ```js
 Template.autocompleteInput.helpers({
   currentValue() {
-    // perform complex logic to determine the auto-complete's current text value
+    // 어떤 로직(코드)을 실행하여 자동완성의 현재 텍스트 값을 리턴합니다.
   },
   onChange() {
-    // This is the `autocompleteInput`'s template instance
+    // 이것은 `autocompleteInput`의 템플릿 인스턴스 입니다.
     const instance = Template.instance();
+    // 원문:
     // The second argument to this function is the template instance of the `blurringInput`.
+    // 번역:
+    // 이 함수의 두 번째 인자는`blurringInput`의 템플릿 인스턴스입니다.
     return (event) => {
-      // read the current value out of the input, potentially change the value
+      // input의 현재 값을 읽어 반환합니다.
     };
   }
 });
 ```
 
-By making the `blurringInput` flexible and reusable, we can avoid re-implementing functionality in the `autocompleteInput`.
+`blurringInput`를 유연하고 재사용 가능하게 만들었으므로, `autocompleteInput` 내에서 이 기능을 다시 만들지 않아도 됩니다.
 
-## Libraries
+> 역주: 무슨말을 하려는지는 알겠는데 이 섹션을 재대로 해석하진 못하겠다...
+
+## 라이브러리
+
+원문:
 
 It's usually best to keep your view layer as thin as possible and contain a component to whatever specific task it specifically needs to do. If there's heavy lifting involved (such as complicated data loading logic), it often makes sense to abstract it out into a library that simply deals with the logic alone and doesn't deal with the Blaze system at all.
 
 For example, if a component requires a lot of complicated [D3](http://d3js.org) code for drawing graphs, it's likely that that code itself could live in a separate module that's called by the component. That makes it easier to abstract the code later and share it between various components that need to all draw graphs.
+
+번역:
+
+일반적으로 뷰 레이어를 가능한 한 얇게 유지하고 구체적으로 수행해야하는 특정 작업에 구성요소를 포함하는 것이 가장 좋습니다.
+복잡한 작업(예: 복잡한 데이터로드 논리)이 있을 경우 로직을 단독으로 처리하고 Blaze 시스템을 전혀 다루지 않는 라이브러리로 추상화하는 것이 좋습니다.
+
+예를들어, 구성요소에 그래프를 그리는데 복잡한 [D3](http://d3js.org)코드가 많이 필요한 경우 코드 자체가 구성요소에서 호출하는 별도의 모듈에 있을 가능성이 큽니다.
+따라서 나중에 코드를 추상화하고 그래프를 그릴 필요가 있는 다양한 구성요소간에 쉽게 코드를 공유 할 수 있습니다.
 
 ## Global Helpers
 
@@ -1201,9 +1221,9 @@ Template.registerHelper('shortDate', (date) => {
 
 # Blaze 이해하기
 
-Although Blaze is a very intuitive rendering system, it does have some quirks and complexities that are worth knowing about when you are trying to do complex things.
+Blaze는 매우 직관적인 렌더링 시스템이지만 복잡한 작업을 수행하려고 할 때 알아야 할 몇 가지 단점과 복잡성이 있습니다.
 
-## Re-rendering
+## 리렌더링(Re-rendering)
 
 Blaze is intentionally opaque about re-rendering. Tracker and Blaze are designed as "eventual consistency" systems that end up fully reflecting any data change eventually, but may take a few re-runs or re-renders in getting there, depending on how they are used. This can be frustrating if you are trying to carefully control when your component is re-rendered.
 
