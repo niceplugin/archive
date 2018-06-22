@@ -41,6 +41,7 @@
 * [Blaze에서 코드 재사용하기](#blaze에서-코드-재사용하기)
   * [구성](#구성)
   * [라이브러리](#라이브러리)
+  * [글로벌 헬퍼](#글로벌-헬퍼)
 * [Blaze 이해하기](#blaze-이해하기)
 * [라우터](#라우터)
 
@@ -1202,9 +1203,11 @@ For example, if a component requires a lot of complicated [D3](http://d3js.org) 
 예를들어, 구성요소에 그래프를 그리는데 복잡한 [D3](http://d3js.org)코드가 많이 필요한 경우 코드 자체가 구성요소에서 호출하는 별도의 모듈에 있을 가능성이 큽니다.
 따라서 나중에 코드를 추상화하고 그래프를 그릴 필요가 있는 다양한 구성요소간에 쉽게 코드를 공유 할 수 있습니다.
 
-## Global Helpers
+## 글로벌 헬퍼
 
-Another way to share commonly used view code is a global Spacebars helper. You can define these with the `Template.registerHelper()` function. Typically you register helpers to do simple things (like rendering dates in a given format) which don't justify a separate sub-component. For instance, you could do:
+여러 템플릿에서 공유해야하는 헬퍼가 있을 경우 전역 스페이스바 헬퍼를 씁니다.
+이것은 `Template.registerHelper()`메서드를 통해 만들 수 있습니다.
+예를 들어 다음과 같이 할 수 있습니다.
 
 ```js
 Template.registerHelper('shortDate', (date) => {
@@ -1227,33 +1230,69 @@ Blaze는 매우 직관적인 렌더링 시스템이지만 복잡한 작업을 �
 
 ## 리렌더링(Re-rendering)
 
-Blaze is intentionally opaque about re-rendering. Tracker and Blaze are designed as "eventual consistency" systems that end up fully reflecting any data change eventually, but may take a few re-runs or re-renders in getting there, depending on how they are used. This can be frustrating if you are trying to carefully control when your component is re-rendered.
+블레이즈는 리렌더링 하는 것에 불투명합니다.
+Tracker와 Blaze는 궁극적으로 모든 데이터 변경을 완전히 반영하는 "궁극적인 일관성"시스템으로 설계되었습니다.
+그러나 사용 방법에 따라 약간의 재실행이나 재 렌더링이 필요할 수 있습니다.
+구성요소가 리렌더링 될 때를 신중하게 제어하려고 했다면 실망스러울 수 있습니다.
 
-The first thing to consider here is if you actually need to care about your component re-rendering. Blaze is optimized so that it typically doesn't matter if a component is re-rendered even if it strictly shouldn't. If you make sure that your helpers are cheap to run and consequently rendering is not expensive, then you probably don't need to worry about this.
+첫번째로 고려해야 할 점은 '정말로 구성요소가 리렌더링 되는 것을 제어할 필요가 있는가'? 입니다.
+Blaze는 최적화 되어있으므로 일반적으로 구성요소의 리렌더링 여부는 고려할 필요가 없습니다.
+당신의 헬퍼를 실행하여 렌더링 되는 부분이 가볍다고 확신할 경우 이것은 걱정할 필요가 없습니다.
 
-The main thing to understand about how Blaze re-renders is that re-rendering happens at the level of helpers and template inclusions. Whenever the *data context* of a component changes, it necessarily must re-run *all* helpers and data accessors (as `this` within the helper is the data context and thus will have changed).
+원문:
 
-Additionally, a helper will re-run if any *reactive data source* accessed from within *that specific helper* changes.
+The main thing to understand about how Blaze re-renders is that re-rendering happens at the level of helpers and template inclusions.
+Whenever the *data context* of a component changes, it necessarily must re-run *all* helpers and data accessors (as `this` within the helper is the data context and thus will have changed).
+
+번역:
+
+Blaze는 헬퍼와 템플릿을 포함하는 단계에서 리렌더링이 일어난다는 점을 이해하는 것이 중요합니다.
+구성요소의 데이터 컨텍스트가 변경될 때마다 *반드시 모든 헬퍼와 데이터 접근자를 다시 실행*합니다(헬퍼 내의 `this`는 데이터 컨텍스트이므로 변경 될 것입니다).
+
+또한 반응형 데이터 소스를 참조하고 있는 특정 헬퍼들은 그 값이 변경될 때마다 다시 실행됩니다.
+
+원문:
 
 You can often work out *why* a helper has re-run by tracing the source of the reactive invalidation:
+
+번역:
+
+헬퍼가 반응형이 무효화된 소스임에도 다시 실행하는 이유는 다음과 같습니다:
 
 ```js
 Template.myTemplate.helpers({
   helper() {
+    // 원문:
     // When this helper is scheduled to re-run, the `console.trace` will log a stack trace of where
     // the invalidation has come from (typically a `changed` message from some reactive variable).
+    // 번역:
+    // 이 헬퍼가 다시 실행될 예정이라면 `console.trace`이 무효가 발생한 곳의 스택을 추적 기록할 것입니다.
     Tracker.onInvalidate(() => console.trace());
   }
 });
 ```
 
-## Controlling re-rendering
+## 리렌더링 제어하기
 
-If your helper or sub-component is expensive to run, and often re-runs without any visible effect, you can short circuit unnecessary re-runs by using a more subtle reactive data source. The [`peerlibrary:computed-field`](https://atmospherejs.com/peerlibrary/computed-field) package helps achieve this pattern.
+헬퍼나 하위 구성요소를 실행하는데 드는 비용이 비싸거나 자주 재실행 되야 하지만 시각적인 효과가 없다면(미미하다면), 좀 더 세밀하게 반응형 데이터 소스를 만들어 사용하여 불필요한 재실행을 막을 수 있습니다.
+[`peerlibrary:computed-field`](https://atmospherejs.com/peerlibrary/computed-field)페키지는 이러한 페턴을 구상하는데 도움을 줍니다.
 
-## Attribute helpers
+## 속성 헬퍼
 
-Setting tag attributes via helpers (e.g. `<div {{attributes}}>`) is a neat tool and has some precedence rules that make it more useful. Specifically, when you use it more than once on a given element, the attributes are composed (rather than the second set of attributes simply replacing the first). So you can use one helper to set one set of attributes and a second to set another. For instance:
+원문:
+
+Setting tag attributes via helpers (e.g. `<div {{attributes}}>`) is a neat tool and has some precedence rules that make it more useful.
+Specifically, when you use it more than once on a given element, the attributes are composed (rather than the second set of attributes simply replacing the first).
+So you can use one helper to set one set of attributes and a second to set another.
+For instance:
+
+번역:
+
+`<div {{attributes}}>`처럼 헬퍼를 통해 엘리먼트의 속성을 설정하는 것은 깔끔한 방법이며 이것을 더 유용하게 만들어 줍니다.
+특히 하나 이상의 속성을 엘리먼트에 구성할 수 있습니다.
+다시 설정되어 리턴되는 속성값은 단순히 이전 속성값을 대체합니다.
+따라서 하나의 헬퍼를 사용하여 첫번째 속성세트를 설정하고 두번째 속성세트를 설정할 수 있습니다.
+예를들면:
 
 ```html
 <template name="myTemplate">
@@ -1277,15 +1316,18 @@ Template.myTemplate.helpers({
 });
 ```
 
-## Lookup order
+> 역주: 이 섹션 이해 못함
 
-Another complicated topic in Blaze is name lookups. In what order does Blaze look when you write `{{something}}`? It runs in the following order:
+## 탐색 순서
 
-1. Helper defined on the current component
-2. Binding (eg. from `{{#let}}` or `{{#each in}}`) in current scope
-3. Template name
-4. Global helper
-5. Field on the current data context
+Blaze의 또 다른 복잡한 주제는 탐색입니다.
+`{{something}}`을 쓰면 Blaze에서는 다음과 같은 순서대로 탐색을 실행합니다.
+
+1. 현재 구성요소에 정의된 헬퍼
+2. 현재 범위에서 바인딩 된 것 (예 :`{{#let}}` 또는 `{{#each in}}`)
+3. 템플릿 이름
+4. 글로벌 헬퍼
+5. 현재 데이터 컨텍스트의 필드
 
 ## Blaze and the build system
 
