@@ -43,6 +43,12 @@
   * [라이브러리](#라이브러리)
   * [글로벌 헬퍼](#글로벌-헬퍼)
 * [Blaze 이해하기](#blaze-이해하기)
+  * [리렌더링(Re-rendering)](#리렌더링Re-rendering)
+  * [리렌더링 제어하기](#리렌더링-제어하기)
+  * [속성 헬퍼](#속성-헬퍼)
+  * [탐색 순서](#탐색-순서)
+  * [Blaze와 빌드 시스템](#Blaze와-빌드-시스템)
+  * [뷰(view)란 무엇입니까?](#뷰view란-무엇입니까)
 * [라우터](#라우터)
 
 **API**
@@ -1300,7 +1306,6 @@ For instance:
 </template>
 ```
 
-
 ```js
 Template.myTemplate.helpers({
   classes(names) {
@@ -1329,17 +1334,22 @@ Blaze의 또 다른 복잡한 주제는 탐색입니다.
 4. 글로벌 헬퍼
 5. 현재 데이터 컨텍스트의 필드
 
-## Blaze and the build system
+## Blaze와 빌드 시스템
 
-As mentioned in the [build system article](https://guide.meteor.com/build-tool.html#blaze), the [`blaze-html-templates`](https://atmospherejs.com/meteor/blaze-html-templates) package scans your source code for `.html` files, picks out `<template name="templateName">` tags, and compiles them into a JavaScript file that defines a function that implements the component in code, attached to the `Template.templateName` symbol.
+[build system](https://guide.meteor.com/build-tool.html#blaze)글에서 언급했듯이, [`blaze-html-templates`](https://atmospherejs.com/meteor/blaze-html-templates)패키지는 소스 코드에서 `.html` 파일을 검색하고, `<template name="templateName">`태그들을 선택합니다.
+그리고 그것들을 JavaScript 파일로 컴파일하여 함수로 정의하고 `Template.templateName` 심볼에 포함시킵니다.
 
-This means when you render a Blaze template, you are simply running a function on the client that corresponds to the Spacebars content you defined in the `.html` file.
+즉, Blaze 템플릿을 렌더링 할 때 클라이언트에서 `.html`파일로 정의한 스페이스바 콘텐츠에 해당하는 함수를 실행하는 것입니다.
 
-## What is a view?
+## 뷰(view)란 무엇입니까?
 
-One of the most core concepts in Blaze is the "view", which is a building block that represents a reactively rendering area of a template. The view is the machinery that works behind the scenes to track reactivity, do lookups, and re-render appropriately when data changes. The view is the unit of re-rendering in Blaze. You can even use the view tree to walk the rendered component hierarchy, but it's better to avoid this in favor of communicating between components using callbacks, template arguments, or global data stores.
+Blaze의 가장 핵심 개념 중 하나인 '뷰'는 템플릿의 반응적 렌더링 영역을 나타내는 구축영역입니다.
+뷰는 반응형을 추적하고 검색하며, 데이터가 변경 될 때 적절하게 다시 렌더링하기 위해 화면 뒤에서 작동하는 장치입니다.
+뷰는 Blaze에서 리렌더링 되는 단위입니다.
+뷰 트리를 사용하여 랜더링 된 구성요소 계층을 처리할 수도 있습니다.
+그러나 구성요소간 원활한 통신을 위하여 이 방법보다는 콜백, 템플릿 인자, 글로벌 데이터 저장소를 사용하는 것이 좋습니다.
 
-You can read more about views in the [Blaze View](../api/blaze.html#Blaze-View).
+더 많은 정보는 [Blaze View](../api/blaze.html#Blaze-View)에서 볼 수 있습니다.
 
 # 라우터
 
