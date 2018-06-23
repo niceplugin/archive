@@ -50,11 +50,16 @@
   * [Blaze와 빌드 시스템](#blaze와-빌드-시스템)
   * [뷰(view)란 무엇입니까?](#뷰view란-무엇입니까)
 * [라우터](#라우터)
+  * [Iron Router](#iron-router)
+  * [Flow Router](#flow-router)
+  * [Flow Router Extra](#flow-router-extra)
 
 **API**
 * [Templates](#templates)
 * [Blaze](#blaze)
 * [Spacebars](#spacebars)
+
+***
 
 # 개요
 
@@ -359,6 +364,8 @@ Blaze will get better support for using it outside of Meteor, such as regular st
 * [Spacebars syntax](../api/spacebars.html)
 
 > 역주: 원본 깃허브에서도 이 링크는 모두 끊겨있는 상태이다.
+
+***
 
 # 소개
 
@@ -700,6 +707,8 @@ JavaScript에서 사용하는 `let`과 유사합니다:
 <!-- 이것은 <h1>중괄호 예제2 {{{}}}</h1> 처럼 렌더링 될 것이다 -->
 <h1>중괄호 예제2 {{{|}}}</h1>
 ```
+
+***
 
 # Blaze에서 재사용가능한 컨포넌트
 
@@ -1353,38 +1362,52 @@ Blaze의 가장 핵심 개념 중 하나인 '뷰'는 템플릿의 반응적 렌�
 
 # 라우터
 
-List of routing packages which supports rendering of blaze templates.
+블레이즈 템플릿의 렌더링을 지원하는 라우팅 패키지 목록입니다.
 
 ## Iron Router
-A client and server side router designed specifically for Meteor.
 
-To add Iron Router to your app, install the `iron:router` package
+Meteor를 위해 특별히 설계된 *클라이언트 및 서버* 측 라우터.
+
+Iron Router를 추가하려면, `iron:router`패키지를 설치하십시오
+
 ```js
 meteor add iron:router
 ```
-For detailed information about all of the features Iron Router has to offer, refer to the [Iron Router Guide](https://iron-meteor.github.io/iron-router/)
+
+Iron Router가 제공하는 모든 기능에 대한 자세한 내용은 [Iron Router Guide](https://iron-meteor.github.io/iron-router/)를 참조하십시오.
 
 ## Flow Router
-Carefully Designed Client Side Router for Meteor.
 
-To add Flow Router to your app, install the `kadira:flow-router` package
+Meteor용으로 신중하게 설계된 *클라이언트* 측 라우터.
+
+Flow Router를 추가하려면, `kadira:flow-router`패키지를 설치하십시오.
+
 ```js
 meteor add kadira:flow-router
 ```
-For detailed information about all of the features Flow Router has to offer, refer to the [Kadira Meteor routing guide](https://kadira.io/academy/meteor-routing-guide).
 
-
+Flow Router가 제공하는 모든 기능에 대한 자세한 내용은 [Iron Router Guide](https://github.com/kadirahq/flow-router)를 참조하십시오.
+한국어 가이드는 [여기](https://github.com/niceplugin/translation/tree/master/flowRouter)를 참조하십시오.
 
 ## Flow Router Extra
-Carefully extended flow-router with waitOn and template context
 
+원문:
 
-To add Flow Router Extra to your app, install the `ostrio:flow-router-extra` package
+Carefully extended flow-router with wait On and template context.
+
+번역:
+
+withOn과 템플릿 문법을 신중하게 확장시킨 Flow Router.
+
+Flow Router Extra를 추가하려면, `ostrio:flow-router-extra`패키지를 설치하십시오.
+
 ```js
 meteor add ostrio:flow-router-extra
 ```
 
-For detailed information about all of the features Flow Router Extra has to offer, refer to the [Flow Router Extra Documentation](https://github.com/VeliovGroup/flow-router#flowrouter-extra).
+Flow Router Extra가 제공하는 모든 기능에 대한 자세한 내용은 [Flow Router Documentation](https://github.com/VeliovGroup/flow-router#flowrouter-extra)를 참조하십시오.
+
+***
 
 # Templates
 
