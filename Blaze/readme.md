@@ -1580,7 +1580,7 @@ Template.foo.events({
 
 다른 DOM event들도 사용할 수 있지만 위에 명시된 이벤트들은 모든 브라우저에서 동일하게 작동하도록 Meteor에서 특별히 신경썼습니다.
 
-## `.helpers(helpers)`
+### `.helpers(helpers)`
 
 **사용영역:** 클라이언트
 
@@ -1638,8 +1638,17 @@ execution.
 To create a helper that can be used in any template, use
 [`Template.registerHelper`](../api/templates.html#Template-registerHelper).
 
+### `.onRendered(callback)`
 
-{% apibox "Template#onRendered" instanceDelimiter:. %}
+**사용영역:** 클라이언트
+
+**코드라인**:
+
+**설명:**
+
+설명 내용
+
+**인자:**
 
 Callbacks added with this method are called once when an instance of
 Template.*myTemplate* is rendered into DOM nodes and put into the document for
@@ -1676,7 +1685,17 @@ Template.myPictures.onRendered(function () {
 });
 ```
 
-{% apibox "Template#onCreated" instanceDelimiter:. %}
+### `.onCreated(callback)`
+
+**사용영역:** 클라이언트
+
+**코드라인**:
+
+**설명:**
+
+설명 내용
+
+**인자:**
 
 Callbacks added with this method are called before your template's logic is
 evaluated for the first time. Inside a callback, `this` is the new [template
@@ -1698,7 +1717,17 @@ Template.myPictures.onCreated(function () {
 });
 ```
 
-{% apibox "Template#onDestroyed" instanceDelimiter:. %}
+### `.onDestroyed(callback)`
+
+**사용영역:** 클라이언트
+
+**코드라인**:
+
+**설명:**
+
+설명 내용
+
+**인자:**
 
 These callbacks are called when an occurrence of a template is taken off
 the page for any reason and not replaced with a re-rendering.  Inside
