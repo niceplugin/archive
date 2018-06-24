@@ -1431,202 +1431,168 @@ Meteor는 템플릿 인스턴스가 제거되거나 교체된 경우 이를 정�
 
 ### `.events(callback)`
 
-*사용영역:* 클라이언트
+**사용영역:** 클라이언트
 
-*참고 코드라인:* [blaze/template.js, line 477](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L477)
+**코드라인:** [blaze/template.js, line 477](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L477)
 
-*설명:*
+**설명:**
 
 이 템플릿의 인스턴스에 대한 이벤트 헨들러를 선언하십시오.
 기존 이벤트 처리기에 새 이벤트 처리기를 추가하므로 여러 개를 호출 할 수 있습니다.
 
 `eventMap` 타입과 Meteor에서 이벤트 헨들러가 작동하는 방식에 대한 자세한 설명은 [eventMap](#eventmap)을 참조하십시오.
 
-*인자:*
+**인자:**
 
 - callback (eventMap type): 이 템플릿에 연결할 이벤트 헨들러
 
 #### eventMap
 
+이벤트멥은 프로퍼티를 가지는 하나의 객체로, 이벤트 헨들이 프로퍼티가 되며 실행할 함수가 값이 됩니다.
+프로퍼티는 다음과 같은 형식중 하나로 이루어져 있습니다.
 
-An event map is an object where
-the properties specify a set of events to handle, and the values are
-the handlers for those events. The property can be in one of several
-forms:
+- **eventtype**
+<br>`'click'`과 같은 이벤트 유형을 말하며, `'touchend/mouseup/keyup'`과 같이 슬레쉬로 구분할 수 있습니다.
 
-<dl>
-{% dtdd name:"<em>eventtype</em>" %}
-Matches the type of events, such as `'click'`, separated by a forward
-slash, like so `'touchend/mouseup/keyup'`.
-{% enddtdd %}
+- **eventtype selector**
+<br> css 셀렉터에 해당하는 엘리먼트에 일치합니다.
 
-{% dtdd name:"<em>eventtype selector</em>" %}
-Matches a particular type of event, but only when it appears on
-an element that matches a certain CSS selector.
-{% enddtdd %}
+- **event1, event2**
+<br>
+같은 함수를 가지는 서로 다른 이벤트와 셀렉터를 쉼표를 구분할 수 있습니다.
 
-{% dtdd name:"<em>event1, event2</em>" %}
-To handle more than one event / selector with the same function, use a
-comma-separated list.
-{% enddtdd %}
-</dl>
+이벤트 헨들러 함수는 두 개의 인자를 받습니다.
+`event`는 이벤트에 관한 정보를 가진 객체이고, `instance`는 헨들러에 정의 된 템플릿의 [`Template.instance()`](#templateinstance)입니다.
 
-The handler function receives two arguments: `event`, an object with
-information about the event, and `template`, a [template
-instance](#Template-instances) for the template where the handler is
-defined.  The handler also receives some additional context data in
-`this`, depending on the context of the current element handling the
-event.  In a template, an element's context is the
-data context where that element occurs, which is set by
-block helpers such as `#with` and `#each`.
+원문:
 
-Example:
+The handler also receives some additional context data in `this`, depending on the context of the current element handling the event.
+In a template, an element's context is the data context where that element occurs, which is set by block helpers such as `#with` and `#each`.
+
+번역:
+
+또한 헨들러는 이벤트를 처리하는 현재 요소의 컨텍스트에 따라 `this`에 추가되는 데이터 컨텍스트를 수신합니다.
+템플릿에서 엘리먼트 컨텍스트는 `#with`나 `#each`와 같이 블럭 헬퍼로 설정한 데이터 컨텍스트입니다.
+
+예제:
 
 ```js
 {
-  // Fires when any element is clicked
-  'click'(event) { ... },
+  // 어떠한 엘리먼트라도 클릭할 경우
+  'click'(event, instance) {
+    console.log(event); // 이벤트 객체
+    console.log(instance); // 템플릿 객체
+    console.log(Template.instance() === instance); // true
+    console.log(this); // 현재 탬플릿의 데이터 컨텍스트
+    console.log(instance.data === this); // true
+  },
 
-  // Fires when any element with the 'accept' class is clicked
-  'click .accept'(event) { ... },
+  // 클레스 네임에 'accept'가 포함되어 있는 엘리먼트 클릭시
+  'click .accept'(event, instance) { ... },
 
-  // Fires when 'accept' is clicked or focused
-  'click .accept, focus .accept'(event) { ... }
-  'click/focus .accept'(event) { ... }
+  // 클레스 네임에 'accept'가 포함되어 있는 엘리먼트를 클릭하거나 포커스 했을 시
+  'click .accept, focus .accept'(event, instance) { ... }
+  'click/focus .accept'(event, instance) { ... }
 
-  // Fires when 'accept' is clicked or focused, or a key is pressed
-  'click .accept, focus .accept, keypress'(event) { ... }
-  'click/focus .accept, keypress'(event) { ... }
+  // 클레스 네임에 'accept'가 포함되어 있는 엘리먼트를 클릭하거나 포커스 했을 시
+  // 또는 엘리먼트에 상관없이 키보드를 눌렀을 경우
+  'click .accept, focus .accept, keypress'(event, instance) { ... }
+  'click/focus .accept, keypress'(event, instance) { ... }
 
 }
 ```
 
-Most events bubble up the document tree from their originating
-element.  For example, `'click p'` catches a click anywhere in a
-paragraph, even if the click originated on a link, span, or some other
-element inside the paragraph.  The originating element of the event
-is available as the `target` property, while the element that matched
-the selector and is currently handling it is called `currentTarget`.
+대부분의 이벤트는 엘리먼트를 시작으로 문서트리를 버블링 합니다.
+예를들어, `click p`는 `<p>`태그 내에서 클릭이 이루어진다면 해당 태그 내에 `<a>, <span>`등 어떠한 것을 클릭하여 감지합니다.
+이벤트를 발생시킨 엘리먼트는 `target` 속성으로 알 수 있으며, 이벤트 헨들러에 명시한 셀렉터에 해당하는 엘리먼트는 `currentTarget`으로 알 수 있습니다.
 
 ```js
 {
   'click p'(event) {
-    var paragraph = event.currentTarget; // always a P
-    var clickedElement = event.target; // could be the P or a child element
+    console.log(event.currentTarget); // 항상 p를 가리킴
+    console.log(event.target); // p를 포함한 p 내부에 이벤트를 발생시킨 최초의 엘리먼트 (p 또는 a, span 등)
   }
 }
 ```
 
-If a selector matches multiple elements that an event bubbles to, it
-will be called multiple times, for example in the case of `'click
-div'` or `'click *'`.  If no selector is given, the handler
-will only be called once, on the original target element.
+하나의 셀렉터로 여러개의 엘리먼트가 메치된다면 이벤트는 버블 형식으로 실행됩니다.
+만약 셀렉터가 지정되지 않았을 경우 이벤트는 헨들에 해당하는 엘리먼트에서 한번만 실행 됩니다.
 
-The following properties and methods are available on the event object
-passed to handlers:
+```html
+<template name="foo">
+  <div id="div1">div1
+    <div id="div2">div2
+      <div id="div3">div3
+        <div id="div4">div4
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+```
 
-<dl class="objdesc">
-{% dtdd name:"type" type:"String" %}
-The event's type, such as "click", "blur" or "keypress".
-{% enddtdd %}
+```js
+Template.foo.events({
+  'click'(event) {
+    // 예를들어 '<div id="div4">'를 클릭할 경우
+    // 셀렉터가 명시되어 있지 않으므로 해당 엘리먼트를 기준으로
+    // 1회만 실행되므로 콘솔로그는 '<div id="div4">'로 한번만 찍힌다.
+    console.log(event.currentTarget);
+  },
+  'click div'(event) {
+    // 예를들어 '<div id="div4">'를 클릭할 경우
+    // 조건에 부합하는 엘리먼트가 여러개 이므로 버블링이 발생한다.
+    // 따라서 'div4 > div3 > div2 > div1' 순으로 이벤트 핸들러를 호출하며
+    // 결과적으로 해당 순서에 맞게 콘솔로그가 4회 찍히게 된다.
+    console.log(event.currentTarget);
+  }
+})
+```
 
-{% dtdd name:"target" type:"DOM Element" %}
-The element that originated the event.
-{% enddtdd %}
+헨들러의 이벤트 객체에서 사용할 수 있는 메서드 및 프로퍼티는 다음과 같습니다(표에서는 메서드 및 프로퍼티를 'prop'라고 표기함):
 
-{% dtdd name:"currentTarget" type:"DOM Element" %}
-The element currently handling the event.  This is the element that
-matched the selector in the event map.  For events that bubble, it may
-be `target` or an ancestor of `target`, and its value changes as the
-event bubbles.
-{% enddtdd %}
+|prop|타입|설명|
+|----|---|---|
+|type|string|'click', 'keyup'과 같은 이벤트 타입|
+|target|DOM Element|이벤트를 발생시킨 요소|
+|currentTarget|DOM Element|현재 이벤트를 처리하는 요소로 이것은 이벤트 맵의 셀렉터와 일치합니다.|
+|which|number|마우스 이벤트의 경우 마우스 버튼번호(1=왼쪽, 2=중간, 3=오른쪽), 키 이벤트의 경우 문자 또는 키코드(keyCode)|
+|stopPropagation()||해당 이벤트 맵에 한하여 이벤트 버블링을 중지시킵니다.|
+|stopImmediatePropagation()||번역: 전체 이밴트 맵에서 이벤트 버블링을 중지시킴.<br>원문: Prevent all additional event handlers from being run on this event, including other handlers in this event map, handlers reached by bubbling, and handlers in other event maps.|
+|preventDefault()||예를들어 링크를 클릭하면 페이지를 이동하는 것처럼 브라우저가 기본적으로 이벤트에 응답하는 어떠한 행동을 무효화 시킵니다.|
+|isPropagationStopped()||이 이벤트가 `stopPropagation()`을 실행하였는지 여부를 반환합니다.|
+|isImmediatePropagationStopped()||이 이벤트가 `stopImmediatePropagation()`을 실행하였는지 여부를 반환합니다.|
+|isDefaultPrevented()||이 이벤트가 `preventDefault()`을 실행하였는지 여부를 반환합니다.|
 
-{% dtdd name:"which" type:"Number" %}
-For mouse events, the number of the mouse button (1=left, 2=middle, 3=right).
-For key events, a character or key code.
-{% enddtdd %}
+이벤트 헨들러에서 `false`를 리턴하는 것은 `stopImmediatePropagation()`와 `preventDefault()`를 호출한 것과 동일합니다.
 
-{% dtdd name:"stopPropagation()" %}
-Prevent the event from propagating (bubbling) up to other elements.
-Other event handlers matching the same element are still fired, in
-this and other event maps.
-{% enddtdd %}
+이벤트 타입과 용도는 다음과 같습니다:
 
-{% dtdd name:"stopImmediatePropagation()" %}
-Prevent all additional event handlers from being run on this event,
-including other handlers in this event map, handlers reached by
-bubbling, and handlers in other event maps.
-{% enddtdd %}
+|타입|용도|
+|---|---|
+|click|어떠한 엘리먼트이든 마우스로 클릭하는 경우. 일부 엘리먼트는 키보드 컨트롤로도 이 이벤트를 발생시킵니다(예를들어 포커스 된 `<a>`테그를 키보드 엔터키로 누를 경우).|
+|dblclick|더블클릭|
+|focus<br>blur|포커스를 얻거나 잃을 경우. 이 이벤트는 버블이 생기지 않습니다.|
+|change|체크박스 또는 라디오 버튼의 상태가 변경될 때. 텍스트 필드의 경우 필드값을 변경하고 blur 또는 키이벤트(`<input type="text">`테그의 경우 엔터를 칠 경우)를 사용하였을 때.|
+|mouseenter<br>mouseleave|(마우스를 포함하여)포인터가 엘리먼트 내에 들어오거나 나갈경우. 이 이벤트는 버블이 생기지 않습니다.|
+|mousedown<br>mouseup|마우스의 버튼을 누르거나 땔 경우|
+|keydown<br>keypress<br>keyup|키보드 키를 누르거나 땔 경우. `keypress`의 경우 텍스트 필드에서 타이핑(키를 누르는 것)을 감지하는데 편리합니다. 하지만 `keydown` 및 `keyup`의 경우 방향키를 포함한 특수키(esc같은)도 감지할 수 있습니다.|
 
-{% dtdd name:"preventDefault()" %}
-Prevents the action the browser would normally take in response to this
-event, such as following a link or submitting a form.  Further handlers
-are still called, but cannot reverse the effect.
-{% enddtdd %}
-
-{% dtdd name:"isPropagationStopped()" %}
-Returns whether `stopPropagation()` has been called for this event.
-{% enddtdd %}
-
-{% dtdd name:"isImmediatePropagationStopped()" %}
-Returns whether `stopImmediatePropagation()` has been called for this event.
-{% enddtdd %}
-
-{% dtdd name:"isDefaultPrevented()" %}
-Returns whether `preventDefault()` has been called for this event.
-{% enddtdd %}
-</dl>
-
-Returning `false` from a handler is the same as calling
-both `stopImmediatePropagation` and `preventDefault` on the event.
-
-Event types and their uses include:
-
-<dl class="objdesc">
-{% dtdd name:"<code>click</code>" %}
-Mouse click on any element, including a link, button, form control, or div.
-Use `preventDefault()` to prevent a clicked link from being followed.
-Some ways of activating an element from the keyboard also fire `click`.
-{% enddtdd %}
-
-{% dtdd name:"<code>dblclick</code>" %}
-Double-click.
-{% enddtdd %}
-
-{% dtdd name:"<code>focus, blur</code>" %}
-A text input field or other form control gains or loses focus.  You
-can make any element focusable by giving it a `tabindex` property.
-Browsers differ on whether links, checkboxes, and radio buttons are
-natively focusable.  These events do not bubble.
-{% enddtdd %}
-
-{% dtdd name:"<code>change</code>" %}
-A checkbox or radio button changes state.  For text fields, use
-`blur` or key events to respond to changes.
-{% enddtdd %}
-
-{% dtdd name:"<code>mouseenter, mouseleave</code>" %} The pointer enters or
-leaves the bounds of an element.  These events do not bubble.
-{% enddtdd %}
-
-{% dtdd name:"<code>mousedown, mouseup</code>" %}
-The mouse button is newly down or up.
-{% enddtdd %}
-
-{% dtdd name:"<code>keydown, keypress, keyup</code>" %}
-The user presses a keyboard key.  `keypress` is most useful for
-catching typing in text fields, while `keydown` and `keyup` can be
-used for arrow keys or modifier keys.
-{% enddtdd %}
-
-</dl>
-
-Other DOM events are available as well, but for the events above,
-Meteor has taken some care to ensure that they work uniformly in all
-browsers.
+다른 DOM event들도 사용할 수 있지만 위에 명시된 이벤트들은 모든 브라우저에서 동일하게 작동하도록 Meteor에서 특별히 신경썼습니다.
 
 ## `.helpers(helpers)`
 
+**사용영역:** 클라이언트
+
+**코드라인**:
+
+**설명:**
+
+설명 내용
+
+**인자:**
+
+- 인자목록 (타입): 설명
 
 Each template has a local dictionary of helpers that are made available to it,
 and this call specifies helpers to add to the template's dictionary.
