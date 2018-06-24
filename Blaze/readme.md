@@ -1411,34 +1411,222 @@ Flow Router Extra가 제공하는 모든 기능에 대한 자세한 내용은 [F
 
 # Templates
 
-Documentation of Meteor's template API.
+Meteor의 템플릿 API 문서입니다.
 
-When you write a template as `<template name="foo"> ... </template>` in an HTML file in your app, Meteor generates a
-"template object" named `Template.foo`. Note that template name cannot
-contain hyphens and other special characters.
+당신이 HTML 파일에 `<template name="foo"> ... </template>`과 같이 작성하면, Meteor에서 `Template.foo`라고 이름지은 "template object"를 생성합니다.
+템플릿 이름에는 하이픈(-) 및 기타 특수문자를 사용할 수 없습니다.
 
-The same template may occur many times on a page, and these
-occurrences are called template instances.  Template instances have a
-life cycle of being created, put into the document, and later taken
-out of the document and destroyed.  Meteor manages these stages for
-you, including determining when a template instance has been removed
-or replaced and should be cleaned up.  You can associate data with a
-template instance, and you can access its DOM nodes when it is in the
-document.
+동일한 템플릿이 한 페이지에서 여러번 쓰일 수 있으며, 이러한 경우를 템플릿 인스턴스라고 합니다.
+생성하여 문서에 추가 할 때부터 문서에서 빼내어 파괴할 때까지가 템플릿 인스턴스의 라이프 사이클 입니다.
+Meteor는 템플릿 인스턴스가 제거되거나 교체된 경우 이를 정리할지 결정하는 단계를 관리합니다
+(원문: Meteor manages these stages for you, including determining when a template instance has been removed or replaced and should be cleaned up).
+당신은 데이터를 템플릿 인스턴스에 연결할 수 있으며, 문서의 DOM 노드를 조회할 수 있습니다.
 
-Read more about templates and how to use them in the [Spacebars](../api/spacebars.html) and [Blaze](../guide/introduction.html) article in the Guide.
+템플릿 그리고 그 사용법에 대한 자세한 내용은 [Spacebars](#spacebars)와 [Blaze](#introduction) 글을 참고하십시오.
 
-## Template Declarations
+## Template._name_
 
-{% apibox "Template#events" instanceDelimiter:. %}
+아래에 나열된 섹션들은 위에서 설명한 `Template.foo`라고 이름지은 템플릿 오브젝트를 `Template._name_`이라고 하였을 때,
+`Template._name_.events()`처럼 템플릿 오브젝트 뒤에 사용할 수 있는 메서드에 대한 목록입니다.
 
-Declare event handlers for instances of this template. Multiple calls add
-new event handlers in addition to the existing ones.
+### `.events(callback)`
 
-See [Event Maps](#Event-Maps) for a detailed description of the event
-map format and how event handling works in Meteor.
+*사용영역:* 클라이언트
 
-{% apibox "Template#helpers" instanceDelimiter:. %}
+*참고 코드라인:* [blaze/template.js, line 477](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L477)
+
+*설명:*
+
+이 템플릿의 인스턴스에 대한 이벤트 헨들러를 선언하십시오.
+기존 이벤트 처리기에 새 이벤트 처리기를 추가하므로 여러 개를 호출 할 수 있습니다.
+
+`eventMap` 타입과 Meteor에서 이벤트 헨들러가 작동하는 방식에 대한 자세한 설명은 [eventMap](#eventmap)을 참조하십시오.
+
+*인자:*
+
+- callback (eventMap type): 이 템플릿에 연결할 이벤트 헨들러
+
+#### eventMap
+
+
+An event map is an object where
+the properties specify a set of events to handle, and the values are
+the handlers for those events. The property can be in one of several
+forms:
+
+<dl>
+{% dtdd name:"<em>eventtype</em>" %}
+Matches the type of events, such as `'click'`, separated by a forward
+slash, like so `'touchend/mouseup/keyup'`.
+{% enddtdd %}
+
+{% dtdd name:"<em>eventtype selector</em>" %}
+Matches a particular type of event, but only when it appears on
+an element that matches a certain CSS selector.
+{% enddtdd %}
+
+{% dtdd name:"<em>event1, event2</em>" %}
+To handle more than one event / selector with the same function, use a
+comma-separated list.
+{% enddtdd %}
+</dl>
+
+The handler function receives two arguments: `event`, an object with
+information about the event, and `template`, a [template
+instance](#Template-instances) for the template where the handler is
+defined.  The handler also receives some additional context data in
+`this`, depending on the context of the current element handling the
+event.  In a template, an element's context is the
+data context where that element occurs, which is set by
+block helpers such as `#with` and `#each`.
+
+Example:
+
+```js
+{
+  // Fires when any element is clicked
+  'click'(event) { ... },
+
+  // Fires when any element with the 'accept' class is clicked
+  'click .accept'(event) { ... },
+
+  // Fires when 'accept' is clicked or focused
+  'click .accept, focus .accept'(event) { ... }
+  'click/focus .accept'(event) { ... }
+
+  // Fires when 'accept' is clicked or focused, or a key is pressed
+  'click .accept, focus .accept, keypress'(event) { ... }
+  'click/focus .accept, keypress'(event) { ... }
+
+}
+```
+
+Most events bubble up the document tree from their originating
+element.  For example, `'click p'` catches a click anywhere in a
+paragraph, even if the click originated on a link, span, or some other
+element inside the paragraph.  The originating element of the event
+is available as the `target` property, while the element that matched
+the selector and is currently handling it is called `currentTarget`.
+
+```js
+{
+  'click p'(event) {
+    var paragraph = event.currentTarget; // always a P
+    var clickedElement = event.target; // could be the P or a child element
+  }
+}
+```
+
+If a selector matches multiple elements that an event bubbles to, it
+will be called multiple times, for example in the case of `'click
+div'` or `'click *'`.  If no selector is given, the handler
+will only be called once, on the original target element.
+
+The following properties and methods are available on the event object
+passed to handlers:
+
+<dl class="objdesc">
+{% dtdd name:"type" type:"String" %}
+The event's type, such as "click", "blur" or "keypress".
+{% enddtdd %}
+
+{% dtdd name:"target" type:"DOM Element" %}
+The element that originated the event.
+{% enddtdd %}
+
+{% dtdd name:"currentTarget" type:"DOM Element" %}
+The element currently handling the event.  This is the element that
+matched the selector in the event map.  For events that bubble, it may
+be `target` or an ancestor of `target`, and its value changes as the
+event bubbles.
+{% enddtdd %}
+
+{% dtdd name:"which" type:"Number" %}
+For mouse events, the number of the mouse button (1=left, 2=middle, 3=right).
+For key events, a character or key code.
+{% enddtdd %}
+
+{% dtdd name:"stopPropagation()" %}
+Prevent the event from propagating (bubbling) up to other elements.
+Other event handlers matching the same element are still fired, in
+this and other event maps.
+{% enddtdd %}
+
+{% dtdd name:"stopImmediatePropagation()" %}
+Prevent all additional event handlers from being run on this event,
+including other handlers in this event map, handlers reached by
+bubbling, and handlers in other event maps.
+{% enddtdd %}
+
+{% dtdd name:"preventDefault()" %}
+Prevents the action the browser would normally take in response to this
+event, such as following a link or submitting a form.  Further handlers
+are still called, but cannot reverse the effect.
+{% enddtdd %}
+
+{% dtdd name:"isPropagationStopped()" %}
+Returns whether `stopPropagation()` has been called for this event.
+{% enddtdd %}
+
+{% dtdd name:"isImmediatePropagationStopped()" %}
+Returns whether `stopImmediatePropagation()` has been called for this event.
+{% enddtdd %}
+
+{% dtdd name:"isDefaultPrevented()" %}
+Returns whether `preventDefault()` has been called for this event.
+{% enddtdd %}
+</dl>
+
+Returning `false` from a handler is the same as calling
+both `stopImmediatePropagation` and `preventDefault` on the event.
+
+Event types and their uses include:
+
+<dl class="objdesc">
+{% dtdd name:"<code>click</code>" %}
+Mouse click on any element, including a link, button, form control, or div.
+Use `preventDefault()` to prevent a clicked link from being followed.
+Some ways of activating an element from the keyboard also fire `click`.
+{% enddtdd %}
+
+{% dtdd name:"<code>dblclick</code>" %}
+Double-click.
+{% enddtdd %}
+
+{% dtdd name:"<code>focus, blur</code>" %}
+A text input field or other form control gains or loses focus.  You
+can make any element focusable by giving it a `tabindex` property.
+Browsers differ on whether links, checkboxes, and radio buttons are
+natively focusable.  These events do not bubble.
+{% enddtdd %}
+
+{% dtdd name:"<code>change</code>" %}
+A checkbox or radio button changes state.  For text fields, use
+`blur` or key events to respond to changes.
+{% enddtdd %}
+
+{% dtdd name:"<code>mouseenter, mouseleave</code>" %} The pointer enters or
+leaves the bounds of an element.  These events do not bubble.
+{% enddtdd %}
+
+{% dtdd name:"<code>mousedown, mouseup</code>" %}
+The mouse button is newly down or up.
+{% enddtdd %}
+
+{% dtdd name:"<code>keydown, keypress, keyup</code>" %}
+The user presses a keyboard key.  `keypress` is most useful for
+catching typing in text fields, while `keydown` and `keyup` can be
+used for arrow keys or modifier keys.
+{% enddtdd %}
+
+</dl>
+
+Other DOM events are available as well, but for the events above,
+Meteor has taken some care to ensure that they work uniformly in all
+browsers.
+
+## `.helpers(helpers)`
+
 
 Each template has a local dictionary of helpers that are made available to it,
 and this call specifies helpers to add to the template's dictionary.
@@ -1744,184 +1932,6 @@ For example, if there is a template named "foo", `{{> Template.dynamic
 template="foo"}}` is equivalent to `{{> foo}}` and
 `{{#Template.dynamic template="foo"}} ... {{/Template.dynamic}}`
 is equivalent to `{{#foo}} ... {{/foo}}`.
-
-## Event Maps
-
-An event map is an object where
-the properties specify a set of events to handle, and the values are
-the handlers for those events. The property can be in one of several
-forms:
-
-<dl>
-{% dtdd name:"<em>eventtype</em>" %}
-Matches the type of events, such as `'click'`, separated by a forward 
-slash, like so `'touchend/mouseup/keyup'`.
-{% enddtdd %}
-
-{% dtdd name:"<em>eventtype selector</em>" %}
-Matches a particular type of event, but only when it appears on
-an element that matches a certain CSS selector.
-{% enddtdd %}
-
-{% dtdd name:"<em>event1, event2</em>" %}
-To handle more than one event / selector with the same function, use a
-comma-separated list.
-{% enddtdd %}
-</dl>
-
-The handler function receives two arguments: `event`, an object with
-information about the event, and `template`, a [template
-instance](#Template-instances) for the template where the handler is
-defined.  The handler also receives some additional context data in
-`this`, depending on the context of the current element handling the
-event.  In a template, an element's context is the
-data context where that element occurs, which is set by
-block helpers such as `#with` and `#each`.
-
-Example:
-
-```js
-{
-  // Fires when any element is clicked
-  'click'(event) { ... },
-  
-  // Fires when any element with the 'accept' class is clicked
-  'click .accept'(event) { ... },
-  
-  // Fires when 'accept' is clicked or focused
-  'click .accept, focus .accept'(event) { ... }
-  'click/focus .accept'(event) { ... }
-  
-  // Fires when 'accept' is clicked or focused, or a key is pressed
-  'click .accept, focus .accept, keypress'(event) { ... }
-  'click/focus .accept, keypress'(event) { ... }
-  
-}
-```
-
-Most events bubble up the document tree from their originating
-element.  For example, `'click p'` catches a click anywhere in a
-paragraph, even if the click originated on a link, span, or some other
-element inside the paragraph.  The originating element of the event
-is available as the `target` property, while the element that matched
-the selector and is currently handling it is called `currentTarget`.
-
-```js
-{
-  'click p'(event) {
-    var paragraph = event.currentTarget; // always a P
-    var clickedElement = event.target; // could be the P or a child element
-  }
-}
-```
-
-If a selector matches multiple elements that an event bubbles to, it
-will be called multiple times, for example in the case of `'click
-div'` or `'click *'`.  If no selector is given, the handler
-will only be called once, on the original target element.
-
-The following properties and methods are available on the event object
-passed to handlers:
-
-<dl class="objdesc">
-{% dtdd name:"type" type:"String" %}
-The event's type, such as "click", "blur" or "keypress".
-{% enddtdd %}
-
-{% dtdd name:"target" type:"DOM Element" %}
-The element that originated the event.
-{% enddtdd %}
-
-{% dtdd name:"currentTarget" type:"DOM Element" %}
-The element currently handling the event.  This is the element that
-matched the selector in the event map.  For events that bubble, it may
-be `target` or an ancestor of `target`, and its value changes as the
-event bubbles.
-{% enddtdd %}
-
-{% dtdd name:"which" type:"Number" %}
-For mouse events, the number of the mouse button (1=left, 2=middle, 3=right).
-For key events, a character or key code.
-{% enddtdd %}
-
-{% dtdd name:"stopPropagation()" %}
-Prevent the event from propagating (bubbling) up to other elements.
-Other event handlers matching the same element are still fired, in
-this and other event maps.
-{% enddtdd %}
-
-{% dtdd name:"stopImmediatePropagation()" %}
-Prevent all additional event handlers from being run on this event,
-including other handlers in this event map, handlers reached by
-bubbling, and handlers in other event maps.
-{% enddtdd %}
-
-{% dtdd name:"preventDefault()" %}
-Prevents the action the browser would normally take in response to this
-event, such as following a link or submitting a form.  Further handlers
-are still called, but cannot reverse the effect.
-{% enddtdd %}
-
-{% dtdd name:"isPropagationStopped()" %}
-Returns whether `stopPropagation()` has been called for this event.
-{% enddtdd %}
-
-{% dtdd name:"isImmediatePropagationStopped()" %}
-Returns whether `stopImmediatePropagation()` has been called for this event.
-{% enddtdd %}
-
-{% dtdd name:"isDefaultPrevented()" %}
-Returns whether `preventDefault()` has been called for this event.
-{% enddtdd %}
-</dl>
-
-Returning `false` from a handler is the same as calling
-both `stopImmediatePropagation` and `preventDefault` on the event.
-
-Event types and their uses include:
-
-<dl class="objdesc">
-{% dtdd name:"<code>click</code>" %}
-Mouse click on any element, including a link, button, form control, or div.
-Use `preventDefault()` to prevent a clicked link from being followed.
-Some ways of activating an element from the keyboard also fire `click`.
-{% enddtdd %}
-
-{% dtdd name:"<code>dblclick</code>" %}
-Double-click.
-{% enddtdd %}
-
-{% dtdd name:"<code>focus, blur</code>" %}
-A text input field or other form control gains or loses focus.  You
-can make any element focusable by giving it a `tabindex` property.
-Browsers differ on whether links, checkboxes, and radio buttons are
-natively focusable.  These events do not bubble.
-{% enddtdd %}
-
-{% dtdd name:"<code>change</code>" %}
-A checkbox or radio button changes state.  For text fields, use
-`blur` or key events to respond to changes.
-{% enddtdd %}
-
-{% dtdd name:"<code>mouseenter, mouseleave</code>" %} The pointer enters or
-leaves the bounds of an element.  These events do not bubble.
-{% enddtdd %}
-
-{% dtdd name:"<code>mousedown, mouseup</code>" %}
-The mouse button is newly down or up.
-{% enddtdd %}
-
-{% dtdd name:"<code>keydown, keypress, keyup</code>" %}
-The user presses a keyboard key.  `keypress` is most useful for
-catching typing in text fields, while `keydown` and `keyup` can be
-used for arrow keys or modifier keys.
-{% enddtdd %}
-
-</dl>
-
-Other DOM events are available as well, but for the events above,
-Meteor has taken some care to ensure that they work uniformly in all
-browsers.
 
 # Blaze
 
