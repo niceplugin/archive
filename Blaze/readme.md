@@ -1424,7 +1424,7 @@ Meteor는 템플릿 인스턴스가 제거되거나 교체된 경우 이를 정�
 
 템플릿 그리고 그 사용법에 대한 자세한 내용은 [Spacebars](#spacebars)와 [Blaze](#introduction) 글을 참고하십시오.
 
-## Template._name_
+## Template.\_name\_
 
 아래에 나열된 섹션들은 위에서 설명한 `Template.foo`라고 이름지은 템플릿 오브젝트를 `Template._name_`이라고 하였을 때,
 `Template._name_.events()`처럼 템플릿 오브젝트 뒤에 사용할 수 있는 메서드에 대한 목록입니다.
