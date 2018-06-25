@@ -1742,66 +1742,118 @@ Template.myPictures.onDestroyed(function () {
 
 ## `Template.instances()`
 
-A template instance object represents an occurrence of a template in
-the document.  It can be used to access the DOM and it can be
-assigned properties that persist as the template is reactively updated.
+템플릿 인스턴스 객체는 문서의 템플릿 내에서 생깁니다.
+이것은 DOM을 조회할 때 사용할 수 있으며, 템플릿이 반응형으로 업데이트 되더라도 이것의 프로퍼티는 유지됩니다.
 
-Template instance objects are found as the value of `this` in the
-`onCreated`, `onRendered`, and `onDestroyed` template callbacks, and as an
-argument to event handlers.  You can access the current template instance
-from helpers using [`Template.instance()`](../api/templates.html#Template-instance).
+템플릿 인스턴스 객체는 `onCreated`, `onRendered`, `onDestroyed`에서는 `this`로 이벤트 헨들러에서는 두번째 인자로 접근할 수 있습니다.
+`Template.instance()`를 사용하여 헬퍼에서 현재 탬플릿의 인스턴스에 접근할 수도 있습니다.
 
-In addition to the properties and functions described below, you can assign
-additional properties of your choice to the object. Use the
-[`onCreated`](../api/templates.html#Template-onCreated) and [`onDestroyed`](../api/templates.html#Template-onDestroyed)
-methods to add callbacks performing initialization or clean-up on the object.
+아래 세부섹션별로 나열된 속성 및 함수 외에도 추가 속성을 개체에 지정할 수 있습니다.
+[`onCreated`](#oncreatedcallback) 또는 [`onDestroyed`](#ondestroyedcallback)메서드의 콜백을 사용하여 객체에 사용자 속성을 초기화 또는 정리 작업을 할 수 있습니다.
 
-You can only access `findAll`, `find`, `firstNode`, and `lastNode` from the
-`onRendered` callback and event handlers, not from `onCreated` and
-`onDestroyed`, because they require the template instance to be in the DOM.
+`.findAll()`, `.find()`, `.firstNode`, `.lastNode`는 오직 `onRendered`에서만 사용 가능합니다.
+`onCreated`와 `onDestroyed`는 템플릿 인스턴스에 DOM이 없으므로 사용할 수 없습니다.
 
-Template instance objects are `instanceof Blaze.TemplateInstance`.
+템플릿 인스턴스 객체는 `instanceof Blaze.TemplateInstance`입니다.
 
-{% apibox "Blaze.TemplateInstance#findAll" %}
+### `.findAll(selector)`
 
-`template.findAll` returns an array of DOM elements matching `selector`.
+**사용영역:** 클라이언트
 
-{% apibox "Blaze.TemplateInstance#$" %}
+**코드라인:** [blaze/template.js, line 304](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L304)
 
-`template.$` returns a [jQuery object](http://api.jquery.com/Types/#jQuery) of
-those same elements. jQuery objects are similar to arrays, with
-additional methods defined by the jQuery library.
+**인자:**
 
-The template instance serves as the document root for the selector. Only
-elements inside the template and its sub-templates can match parts of
-the selector.
+- selector (string): 템플릿 컨텐츠 내에 매치시킬 CSS 셀렉터.
 
-{% apibox "Blaze.TemplateInstance#find" %}
+**설명:**
 
-Returns one DOM element matching `selector`, or `null` if there are no
-such elements.
+이 템플릿 인스턴스에서 `selector`와 일치하는 모든 DOM 엘리먼트를 반환합니다.
 
-The template instance serves as the document root for the selector. Only
-elements inside the template and its sub-templates can match parts of
-the selector.
+### `.$(selector)`
 
-{% apibox "Blaze.TemplateInstance#firstNode" %}
+**사용영역:** 클라이언트
 
-The two nodes `firstNode` and `lastNode` indicate the extent of the
-rendered template in the DOM.  The rendered template includes these
-nodes, their intervening siblings, and their descendents.  These two
-nodes are siblings (they have the same parent), and `lastNode` comes
-after `firstNode`, or else they are the same node.
+**코드라인:** [blaze/template.js, line 291](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L291)
 
-{% apibox "Blaze.TemplateInstance#lastNode" %}
+**인자:**
 
-{% apibox "Blaze.TemplateInstance#data" %}
+- selector (string): 템플릿 컨텐츠 내에 매치시킬 CSS 셀렉터.
 
-This property provides access to the data context at the top level of
-the template.  It is updated each time the template is re-rendered.
-Access is read-only and non-reactive.
+**설명:**
 
-{% apibox "Blaze.TemplateInstance#autorun" %}
+이 템플릿 인스턴스에서 `selector`와 일치하는 모든 엘리먼트를 jQuery 객체로 반환합니다.
+
+`template.$`은 같은 요소의 [jQuery 객체](http://api.jquery.com/Types/#jQuery)를 반환합니다.
+jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 된 추가 메서드가 있습니다.
+
+템플릿과 하위 템플릿에 해당하는 범위에서만 셀렉터로 조회할 수 있습니다.
+
+### `.find(selector)`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 314](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L314)
+
+**인자:**
+
+- selector (string): 템플릿 컨텐츠 내에 매치시킬 CSS 셀렉터.
+
+**설명:**
+
+이 템플릿 인스턴스에서 `selector`와 처음 일치하는 하나의 DOM 엘리먼트를 반환합니다.
+
+템플릿과 하위 템플릿에 해당하는 범위에서만 셀렉터로 조회할 수 있습니다.
+
+### firstNode
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 254](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L254)
+
+**설명:**
+
+이 템플릿 인스턴스 첫번째 DOM 노드를 나타냅니다.
+
+`firstNode`와 `lastNode`는 이 템플릿 인스턴스의 DOM 범위를 나타냅니다.
+이 두 노드는 형제관계이므로 부모가 같으며 `lastNode`는 `firstNode`뒤에 옵니다.
+그렇지 않을 경우 두 노드는 하나의 노드를 가리키는 것입니다.
+
+### `lastNode`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 264](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L264)
+
+**설명:** 이 템플릿 인스턴스 마지막 DOM 노드를 나타냅니다.
+
+### `.data`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 161](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L161)
+
+**설명:**
+
+인스턴스의 최신 데이터 컨텍스트를 나타냅니다.
+
+이 속성은 해당 템플릿의 최상위 레벨에 있는 데이터 컨텍스트를 조회합니다.
+템플릿이 리렌더링 될 때마다 업데이트 됩니다.
+이 조회는 읽기 전용이며 반응형이 아닙니다.
+
+### `.autorun(runFunc)`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 324](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L324)
+
+**인자:**
+
+- runFunc (function): Tracker에서 실행할 함수.
+
+[`onCreated`](../api/templates.html#Template-onCreated) 또는 [`onRendered`](../api/templates.html#Template-onRendered)의 콜백에서 `this.autorun()`을 사용하여 반응적으로 DOM이나 템플릿 인스턴스를 업데이트 할 수 있습니다.
+이 콜백 내부에서 `Template.currentData()`를 사용하여 템플릿 인스턴스의 데이터 컨텍스트를 반응적으로 조회할 수 있습니다.
+템플릿이 삭제되면 연산이 중지됩니다.
 
 You can use `this.autorun` from an [`onCreated`](../api/templates.html#Template-onCreated) or
 [`onRendered`](../api/templates.html#Template-onRendered) callback to reactively update the DOM
@@ -1809,7 +1861,7 @@ or the template instance.  You can use `Template.currentData()` inside
 of this callback to access reactive data context of the template instance.
 The Computation is automatically stopped when the template is destroyed.
 
-Alias for `template.view.autorun`.
+`template.view.autorun`의 별칭입니다.
 
 {% apibox "Blaze.TemplateInstance#subscribe" %}
 
