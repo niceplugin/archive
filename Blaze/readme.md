@@ -1435,16 +1435,16 @@ Meteor는 템플릿 인스턴스가 제거되거나 교체된 경우 이를 정�
 
 **코드라인:** [blaze/template.js, line 477](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L477)
 
+**인자:**
+
+- callback (eventMap type): 이 템플릿에 연결할 이벤트 헨들러
+
 **설명:**
 
 이 템플릿의 인스턴스에 대한 이벤트 헨들러를 선언하십시오.
 기존 이벤트 처리기에 새 이벤트 처리기를 추가하므로 여러 개를 호출 할 수 있습니다.
 
 `eventMap` 타입과 Meteor에서 이벤트 헨들러가 작동하는 방식에 대한 자세한 설명은 [eventMap](#eventmap)을 참조하십시오.
-
-**인자:**
-
-- callback (eventMap type): 이 템플릿에 연결할 이벤트 헨들러
 
 #### eventMap
 
@@ -1584,20 +1584,22 @@ Template.foo.events({
 
 **사용영역:** 클라이언트
 
-**코드라인**:
+**코드라인**: [blaze/template.js, line 443](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L443)
+
+**인자:**
+
+- helpers (object): 각 헬퍼 명을 함수명으로 하는 하나의 객체
 
 **설명:**
 
 설명 내용
 
-**인자:**
-
-- 인자목록 (타입): 설명
-
-Each template has a local dictionary of helpers that are made available to it,
+원문: Each template has a local dictionary of helpers that are made available to it,
 and this call specifies helpers to add to the template's dictionary.
 
-Example:
+번역: 각 템플릿에는 헬퍼 객체가 있습니다.
+
+예제:
 
 ```js
 Template.myTemplate.helpers({
@@ -1607,10 +1609,11 @@ Template.myTemplate.helpers({
 });
 ```
 
-Now you can invoke this helper with `{{foo}}` in the template defined
-with `<template name="myTemplate">`.
+이제 `<template name="myTemplate">`템플릿에서 `{{foo}}`를 통해 해당 헬퍼를 호출 할 수 있습니다.
 
-Helpers can accept positional and keyword arguments:
+원문: Helpers can accept positional and keyword arguments:
+
+번역: 헬퍼는 키워드 인자를 받을 수 있습니다.
 
 ```js
 Template.myTemplate.helpers({
@@ -1621,22 +1624,22 @@ Template.myTemplate.helpers({
 });
 ```
 
-Then you can call this helper from template like this:
+그런 다음 템플릿에서 헬퍼를 아래와 같이 호출할 수 있습니다:
 
 ```
 {{displayName "John" "Doe" title="President"}}
 ```
 
-You can learn more about arguments to helpers in [Spacebars](../api/spacebars.html).
+스페이스바의 헬퍼에 대해 더 많은 정보는 [여기](#spacebars)를 참조하십시오.
 
-Under the hood, each helper starts a new
-[`Tracker.autorun`](http://docs.meteor.com/api/tracker.html#Tracker-autorun).  When its reactive
-dependencies change, the helper is rerun. Helpers depend on their data
-context, passed arguments and other reactive data sources accessed during
-execution.
+원문: Under the hood, each helper starts a new [`Tracker.autorun`](http://docs.meteor.com/api/tracker.html#Tracker-autorun).
 
-To create a helper that can be used in any template, use
-[`Template.registerHelper`](../api/templates.html#Template-registerHelper).
+번역: 후드 아래에서 각 헬퍼는 새로운 [`Tracker.autorun`](http://docs.meteor.com/api/tracker.html#Tracker-autorun)을 시작합니다.
+
+반응형의 종속성이 변경될 경우 헬퍼는 다시 실행됩니다.
+헬퍼는 데이터 컨텍스트, 전달된 인자 및 실행중에 조회되는 기타 데이터 소스에 의존합니다.
+
+모든 템플릿에서 사용 가능한 글로벌 헬퍼를 만드려면 [`Template.registerHelper`](#templateregisterHelper)를 참조하십시오.
 
 ### `.onRendered(callback)`
 
