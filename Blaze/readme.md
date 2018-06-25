@@ -1700,7 +1700,7 @@ Template.myPictures.onRendered(function () {
 Handling the `created` event is a useful way to set up values on template
 instance that are read from template helpers using `Template.instance()`.
 
-번역: 이러한 콜백은 한번만 실행되며 콜백그룹의 첫번째 입니다.
+번역: 이 콜백은 한번만 실행되며 콜백그룹의 첫번째 입니다.
 `created` 이벤트는 템플릿 인스턴스를 설정하기에 매우 유용하며, `Template.instance()`를 사용하여 템플릿 헬퍼가 읽습니다.
 
 ```js
@@ -1718,32 +1718,29 @@ Template.myPictures.onCreated(function () {
 
 **사용영역:** 클라이언트
 
-**코드라인**:
-
-**설명:**
-
-설명 내용
+**코드라인**: [blaze/template.js, line 91](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L91)
 
 **인자:**
 
-These callbacks are called when an occurrence of a template is taken off
-the page for any reason and not replaced with a re-rendering.  Inside
-a callback, `this` is the [template instance](../api/templates.html#Template-instances) object
-being destroyed.
+- callback (function): 콜백용으로 추가되는 함수
 
-This group of callbacks is most useful for cleaning up or undoing any external
-effects of `created` or `rendered` groups. This group fires once and is the last
-callback to fire.
+**설명:**
+
+이 콜백은 어떤 이유로든 템플릿이 페이지에서 제거되고 다시 렌더링으로 대체되지 않을 때 호출됩니다.
+콜백 안에서 'this'는 파괴된 [템플릿 인스턴스](#templateinstance) 객체입니다.
+
+이 콜백은 `created`, `rendered`에서 설정한 어떠한 효과를 정리하거나 취소하는데 유용한 시점입니다.
+이 콜백은 한 번만 실행되는 마지막 콜백입니다.
 
 ```js
 Template.myPictures.onDestroyed(function () {
-  // deregister from some central store
+  // 원문: deregister from some central store
+  // 번역: 중앙 저장소에 템플릿을 제거합니다.
   GalleryTemplates = _.without(GalleryTemplates, this);
 });
 ```
 
-
-## Template instances
+## `Template.instances()`
 
 A template instance object represents an occurrence of a template in
 the document.  It can be used to access the DOM and it can be
