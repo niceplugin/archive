@@ -1592,8 +1592,6 @@ Template.foo.events({
 
 **설명:**
 
-설명 내용
-
 원문: Each template has a local dictionary of helpers that are made available to it,
 and this call specifies helpers to add to the template's dictionary.
 
@@ -1645,28 +1643,22 @@ Template.myTemplate.helpers({
 
 **사용영역:** 클라이언트
 
-**코드라인**:
-
-**설명:**
-
-설명 내용
+**코드라인**: [blaze/template.js, line 78](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L78)
 
 **인자:**
 
-Callbacks added with this method are called once when an instance of
-Template.*myTemplate* is rendered into DOM nodes and put into the document for
-the first time.
+- callback (function): 콜백용으로 추가되는 함수
 
-In the body of a callback, `this` is a [template instance](../api/templates.html#Template-instances)
-object that is unique to this occurrence of the template and persists across
-re-renderings. Use the `onCreated` and `onDestroyed` callbacks to perform
-initialization or clean-up on the object.
+**설명:**
 
-Because your template has been rendered, you can use functions like
-[`this.findAll`](../api/templates.html#Blaze-TemplateInstance-findAll) which look at its DOM nodes.
+이 메서드에 추가된 콜벡 함수는 템플릿 인스턴스에서 한번만 호출됩니다.
+템플릿은 DOM 노드로 렌더링 된 다음 처음으로 문서에 삽입됩니다.
 
-This can be a good place to apply any DOM manipulations you want, after the
-template is rendered for the first time.
+콜백 내에서 `this`는 템플릿의 리렌더링과 관계없이 유일한 [템플릿 인스턴스](#templateinstance)입니다.
+
+템플릿이 렌더링 되었기 때문에 DOM 노드를 탐색하는 [`this.findAll()`](#findall)과 같은 메서드를 사용할 수 있습니다.
+
+템플릿을 처음 렌더링 한 후에 DOM을 조작하기 용이한 시점입니다..
 
 ```html
 <template name="myPictures">
@@ -1680,7 +1672,7 @@ template is rendered for the first time.
 
 ```js
 Template.myPictures.onRendered(function () {
-  // Use the Packery jQuery plugin
+  // 렌더링이 된 다음이므로 이제 jQuery 플러그인을 사용합니다.
   this.$('.container').packery({
     itemSelector: '.item',
     gutter: 10
@@ -1692,30 +1684,32 @@ Template.myPictures.onRendered(function () {
 
 **사용영역:** 클라이언트
 
-**코드라인**:
-
-**설명:**
-
-설명 내용
+**코드라인**: [blaze/template.js, line 65](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L65)
 
 **인자:**
 
-Callbacks added with this method are called before your template's logic is
-evaluated for the first time. Inside a callback, `this` is the new [template
-instance](#Template-instances) object. Properties you set on this object will be
-visible from the callbacks added with `onRendered` and `onDestroyed` methods and
-from event handlers.
+- callback (function): 콜백용으로 추가되는 함수
 
-These callbacks fire once and are the first group of callbacks to fire.
+**설명:**
+
+이 메서드에 추가된 콜벡함수는 템플릿 로직이 처음 실행되기 전에 호출됩니다.
+콜백 내의 `this`는 새로운 [템플릿 인스턴스](#templateinstance) 객체입니다.
+(이 시점에서) 이 객체에 추가하는 프로퍼티들은 `onRendered`, `onDestroyed` 및 이벤트 헨들러의 콜벡에서 접근할 수 있습니다.
+
+원문: These callbacks fire once and are the first group of callbacks to fire.
 Handling the `created` event is a useful way to set up values on template
 instance that are read from template helpers using `Template.instance()`.
 
+번역: 이러한 콜백은 한번만 실행되며 콜백그룹의 첫번째 입니다.
+`created` 이벤트는 템플릿 인스턴스를 설정하기에 매우 유용하며, `Template.instance()`를 사용하여 템플릿 헬퍼가 읽습니다.
+
 ```js
 Template.myPictures.onCreated(function () {
-  // set up local reactive variables
+  // 지역 반응형 변수를 설정합니다.
   this.highlightedPicture = new ReactiveVar(null);
   
-  // register this template within some central store
+  // 원문: register this template within some central store
+  // 번역: 중앙 저장소에 템플릿을 추가합니다.
   GalleryTemplates.push(this);
 });
 ```
