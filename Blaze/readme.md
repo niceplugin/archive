@@ -1742,6 +1742,12 @@ Template.myPictures.onDestroyed(function () {
 
 ## `Template.instances()`
 
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 505](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L505)
+
+**설명:**
+
 템플릿 인스턴스 객체는 문서의 템플릿 내에서 생깁니다.
 이것은 DOM을 조회할 때 사용할 수 있으며, 템플릿이 반응형으로 업데이트 되더라도 이것의 프로퍼티는 유지됩니다.
 
@@ -1958,7 +1964,7 @@ Template.listing.onRendered(function () {
 
 번역: 이 템플릿을 호출 할 때 [View](http://blazejs.org/api/blaze.html#Blaze-View) 객체입니다.
 
-## `.registerHelper(name, function)`
+## `Template.registerHelper(name, function)`
 
 **사용영역:** 클라이언트
 
@@ -1966,42 +1972,83 @@ Template.listing.onRendered(function () {
 
 **설명:** 모든 템플릿에서 사용할 수 있는 헬퍼 함수를 정의합니다.
 
+## `Template.currentData()`
 
+**사용영역:** 클라이언트
 
-{% apibox "Template.instance" %}
+**코드라인:** [blaze/template.js, line 537](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L537)
 
-{% apibox "Template.currentData" %}
+**설명:**
 
-{% apibox "Template.parentData" %}
+- `onCreated`, `onRendered`, `onDestroyed`의 콜백 내에서 템플릿의 데이터 컨텍스트를 반환합니다.
 
-For example, `Template.parentData(0)` is equivalent to `Template.currentData()`.  `Template.parentData(2)`
-is equivalent to `{{../..}}` in a template.
+- 이벤트 헨들러 내부에서 헨들러가 정의된 데이터 컨텍스트를 반환합니다.
 
-{% apibox "Template.body" %}
+- 헬퍼 내에서 헬퍼가 사용된 DOM 노드의 데이터 컨텍스트를 반환합니다.
 
-You can define helpers and event maps on `Template.body` just like on
-any `Template.myTemplate` object.
+이 메서드의 결과는 반응형으로 동작합니다.
 
-Helpers on `Template.body` are only available in the `<body>` tags of
-your app.  To register a global helper, use
-[Template.registerHelper](../api/templates.html#Template-registerHelper).
-Event maps on `Template.body` don't apply to elements added to the
-body via `Blaze.render`, jQuery, or the DOM API, or to the body element
-itself.  To handle events on the body, window, or document, use jQuery
-or the DOM API.
+## `Template.parentData(numLevels)`
 
-{% apibox "Template.dynamic" %}
+**사용영역:** 클라이언트
 
-`Template.dynamic` allows you to include a template by name, where the name
-may be calculated by a helper and may change reactively.  The `data`
-argument is optional, and if it is omitted, the current data context
-is used. It's also possible, to use `Template.dynamic` as a block helper
-(`{{#Template.dynamic}} ... {{/Template.dynamic}}`)
+**코드라인:** [blaze/template.js, line 546](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L546)
 
-For example, if there is a template named "foo", `{{> Template.dynamic
-template="foo"}}` is equivalent to `{{> foo}}` and
-`{{#Template.dynamic template="foo"}} ... {{/Template.dynamic}}`
-is equivalent to `{{#foo}} ... {{/foo}}`.
+**인자:**
+
+- numLevels (number(integer)):
+
+**설명:**
+
+원문:
+
+Accesses other data contexts that enclose the current data context.
+
+For example, `Template.parentData(0)` is equivalent to `Template.currentData()`.
+`Template.parentData(2)` is equivalent to `{{../..}}` in a template.
+
+번역:
+
+현재 데이터 컨텍스트를 포함하는 다른 데이터 컨텍스트에 액세스합니다.
+
+예를 들어, `Template.parentData(0)`는 `Template.currentData()`와 같습니다.
+`Template.parentData(2)`는 템플릿의 `{{../..}}`과 같습니다.
+
+## `Template.body`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [templating-runtime/templating.js, line 47](https://github.com/meteor/blaze/blob/master/packages/templating-runtime/templating.js#L47)
+
+**설명:**
+
+`<body>` 태그를 나타내는 탬플릿 객체입니다.
+
+`Template._name_`과 마찬가지로 `Template.body`에 헬퍼나 이벤트 맵을 정의할 수 있습니다.
+
+`Template.body`에 등록된 헬퍼는 `<body>`테그애서만 사용 가능합니다.
+글로벌 헬퍼를 사용하고 싶다면 [`Template.registerHelper()`](#templateregisterhelpernamefunction)를 사용하십시요.
+`Template.body`의 이벤트 맵은 `Blaze.render`, jQuery, DOM API, 에 의해 추가되는 엘리먼트나 `<body>` 자체에는 적용되지 않습니다.
+`<body>`나 window 또는 document에 대한 직접적인 이벤트 헨들러 추가는 jQuery 또는 DOM API를 사용하십시요.
+
+## `{{> Template.dynamic template=template [data=data]}}`
+
+**사용영역:** 템플릿(templates)
+
+**코드라인:** [templating-runtime/dynamic.js, line 3](https://github.com/meteor/blaze/blob/master/packages/templating-runtime/dynamic.js#L3)
+
+**인자:**
+
+- template (string): 템플릿의 이름
+
+- data (object): 옵션. 해당 템플릿에 들어갈 데이터 컨텍스트
+
+`Template.dynamic`는 첫번째 인자로 템플릿 이름을 전달하여 템플릿을 반응형(동적)으로 변환할 수 있습니다.
+`data`인자는 옵션이므로 생략가능하며, 생략할 경우 현재 데이터 컨텍스트가 적용됩니다.
+`Template.dynamic`는 블록 헬퍼이므로 `{{#Template.dynamic}} ... {{/Template.dynamic}}`와 같이 사용할 수도 있습니다.
+
+예를들어 "foo"라는 이름의 템플릿이 있다면, `{{> Template.dynamic template="foo"}}`는 `{{> foo}}`와 같습니다.
+`{{#Template.dynamic template="foo"}} ... {{/Template.dynamic}}`와 같이 사용하였다면 이것은 `{{#foo}} ... {{/foo}}`로 사용한 것과 같습니다.
 
 # Blaze
 
