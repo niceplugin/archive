@@ -2043,6 +2043,8 @@ For example, `Template.parentData(0)` is equivalent to `Template.currentData()`.
 
 - data (object): 옵션. 해당 템플릿에 들어갈 데이터 컨텍스트
 
+**설명:**
+
 `Template.dynamic`는 첫번째 인자로 템플릿 이름을 전달하여 템플릿을 반응형(동적)으로 변환할 수 있습니다.
 `data`인자는 옵션이므로 생략가능하며, 생략할 경우 현재 데이터 컨텍스트가 적용됩니다.
 `Template.dynamic`는 블록 헬퍼이므로 `{{#Template.dynamic}} ... {{/Template.dynamic}}`와 같이 사용할 수도 있습니다.
