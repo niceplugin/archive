@@ -1855,13 +1855,31 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 이 콜백 내부에서 `Template.currentData()`를 사용하여 템플릿 인스턴스의 데이터 컨텍스트를 반응적으로 조회할 수 있습니다.
 템플릿이 삭제되면 연산이 중지됩니다.
 
-You can use `this.autorun` from an [`onCreated`](../api/templates.html#Template-onCreated) or
-[`onRendered`](../api/templates.html#Template-onRendered) callback to reactively update the DOM
-or the template instance.  You can use `Template.currentData()` inside
-of this callback to access reactive data context of the template instance.
-The Computation is automatically stopped when the template is destroyed.
-
 `template.view.autorun`의 별칭입니다.
+
+### `subscribe(name, [arg1, arg2, ...], [options])`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 347](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L347)
+
+**인자:**
+
+- name (string): 서브스크립션의 이름입니다. 서버의 `publish()`를 콜하는 이름과 일치합니다.
+
+- arg1, arg2, ... (any): 서버의 퍼블리셔에 전달될 인자들 입니다.
+
+- options
+
+  - onReady (function): [Meteor.subscript](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe)로 전달할 것.
+
+  - onStop (function): [Meteor.subscript](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe)로 전달할 것.
+
+  - connection ([DDP Connection](https://docs.meteor.com/api/connections.html#DDP-connect)): 서브스크립션을 만들 커넥션.
+
+**설명:**
+
+
 
 {% apibox "Blaze.TemplateInstance#subscribe" %}
 
