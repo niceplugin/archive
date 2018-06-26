@@ -36,5 +36,5 @@ git push origin master
 ```
 git rm -r --cached .
 git add .
-git commit -m "fixed gitignore”
+git commit -m "fixed gitignore"
 ```
