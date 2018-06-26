@@ -70,7 +70,7 @@
     * [`.lastNode`](#lastnode)
     * [`.data`](#data)
     * [`.autorun(runFunc)`](#autorunrunfunc)
-    * [`subscribe(name, [arg1, arg2, ...], [options])`](#subscribename-arg1-arg2--options)
+    * [`.subscribe(name, [arg1, arg2, ...], [options])`](#subscribename-arg1-arg2--options)
     * [`.view()`](#view)
   * [`Template.registerHelper(name, function)`](#templateregisterhelpername-function)
   * [`Template.currentData()`](#templatecurrentdata)
@@ -1884,7 +1884,7 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 
 `template.view.autorun`의 별칭입니다.
 
-### `subscribe(name, [arg1, arg2, ...], [options])`
+### `.subscribe(name, [arg1, arg2, ...], [options])`
 
 **사용영역:** 클라이언트
 
