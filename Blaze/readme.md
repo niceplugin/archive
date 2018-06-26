@@ -2062,12 +2062,12 @@ For example, `Template.parentData(0)` is equivalent to `Template.currentData()`.
 
 - template (string): 템플릿의 이름
 
-- data (object): 옵션. 해당 템플릿에 들어갈 데이터 컨텍스트
+- data (object): *선택적*. 해당 템플릿에 들어갈 데이터 컨텍스트
 
 **설명:**
 
 `Template.dynamic`는 첫번째 인자로 템플릿 이름을 전달하여 템플릿을 반응형(동적)으로 변환할 수 있습니다.
-`data`인자는 옵션이므로 생략가능하며, 생략할 경우 현재 데이터 컨텍스트가 적용됩니다.
+`data`인자는 *선택적*이므로 생략가능하며, 생략할 경우 현재 데이터 컨텍스트가 적용됩니다.
 `Template.dynamic`는 블록 헬퍼이므로 `{{#Template.dynamic}} ... {{/Template.dynamic}}`와 같이 사용할 수도 있습니다.
 
 예를들어 "foo"라는 이름의 템플릿이 있다면, `{{> Template.dynamic template="foo"}}`는 `{{> foo}}`와 같습니다.
@@ -2075,38 +2075,51 @@ For example, `Template.parentData(0)` is equivalent to `Template.currentData()`.
 
 # Blaze
 
-Documentation of how to use Blaze, Meteor's reactive rendering engine.
+Meteor의 반응형 렌더링 엔진인 Blaze에 대해 다룹니다.
 
-Blaze is the package that makes reactive templates possible.
-You can use the Blaze API directly in order to render templates programmatically
-and manipulate "Views," the building blocks of reactive templates.
+Blaze는 반응형 템플릿을 만드는 페키지 입니다.
+Blaze API를 사용하여 프로그레밍 적으로 템플릿을 구성하고 반응적으로 "View(보여지는 부분)"를 컨트롤 할 수 있습니다.
 
-{% apibox "Blaze.render" %}
+## `.render(templateOrView, parentNode, [nextNode], [parentView])`
 
-When you render a template, the callbacks added with
-[`onCreated`](../api/templates.html#Template-onCreated) are invoked immediately, before evaluating
-the content of the template.  The callbacks added with
-[`onRendered`](../api/templates.html#Template-onRendered) are invoked after the View is rendered and
-inserted into the DOM.
+**사용영역:** 클라이언트
 
-The rendered template
-will update reactively in response to data changes until the View is
-removed using [`Blaze.remove`](#Blaze-remove) or the View's
-parent element is removed by Meteor or jQuery.
+**코드라인:** [blaze/view.js, line 609](https://github.com/meteor/blaze/blob/master/packages/blaze/view.js#L609)
 
-{% pullquote warning %}
-If the View is removed by some other mechanism
-besides Meteor or jQuery (which Meteor integrates with by default),
-the View may continue to update indefinitely.  Most users will not need to
-manually render templates and insert them into the DOM, but if you do,
-be mindful to always call [`Blaze.remove`](#Blaze-remove) when the View is
-no longer needed.
-{% endpullquote %}
+**인자:**
+
+- templateOrView (Blaze.Template or Blaze.View):
+<br>렌더링 할 템플릿 또는 뷰 객체.
+<br>템플릿의 경우 뷰 객체가 생성됩니다.
+<br>뷰의 경우 렌더링 된 뷰이어야 합니다.
+
+- parentNode (DOM Node): 렌더링 된 템플릿의 부모가 될 노드이어야 하며, 이것은 반드시 엘리먼트 노드 이어야 합니다.
+
+- nextNode (DOM Node): *선택적*. 사용할 경우 반드시 'parentNode'의 자식 노드이어야 합니다.
+이 노드는 'templateOrView' 뒤에 위치합니다.
+
+- parentView (Blaze.View): *선택적*. 사용할 경우 렌더링 된 뷰의 부모 뷰가 됩니다.
+
+**설명:**
+
+템플릿 또는 뷰를 DOM 노드에 렌더링하여 삽입하면 `Blaze.remove()`로 전달될 수 있는 렌더링 된 뷰가 반환됩니다.
+
+템플릿을 렌더링 할 때 `onCreated`의 콜백을 실행 한 후 현재 템플릿을 평가합니다.
+`onRendered`의 콜백은 뷰가 렌더링 된 후 DOM에 삽입되고 나서 실행됩니다.
+
+렌더링 된 템플릿은 `Blaze.remove()`에 의해 뷰가 제거되거나, Meteor 또는 jQuery에 의해 뷰의 부모 엘리먼트가 제거될 때까지 데이터 변경에 반응적으로 업데이트 됩니다.
+
+> Meteor 또는(기본적으로 Meteor와 통합되는)다른 메커니즘을 통해 뷰가 제거된 경우 뷰는 무한정으로 계속 업데이트될 수 있습니다.
+> 대부분의 사용자는 템플릿을 수동으로 렌더링하여 DOM에 삽입할 필요가 없지만, 수동으로 렌더링 할 경우에는 뷰가 더 이상 필요하지 않을 때 항상 `Blaze.remove`로 제거하십시오.
+
+## `.renderWithData(templateOrView, data, parentNode, [nextNode], [parentView])`
 
 {% apibox "Blaze.renderWithData" %}
 
 `Blaze.renderWithData(Template.myTemplate, data)` is essentially the same as
 `Blaze.render(Blaze.With(data, function () { return Template.myTemplate; }))`.
+
+## `.remove(renderedView)`
 
 {% apibox "Blaze.remove" %}
 
