@@ -56,7 +56,7 @@
 
 **API**
 * [Templates](#templates)
-  * [Template._name_](#template_name_)
+  * [`Template._name_`](#template_name_)
     * [`.events(callback)`](#eventscallback)
     * [`.helpers(helpers)`](#helpershelpers)
     * [`.onRendered(callback)`](#onrenderedcallback)
