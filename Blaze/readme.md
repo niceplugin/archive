@@ -56,6 +56,27 @@
 
 **API**
 * [Templates](#templates)
+  * [Template._name_](#template_name_)
+    * [`.events(callback)`](#eventscallback)
+    * [`.helpers(helpers)`](#helpershelpers)
+    * [`.onRendered(callback)`](#onrenderedcallback)
+    * [`.onCreated(callback)`](#oncreatedcallback)
+    * [`.onDestroyed(callback)`](#ondestroyedcallback)
+  * [`Template.instances()`](#templateinstances)
+    * [`.findAll(selector)`](#findallselector)
+    * [`.$(selector)`](#selector)
+    * [`.find(selector)`](#findselector)
+    * [`.firstNode`](#firstnode)
+    * [`.lastNode`](#lastnode)
+    * [`.data`](#data)
+    * [`.autorun(runFunc)`](#autorunrunfunc)
+    * [`subscribe(name, [arg1, arg2, ...], [options])`](#subscribename-arg1-arg2--options)
+    * [`.view()`](#view)
+  * [`Template.registerHelper(name, function)`](#templateregisterhelpername-function)
+  * [`Template.currentData()`](#templatecurrentdata)
+  * [`Template.parentData(numLevels)`](#templateparentdatanumlevels)
+  * [`Template.body`](#templatebody)
+  * [`{{> Template.dynamic template=template [data=data]}}`](#-templatedynamic-templatetemplate-datadata)
 * [Blaze](#blaze)
 * [Spacebars](#spacebars)
 
@@ -1811,7 +1832,7 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 
 템플릿과 하위 템플릿에 해당하는 범위에서만 셀렉터로 조회할 수 있습니다.
 
-### firstNode
+### `.firstNode`
 
 **사용영역:** 클라이언트
 
@@ -1825,7 +1846,7 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 이 두 노드는 형제관계이므로 부모가 같으며 `lastNode`는 `firstNode`뒤에 옵니다.
 그렇지 않을 경우 두 노드는 하나의 노드를 가리키는 것입니다.
 
-### `lastNode`
+### `.lastNode`
 
 **사용영역:** 클라이언트
 
