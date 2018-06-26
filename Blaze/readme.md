@@ -1879,27 +1879,21 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 
 **설명:**
 
+템플릿이 파괴될때([destroyed](#ondestroyedcallback)) 사라질 [`Meteor.subscribe`](https://docs.meteor.com/api/pubsub.html#Meteor-subscribe)을 가리킵니다.
 
+[`onCreated()`](#oncreatedcallback)의 콜백에서 `this.subscribe()`를 사용하여 템플릿에 의존하는 데이터 퍼블리케이션을 만들 수 있습니다.
+템플릿이 삭제되면 서브스크립션은 중지됩니다.
 
-{% apibox "Blaze.TemplateInstance#subscribe" %}
+`this.subscribe`으로 호출된 모든 서브스크립션이 준비되면 true를 리턴하는 `Template.instance().subscriptionsReady()`라는 함수가 보조적으로 있습니다.
 
-You can use `this.subscribe` from an [`onCreated`](../api/templates.html#Template-onCreated) callback
-to specify which data publications this template depends on. The subscription is
-automatically stopped when the template is destroyed.
+HTML 템플릿 내에는 `Template.subscriptionsReady`라는 기본 내장 헬퍼가 있습니다.
+이것을 이용하여 서브스크립션 완료 여부에 따른 템플릿 노출이 가능합니다.
 
-There is a complementary function `Template.instance().subscriptionsReady()`
-which returns true when all of the subscriptions called with `this.subscribe`
-are ready.
-
-Inside the template's HTML, you can use the built-in helper
-`Template.subscriptionsReady`, which is an easy pattern for showing loading
-indicators in your templates when they depend on data loaded from subscriptions.
-
-Example:
+예를들어:
 
 ```js
 Template.notifications.onCreated(function () {
-  // Use this.subscribe inside onCreated callback
+  // onCreated 내에서 this.subscribe을 사용합니다.
   this.subscribe("notifications");
 });
 ```
@@ -1907,7 +1901,7 @@ Template.notifications.onCreated(function () {
 ```html
 <template name="notifications">
   {{#if Template.subscriptionsReady}}
-    <!-- This is displayed when all data is ready. -->
+    <!-- 모든 데이터가 준비되면 표시됩니다. -->
     {{#each notifications}}
       {{> notification}}
     {{/each}}
@@ -1917,11 +1911,11 @@ Template.notifications.onCreated(function () {
 </template>
 ```
 
-Another example where the subscription depends on the data context:
+데이터 컨텍스트에 의존하는 서브스크립션 사용에 대한 예:
 
 ```js
 Template.comments.onCreated(function () {
-  // Use this.subscribe with the data context reactively
+  // 반응적 데이터 구조에 맞춰 갱신되는 this.subscribe을 사용합니다.
   this.autorun(() => {
     var dataContext = Template.currentData();
     this.subscribe("comments", dataContext.postId);
@@ -1935,27 +1929,44 @@ Template.comments.onCreated(function () {
 {{/with}}
 ```
 
-Another example where you want to initialize a plugin when the subscription is
-done:
+서브스크립션이 완료되었을 때 플러그인을 초기화 하는 예:
 
 ```js
 Template.listing.onRendered(function () {
   var template = this;
   
   template.subscribe('listOfThings', () => {
-    // Wait for the data to load using the callback
+    // 콜백을 사용하여 데이터 로드가 완료될 때까지 기다립니다.
     Tracker.afterFlush(() => {
-      // Use Tracker.afterFlush to wait for the UI to re-render
-      // then use highlight.js to highlight a code snippet
+      // Tracker.afterFlush를 사용하여 UI가 리렌더될 때까지 기다린 후
+      // highlight.js를 실행시켜 코드스니펫을 활성화 합니다.
       highlightBlock(template.find('.code'));
     });
   });
 });
 ```
 
-{% apibox "Blaze.TemplateInstance#view" %}
+### `.view()`
 
-{% apibox "Template.registerHelper" %}
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 243](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L243)
+
+**설명:**
+
+원문: The [View](http://blazejs.org/api/blaze.html#Blaze-View) object for this invocation of the template.
+
+번역: 이 템플릿을 호출 할 때 [View](http://blazejs.org/api/blaze.html#Blaze-View) 객체입니다.
+
+## `.registerHelper(name, function)`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 556](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L556)
+
+**설명:** 모든 템플릿에서 사용할 수 있는 헬퍼 함수를 정의합니다.
+
+
 
 {% apibox "Template.instance" %}
 
