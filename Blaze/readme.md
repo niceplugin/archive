@@ -2244,6 +2244,7 @@ DOM에서 반응형 영역을 나타낼 뷰 객체의 생성자입니다.
 그러나 템플릿은 최상위 종속성이 없는 방식으로 컴파일되므로 한번만 렌더링 되며, 템플릿의 구성요소는 여러번 리렌더링 될 수 있다.
 
 
+
 When a `Blaze.View` is constructed by calling the constructor, no hooks
 are fired and no rendering is performed.  In particular, the View is
 not yet considered to be "created."  Only when the View is actually
