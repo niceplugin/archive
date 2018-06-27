@@ -2174,53 +2174,75 @@ DOM에 렌더링 된 뷰를 제거하여 모든 반응 업데이트 및 이벤�
 
 현재 데이터 컨텍스트 또는 Meteor 템플릿에서 특정 DOM요소 또는 뷰를 렌더링 할 때 사용된 데이터 컨텍스트를 반환합니다.
 
-## `.toHTML(element or View)`
+## `.toHTML(template or View)`
 
-**사용영역:**
+**사용영역:** 클라이언트
 
-**코드라인:**
+**코드라인:** [blaze/view.js, line 693](https://github.com/meteor/blaze/blob/master/packages/blaze/view.js#L693)
 
 **인자:**
 
+- template or View (Blaze.Template or Blaze.View): HTML을 생성할 템플릿 또는 뷰 객체
+
 **설명:**
 
-{% apibox "Blaze.toHTML" %}
+템플릿 또는 뷰 객체를 렌더링하여 HTML형식의 문자열 값으로 변환합니다.
+그러므로 반응형 기능을 활용할 수 없습니다.
+템플릿 또는 뷰를 렌더링하는 일반적인 방법은 `{{> myTemplate}}`과 같이 템플릿 내에서 렌더링 할 탬플릿을 호출하거나 `Blaze.render()`를 사용합니다.
+`.toHTML()`은 드물게 HTML로 변환해야 할 경우에만 유용합니다.
 
-Rendering a template to HTML loses all fine-grained reactivity.  The
-normal way to render a template is to either include it from another
-template (`{{> myTemplate}}`) or render and insert it
-programmatically using `Blaze.render`.  Only occasionally
-is generating HTML useful.
+원문:
 
-Because `Blaze.toHTML` returns a string, it is not able to update the DOM
-in response to reactive data changes.  Instead, any reactive data
-changes will invalidate the current Computation if there is one
+Instead, any reactive data changes will invalidate the current Computation if there is one
 (for example, an autorun that is the caller of `Blaze.toHTML`).
 
-{% apibox "Blaze.toHTMLWithData" %}
+번역:
 
-{% apibox "Blaze.View" %}
+`Blaze.toHTML()`은 문자열을 반환하기 때문에 반응형 데이터 변화에 따라 DOM을 업데이트할 수 없다.
+대신, 어떠한 반응형 데이터라도 변경이 일어나면 현재 계산은 무효화됩니다(예:`Blaze.toHTML`의 호출자인 오토런).
 
-Behind every template or part of a template &mdash; a template tag, say, like `{{foo}}` or `{{#if}}` &mdash; is
-a View object, which is a reactively updating region of DOM.
+## `.toHTMLWithData(template or View, data)`
 
-Most applications do not need to be aware of these Views, but they offer a
-way to understand and customize Meteor's rendering behavior for more
-advanced applications and packages.
+**사용영역:** 클라이언트
 
-You can obtain a View object by calling [`Blaze.render`](#Blaze-render) on a
-template, or by accessing [`template.view`](../api/templates.html#Blaze-TemplateInstance-view) on a template
-instance.
+**코드라인:** [blaze/view.js, line 705)](https://github.com/meteor/blaze/blob/master/packages/blaze/view.js#L705)
 
-At the heart of a View is an [autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun) that calls the View's
-`renderFunction`, uses the result to create DOM nodes, and replaces the
-contents of the View with these new DOM nodes.  A View's content may consist
-of any number of consecutive DOM nodes (though if it is zero, a placeholder
-node such as a comment or an empty text node is automatically supplied).  Any
-reactive dependency established by `renderFunction` causes a full recalculation
-of the View's contents when the dependency is invalidated.  Templates, however,
-are compiled in such a way that they do not have top-level dependencies and so
-will only ever render once, while their parts may re-render many times.
+**인자:**
+
+- template or View (Blaze.Template or Blaze.View): HTML을 생성할 템플릿 또는 뷰 객체
+
+- data (object or function): 사용할 데이터 컨텍스트 객체 또는 그 값을 리턴할 함수.
+
+**설명:** 데이터 컨텍스트와 함께 템플릿 또는 뷰를 렌더링 합니다. 그 외에는 `Blaze.toHTML`과 동일합니다.
+
+## `new .View([name], renderFunction)`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/view.js, line 43](https://github.com/meteor/blaze/blob/master/packages/blaze/view.js#L43)
+
+**인자:**
+
+- name (string): 선택적. `View.name` 뷰 이름.
+
+- renderFunction (functuin): 렌더링 가능한 내용을 반환하는 함수입니다.
+이 함수는 View에 바인딩됩니다.
+
+**설명:**
+
+DOM에서 반응형 영역을 나타낼 뷰 객체의 생성자입니다.
+
+모든 또는 일부 템플릿 내에는 반응형으로 업데이트 되는 DOM 영역인 `{{foo}}`나 `{{#if}}`와 같은 테그가 있습니다.
+
+대부분의 앱은 이러한 뷰를 인식할 필요가 없지만, 고급 앱 및 패키지에서 Meteor의 렌더링 동작을 이해하고 사용자 정의할 수 있는 방법을 제공합니다.
+
+템플릿에서 [`Blaze.render`](#rendertemplate-or-view-parentnode-nextnode-parentview)를 호출하거나 템플릿 인스턴스에서[`view`](view)에 액세스 하여 뷰 객체를 얻을 수 있습니다.
+
+뷰의 중심에는 뷰의 "renderfunction"을 호출하고 그 결과로 DOM 노드를 생성한 다음 뷰의 내용을 이 새로운 DOM노드로 대체하는 [autorun](https://docs.meteor.com/api/tracker.html#Tracker-autorun)이 있습니다.
+뷰의 내용은 원하는 만큼의 DOM 노드로 구성될 수 있습니다(0인 경우 주석 또는 빈 텍스트 노드와 같은 자리표시자 노드가 자동으로 제공됨).
+"renderfunction"에 의해 설정된 반응적 종속성은 종속성이 무효화될 때 뷰의 내용을 완전히 재계산합니다.
+그러나 템플릿은 최상위 종속성이 없는 방식으로 컴파일되므로 한번만 렌더링 되며, 템플릿의 구성요소는 여러번 리렌더링 될 수 있다.
+
 
 When a `Blaze.View` is constructed by calling the constructor, no hooks
 are fired and no rendering is performed.  In particular, the View is
