@@ -71,7 +71,7 @@
     * [`.data`](#data)
     * [`.autorun(runFunc)`](#autorunrunfunc)
     * [`.subscribe(name, [arg1, arg2, ...], [options])`](#subscribename-arg1-arg2--options)
-    * [`.view()`](#view)
+    * [`.view`](#view)
   * [`Template.registerHelper(name, function)`](#templateregisterhelpername-function)
   * [`Template.currentData()`](#templatecurrentdata)
   * [`Template.parentData(numLevels)`](#templateparentdatanumlevels)
@@ -1973,7 +1973,7 @@ Template.listing.onRendered(function () {
 });
 ```
 
-### `.view()`
+### `.view`
 
 **사용영역:** 클라이언트
 
@@ -2080,7 +2080,7 @@ Meteor의 반응형 렌더링 엔진인 Blaze에 대해 다룹니다.
 Blaze는 반응형 템플릿을 만드는 페키지 입니다.
 Blaze API를 사용하여 프로그레밍 적으로 템플릿을 구성하고 반응적으로 "View(보여지는 부분)"를 컨트롤 할 수 있습니다.
 
-## `.render(templateOrView, parentNode, [nextNode], [parentView])`
+## `.render(template *or* View, parentNode, [nextNode], [parentView])`
 
 **사용영역:** 클라이언트
 
@@ -2088,8 +2088,7 @@ Blaze API를 사용하여 프로그레밍 적으로 템플릿을 구성하고 �
 
 **인자:**
 
-- templateOrView (Blaze.Template or Blaze.View):
-<br>렌더링 할 템플릿 또는 뷰 객체.
+- template *or* View (Blaze.Template or Blaze.View): 렌더링 할 템플릿 또는 뷰 객체.
 <br>템플릿의 경우 뷰 객체가 생성됩니다.
 <br>뷰의 경우 렌더링 된 뷰이어야 합니다.
 
@@ -2112,35 +2111,78 @@ Blaze API를 사용하여 프로그레밍 적으로 템플릿을 구성하고 �
 > Meteor 또는(기본적으로 Meteor와 통합되는)다른 메커니즘을 통해 뷰가 제거된 경우 뷰는 무한정으로 계속 업데이트될 수 있습니다.
 > 대부분의 사용자는 템플릿을 수동으로 렌더링하여 DOM에 삽입할 필요가 없지만, 수동으로 렌더링 할 경우에는 뷰가 더 이상 필요하지 않을 때 항상 `Blaze.remove`로 제거하십시오.
 
-## `.renderWithData(templateOrView, data, parentNode, [nextNode], [parentView])`
+## `.renderWithData(template or View, data, parentNode, [nextNode], [parentView])`
 
-{% apibox "Blaze.renderWithData" %}
+**사용영역:** 클라이언트
 
-`Blaze.renderWithData(Template.myTemplate, data)` is essentially the same as
-`Blaze.render(Blaze.With(data, function () { return Template.myTemplate; }))`.
+**코드라인:** [blaze/view.js, line 660](https://github.com/meteor/blaze/blob/master/packages/blaze/view.js#L660)
+
+**인자:**
+
+- template *or* View (Blaze.Template or Blaze.View): 렌더링 할 템플릿 또는 뷰 객체.
+
+- data (object or function): 사용할 데이터 컨텍스트 객체 또는 그 값을 리턴할 함수. 함수를 사용할 경우 반응형으로 다시 실행됩니다.
+
+- parentNode (DOM Node): 렌더링 된 템플릿의 부모가 될 노드이어야 하며, 이것은 반드시 엘리먼트 노드 이어야 합니다.
+
+- nextNode (DOM Node): *선택적*. 사용할 경우 반드시 'parentNode'의 자식 노드이어야 합니다.
+이 노드는 'templateOrView' 뒤에 위치합니다.
+
+- parentView (Blaze.View): *선택적*. 사용할 경우 렌더링 된 뷰의 부모 뷰가 됩니다.
+
+**설명:**
+
+데이터 컨텍스트를 사용하여 템플릿 또는 뷰를 DOM노드에 추가합니다.
+그렇지 않으면 Blaze.render와 동일합니다.
+
+`Blaze.renderWithData(Template.myTemplate, data)`는 `Blaze.render(Blaze.With(data, function () { return Template.myTemplate; }))`와 기본적으로 동일하게 동작합니다.
 
 ## `.remove(renderedView)`
 
-{% apibox "Blaze.remove" %}
+**사용영역:** 클라이언트
 
-Use `Blaze.remove` to remove a template or View previously inserted with
-`Blaze.render`, in such a way that any behaviors attached to the DOM by
-Meteor are cleaned up.  The rendered template or View is now considered
-["destroyed"](../api/templates.html#Template-onDestroyed), along with all nested templates and
-Views.  In addition, any data assigned via
-jQuery to the DOM nodes is removed, as if the nodes were passed to
-jQuery's `$(...).remove()`.
+**코드라인:** [blaze/view.js, line 672](https://github.com/meteor/blaze/blob/master/packages/blaze/view.js#L672)
 
-As mentioned in [`Blaze.render`](#Blaze-render), it is important to "remove"
-all content rendered via `Blaze.render` using `Blaze.remove`, unless the
-parent node of `renderedView` is removed by a Meteor reactive
-update or with jQuery.
+**인자:**
 
-`Blaze.remove` can be used even if the DOM nodes in question have already
-been removed from the document, to tell Blaze to stop tracking and
-updating these nodes.
+- renderedView (Blaze.View): `Blaze.render()`또는 `Blaze.renderWithData()`의 반환 값 또는 `Blaze.Template.instance().view`.
+템플릿 이벤트 핸들러 내에서 `Blaze.remove(Template.instance().view)`를 호출하면 템플릿뿐만 아니라 뷰도 파괴되고 템플릿 핸들러인 `onDestroyed`가 트리거 됩니다.
 
-{% apibox "Blaze.getData" %}
+**설명:**
+
+DOM에 렌더링 된 뷰를 제거하여 모든 반응 업데이트 및 이벤트 수신기를 중지합니다.
+또한 뷰에 연결된 `Blaze.Template.instance()`를 소멸(destroys)시킵니다.
+
+`Blaze.remove()`를 사용하면 템플릿 또는 `Blaze.render()`에 의해 삽입된 뷰가 삭제되며, Meteor가 DOM에 연결된 동작을 정리합니다.
+이제 렌더링 됬던 템플릿 또는 뷰는 [소멸됨](#ondestroyedcallback)으로 간주됩니다.
+뿐만 아니라, jQuery에 의해 DOM에 추가된 노드들도 모두 삭제됩니다(jQuery로 `$(...).remove()`를 사용한 것처럼).
+
+[`Blaze.render()`](#rendertemplateorview-parentnode-nextnode-parentview)에서 언급한 바와 같이, `Blaze.render()`에 의해 렌더링 된 컨텐츠를 `Blaze.remove()` 또는 렌더링 된 뷰의 부모 노드 제거를 통하여 삭제하는 것은 중요합니다.
+`Blaze.remove()`는 DOM 노드가 이미 문서에서 제거되었음에도 Blaze가 이 노드를 추적 및 업데이트 하려고 하는 문제를 중단시키는데 사용할 수 있습니다.
+
+## `.getData([element or View])`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/view.js, line 738](https://github.com/meteor/blaze/blob/master/packages/blaze/view.js#L738)
+
+**인자:**
+
+- element or View (DOM Element or Blaze.View): Meteor 또는 뷰에서 랜더링 된 엘리먼트.
+
+**설명:**
+
+현재 데이터 컨텍스트 또는 Meteor 템플릿에서 특정 DOM요소 또는 뷰를 렌더링 할 때 사용된 데이터 컨텍스트를 반환합니다.
+
+## `.toHTML(element or View)`
+
+**사용영역:**
+
+**코드라인:**
+
+**인자:**
+
+**설명:**
 
 {% apibox "Blaze.toHTML" %}
 
