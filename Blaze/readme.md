@@ -2277,7 +2277,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 |`isDestroyed`|boolean|이 뷰가 반응형에 의해 삭제되거나 `Blaze.remove()`를 사용하여 삭제하였을 경우 true를 반환합니다. 소멸된 뷰의 autorun은 중지되며, 이것의 DOM 노드는 Meteor의 반응형에서 제거됩니다.|
 |`renderCount`|number(int)|뷰가 현재시점을 포함하여 랜더링 또는 리랜더링 되었던 횟수를 반환합니다.|
 |`autorun(func)`||[`Tracker.autorun`](https://docs.meteor.com/api/tracker.html#Tracker-autorun)처럼, 뷰가 소멸되면 autorun이 자동으로 중지됩니다. `runFunc`가 실행될 때 [`.currentView`](#)는 항상 설정됩니다. View의 내부 자동 실행 또는 랜더링주기와 아무런 관련이 없습니다. `runFunc`내에서 뷰는 `this`에 바인딩됩니다.|
-|`onViewCreated(func)||이 뷰가 아직 생성된 적이 없다면 뷰를 생성할 때 `func`를 호출합니다. `func` 내에서 뷰는 `this`로 바인딩 되어있습니다. 이 훅은 [`created`](../api/templates.html#Template-onCreated)의 기초입니다.|
+|`onViewCreated(func)`||이 뷰가 아직 생성된 적이 없다면 뷰를 생성할 때 `func`를 호출합니다. `func` 내에서 뷰는 `this`로 바인딩 되어있습니다. 이 훅은 [`created`](../api/templates.html#Template-onCreated)의 기초입니다.|
 |`onViewReady(func)`||뷰가 랜더링되어 DOM에 삽입될 때, [flush time](https://docs.meteor.com/api/tracker.html#Tracker-afterFlush)가 끝나길 기다린 후 `func`를 호출합니다. (뷰가 리랜더링 될 경우) 여러번 재실행 될 수 있습니다. `func`에서 뷰는 `this`에 바인딩 됩니다. 이 훅은 [`rendered`](../api/templates.html#Template-onRendered)의 기초입니다.|
 |`onViewDestroyed(func)`||뷰가 아직 소멸되지 않았다면 뷰가 소멸될 때 `func`를 호출합니다. 뷰는 'ready'가 되지 않고 소멸될 수 있습니다. `func`에서 뷰는 `this`에 바인딩 됩니다. 이 훅은 [`destroyed`](../api/templates.html#Template-onDestroyed)의 기초입니다.|
 |`firstNode()`|DOM node|랜더링 된 뷰의 첫번째 노드를 반환합니다. 이 노드는 텍스트 노드일 수 있습니다. 만약 뷰에 랜더링 된 DOM 노드가 없다면 해당 위치에 (빈)텍스트노드 또는 주석 노드가 위치할 수 있습니다. 뷰의 범위는 `view.firstNode()`와 `view.lastNode()` 사이의 범위로 구성됩니다.|
@@ -2298,37 +2298,116 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 `currentView`는 [`Template.currentData()`](../api/templates.html#Template-currentData) 및 [`Template.instance()`](../api/templates.html#Template-instance)에서 컨텍스트 및 관련 데이터를 결정하는 데 사용됩니다.
 
-{% apibox "Blaze.getView" nested:true %}
+### `.getView([element])`
 
-If you don't specify an `element`, there must be a current View or an
-error will be thrown.  This is in contrast to
-[`Blaze.currentView`](#Blaze-currentView).
+**사용영역:** 클라이언트
 
-{% apibox "Blaze.With" nested:true %}
+**코드라인:** [blaze/view.js, line 776](https://github.com/meteor/blaze/blob/master/packages/blaze/view.js#L776)
 
-Returns an unrendered View object you can pass to `Blaze.render`.
+**인자:**
 
-Unlike `{{#with}}` (as used in templates), `Blaze.With` has no "else" case, and
-a falsy value for the data context will not prevent the content from
-rendering.
+- element (DOM Element): 선택적. 인자(엘리먼트)가 지정된 경우 해당 인자를 감싸고 있는 뷰를 반환합니다.<br>
+인자를 전달하지 않을 경우 반드시 현재 뷰나 에러를 반환합니다. 이것은 [`Blaze.currentView`](#currentview)와는 대조적입니다.
 
-{% apibox "Blaze.If" nested:true %}
+### `.With(data, contentFunc)`
 
-Returns an unrendered View object you can pass to `Blaze.render`.
+**사용영역:** 클라이언트
 
-Matches the behavior of `{{#if}}` in templates.
+**코드라인:** [blaze/builtins.js, line 13](https://github.com/meteor/blaze/blob/master/packages/blaze/builtins.js#L13)
 
-{% apibox "Blaze.Unless" nested:true %}
+**인자:**
 
-Returns an unrendered View object you can pass to `Blaze.render`.
+- data (Object or Function): 데이터 컨텍스트로 사용할 객체 또는 그러한 객체를 반환할 함수.
 
-Matches the behavior of `{{#unless}}` in templates.
+- contentFunc (Function): 반응적으로 실행될 함수.
 
-{% apibox "Blaze.Each" nested:true %}
+**설명:**
 
-Returns an unrendered View object you can pass to `Blaze.render`.
+`Blaze.render`에 인자로 전달할 수 있는 렌더링 되지 않은 뷰 객체를 반환합니다.
 
-Matches the behavior of `{{#each}}` in templates.
+템플릿에서 사용되는 `{{#with}}`와는 달리 `Blaze.With`는 'else'케이스가 없으며, 데이터 컨텍스트에 대한 `falsy`값은 내용을 렌더링하는 것을 방지합니다.
+
+### `.If(conditionFunc, contentFunc, [elseFunc])`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/builtins.js, line 73](https://github.com/meteor/blaze/blob/master/packages/blaze/builtins.js#L73)
+
+**인자:**
+
+- conditionFunc (Function): 반응적으로 다시 실행될 함수. 결과값이 '참'이면 `contentFunc` 아니면 `elseFunc`가 실행됩니다.
+
+- contentFunc (Function): [렌더링 가능한 컨텐츠](#)를 반환하는 함수.
+
+- elseFunc (Function): 선택적. [렌더링 가능한 컨텐츠](#)를 반환하는 함수. `elseFunc`가 제공되지 않을 경우 'else'의 경우 보여지는 컨텐츠는 없습니다.
+
+**설명:**
+
+`Blaze.render`에 인자로 전달할 수 있는 렌더링 되지 않은 뷰 객체를 반환합니다.
+
+### `.Unless(conditionFunc, contentFunc, [elseFunc])`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/builtins.js, line 98](https://github.com/meteor/blaze/blob/master/packages/blaze/builtins.js#L98)
+
+**인자:**
+
+- conditionFunc (Function): 반응적으로 다시 실행될 함수. 결과값이 '거짓'이면 `contentFunc` 아니면 `elseFunc`가 실행됩니다.
+
+- contentFunc (Function): [렌더링 가능한 컨텐츠](#)를 반환하는 함수.
+
+- elseFunc (Function): 선택적. [렌더링 가능한 컨텐츠](#)를 반환하는 함수. `elseFunc`가 제공되지 않을 경우 'else'의 경우 보여지는 컨텐츠는 없습니다.
+
+**설명:**
+
+`Blaze.render`에 인자로 전달할 수 있는 렌더링 되지 않은 뷰 객체를 반환합니다.
+
+### `.Each(argFunc, contentFunc, [elseFunc])`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/builtins.js, line 122](https://github.com/meteor/blaze/blob/master/packages/blaze/builtins.js#L122)
+
+**인자:**
+
+- argFunc (Function): 반응적으로 다시 실행될 함수. 이 함수는 아래 두 옵션중 하나를 반환 할 수 있습니다.
+
+  - `_variable`, `_sequence` 필드를 가진 객체. 각 항목은 `_sequence`에 따라 지정되며 커서, 배열, null 또는 undefined 일 수 있습니다. 각 body에서 `_variable`필드에 지정된 이름을 사용하여 시퀀스에서 현재 항목을 가져올 수 있습니다.
+
+  - 오브젝트에 랩핑되지 않은 순서 (커서, 배열, null 또는 undefined). 각 본문 내에서 현재 항목이 데이터 컨텍스트로 설정됩니다.
+
+- contentFunc (Function): [렌더링 가능한 컨텐츠](#)를 반환하는 함수.
+
+- elseFunc (Function): 시퀀스에 항목이 없을 경우 표시 할 [렌더링 가능한 컨텐츠](#)를 반환하는 함수입니다.
+
+**설명:**
+
+각 항목을 `contentFunc`로 실행시켜 렌더링 가능한 컨텐츠를 반환합니다.
+
+`Blaze.render`에서 렌더링 할 수 있는 뷰 객체를 반환합니다.
+
+템플릿에서 `{{#each}}`와 동일하게 작동합니다.
+
+## `new Blaze.Template([viewName], renderFunction)`
+
+**사용영역:** 클라이언트
+
+**코드라인:** [blaze/template.js, line 16](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L16)
+
+**인자:**
+
+- viewName (string): 선택적. 이 템플릿에서 생성한 뷰의 이름입니다.
+
+- renderFunction (Function): [렌더링 가능한 컨텐츠](#)를 반환하는 함수. 이 함수는이 템플릿에 의해 생성 된 뷰의 `renderFunction`으로 사용됩니다.
+
+**설명:**
+
+특정의 이름과 내용으로 뷰를 구축하기 위해서 사용되는, Template의 생성자입니다.
+
+`Template.myTemplate`처럼 템플릿 컴파일러에 의해 정의 된 템플릿은 `Blaze.Template`(보통 `Template`이라 불리는) 타입의 객체입니다.
+
+[templates API]의 일부로 문서화 된`events`와`helpers`와 같은 메소드 외에도, 템플릿 객체에는 다음과 같은 필드와 메소드가 있습니다 :
 
 {% apibox "Blaze.Template" %}
 
