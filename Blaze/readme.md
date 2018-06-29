@@ -2407,52 +2407,37 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 `Template.myTemplate`처럼 템플릿 컴파일러에 의해 정의 된 템플릿은 `Blaze.Template`(보통 `Template`이라 불리는) 타입의 객체입니다.
 
-[templates API]의 일부로 문서화 된`events`와`helpers`와 같은 메소드 외에도, 템플릿 객체에는 다음과 같은 필드와 메소드가 있습니다 :
+[templates API](#templates)의 일부로 문서화 된`events`와`helpers`와 같은 메소드 외에도, 템플릿 객체에는 다음과 같은 필드와 메소드가 있습니다 :
 
-{% apibox "Blaze.Template" %}
+|prop|type|설명|
+|----|----|---|
+|`viewName`|string|생성자의 인자와 동일합니다.|
+|`renderFunction`|function|생성자의 인자와 동일합니다.|
+|`constructView()`||렌더링 되지 않은 뷰 객체를 생성(construct)하여 리턴합니다. 이 메소드는 Meteor에 의해 `Blaze.render`나 `{{> foo}}`와 같이 템플릿이 사용될 때마다 호출됩니다.<br>구성자 인수로 `viewName`과 `renderFunction`을 사용하여 뷰를 구성한다. 그런 다음 `View.template`, `view.templateInstance()`, 이벤트 맵 등을 설정하여 템플릿 뷰로 구성합니다.|
 
-Templates defined by the template compiler, such as `Template.myTemplate`,
-are objects of type `Blaze.Template` (aliased as `Template`).
+## `.isTemplate(value)`
 
-In addition to methods like `events` and `helpers`, documented as part of
-the [Template API](../api/templates.html), the following fields and methods are
-present on template objects:
+**사용영역:** 클라이언트
 
-<dl class="objdesc">
+**코드라인:** [blaze/template.js, line 61](https://github.com/meteor/blaze/blob/master/packages/blaze/template.js#L61)
 
-{% dtdd name:"viewName" type:"String" id:"template_viewname" %}
-  Same as the constructor argument.
-{% enddtdd %}
+**인자:**
 
-{% dtdd name:"renderFunction" type:"Function" id:"template_renderfunction" %}
-  Same as the constructor argument.
-{% enddtdd %}
+- value (any): 설정할 값.
 
-{% dtdd name:"constructView()" id:"template_constructview" %}
-  Constructs and returns an unrendered View object.  This method is invoked
-  by Meteor whenever the template is used, such as by `Blaze.render` or by
-  `{{> foo}}` where `foo` resolves to a Template object.
+**설명:** `value`가 `Template.myTemplate`와 같은 템플릿 객체이면 true를 반환합니다.
 
-  `constructView()` constructs a View using `viewName` and `renderFunction`
-  as constructor arguments, and then configures it as a template
-  View, setting up `view.template`, `view.templateInstance()`, event maps, and so on.
-{% enddtdd %}
+## 렌더링 가능한 컨텐츠
 
-</dl>
+값이 다음 중 하나에 해당하는 경우 **렌더링 가능한 컨텐츠**입니다:
 
-{% apibox "Blaze.isTemplate" %}
+- `Template.myTemplate`과 같은 [템플릿 객체](#templates)
 
-## Renderable Content
+- `Blaze.With`의 반환값처럼, 렌더링 되지 않은 [뷰 객체](#new-blazeviewname-renderfunction)
 
-A value is *renderable content* if it is one of the following:
+- `null` 또는 `undefined`
 
-* A [template object](../api/templates.html) like `Template.myTemplate`
-* An unrendered [View](../api/blaze.html#Blaze-View) object, like the return value of `Blaze.With`
-* `null` or `undefined`
-
-> Internally, renderable content includes objects representing HTML tags
-as well, but these objects are not yet part of the officially-supported,
-public API.
+> 내부적으로 렌더링 가능한 컨텐츠에는 HTML 태그를 나타내는 객체도 포함되지만, 이러한 객체는 아직까지는 공식적으로 지원되는 공개 API의 일부는 아닙니다.
 
 # Spacebars
 
