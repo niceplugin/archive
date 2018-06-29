@@ -57,27 +57,43 @@
 **API**
 * [Templates](#templates)
   * [`Template._name_`](#template_name_)
-    * [`.events(callback)`](#eventscallback)
-    * [`.helpers(helpers)`](#helpershelpers)
-    * [`.onRendered(callback)`](#onrenderedcallback)
-    * [`.onCreated(callback)`](#oncreatedcallback)
-    * [`.onDestroyed(callback)`](#ondestroyedcallback)
+    * [`.events()`](#eventscallback)
+    * [`.helpers()`](#helpershelpers)
+    * [`.onRendered()`](#onrenderedcallback)
+    * [`.onCreated()`](#oncreatedcallback)
+    * [`.onDestroyed()`](#ondestroyedcallback)
   * [`Template.instances()`](#templateinstances)
-    * [`.findAll(selector)`](#findallselector)
-    * [`.$(selector)`](#selector)
-    * [`.find(selector)`](#findselector)
+    * [`.findAll()`](#findallselector)
+    * [`.$()`](#selector)
+    * [`.find()`](#findselector)
     * [`.firstNode`](#firstnode)
     * [`.lastNode`](#lastnode)
     * [`.data`](#data)
-    * [`.autorun(runFunc)`](#autorunrunfunc)
-    * [`.subscribe(name, [arg1, arg2, ...], [options])`](#subscribename-arg1-arg2--options)
+    * [`.autorun()`](#autorunrunfunc)
+    * [`.subscribe()`](#subscribename-arg1-arg2--options)
     * [`.view`](#view)
-  * [`Template.registerHelper(name, function)`](#templateregisterhelpername-function)
+  * [`Template.registerHelper()`](#templateregisterhelpername-function)
   * [`Template.currentData()`](#templatecurrentdata)
-  * [`Template.parentData(numLevels)`](#templateparentdatanumlevels)
+  * [`Template.parentData()`](#templateparentdatanumlevels)
   * [`Template.body`](#templatebody)
-  * [`{{> Template.dynamic template=template [data=data]}}`](#-templatedynamic-templatetemplate-datadata)
+  * [`{{> Template.dynamic}}`](#-templatedynamic-templatetemplate-datadata)
 * [Blaze](#blaze)
+  * [`.render()`](#rendertemplate-or-view-parentnode-nextnode-parentview)
+  * [`.renderWithData`](#renderwithdatatemplate-or-view-data-parentnode-nextnode-parentview)
+  * [`.remove()`](#removerenderedview)
+  * [`.getData()`](#getdataelement-or-view)
+  * [`.toHTML()`](#tohtmltemplate-or-view)
+  * [`.toHTMLWithData`](#tohtmlwithdatatemplate-or-view-data)
+  * [`new Blaze.View()`](#new-blazeviewname-renderfunction)
+    * [`.currentView`](#currentview)
+    * [`.getView()`](#getviewelement)
+    * [`.With()`](#withdata-contentfunc)
+    * [`.If()`](#ifconditionfunc-contentfunc-elsefunc)
+    * [`Unless()`](#unlessconditionfunc-contentfunc-elsefunc)
+    * [`.Each()`](#eachargfunc-contentfunc-elsefunc)
+  * [`new Blaze.template()`](#new-blazetemplateviewname-renderfunction)
+  * [`.isTemplate()`](#istemplatevalue)
+  * [렌더링 가능한 컨텐츠](#렌더링-가능한-컨텐츠)
 * [Spacebars](#spacebars)
 
 ***
@@ -241,7 +257,7 @@ Blaze는 다른 프레임워크를 사용한 개발자도 깨끗하고 읽기 �
 ### 플러그인 상호 운용성
 
 웹 개발자는 종종 HTML, JavaScript, CSS로 만든 작은 결과물을 서로 공유하거나 라이브러리, 위젯 또는 jQuery 플러그인으로 게시합니다.
-또는 동영상,지도 및 기타 제 3자 콘텐츠를 퍼가려고합니다.
+또는 동영상,지도 및 기타 제 3자 컨텐츠를 퍼가려고합니다.
 
 미번역 부분:
 
@@ -1018,7 +1034,7 @@ JS파일에 이벤트 맵을 설정할 때 이벤트가 첨부되는 템플릿 �
 
 ## 템플릿 인자로 HTML 컨텐츠 전달하기
 
-만약 하위 구성요소로 콘텐츠를 전달해야 하는 경우 사용자 정의 [블럭 헬퍼](#블럭-핼퍼)를 사용하여 콘텐츠 블럭을 제공할 수 있습니다.
+만약 하위 구성요소로 컨텐츠를 전달해야 하는 경우 사용자 정의 [블럭 헬퍼](#블럭-핼퍼)를 사용하여 컨텐츠 블럭을 제공할 수 있습니다.
 보다 더 유연한 방법이 필요할 경우 일반적으로 구성 요소의 이름(템플릿명)을 인수로 제공하는 것이 가장 좋습니다.
 그러면 하위 구성요소는 아래의 방법을 사용하여 해당 구성요소를 랜더링 할 수 있습니다.
 
@@ -1369,7 +1385,7 @@ Blaze의 또 다른 복잡한 주제는 탐색입니다.
 [build system](https://guide.meteor.com/build-tool.html#blaze)글에서 언급했듯이, [`blaze-html-templates`](https://atmospherejs.com/meteor/blaze-html-templates)패키지는 소스 코드에서 `.html` 파일을 검색하고, `<template name="templateName">`태그들을 선택합니다.
 그리고 그것들을 JavaScript 파일로 컴파일하여 함수로 정의하고 `Template.templateName` 심볼에 포함시킵니다.
 
-즉, Blaze 템플릿을 랜더링 할 때 클라이언트에서 `.html`파일로 정의한 스페이스바 콘텐츠에 해당하는 함수를 실행하는 것입니다.
+즉, Blaze 템플릿을 랜더링 할 때 클라이언트에서 `.html`파일로 정의한 스페이스바 컨텐츠에 해당하는 함수를 실행하는 것입니다.
 
 ## 뷰(view)란 무엇입니까?
 
