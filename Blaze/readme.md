@@ -2457,17 +2457,14 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 # Spacebars
 
-Documentation of Meteor's `spacebars` package.
+Meteor의 `spacebars`패키지 문서입니다.
 
-Spacebars is a Meteor template language inspired by
-[Handlebars](http://handlebarsjs.com/).  It shares some of the spirit and syntax
-of Handlebars, but it has been tailored to produce reactive Meteor templates
-when compiled.
+스페이스바는 [Handlebars](http://handlebarsjs.com/)에서 영감을 얻은 Meteor 템플릿 언어입니다.
+Handlebars의 정신 및 구문을 공유하지만 컴파일 할 때 반응형 Meteor 템플릿을 생성하도록 수정되었습니다.
 
-## Getting Started
+## 시작하기
 
-A Spacebars template consists of HTML interspersed with template tags, which are
-delimited by `{{` and `}}` (two curly braces).
+스페이스바 템플릿은 HTML과 `{{ foo }}`와 같이 두 개의 중괄호를 사용하여 범위를 지정하는 템플릿 테그로 이루어져 있습니다.
 
 ```html
 <template name="myPage">
@@ -2486,32 +2483,23 @@ delimited by `{{` and `}}` (two curly braces).
 </template>
 ```
 
-As illustrated by the above example, there are four major types of template
-tags:
+위 예제에서 볼 수 있듯이 템플릿 테그는 크게 4가지의 유형으로 나뉩니다:
 
-* `{{pageTitle}}` - Double-braced template tags are used to insert a string of
-  text.  The text is automatically made safe.  It may contain any characters
-  (like `<`) and will never produce HTML tags.
+- `{{pageTitle}}`: 더블브레이싱 템플릿 테그는 문자열을 출력합니다. 문자열에 `<`와 같은 것들은 절대 HTML 태그로 전환되지 않으므로 안전합니다.
 
-* `{{> nav}}` - Inclusion template tags are used to insert another template by
-  name.
+- `{{> nav}}`: 템플릿 이름별로 탬플릿 내에 다른 템플릿을 추가할 수 있습니다.
 
-* `{{#each}}` - Block template tags are notable for having a block of content.
-  The block tags `#if`, `#each`, `#with`, and `#unless` are built in, and it is
-  also possible define custom ones.  Some block tags, like `#each` and `#with`,
-  establish a new data context for evaluating their contents.  In the above
-  example, `{{title}}` and `{{content}}` most likely refer to properties of the
-  current post (though they could also refer to template helpers).
+- `{{#each}}`: 블록 탬플릿 태그는 콘텐츠 블록이 있는 것으로 유명합니다. `#if`, `#unless`, `#with`, `#each`는 기본적으로 내장된 블록 테그입니다. `#with`와같은 일부 블럭테그는 컨텐츠를 위해 데이터 컨텍스트를 평가합니다. 위 예제에서 `{{title}}'과 `{{content}}`는 현재 게시물의 속성을 참조 할 가능성이 높습니다 (템플릿 gpfvj를 참조 할 수도 있습니다).
 
-* `{{{content}}}` - Triple-braced template tags are used to insert raw HTML.  Be
-  careful with these!  It's your job to make sure the HTML is safe, either by
-  generating it yourself or sanitizing it if it came from a user input.
+- `{{{content}}}`: 트리플브레이싱 탬플릿은 HTML을 삽입하는데 사용하므로 주의해야 합니다. 그러므로 적용시킬 컨텐츠의 HTML이 안전한지 여부 확인은 사용자에게 있습니다.
 
-## Reactivity Model
+## 반응형 모델
 
+스페이스바 템플릿은 변화하는 데이터에 반응하여 세부적인 수준에서 반응적으로 업데이트됩니다.
 
-Spacebars templates update reactively at a fine-grained level in response to
-changing data.
+각 템플릿 태그의 DOM은 새 값으로 평가 될 때 자동으로 업데이트되며 가능한 한 불필요한 리렌더링을 방지합니다.
+예를 들어 이중 보강 태그는 텍스트 값이 변경 될 때 해당 텍스트 노드를 대체합니다.
+`# if`는 조건이 true에서 falsy로 또는 그 반대로 바뀔 때만 내용을 다시 렌더링합니다.
 
 Each template tag's DOM is updated automatically when it evaluates to a new
 value, while avoiding unnecessary re-rendering as much as possible.  For
