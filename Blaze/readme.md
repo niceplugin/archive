@@ -2501,40 +2501,25 @@ Handlebars의 정신 및 구문을 공유하지만 컴파일 할 때 반응형 M
 예를 들어 이중 보강 태그는 텍스트 값이 변경 될 때 해당 텍스트 노드를 대체합니다.
 `# if`는 조건이 true에서 falsy로 또는 그 반대로 바뀔 때만 내용을 다시 렌더링합니다.
 
-Each template tag's DOM is updated automatically when it evaluates to a new
-value, while avoiding unnecessary re-rendering as much as possible.  For
-example, a double-braced tag replace its text node when its text value changes.
-An `#if` re-renders its contents only when the condition changes from truthy to
-falsy or vice versa.
+## 식별자와 경로
 
-## Identifiers and Paths
+스페이스바 식별자는 대괄호로 감싼(`[` 그리고 `]`) JavaScript 식별자 이름이거나 아무 문자열 입니다.
+특수식별자 `this`(`.`와 동일함)와 `..`도 있습니다.
+괄호는 `else`, `this`, `true`, `false`, `null` 중 하나를 경로의 첫번째 요소로 사용해야 합니다.
+JavaScript의 `var`, `for`과 같은 예약어는 대괄호가 필요로 하지 않습니다.
 
+Spacebars 경로는 `foo`, `foo.bar`, `this.name`, `../ title`, `foo.[0]`과 같이`.` 또는`/`로 구분 된 일련의 하나 이상의 식별자입니다. (숫자 인덱스는 대괄호로 묶어야 함).
 
-A Spacebars identifier is either a JavaScript identifier name or any string
-enclosed in square brackets (`[` and `]`).  There are also the special
-identifiers `this` (or equivalently, `.`) and `..`.  Brackets are required to
-use one of the following as the first element of a path: `else`, `this`, `true`,
-`false`, and `null`.  Brackets are not required around JavaScript keywords and
-reserved words like `var` and `for`.
+## 이름 확인(Name Resolution)
 
-A Spacebars path is a series of one or more identifiers separated by either `.`
-or `/`, such as `foo`, `foo.bar`, `this.name`, `../title`, or `foo.[0]` (numeric indices must be enclosed in brackets).
+경로의 첫번째 식별자는 아래와 같은 우선순위로 해결됩니다:
 
-## Name Resolution
+1. 식별자 `foo`는 현재 템플릿에서 참조할 수 있는 헬퍼 함수가 있는지 탐색하고 있을경우 참조 합니다.
 
-The first identifier in a path is resolved in one of two ways:
+2. 식별자 `foo`는 현재 데이터 컨텍스트에서 참조할 수 있는 인덱스가 있는지 탐색하고 있을경우 참조합니다.
 
-* Indexing the current data context.  The identifier `foo` refers to the `foo`
-  property of the current data context object.
-
-* As a template helper.  The identifier `foo` refers to a helper function (or
-  constant value) that is accessible from the current template.
-
-Template helpers take priority over properties of the data context.
-
-If a path starts with `..`, then the *enclosing* data context is used instead of
-the current one.  The enclosing data context might be the one outside the
-current `#each`, `#with`, or template inclusion.
+경로가 `..`일 경우 현재를 감싸고 있는 데이터 컨텍스트를 사용합니다.
+현재를 감싸고 있다함은 `#with`, `#each` 범위 밖 또는 현재 탬플릿을 감싸는 상위 범위를 뜻합니다.
 
 ## Path Evaluation
 
