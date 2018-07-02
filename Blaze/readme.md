@@ -2703,16 +2703,20 @@ parameter rather than pushed onto the data context stack.
 ## 템플릿을 리턴하는 함수(Function Returning a Template)
 
 포함태그가 함수로 해석되면, 해당 함수는 반드시 템플릿 객체 또는 `null`을 반환해야 합니다.
+이 함수는 반응형으로 동작할 수 있으며 반환값이 변경되면 템플릿이 변경됩니다.
 
-If an inclusion tag resolves to a function, the function must return a template
-object or `null`.  The function is reactively re-run, and if its return value
-changes, the template will be replaced.
+## 블록 태그
 
-## Block Tags
+원문:
 
 Block tags invoke built-in directives or custom block helpers, passing a block
 of template content that may be instantiated once, more than once, or not at all
 by the directive or helper.
+
+번역:
+
+블록 태그는 내장 된 지시문이나 사용자 정의 블록 헬퍼를 호출하여 블록으로 템플릿 내용을 전달합니다.
+지시어나 헬퍼에 의해 한 번 이상 또는 전혀 인스턴스화 되지 않을 수 있습니다.
 
 ```html
 {{#block}}
@@ -2720,12 +2724,11 @@ by the directive or helper.
 {{/block}}
 ```
 
-Block tags may also specify "else" content, separated from the main content by
-the special template tag `{{else}}`.
+블록 태그는 특별한 템플릿 태그 `{{else}}`에 의해 주 콘텐츠와 분리된 "else" 콘텐츠를 지정할 수도 있습니다.
 
-A block tag's content must consist of HTML with balanced tags.
+블록 태그의 내용은 균형 잡힌 태그가있는 HTML로 구성되어야합니다.
 
-Block tags can be used inside attribute values:
+속성 값 내에서 블록 태그를 사용할 수 있습니다:
 
 ```html
 <div class="{{#if done}}done{{else}}notdone{{/if}}">
@@ -2733,7 +2736,7 @@ Block tags can be used inside attribute values:
 </div>
 ```
 
-You can chain block tags:
+블록 태그를 연결지을 수 있습니다:
 
 ```html
 {{#foo}}
@@ -2745,7 +2748,7 @@ You can chain block tags:
 {{/foo}}
 ```
 
-This is equivalent to:
+위 예시는 아래와 같습니다:
 
 ```html
 {{#foo}}
@@ -2761,10 +2764,8 @@ This is equivalent to:
 
 ## If/Unless
 
-An `#if` template tag renders either its main content or its "else" content,
-depending on the value of its data argument.  Any falsy JavaScript value
-(including `null`, `undefined`, `0`, `""`, and `false`) is considered false, as
-well as the empty array, while any other value is considered true.
+`#if`라는 템플릿 테그는 인자의 값에 따라 주요 콘텐츠 또는 "else"에 해당하는 콘텐츠를 렌더링 합니다.
+JavaScript에서 "false"로 취급되는 `''`, `0`, `undefined`, `null`, `false`, `[]`가 인자로 올 경우 템플릿 태그 역시 "false"로 취급하며 그 외 값은 모두 "true"로 취급합니다.
 
 ```html
 {{#if something}}
@@ -2774,13 +2775,13 @@ well as the empty array, while any other value is considered true.
 {{/if}}
 ```
 
-`#unless` is just `#if` with the condition inverted.
+`#unless`는 `#if`와 반대로 동작합니다.
 
 ## With
 
-A `#with` template tag establishes a new data context object for its contents.
-The properties of the data context object are where Spacebars looks when
-resolving template tag names.
+`#with` 템플릿 태그는 감싸고 있는 컨텐츠 영역을 위한 새로운 데이터 컨텍스트를 만듭니다.
+데이터 컨텍스트 객체의 속성은 템플릿 태그 이름을 해석 할 때 스페이스 바가 보이는 위치입니다.
+(원문: The properties of the data context object are where Spacebars looks when resolving template tag names.)
 
 ```html
 {{#with employee}}
@@ -2789,8 +2790,7 @@ resolving template tag names.
 {{/with}}
 ```
 
-We can take advantage of the object specification form of a block tag to define
-an object with properties we name:
+블록 태그 내 키워드 인자를 지정하는 방식으로 데이터 컨텍스트 객체를 생성할 수도 있습니다.
 
 ```html
 {{#with x=1 y=2}}
@@ -2798,20 +2798,19 @@ an object with properties we name:
 {{/with}}
 ```
 
-If the argument to `#with` is falsy (by the same rules as for `#if`), the
-content is not rendered.  An "else" block may be provided, which will be
-rendered instead.
+`#with`의 인자가 "false"로 취급되는 값일 경우 `#if`와 동일하게 렌더링 하지 않지만 `else` 블럭을 이용하여 예외에 대한 렌더링을 할 수 있습니다.
 
-If the argument to `#with` is a string or other non-object value, it may be
-promoted to a JavaScript wrapper object (also known as a boxed value) when
-passed to helpers, because JavaScript traditionally only allows an object for
-`this`.  Use `String(this)` to get an unboxed string value or `Number(this)` to
-get an unboxed number value.
+`#with`에 전달된 인자가 비 객체일 경우 `this`는 JavaScript의 레퍼 객체로 변환 될 수 있습니다.
+만약 인자로 문자열을 전달 하였고 래핑되지 않은 문자열 값을 사용하려면 `String(this)`를 숫자일 경우 `Number(this)`를 사용해야 합니다.
+
+> 역주: 인자로 'foo'라는 문자열을 전달할 경우
+> `this`는 'foo'라는 원시 문자열이 아닌 `new String('foo')`로 생성한 문자열 객체를 가지게 됨을 의미합니다.
 
 ## Each
 
-An `#each` template tag takes a sequence argument and inserts its content for
-each item in the sequence, setting the data context to the value of that item:
+`#each` 템플릿 테그는 순서대로 인자를 조회하여 각 항목을 각각의 데이터 컨텍스트로 사용하여 컨텐츠를 렌더링 합니다.
+
+> 역주: JavaScript의 배열을 처음부터 끝까지 1회 반복 조회하며 조회할 때마다 해당 인덱스의 값을 데이터 컨텍스트(`this`)로 취급하는 각각의 컨텐츠를 렌더링 합니다.
 
 ```html
 <ul>
@@ -2821,8 +2820,7 @@ each item in the sequence, setting the data context to the value of that item:
 </ul>
 ```
 
-The newer variant of `#each` doesn't change the data context but introduces a
-new variable that can be used in the body to refer to the current item:
+`#each`는 데이터 컨텍스트를 변경하지 않고 변수를 선언해 본문에서 사용할 수 있게 할 수 있습니다:
 
 ```html
 <ul>
@@ -2832,17 +2830,15 @@ new variable that can be used in the body to refer to the current item:
 </ul>
 ```
 
-The argument is typically a Meteor cursor (the result of `collection.find()`,
-for example), but it may also be a plain JavaScript array, `null`, or
-`undefined`.
+인수는 일반적으로 Meteor의 `collection.find()`와 같은 커서이지만 JavaScript의 배열, `null`, `undefined`일 수 있습니다.
 
-An "else" section may be provided, which is used (with no new data
-context) if there are zero items in the sequence at any time.
+언제든지 순서항목에 상관없는 `else`를 사용할 수 있습니다.
 
-You can use a special variable `@index` in the body of `#each` to get the
-0-based index of the currently rendered value in the sequence.
+`#each`의 본문에는 특별한 변수인 `@index`를 사용하여 인덱스를 활용 할 수 있습니다.
 
-### Reactivity Model for Each
+### Each의 반응형 모델
+
+원문:
 
 When the argument to `#each` changes, the DOM is always updated to reflect the
 new sequence, but it's sometimes significant exactly how that is achieved.  When
@@ -2870,11 +2866,29 @@ In case of duplicate identification keys, all duplicates after the first are
 replaced with random ones. Using objects with unique `_id` fields is the way to
 get full control over the identity of rendered elements.
 
+번역:
+
+`#each`에 대한 인자가 바뀌면 DOM은 항상 새 목록을 반영하도록 업데이트됩니다.
+하지만 때로는 이것이 어떻게 실행되는지 정확히 아는 것이 중요합니다.
+인수가 Meteor 라이브 커서인 경우 `#each`는 목록에 대한 세밀한 업데이트(추가, 제거, 이동 및 변경)에 액세스 할 수 있으며 아이템은 모든 문서 내에서 고유 ID로 식별됩니다.
+커서 자체가 일정한 경우(쿼리가 변경되지 않는 한), 커서 변경의 내용에 따라 DOM이 어떻게 갱신 될지에 대해 예측하는 것은 매우 쉽습니다.
+문서가 커서에 있으면 각 문서의 렌더링 된 내용이 유지되며, 문서 순서가 바뀌면 DOM이 다시 정렬됩니다.
+
+`#each`에 대한 인수가 반응적으로 변경되는 커서 객체가 아닌라 명확하게 변경을 식별할 수 없는 일반적인 JavaScript 배열이 변경되면 상황은 더욱 복잡해집니다.
+`#each`의 구현은 너무 비싼 작업을 하지 않고 지능적으로 수행하려고 노력합니다.
+특히 다음과 같은 규칙을 사용하여 이전 배열과 새 배열 또는 커서 사이의 항목을 식별하려고 합니다:
+
+1. `_id` 필드가 있는 객체의 경우 해당 필드를 식별 키로 사용합니다.
+2. `_id` 필드가 없는 객체의 경우, 배열 색인을 식별 키로 사용합니다. 이 경우 추가는 빠르지 만 앞에 붙는 것은 느립니다.
+3. 숫자 또는 문자열의 경우 해당 값을 식별 키로 사용합니다.
+
+식별 키가 중복될 경우 첫 번째 이후의 모든 중복되는 키는 임의의 키로 대체됩니다.
+고유 한 `_id` 필드가 있는 객체를 사용하면 렌더링 된 요소의 신원(identity)을 완전히 제어 할 수 있습니다.
+
 ## Let
 
-The `#let` tag creates a new alias variable for a given expression. While it
-doesn't change the data context, it allows to refer to an expression (helper,
-data context, another variable) with a short-hand within the template:
+`#let`태그는 주어진 표현식으로 새로운 변수를 만듭니다.
+데이터 컨텍스트는 변경되지 않으며, 간단하게 헬퍼, 데이터 컨텍스트, 다른 변수를 참조할 수 있습니다.
 
 ```html
 {{#let name=person.bio.firstName color=generateColor}}
@@ -2882,11 +2896,9 @@ data context, another variable) with a short-hand within the template:
 {{/let}}
 ```
 
-Variables introduced this way take precedence over names of templates, global
-helpers, fields of the current data context and previously introduced
-variables with the same name.
+이 방법으로 생긴 변수는 템플릿 네임, 전역 헬퍼, 현재 데이터 컨텍스트의 필드, 이전에 선언된 같은 이름의 변수 보다 우선시 됩니다.
 
-## Custom Block Helpers
+## 커스텀 블록 헬퍼
 
 To define your own block helper, simply declare a template, and then invoke it
 using `{{#someTemplate}}` (block) instead of `{{> someTemplate}}` (inclusion)
@@ -2944,7 +2956,7 @@ Template.elseBlock}}` to invoke it with a data context of your choice.  You can
 also use `{{#if Template.contentBlock}}` to see if the current template was
 invoked as a block helper rather than an inclusion.
 
-## Comment Tags
+## 주석 테그
 
 Comment template tags begin with `{{!` and can contain any characters except for
 `}}`.  Comments are removed upon compilation and never appear in the compiled
