@@ -2634,7 +2634,7 @@ is safe to insert.
 |`''` 또는 `null` 또는 `{}`||
 |`'checked'` 또는 `{checked: ''}`|`checked`|
 |`{checked: '', class: 'foo'}`|`checked class='foo'`|
-|`{checked: false, 'class': "foo"}`|`class='foo'`|
+|`{checked: false, class: 'foo'}`|`class='foo'`|
 |`'checked class=foo'`|애러. 문자열이 속성이름이 아닙니다.|
 
 여러 동적 속성 태그를 다른 속성과 결합 할 수 있습니다:
@@ -2654,13 +2654,13 @@ of `myClass`, `attrs1`, or `attrs2` changes reactively.
 
 번역:
 
-동적 속성 태그의 속성은 일반 속성 이후에 왼쪽에서 오른쪽으로 결합되며 이후 속성 값은 이전 속성을 겹쳐 씁니다.
-동일한 속성에 대한 여러 값은 어떤 방식으로도 병합되지 않으므로 `attrs1`이 `class` 속성 값을 지정하면 `{{myClass}}`를 덮어씁니다.
+속성 태그의 경우 엘리먼트에 명시한 속성 이후에 왼쪽에서 오른쪽으로 해석하며 결합하며 이전 속성을 겹쳐 씁니다.
+여러 속성 태그가 동일한 속성을 가리킬 경우 어떠한 방식으로도 병합되지 않으먀 마지막으로 해석한 속성태그로 속성을 덮어씁니다.
 당연한 소리입니다만, `myClass`, `attrs1`, `attrs2` 중 하나가 반응 적으로 변경되면 스페이스바는 엘리먼트의 속성을 다시 계산합니다.
 
-## Triple-braced Tags
+## 트리플 브레이싱 테그
 
-Triple-braced tags are used to insert raw HTML into a template:
+트리플 브레이싱 테그는 템플릿에 HTML 소스를 삽입할 때 사용합니다:
 
 ```html
 <div class="snippet">
@@ -2668,20 +2668,18 @@ Triple-braced tags are used to insert raw HTML into a template:
 </div>
 ```
 
-The inserted HTML must consist of balanced HTML tags.  You can't, for example,
-insert `"</div><div>"` to close an existing div and open a new one.
+삽입된 HTML은 정상적으로 균형잡힌 HTML 태그로 구성되어야 합니다.
+예를들어, 기존에 열려있는 `<div>`를 닫고 새로운 `<div>`를 열기 위해 `"</div><div>"`와 같은 것을 삽입할 수는 없습니다.
 
-This template tag cannot be used in attributes or in an HTML start tag.
+이 템플릿 테그는 속성 또는 HTML 시작태그에 사용할 수 없습니다.
 
-## Inclusion Tags
+## 포함 태그(Inclusion Tags)
 
-An inclusion tag takes the form `{{> templateName}}` or `{{> templateName
-dataObj}}`.  Other argument forms are syntactic sugar for constructing a data
-object (see Inclusion and Block Arguments).
+포함태그는 `{{> templateName}}` 또는 `{{> templateName dataObj}}` 형식을 취합니다.
+다른 인자 형식은 데이터 객체를 구성하기 위한 구문입니다. ([포함 및 블록 인자](#포함과-블록-인자inclusion-and-block-arguments) 참고)
 
-An inclusion tag inserts an instantiation of the given template at the current
-location.  If there is an argument, it becomes the data context, much as if the
-following code were used:
+포함 태그는 주어진 템플릿의 인스턴스를 현재 위치에 삽입합니다.
+인자가 있으면 다음 코드가 사용 된 것처럼 데이터 컨텍스트가됩니다:
 
 ```html
 {{#with dataObj}}
@@ -2689,9 +2687,10 @@ following code were used:
 {{/with}}
 ```
 
-Instead of simply naming a template, an inclusion tag can also specify a path
-that evalutes to a template object, or to a function that returns a template
-object.
+포함 태그는 단순히 템플릿 이름을 지정하는 방법 외에도, 템플릿 객체 또는 템플릿 객체를 반환하는 함수를 평가 할 수도 있습니다.
+
+> 아래는 이 섹션에 이어지는 내용이나 역주가 이해하지 못해 번역하지 아니하고 원문으로 유지함.
+> 아래 내용을 이해하기 위해서는 [Blaze](#blaze)섹션을 전반적으로 이해하고 사용할 줄 알아야 함.
 
 Note that the above two points interact in a way that can be surprising!
 If `foo` is a template helper function that returns another template, then
@@ -2701,7 +2700,9 @@ use `Template.parentData(1)` to access the original context. This differs
 from regular helper calls like `{{foo bar}}`, in which `bar` is passed as a
 parameter rather than pushed onto the data context stack.
 
-## Function Returning a Template
+## 템플릿을 리턴하는 함수(Function Returning a Template)
+
+포함태그가 함수로 해석되면, 해당 함수는 반드시 템플릿 객체 또는 `null`을 반환해야 합니다.
 
 If an inclusion tag resolves to a function, the function must return a template
 object or `null`.  The function is reactively re-run, and if its return value
