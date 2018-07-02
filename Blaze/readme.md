@@ -2521,22 +2521,18 @@ Spacebars 경로는 `foo`, `foo.bar`, `this.name`, `../ title`, `foo.[0]`과 같
 경로가 `..`일 경우 현재를 감싸고 있는 데이터 컨텍스트를 사용합니다.
 현재를 감싸고 있다함은 `#with`, `#each` 범위 밖 또는 현재 탬플릿을 감싸는 상위 범위를 뜻합니다.
 
-## Path Evaluation
+## 경로 평가(Path Evaluation)
 
-When evaluating a path, identifiers after the first are used to index into the
-object so far, like JavaScript's `.`.  However, an error is never thrown when
-trying to index into a non-object or an undefined value.
+경로를 평가할 때 첫번째 경로 뒤에 오는 식별자는 JavaScript에서 객체에 색인하기 위해 `.`를 쓰는 것처럼 사용하면 됩니다.
+그러나 객체가 아닌 값이나 정의되지 않은 값(undefined)에 색인을 시도할 때 오류가 발생하진 않습니다.
 
-In addition, Spacebars will call functions for you, so `{{foo.bar}}` may be
-taken to mean `foo().bar`, `foo.bar()`, or `foo().bar()` as appropriate.
+또한 스페이스바는 함수를 호출하는 것이기 때문에 `{{foo.bar}}`는 `{{foo().bar}}`, `{{foo.bar()}}`, `{{foo().bar()}}`여도 됩니다.
 
-## Helper Arguments
+## 헬퍼 인자
 
-An argument to a helper can be any path or identifier, or a string, boolean, or
-number literal, or null.
+헬퍼의 인자가 될 수 있는 것은 식별자, 문자열, 숫자, `boolean`, `null` 입니다.
 
-Double-braced and triple-braced template tags take any number of positional and
-keyword arguments:
+더블 및 트리플 브레싱 템플릿 테그는 원하는 만큼(필요한 만큼) 위치 및 키워드 인자를 사용합니다.
 
 ```html
 {{frob a b c verily=true}}
@@ -2546,76 +2542,78 @@ calls:
 frob(a, b, c, Spacebars.kw({verily: true}))
 ```
 
-`Spacebars.kw` constructs an object that is `instanceof Spacebars.kw` and whose
-`.hash` property is equal to its argument.
+`Spacebars.kw`는`instanceof Spacebars.kw` 또는 `.hash` 속성에 의한 인자 객체와 동일합니다.
 
-The helper's implementation can access the current data context as `this`.
+헬퍼에서 현재 데이터 컨텍스트를 'this'로 액세스 함으로서 구현 할 수 있습니다.
 
-## Inclusion and Block Arguments
+## 포함과 블록 인자(Inclusion and Block Arguments)
 
-Inclusion tags (`{{> foo}}`) and block tags (`{{#foo}}`) take a single
-data argument, or no argument.  Any other form of arguments will be interpreted
-as an *object specification* or a *nested helper*:
+포함테그(`{{> }}`)와 블록테그(`{{# }}`)는 인자가 없거나 단일 인자만 취합니다.
+다른 형식의 인자는 *객체사양* 또는 *헬퍼 중첩*으로 해석합니다.
 
-* **Object specification**: If there are only keyword arguments, as in `{{#with
-  x=1 y=2}}` or `{{> prettyBox color=red}}`, the keyword arguments will be
-  assembled into a data object with properties named after the keywords.
+* **객체사양:** `{{#with x=1 y=2}}` 또는 `{{> prettyBox color=red}}`처럼 키워드 인수만 있을 경우 '키: 값'의 형태의 하나의 객체로 조합됩니다.
 
-* **Nested Helper**: If there is a positional argument followed by other
-  (positional or keyword arguments), the first argument is called on the others
-  using the normal helper argument calling convention.
+* **헬퍼 중첩:** 인자가 위치해야 할 곳 뒤에 또다른 인자가 있을 경우 첫번째 인자는 뒤에 있는 인자를 인자로 전달하는 헬퍼 호출 규칙을 따릅니다.
 
-## Template Tag Placement Limitations
+## 템플릿 테그 배치 제한사항
 
-Unlike purely string-based template systems, Spacebars is HTML-aware and
-designed to update the DOM automatically.  As a result, you can't use a template
-tag to insert strings of HTML that don't stand on their own, such as a lone HTML
-start tag or end tag, or that can't be easily modified, such as the name of an
-HTML element.
+순전히 문자열 기반 템플릿 시스템과 달리, 스페이스바는 HTML을 인식하고 DOM을 자동으로 업데이트하도록 설계되었습니다.
 
-There are three main locations in the HTML where template tags are allowed:
+원문:
+As a result, you can't use a template tag to insert strings of HTML that don't stand on their own, such as a lone HTML start tag or end tag, or that can't be easily modified, such as the name of an HTML element.
 
-* At element level (i.e. anywhere an HTML tag could go)
-* In an attribute value
-* In a start tag in place of an attribute name/value pair
+번역:
+결과적으로 템플릿 태그를 사용하여 HTML 시작 태그나 종료 태그와 같이 독자적으로 존재 또느 수정할 수 없는 HTML 문자열을 삽입 할 수 없습니다.
 
-The behavior of a template tag is affected by where it is located in the HTML,
-and not all tags are allowed at all locations.
+HTML 내에서 템플릿 태그가 허용되는 세 가지 경우는 다음과 같습니다.:
 
-### Double-braced Tags
+* 엘리먼트 레벨
+* 속성 값
+* '이름:값'이 한 쌍이 되는 속성 값
 
-A double-braced tag at element level or in an attribute value typically evalutes
-to a string.  If it evalutes to something else, the value will be cast to a
-string, unless the value is `null`, `undefined`, or `false`, which results in
-nothing being displayed.
+원문:
+The behavior of a template tag is affected by where it is located in the HTML, and not all tags are allowed at all locations.
 
-Values returned from helpers must be pure text, not HTML.  (That is, strings
-should have `<`, not `&lt;`.)  Spacebars will perform any necessary escaping if
-a template is rendered to HTML.
+번역:
+템플릿 태그의 동작은 HTML에 있는 위치의 영향을받으며 모든 태그가 모든 위치에서 허용되지는 않습니다.
 
-### SafeString
+### 더블 브레싱 테그
+
+엘리먼트 또는 속성 내에서 더블브레싱 테그는 일반적으로 문자열로 평가합니다.
+평가되는 값이 `null`, `undefined`, `false` 일 경우에는 아무것도 표시되지 않습니다.
+
+헬퍼에서 반환되는 값은 HTML이 아닌 순수 텍스트여야 합니다.
+(문자열일 경우 `&lt;`가 아닌 `<`로 표시해야 합니다.)
+템플릿이 HTML로 렌더링되면 스페이스바가 필요한 경우에 이스케이핑 합니다.
+
+### 안전한 문자열
+
+원문:
 
 If a double-braced tag at element level evalutes to an object created with
 `Spacebars.SafeString("<span>Some HTML</span>")`, the HTML is inserted at the
 current location.  The code that calls `SafeString` is asserting that this HTML
 is safe to insert.
 
-## In Attribute Values
+번역:
 
-A double-braced tag may be part of, or all of, an HTML attribute value:
+만약 엘리먼트 레벨에서 더블 브레이싱 테그가 `Spacebars.SafeString("<span>Some HTML</span>")`에 의해 생성된 객체라면 평가되는 위치에서 HTML이 삽입됩니다.
+`SafeString`을 호출하는 코드는 HTML을 삽입하는 것이 안전하다는 것을 의미합니다.
+
+## 속성값
+
+더블 브레이싱 테그는 HTML 속성값의 일부 또는 전체일 수 있습니다:
 
 ```html
 <input type="checkbox" class="checky {{moreClasses}}" checked={{isChecked}}>
 ```
 
-An attribute value that consists entirely of template tags that return `null`,
-`undefined`, or `false` is considered absent; otherwise, the attribute is
-considered present, even if its value is empty.
+`null`, `undefined`, `false`값을 반환할 경우 해당 속성은 없는 것으로 관주합니다.
+그렇지 않을 경우 값이 비어있더라고 속성이 존재한다고 관주합니다.
 
-### Dynamic Attributes
+### 동적 속성
 
-A double-braced tag can be used in an HTML start tag to specify an arbitrary set
-of attributes:
+더블 브레이싱 테그는 HTML (시작)테그에 임의의 속성 집합을 지정하기 위해 사용할 수 있습니다.
 
 ```html
 <div {{attrs}}>...</div>
@@ -2623,33 +2621,29 @@ of attributes:
 <input type=checkbox {{isChecked}}>
 ```
 
-The tag must evaluate to an object that serves as a dictionary of attribute name
-and value strings.  For convenience, the value may also be a string or null.  An
-empty string or null expands to `{}`.  A non-empty string must be an attribute
-name, and expands to an attribute with an empty value; for example, `"checked"`
-expands to `{checked: ""}` (which, as far as HTML is concerned, means the
-checkbox is checked).
+태그는 속성 역할을 하는 '이름:값' 형식의 객체로 평가되어야 합니다.
+편의상 값은 문자열 또는 `null` 일 수 있습니다.
+빈 문자열 또는 `null`은 `{}`로 확장됩니다.
+속성 이름은 반드시 빈 문자열이면 안되며 빈 값을 가질 경우 값이 없는 속성으로 확장됩니다.
+예를 들어 `checked`는 `{checked: ''}`로 확장 됩니다.
 
-To summarize:
+요약:
 
-<table>
-  <thead>
-    <tr><th>Return Value</th><th>Equivalent HTML</th></tr>
-  </thead>
-  <tbody>
-    <tr><td><code>""</code> or <code>null</code> or <code>{}</code></td></tr>
-    <tr><td><code>"checked"</code> or <code>{checked: ""}</code></td><td><code>checked</code></td></tr>
-    <tr><td><code>{checked: "", 'class': "foo"}</code></td><td><code>checked  class=foo</code></td></tr>
-    <tr><td><code>{checked: false, 'class': "foo"}</code></td><td><code>class=foo</code></td></tr>
-    <tr><td><code>"checked class=foo"</code></td><td>ERROR, string is not an attribute name</td></tr>
-  </tbody>
-</table>
+|반환 값|HTML 해석|
+|------|-------|
+|`''` 또는 `null` 또는 `{}`||
+|`'checked'` 또는 `{checked: ''}`|`checked`|
+|`{checked: '', class: 'foo'}`|`checked class='foo'`|
+|`{checked: false, 'class': "foo"}`|`class='foo'`|
+|`'checked class=foo'`|애러. 문자열이 속성이름이 아닙니다.|
 
-You can combine multiple dynamic attributes tags with other attributes:
+여러 동적 속성 태그를 다른 속성과 결합 할 수 있습니다:
 
 ```html
 <div id=foo class={{myClass}} {{attrs1}} {{attrs2}}>...</div>
 ```
+
+원문:
 
 Attributes from dynamic attribute tags are combined from left to right, after
 normal attributes, with later attribute values overwriting previous ones.
@@ -2658,6 +2652,11 @@ specifies a value for the `class` attribute, it will overwrite `{{myClass}}`.
 As always, Spacebars takes care of recalculating the element's attributes if any
 of `myClass`, `attrs1`, or `attrs2` changes reactively.
 
+번역:
+
+동적 속성 태그의 속성은 일반 속성 이후에 왼쪽에서 오른쪽으로 결합되며 이후 속성 값은 이전 속성을 겹쳐 씁니다.
+동일한 속성에 대한 여러 값은 어떤 방식으로도 병합되지 않으므로 `attrs1`이 `class` 속성 값을 지정하면 `{{myClass}}`를 덮어씁니다.
+당연한 소리입니다만, `myClass`, `attrs1`, `attrs2` 중 하나가 반응 적으로 변경되면 스페이스바는 엘리먼트의 속성을 다시 계산합니다.
 
 ## Triple-braced Tags
 
