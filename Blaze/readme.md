@@ -2922,8 +2922,7 @@ get full control over the identity of rendered elements.
 {{/note}}
 ```
 
-Here is an example of implementing `#unless` in terms of `#if` (ignoring for the
-moment that `unless` is a built-in directive):
+아래는 `#unless`를 `#if` 구현한 예 입니다(`#unless`는 내장 블록 헬퍼입니다):
 
 ```html
 <template name="unless">
@@ -2934,6 +2933,10 @@ moment that `unless` is a built-in directive):
   {{/if}}
 </template>
 ```
+
+`#unless`의 인자는 `unless` 템플릿의 데이터 컨텍스트가 되며 `this`로 조회할 수 있습니다.
+
+미번역 내용:
 
 Note that the argument to `#unless` (the condition) becomes the data context in
 the `unless` template and is accessed via `this`.  However, it would not work
