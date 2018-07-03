@@ -2900,15 +2900,11 @@ get full control over the identity of rendered elements.
 
 ## 커스텀 블록 헬퍼
 
-To define your own block helper, simply declare a template, and then invoke it
-using `{{#someTemplate}}` (block) instead of `{{> someTemplate}}` (inclusion)
-syntax.
+사용자 정의 블록 헬퍼를 정의하려면, 템플릿을 선언 한 다음 `{{> someTemplate}}`가 아닌 `{{> someTemplate}}`과 같이 템플릿을 호출하면 됩니다.
 
-When a template is invoked as a block helper, it can use `{{>
-Template.contentBlock}}` and `{{> Template.elseBlock}}` to include the block
-content it was passed.
+템플릿이 블록 헬퍼로 호출되면, `{{Template.contentBlock}}`과 `{{Template.elseBlock}}`을 사용하여 전달 된 블록 내용을 포함 할 수 있습니다.
 
-Here is a simple block helper that wraps its content in a div:
+다음은 div에 내용을 래핑하는 간단한 블록 헬퍼입니다:
 
 ```html
 <template name="note">
@@ -2918,7 +2914,7 @@ Here is a simple block helper that wraps its content in a div:
 </template>
 ```
 
-You would invoke it as:
+이것은 이렇게 호출합니다:
 
 ```html
 {{#note}}
