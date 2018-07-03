@@ -2957,95 +2957,74 @@ invoked as a block helper rather than an inclusion.
 
 ## 주석 테그
 
-Comment template tags begin with `{{!` and can contain any characters except for
-`}}`.  Comments are removed upon compilation and never appear in the compiled
-template code or the generated HTML.
+템플릿의 주석 테그는 `{{!`로 시작하여 `}}`로 끝납니다.
+주석 테그는 컴파일로 생성된 HTML 내에는 존재하지 않습니다.
 
 ```html
-{{! Start of a section}}
+{{! 섹션 시작}}
 <div class="section">
   ...
 </div>
 ```
 
-Comment tags also come in a "block comment" form.  Block comments may contain
-`{{` and `}}`:
+또는 `{{!--`로 시작하여 `--}}`로 끝나는 블럭형식으로 사용할 수도 있습니다:
 
 ```html
-{{!-- This is a block comment.
+{{!-- 이것은 블럭형식의 주석테그 입니다.
 We can write {{foo}} and it doesn't matter.
 {{#with x}}This code is commented out.{{/with}}
 --}}
 ```
 
-Comment tags can be used wherever other template tags are allowed.
+주석테그는 템플릿 테그가 허용되는 곳이라면 어디서든 쓸 수 있습니다.
 
-## Nested sub-expressions
+## 중첩된 하위 표현식
 
-Sometimes an argument to a helper call is best expressed as a return value of
-some other expression. For this and other cases, one can use parentheses to
-express the evaluation order of nested expressions.
+헬퍼 호출에 대한 인자는 다른 식의 반환 값으로 표현하는 것이 가장 좋습니다.
+이 경우 및 기타 경우 괄호를 사용하여 내포된 식의 평가 순서를 나타낼 수 있습니다.
 
 ```html
 {{capitalize (getSummary post)}}
 ```
 
-In this example, the result of the `getSummary` helper call will be passed to
-the `capitalize` helper.
+> 역주: 이렇게 표현식 내에 소괄호를 사용한 내부 표현식을 **하위 표현식**이라 합니다.
 
-Sub-expressions can be used to calculate key-word arguments, too:
+위 예제는 `getSummary` 헬퍼의 실행 결과값을 `capitalize` 헬퍼로 전달 합니다.
+
+하위 표현식의 결과를 키워드 인자로 활용할 수도 있습니다.
 
 ```html
 {{> tmpl arg=(helper post)}}
 ```
 
-## HTML Dialect
+## HTML 비표준에 관하여(HTML Dialect)
 
-Spacebars templates are written in [standard
-HTML](http://developers.whatwg.org/syntax.html) extended with
-additional syntax (i.e. template tags).
+스페이스바 템플릿은 [표준 HTML](http://developers.whatwg.org/syntax.html)로 작성되며 추가 구문(예: 템플릿 태그)으로 확장됩니다.
 
-Spacebars validates your HTML as it goes and will throw a compile-time
-error if you violate basic HTML syntax in a way that prevents it from
-determining the structure of your code.
+스페이스바를 사용하면 HTML 유효성 검사가 진행되므로, 기본 HTML구문을 위반하는 코드가 있을 경우 컴파일 타임 오류가 발생합니다.
 
-Spacebars is not lenient about malformed markup the way a web browser
-is.  While the latest HTML spec standardizes how browsers should
-recover from parse errors, these cases are still not valid HTML.  For
-example, a browser may recover from a bare `<` that does not begin a
-well-formed HTML tag, while Spacebars will not.  However, gone are the
-restrictions of the XHTML days; attribute values do not have to
-quoted, and tags are not case-sensitive, for example.
+웹브라우저는 잘못된 마크업을 허용하지만 스페이스바는 그렇지 않습니다.
+최신 HTML 사양은 브라우저가 잘못된 구문을 표준화처럼 해석하도로 하지만 여전히 유효한 HTML은 아닙니다.
+예를들어 브라우저는 `<`로 시작하지 않은 HTML 테그를 복구할 수 있지만 스페이스바는 그렇지 않습니다.
+하지만 XHTML 규칙은 고려하지 않아도 되므로 속성값을 꼭 따옴표로 표시할 필요는 없으며 테그의 대소문자를 가리지 않습니다.
 
-You must close all HTML tags except the ones specified to have no end
-tag, like BR, HR, IMG and INPUT.  You can write these tags as `<br>`
-or equivalently `<br/>`.
+종료 태그가 없도록 지정된 HTML 태그 "BR, HR, IMG, INPUT"을 제외한 모든 HTML태그는 닫아야합니다.
+종료 태그가 아닌 `<br>`는 `<br/>`로 사용하여도 문제없습니다.
 
-The HTML spec allows omitting some additional end tags, such as P and
-LI, but Spacebars doesn't currently support this.
+HTML 스펙에서는 `p`, `li`와 같은 일부 테그들은 종료 테그를 생략할 수 있지만, 스페이스바는 현재 이를 지원하진 않습니다.
 
-## Top-level Elements in a `.html` file
+## `*.html` 파일의 최상위 엘리먼트
 
-Technically speaking, the `<template>` element is not part of the Spacebars
-language. A `foo.html` template file in Meteor consists of one or more of the
-following elements:
+엄밀히 말하면 `<template>` 엘리먼트는 스페이스바 언어의 일부가 아닙니다.
+Meteor의 `foo.html` 템플릿 파일은 다음 요소 중 하나 이상으로 구성됩니다:
 
-* `<template name="myName">` - The `<template>` element contains a Spacebars
-  template (as defined in the rest of this file) which will be compiled to the
-  `Template.myName` component.
+* **`<template name="myName">`**<br>원문: The `<template>` element contains a Spacebars template (as defined in the rest of this file) which will be compiled to the `Template.myName` component.<br>번역: `<template>` 엘리먼트는 `Template.myName` 컴포넌트로 컴파일 될 스페이스바 템플릿을 포함합니다.
 
-* `<head>` - Static HTML that will be inserted into the `<head>` element of the
-  default HTML boilerplate page. Cannot contain template tags. If `<head>` is
-  used multiple times (perhaps in different files), the contents of all of the
-  `<head>` elements are concatenated.
+* **`<head>`**<br>HTML의 기본요소인 `<head>`에 삽입될 정적인 HTML을 의미하므로 이 내부에는 템플릿 테그를 사용할 수 없습니다. `<head>`가 여러번 선언되면 내부 내용은 모두 합쳐지게 됩니다.
 
-* `<body>` - A template that will be inserted into the `<body>` of the main
-  page.  It will be compiled to the `Template.body` component. If `<body>` is
-  used multiple times (perhaps in different files), the contents of all of the
-  `<body>` elements are concatenated.
+* **`<body>`**<br>`<body>`에 삽입될 템플릿으로 `Template.body`로 컴포넌트 컴파일 됩니다. `<body>`도 여러번 선언되면 내부 내용은 모두 합쳐지게 됩니다.
 
-## Escaping Curly Braces
+## 중괄호 이스케이프
 
-To insert a literal `{{`, `{{{`, or any number of curly braces, put a
-vertical bar after it.  So `{{|` will show up as `{{`, `{{{|` will
-show up as `{{{`, and so on.
+갯수에 상관없이 중괄호를 삽입하고 이것을 HTML로 출력하고 싶을 경우, 중괄호 바로 뒤에 세로막대(역주: 이것을 명칭은 버티컬바 VERTICAL BAR) `|`를 입력하면 됩니다.
+`{{|`라고 입력하면 이것은 `{{`라고 출력됩니다.
