@@ -1,141 +1,141 @@
 # 목차
 
 **개요**
-* [개요](#개요)
-  * [시작하기](#시작하기)
-  * [세부사항](#세부사항)
-  * [예제](#예제)
-  * [신조](#신조)
-  * [페키지](#페키지)
-  * [우리의 계획](#우리의-계획)
+* [1. 개요](#1-개요)
+  * [1.1 시작하기](#11-시작하기)
+  * [1.2 세부사항](#12-세부사항)
+  * [1.3 예제](#13-예제)
+  * [1.4 신조](#14-신조)
+  * [1.5 페키지](#15-페키지)
+  * [1.6 우리의 계획](#16-우리의-계획)
   
 **가이드**
-* [소개](#소개)
-* [Spacebars templates](#스페이스바-템플릿)
-  * [데이터 구조 및 조회](#데이터-구조-및-조회)
-  * [헬퍼에 인자 사용하기](#헬퍼에-인자-사용하기)
-  * [template 추가하기](#template-추가하기)
-  * [헬퍼를 이용한 속성 설정](#헬퍼를-이용한-속성-설정)
-  * [html로 랜더링하기](#html로-랜더링하기)
-  * [블럭 핼퍼](#블럭-핼퍼)
-  * [내장된 블록 핼퍼](#내장된-블록-핼퍼)
-  * [block helpers 연결](#block-helpers-연결)
-  * [엄격함](#엄격함)
-  * [무효화](#무효화)
-* [Blaze에서 재사용가능한 컨포넌트](#blaze에서-재사용가능한-컨포넌트)
-  * [데이터 구조 유효성검사](#데이터-구조-유효성검사)
-  * [템플릿에 데이터 컨텍스트 추가하기](#템플릿에-데이터-컨텍스트-추가하기)
-  * [`{{#each .. in}}`추천](#each--in-추천)
-  * [헬퍼로 데이터 전달하기](#헬퍼로-데이터-전달하기)
-  * [템플릿 인스턴스 사용하기](#템플릿-인스턴스-사용하기)
-  * [상태에 따른 reactive dict 사용하기](#상태에-따른-reactive-dict-사용하기)
-  * [인스턴스에 함수 추가하기](#인스턴스에-함수-추가하기)
-  * [템플릿 인스턴스에 DOM 범위 지정하기](#템플릿-인스턴스에-dom-범위-지정하기)
-  * [이벤트 맵에서 `.js-` 셀렉터 사용하기](#이벤트-맵에서-js--셀렉터-사용하기)
-  * [템플릿 인자로 HTML 컨텐츠 전달하기](#템플릿-인자로-html-컨텐츠-전달하기)
-  * [콜백 전달하기](#콜백-전달하기)
-  * [`onRendered()`에서 제3자 라이브러리 사용하기](#onrendered에서-제3자-라이브러리-사용하기)
-* [Blaze로 스마트 컴포넌트(구성요소) 작성하기](#blaze로-스마트-컴포넌트구성요소-작성하기)
-  * [`onCreated`에서 서브스크립션](#oncreated에서-서브스크립션)
-  * [헬퍼에서 추출(Fetch)하기](#헬퍼에서-추출fetch하기)
-* [Blaze에서 코드 재사용하기](#blaze에서-코드-재사용하기)
-  * [구성](#구성)
-  * [라이브러리](#라이브러리)
-  * [글로벌 헬퍼](#글로벌-헬퍼)
-* [Blaze 이해하기](#blaze-이해하기)
-  * [리랜더링(Re-rendering)](#리랜더링re-rendering)
-  * [리랜더링 제어하기](#리랜더링-제어하기)
-  * [속성 헬퍼](#속성-헬퍼)
-  * [탐색 순서](#탐색-순서)
-  * [Blaze와 빌드 시스템](#blaze와-빌드-시스템)
-  * [뷰(view)란 무엇입니까?](#뷰view란-무엇입니까)
-* [라우터](#라우터)
-  * [Iron Router](#iron-router)
-  * [Flow Router](#flow-router)
-  * [Flow Router Extra](#flow-router-extra)
+* [2. 소개](#2-소개)
+* [3. Spacebars templates](#3-스페이스바-템플릿)
+  * [3.1 데이터 구조 및 조회](#31-데이터-구조-및-조회)
+  * [3.2 헬퍼에 인자 사용하기](#32-헬퍼에-인자-사용하기)
+  * [3.3 template 추가하기](#33-template-추가하기)
+  * [3.4 헬퍼를 이용한 속성 설정](#34-헬퍼를-이용한-속성-설정)
+  * [3.5 html로 랜더링하기](35-#html로-랜더링하기)
+  * [3.6 블럭 핼퍼](#36-블럭-핼퍼)
+  * [3.7 내장된 블록 핼퍼](#37-내장된-블록-핼퍼)
+  * [3.8 block helpers 연결](#38-block-helpers-연결)
+  * [3.9 엄격함](#39-엄격함)
+  * [3.10 무효화](#310-무효화)
+* [4. Blaze에서 재사용가능한 컨포넌트](#4-blaze에서-재사용가능한-컨포넌트)
+  * [4.1 데이터 구조 유효성검사](#41-데이터-구조-유효성검사)
+  * [4.2 템플릿에 데이터 컨텍스트 추가하기](#42-템플릿에-데이터-컨텍스트-추가하기)
+  * [4.3 `{{#each .. in}}`추천](43-#each--in-추천)
+  * [4.4 헬퍼로 데이터 전달하기](#44-헬퍼로-데이터-전달하기)
+  * [4.5 템플릿 인스턴스 사용하기](#45-템플릿-인스턴스-사용하기)
+  * [4.6 상태에 따른 reactive dict 사용하기](#46-상태에-따른-reactive-dict-사용하기)
+  * [4.7 인스턴스에 함수 추가하기](#47-인스턴스에-함수-추가하기)
+  * [4.8 템플릿 인스턴스에 DOM 범위 지정하기](#48-템플릿-인스턴스에-dom-범위-지정하기)
+  * [4.9 이벤트 맵에서 `.js-` 셀렉터 사용하기](#49-이벤트-맵에서-js--셀렉터-사용하기)
+  * [4.10 템플릿 인자로 HTML 컨텐츠 전달하기](#410-템플릿-인자로-html-컨텐츠-전달하기)
+  * [4.11 콜백 전달하기](#411-콜백-전달하기)
+  * [4.12 `onRendered()`에서 제3자 라이브러리 사용하기](#412-onrendered에서-제3자-라이브러리-사용하기)
+* [5. Blaze로 스마트 컴포넌트(구성요소) 작성하기](#5-blaze로-스마트-컴포넌트구성요소-작성하기)
+  * [5.1 `onCreated`에서 서브스크립션](#51-oncreated에서-서브스크립션)
+  * [5.2 헬퍼에서 추출(Fetch)하기](#52-헬퍼에서-추출fetch하기)
+* [6. Blaze에서 코드 재사용하기](#6-blaze에서-코드-재사용하기)
+  * [6.1 구성](#61-구성)
+  * [6.2 라이브러리](#62-라이브러리)
+  * [6.3 글로벌 헬퍼](#63-글로벌-헬퍼)
+* [7. Blaze 이해하기](#7-blaze-이해하기)
+  * [7.1 리랜더링(Re-rendering)](#71-리랜더링re-rendering)
+  * [7.2 리랜더링 제어하기](#72-리랜더링-제어하기)
+  * [7.3 속성 헬퍼](#73-속성-헬퍼)
+  * [7.4 탐색 순서](#74-탐색-순서)
+  * [7.5 Blaze와 빌드 시스템](#75-blaze와-빌드-시스템)
+  * [7.6 뷰(view)란 무엇입니까?](#76-뷰view란-무엇입니까)
+* [8. 라우터](#8-라우터)
+  * [8.1 Iron Router](81-#iron-router)
+  * [8.2 Flow Router](#82-flow-router)
+  * [8.3 Flow Router Extra](#83-flow-router-extra)
 
 **API**
-* [Templates](#templates)
-  * [`Template._name_`](#template_name_)
-    * [`.events()`](#eventscallback)
-    * [`.helpers()`](#helpershelpers)
-    * [`.onRendered()`](#onrenderedcallback)
-    * [`.onCreated()`](#oncreatedcallback)
-    * [`.onDestroyed()`](#ondestroyedcallback)
-  * [`Template.instances()`](#templateinstances)
-    * [`.findAll()`](#findallselector)
-    * [`.$()`](#selector)
-    * [`.find()`](#findselector)
-    * [`.firstNode`](#firstnode)
-    * [`.lastNode`](#lastnode)
-    * [`.data`](#data)
-    * [`.autorun()`](#autorunrunfunc)
-    * [`.subscribe()`](#subscribename-arg1-arg2--options)
-    * [`.view`](#view)
-  * [`Template.registerHelper()`](#templateregisterhelpername-function)
-  * [`Template.currentData()`](#templatecurrentdata)
-  * [`Template.parentData()`](#templateparentdatanumlevels)
-  * [`Template.body`](#templatebody)
-  * [`{{> Template.dynamic}}`](#-templatedynamic-templatetemplate-datadata)
-* [Blaze](#blaze)
-  * [`.render()`](#rendertemplate-or-view-parentnode-nextnode-parentview)
-  * [`.renderWithData`](#renderwithdatatemplate-or-view-data-parentnode-nextnode-parentview)
-  * [`.remove()`](#removerenderedview)
-  * [`.getData()`](#getdataelement-or-view)
-  * [`.toHTML()`](#tohtmltemplate-or-view)
-  * [`.toHTMLWithData`](#tohtmlwithdatatemplate-or-view-data)
-  * [`new Blaze.View()`](#new-blazeviewname-renderfunction)
-    * [`.currentView`](#currentview)
-    * [`.getView()`](#getviewelement)
-    * [`.With()`](#withdata-contentfunc)
-    * [`.If()`](#ifconditionfunc-contentfunc-elsefunc)
-    * [`Unless()`](#unlessconditionfunc-contentfunc-elsefunc)
-    * [`.Each()`](#eachargfunc-contentfunc-elsefunc)
-  * [`new Blaze.template()`](#new-blazetemplateviewname-renderfunction)
-  * [`.isTemplate()`](#istemplatevalue)
-  * [렌더링 가능한 컨텐츠](#렌더링-가능한-컨텐츠)
-* [Spacebars](#spacebars)
-  * [시작하기](#시작하기-1)
-  * [반응형 모델](#반응형-모델)
-  * [식별자와 경로](#식별자와-경로)
-  * [이름 확인](#이름-확인name-resolution)
-  * [경로 평가](#경로-평가path-evaluation)
-  * [헬퍼 인자](#헬퍼-인자)
-  * [포함과 블록 인자](#포함과-블록-인자inclusion-and-block-arguments)
-  * [템플릿 테그 배치 제한사항](#템플릿-테그-배치-제한사항)
-  * [속성값](#속성값)
-  * [트리플 브레이싱 테그](#트리플-브레이싱-테그)
-  * [포함 태그](#포함-태그inclusion-tags)
-  * [템플릿을 리턴하는 함수](#템플릿을-리턴하는-함수function-returning-a-template)
-  * [블록 태그](#블록-태그)
-  * [If/Unless](#ifunless)
-  * [With](#with)
-  * [Each](#each)
-  * [Each의 반응형 모델](#each의-반응형-모델)
-  * [Let](#let-1)
-  * [커스텀 블록 헬퍼](#커스텀-블록-헬퍼)
-  * [주석 테그](#주석-테그)
-  * [중첩된 하위 표현식](#중첩된-하위-표현식)
-  * [HTML 비표준에 관하여(HTML Dialect)](#html-비표준에-관하여html-dialect)
-  * [`*.html` 파일의 최상위 엘리먼트](#html-파일의-최상위-엘리먼트)
-  * [중괄호 이스케이프](#중괄호-이스케이프)
+* [9. Templates](#9-templates)
+  * [9.1 `Template._name_`](#91-template_name_)
+    * [9.1.1 `.events()`](#911-eventscallback)
+    * [9.1.2 `.helpers()`](#912-helpershelpers)
+    * [9.1.3 `.onRendered()`](#913-onrenderedcallback)
+    * [9.1.4 `.onCreated()`](#914-oncreatedcallback)
+    * [9.1.5 `.onDestroyed()`](#915-ondestroyedcallback)
+  * [9.2 `Template.instances()`](#92-templateinstances)
+    * [9.2.1 `.findAll()`](#921-findallselector)
+    * [9.2.2 `.$()`](#922-selector)
+    * [9.2.3 `.find()`](#923-findselector)
+    * [9.2.4 `.firstNode`](#924-firstnode)
+    * [9.2.5 `.lastNode`](#925-lastnode)
+    * [9.2.6 `.data`](#926-data)
+    * [9.2.7 `.autorun()`](#927-autorunrunfunc)
+    * [9.2.8 `.subscribe()`](#928-subscribename-arg1-arg2--options)
+    * [9.2.9 `.view`](#929-view)
+  * [9.3 `Template.registerHelper()`](#93-templateregisterhelpername-function)
+  * [9.4 `Template.currentData()`](#94-templatecurrentdata)
+  * [9.5 `Template.parentData()`](#95-templateparentdatanumlevels)
+  * [9.6 `Template.body`](#96-templatebody)
+  * [9.7 `{{> Template.dynamic}}`](#97--templatedynamic-templatetemplate-datadata)
+* [10. Blaze](#10-blaze)
+  * [10.1 `.render()`](#101-rendertemplate-or-view-parentnode-nextnode-parentview)
+  * [10.2 `.renderWithData`](#102-renderwithdatatemplate-or-view-data-parentnode-nextnode-parentview)
+  * [10.3 `.remove()`](#103-removerenderedview)
+  * [10.4 `.getData()`](#104-getdataelement-or-view)
+  * [10.5 `.toHTML()`](#105-tohtmltemplate-or-view)
+  * [10.6 `.toHTMLWithData`](#106-tohtmlwithdatatemplate-or-view-data)
+  * [10.7 `new Blaze.View()`](#107-new-blazeviewname-renderfunction)
+    * [10.7.1 `.currentView`](#1071-currentview)
+    * [10.7.2 `.getView()`](#1072-getviewelement)
+    * [10.7.3 `.With()`](#1073-withdata-contentfunc)
+    * [10.7.4 `.If()`](#1074-ifconditionfunc-contentfunc-elsefunc)
+    * [10.7.5 `Unless()`](#1075-unlessconditionfunc-contentfunc-elsefunc)
+    * [10.7.6 `.Each()`](#1076-eachargfunc-contentfunc-elsefunc)
+  * [10.8 `new Blaze.template()`](#108-new-blazetemplateviewname-renderfunction)
+  * [10.9 `.isTemplate()`](#109-istemplatevalue)
+  * [10.10 렌더링 가능한 컨텐츠](#1010-렌더링-가능한-컨텐츠)
+* [11. Spacebars](#11-spacebars)
+  * [11.1 시작하기](#111-시작하기-1)
+  * [11.2 반응형 모델](#112-반응형-모델)
+  * [11.3 식별자와 경로](#113-식별자와-경로)
+  * [11.4 이름 확인](#114-이름-확인name-resolution)
+  * [11.5 경로 평가](#115-경로-평가path-evaluation)
+  * [11.6 헬퍼 인자](#116-헬퍼-인자)
+  * [11.7 포함과 블록 인자](#117-포함과-블록-인자inclusion-and-block-arguments)
+  * [11.8 템플릿 테그 배치 제한사항](#118-템플릿-테그-배치-제한사항)
+  * [11.9 속성값](#119-속성값)
+  * [11.10 트리플 브레이싱 테그](#1110-트리플-브레이싱-테그)
+  * [11.11 포함 태그](#1111-포함-태그inclusion-tags)
+  * [11.12 템플릿을 리턴하는 함수](#1112-템플릿을-리턴하는-함수function-returning-a-template)
+  * [11.13블록 태그](#1113-블록-태그)
+  * [11.14 If/Unless](#1114-ifunless)
+  * [11.15 With](#1115-with)
+  * [11.16 Each](#1116-each)
+    * [11.16.1 Each의 반응형 모델](#1117-each의-반응형-모델)
+  * [11.17 Let](#1118-let-1)
+  * [11.18 커스텀 블록 헬퍼](#1119-커스텀-블록-헬퍼)
+  * [11.19 주석 테그](#1120-주석-테그)
+  * [11.20 중첩된 하위 표현식](#1121-중첩된-하위-표현식)
+  * [11.21 HTML 비표준에 관하여(HTML Dialect)](#1122-html-비표준에-관하여html-dialect)
+  * [11.22 `*.html` 파일의 최상위 엘리먼트](#1123-html-파일의-최상위-엘리먼트)
+  * [11.23 중괄호 이스케이프](#1124-중괄호-이스케이프)
 
 ***
 
-# 개요
+# 1. 개요
 
 Blaze는 반응형 HTML 템플릿으로 UI를 만드는 강력한 라이브러리 입니다.
 전통적인 템플릿과 jQuery을 조합하여 사용하는 것과 비교하여, Blaze는 데이터의 변경사항을 감지하고 DOM을 조작할 "업데이트 로직"이 앱 내에 필요없습니다.
 대신 [트레커](https://docs.meteor.com/api/tracker.html)의 "반응형"이나 [미니몽고](https://docs.meteor.com/api/collections.html)의 데이터베이스 커서를 이용하여 {{#if}}나 {{#each}}와 같은 익숙한 문법으로 DOM을 조작합니다.
 
-## 시작하기
+## 1.1 시작하기
 
 현재 Blaze는 Meteor 전용 페키지 입니다.
 조만간 npm에서 Blaze를 만나볼 수 있으며, 당신의 작업물에 이것을 사용할 수 있습니다.
 
 새로만든 각각의 Meteor 프로젝트에 Blaze가 설치되어 있습니다. (`blaze-html-templates`라는 페키지 명으로 되어 있음)
 
-## 세부사항
+## 1.2 세부사항
 
 원문:
 
@@ -164,7 +164,7 @@ Blaze에는 두 개의 주요사항이 있습니다:
 Blaze의 진보된 템플릿 시스템은 때때로 React, Angular, Ember, Polymer, Knockout과 같은 프레임 워크들과 비교됩니다.
 Blaze는 템플릿 사용, 직관적인 반응형, 기존 사용중인 라이브러리와의 상호 운용성으로 개발자 경험을 끊임없이 집중하여 글로벌적인 수준의 앱 제작을 할 수 있게 합니다.
 
-## 예제
+## 1.3 예제
 
 "Leaderboard"라는 예제에 두개의 스페이스바 템플릿이 있습니다.
 이 템플릿은 플레이어와 점수에 대한 리스트를 표시합니다.
@@ -234,9 +234,9 @@ And thanks to Tracker's transparent reactivity, there's no ceremony around depen
 Tracker의 직관적인 반응형 덕분에 데이터베이스나 세션을 반응형으로 만들기위한 추가 작업이 필요없이 단순히 값을 읽어올때 변경된 값이 있으면 알아서 DOM을 업데이트 합니다.
 
 
-## Principles
+## 1.4 Principles
 
-### 쉬운 학습
+### 1.4.1 쉬운 학습
 
 원문:
 
@@ -256,7 +256,7 @@ Blaze는 어떤 새로운 서적 없이도 기존의 지식을 적용할 수 있
 반응형 HTML 시스템을 만들때 "간단하게"유지할 수 있도록 개발자 경험을 우선적으로 고려하고 있습니다.
 우리는 Meteor 커뮤니티의 피드백을 통해 더욱 노력할 것입니다.
 
-### 직관적인 반응형
+### 1.4.2 직관적인 반응형
 
 Blaze는 [Tracker](https://docs.meteor.com/api/tracker.html)라는 라이브러리를 사용하여 템플릿의 헬퍼가 재 계산 할 때 자동적으로 추적합니다.
 예를들어 클라이언트 측 데이터베이스에서 헬퍼가 어떠한 값을 읽었다면, 값이 변경될 때 헬퍼는 자동적으로 재계산합니다.
@@ -265,7 +265,7 @@ Blaze는 [Tracker](https://docs.meteor.com/api/tracker.html)라는 라이브러�
 반응형이 무엇인지 Tracker가 어떻게 동작하는지 몰라도 됩니다.
 결론적으로 다른 접근방식 보다 고민할거리와 타이핑할것이 줄어든다는 것입니다.
 
-### 깔끔한 템플릿
+### 1.4.3 깔끔한 템플릿
 
 Blaze는 다른 프레임워크를 사용한 개발자도 깨끗하고 읽기 쉽도록 Handlebars 및 Jade와 같은 익숙하고 대중적인 템플릿 구문을 사용합니다.
 
@@ -278,7 +278,7 @@ Blaze는 다른 프레임워크를 사용한 개발자도 깨끗하고 읽기 �
 또한 템플릿은 일반적으로 최적화된 방법으로 컴파일되어 있으므로 원시템플릿 소스코드를 브라우저에서 분석 할 수 있는지 여부는 중요하지 않습니다.
 그러나 템플릿을 읽고, 쓰고, 유지관리하는 개발자 경험은 대단히 중요합니다.
 
-### 플러그인 상호 운용성
+### 1.4.4 플러그인 상호 운용성
 
 웹 개발자는 종종 HTML, JavaScript, CSS로 만든 작은 결과물을 서로 공유하거나 라이브러리, 위젯 또는 jQuery 플러그인으로 게시합니다.
 또는 동영상,지도 및 기타 제 3자 컨텐츠를 퍼가려고합니다.
@@ -290,7 +290,7 @@ It hooks into jQuery's clean-up routines to prevent memory leaks, and it preserv
 
 While it's certainly possible for Blaze and jQuery to step on each other's toes if you aren't careful, there are established patterns for keeping the peace, and Blaze developers rightfully expect to be able to use the various widgets and enhancements cooked up by the broader web community in their apps.
 
-### 다른 라이브러리와의 비교
+### 1.4.5 다른 라이브러리와의 비교
 
 Blaze는 Backbone 또는 다른 라이브러리보다 훨씬 적은 재 랜더링을 수행하며, 한 페이지에서 여러개의 템플릿이 독립적으로 업데이트 될 수 없는 "nested view" 문제로 고심하지 않아도 됩니다.
 또한 Blaze는 트래커를 사용하여 다시 랜더링 해야 할 시기를 자동으로 결정합니다.
@@ -320,7 +320,7 @@ JavaScript 코드로 구성요소를 짜내는 React와 비교하여 Blaze는 HT
 JavaScript 코드보다 HTML템플릿이 가독성, 수정, CSS수정 등이 더 쉽습니다.
 React는 트레커를 사용하지 않으므로 대신 효율적인 랜더링을 구현하기 위해 "setState" 호출 및 다른 데이터 모델 조합에 의존합니다.
 
-## 페키지
+## 1.5 페키지
 
 * blaze
 * blaze-tools
@@ -333,9 +333,9 @@ React는 트레커를 사용하지 않으므로 대신 효율적인 랜더링을
 
 > 역주: 2017년 5월 이후로 프로젝트 팀이 해체되어 더이상 진행되지 않으므로 아래의 "우리의 계획"섹션은 번역하지 아니함.
 
-## 우리의 계획
+## 1.6 우리의 계획
 
-### Components (구성요소)
+### 1.6.1 Components (구성요소)
 
 Blaze는 재사용 가능한 UI 컴포넌트를 만들기 위한 더 좋은 패턴을 얻을 것입니다.
 템플릿은 이미 재사용 가능한 구성 요소로 제공됩니다.
@@ -347,7 +347,7 @@ Blaze는 재사용 가능한 UI 컴포넌트를 만들기 위한 더 좋은 패�
 * Scoping and the lookup chain
 * Inheritance and configuration (상속과 구성)
 
-### 양식
+### 1.6.2 양식
 
 원본:
 
@@ -364,7 +364,7 @@ Rails나 Django와 같은 서버 측 프레임워크는 이를 위해 잘 정돈
 
 Meteor 개발자는 이미 양식과 유효성 검사를 처리 할 수 있는 방법과 패키지를 찾았지만(?), Meteor의 핵심 부분의 기능을 구현할 수있는 좋은 기회라 생각합니다.
 
-### 모바일과 애니메이션
+### 1.6.3 모바일과 애니메이션
 
 원문:
 
@@ -378,7 +378,7 @@ Blaze는 터치 및 기타 모바일 상호 작용을 위해 향상된 성능 �
 
 또한 개발자가 애니메이션 전환을 앱에서 할 수 있도록 편의성을 향상시킬 것 입니다.
 
-### 템플릿 내에서 JavaScript 표현방법
+### 1.6.4 템플릿 내에서 JavaScript 표현방법
 
 We plan to support JavaScript expressions in templates.
 This will make templates more expressive, and it will further shorten application code by eliminating the need for a certain class of one-line helpers.
@@ -395,7 +395,7 @@ Because templates are already precompiled to JavaScript code, there is nothing f
 the project
 Ractive.js).
 
-### Other Template Enhancements
+### 1.6.5 Other Template Enhancements
 
 Source maps for debugging templates.
 Imagine seeing your template code in the browser's debugger! Pretty slick.
@@ -406,7 +406,7 @@ Better support for pluggable template syntax (e.g.
 Jade-like templates).
 There is already a Jade package in use, but we should learn from it and clarify the abstraction boundary that authors of template syntaxes are programming against.
 
-### Pluggable Backends (don't require jQuery)
+### 1.6.6 Pluggable Backends (don't require jQuery)
 
 While Blaze currently requires jQuery, it is architected to run against other "DOM backends" using a common adaptor interface.
 You should be able to use Zepto, or some very small shim if browser compatibility is not a big deal for your application for some reason.
@@ -414,11 +414,11 @@ At the moment, no such adaptors besides the jQuery one have been written.
 
 The Blaze team experimented with dropping jQuery and talking directly to "modern browsers," but it turns out there is about 5-10K of code at the heart of jQuery that you can't throw out even if you don't care about old browsers or supporting jQuery's app-facing API, which is required just to bring browsers up to the modest expectations of web developers.
 
-### Better Stand-alone Support
+### 1.6.7 Better Stand-alone Support
 
 Blaze will get better support for using it outside of Meteor, such as regular stand-alone builds.
 
-## 리소스
+## 1.7 리소스
 
 * [Templates API](../api/templates.html)
 * [Blaze API](../api/blaze.html)
@@ -428,7 +428,7 @@ Blaze will get better support for using it outside of Meteor, such as regular st
 
 ***
 
-# 소개
+# 2. 소개
 
 Meteor의 프론트 엔드 랜더링 시스템 인 Blaze를 사용하여 사용 가능하고 관리 가능한 사용자 인터페이스를 구축하는 방법.
 
@@ -453,7 +453,7 @@ Blaze는 Meteor에서 앱으로 빌드 할 필요가 없으며 [React](http://re
 그러나 이 섹션에서는 Blaze에서 앱을 빌드하는 모범 사례를 안내합니다.
 다른 모든 섹션에서 UI 엔진으로 사용합니다.
 
-# 스페이스바 템플릿
+# 3. 스페이스바 템플릿
 
 스페이스바는 반응형으로 변하는 데이터 컨텍스트를 랜더링하는 핸들바와 같은 템플릿 언어 입니다.
 스페이스바 템플릿은 중괄호로 구분지어놓은 간단한 HTML 테그같아 보입니다: `{{}}`
@@ -519,7 +519,7 @@ Blaze 헬퍼에서의 `this`는 현재 헬퍼가 쓰여진 곳의 데이터 컨�
 [이곳](#spacebars)에서 Spacebars의 전체적인 문법을 읽어볼 수 있습니다.
 이 섹션에서는 문법 외에도 중요한 세부사항 몇가지를 다루려 합니다.
 
-## 데이터 구조 및 조회
+## 3.1 데이터 구조 및 조회
 
 우리는 `{{todo.title}}`이 현재 `todo`라는 데이터 구조의 `title`이라는 프로퍼티에 접근한 것임을 봤습니다.
 또한 `..`는 상위(부모) 데이터 구조에 접근하는 것이며(드물지만 획기적으로 쓰일때가 있다), `list.todos.[0]`은 `list`의 `todos`라는 배열의 첫번째 원소에 접근하는 것입니다.
@@ -528,7 +528,7 @@ Spacebars는 `null`을 매우 관대하게 혀용합니다.
 만약 정의되지 않은 `foo`에서 `foo.bar`를 시도할 경우, 이것을 단순히 null로 처리하므로 오류가 나지 않습니다.
 하지만 `null`을 함수로서 호출하여 사용하려고 할 경우네는 예외(오류메세지)를 발생시킵니다.
 
-## 헬퍼에 인자 사용하기
+## 3.2 헬퍼에 인자 사용하기
 
 `{{checkedClass todo true 'checked'}}`처럼 헬퍼를 호출한 다음 인자를 지정할 수 있습니다.
 `{{checkedClass todo noClass=true classname='checked'}}`처럼 이름을 키워드로 하는 많은 인자를 지정할 수도 있습니다.
@@ -566,7 +566,7 @@ Template.Todos_item.helpers({
 ```
 `todo`를 `todoArgs`라는 헬퍼에 인자로 전달하고 그 결과값을 `Todos_item`이라는 템플릿으로 전달합니다.
 
-## Template 추가하기
+## 3.3 Template 추가하기
 
 `{{> }}`문법을 통하여 하위 구성요소(템플릿)을 추가할 수 있습니다.
 기본적으로 하위 구성요소는 호출자(부모)의 데이터 컨텍스트를 가지고 올 수 있지만, 대개는 명시적이어야 합니다.
@@ -597,7 +597,7 @@ Template.mySubTemplate2.helpers({
 });
 ```
 
-## 헬퍼를 이용한 속성 설정
+## 3.4 헬퍼를 이용한 속성 설정
 
 위의 첫번째 [예제](#spacebars-templates)에서 `checked={{todo.checked}}`부분은 `todo.checked`가 `true`일 경우 HTML에 `checked` 속성을 추가합니다.
 또는 여러 개의 속성을 한번에 설정해야 한다면 다음과 같은 방법을 사용 할 수 있습니다:
@@ -617,7 +617,7 @@ Template.foo.helpers({
 });
 ```
 
-## HTML로 랜더링하기
+## 3.5 HTML로 랜더링하기
 
 기본적으로 중괄호 태그는 [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)를 방지하기 위해 HTML태그를 이스케이프하지만, HTML로 랜더링 할 필요가 있을 경우 `{{{  }}}`와 같이 중괄호가 한번 더 들어간 태그를 이용할 수 있습니다.
 
@@ -635,7 +635,7 @@ Template.foo.helpers({
 });
 ```
 
-## 블럭 핼퍼
+## 3.6 블럭 핼퍼
 
 `{{# }}`와 함께 쓰이는 헬퍼를 블럭핼퍼라고 부르며 이것은 HTML을(또는 랜더링할 어떠한 것이든) 블럭화 합니다.
 예를들어 우리는 앞서 헬퍼가 가지고 있는 리스트에서 하나하나의 HTML을 `{{#each .. in}}`을 통해 블럭화 하여 반복하는 것을 보았습니다.
@@ -666,7 +666,7 @@ Template.foo.helpers({
 </template>
 ```
 
-## 내장된 블록 핼퍼
+## 3.7 내장된 블록 핼퍼
 
 아래는 알아야 할 기본 내장된 블록 핼퍼입니다:
 
@@ -686,7 +686,7 @@ JavaScript에서 `null`, `undefined`, `0`, `''`, `NaN`, `false`를 `false`로 �
 
 > 역주: `{{#unless}}`는 'if not' 의미로 동작합니다.
 
-### Each-in
+### 3.7.1 Each-in
 
 `{{#each .. in}}`헬퍼는 외부 데이터 구조를 유지하면서 리스트를 넘기는 편리한 방법입니다.
 
@@ -698,7 +698,7 @@ JavaScript에서 `null`, `undefined`, `0`, `''`, `NaN`, `false`를 `false`로 �
 {{/each}}
 ```
 
-### Let
+### 3.7.2 Let
 
 `{{#let }}`은 해당 탬플릿에서 사용할 속성을 정의하는 것입니다.
 JavaScript에서 사용하는 `let`과 유사합니다:
@@ -714,7 +714,7 @@ JavaScript에서 사용하는 `let`과 유사합니다:
 즉, 헬퍼와 이벤트 헨들러에서 `this.name` 또는 `this.color`로 조회할 수 없다는 뜻입니다.
 만약 헬퍼 내에서 이것들을 조회해야 할 필요가 있을경우, 반드시 인자로 전달해야 합니다.(앞서 보았던 `todoArgs todo`처럼)
 
-### Each와 With
+### 3.7.3 Each와 With
 
 이 두 헬퍼는 스페이스바의 기본 헬퍼이지만, 우리는 이것을 사용하는 것을 추천하지 않습니다([`each-in`](#each--in-추천)사용 추천).
 이 블록 핼퍼들은 데이터 컨텍스트를 변형시키기 때문에 추적이 어려울 수 있습니다.
@@ -723,7 +723,7 @@ JavaScript에서 사용하는 `let`과 유사합니다:
 `{{#with}}`는 단순히 제공된 객체를 내부 데이터 컨텍스트로 변경합니다.
 대부분의 경우 `{{#with}}`를 사용하는 것보다 `{{#each .. in}}`이나 `{{#let}}`을 사용하는 것이 좋습니다.
 
-## Block Helpers 연결
+## 3.8 Block Helpers 연결
  
 아래처럼 블록 헬퍼를 연결하여 사용할 수 있습니다:
 
@@ -751,12 +751,12 @@ JavaScript에서 사용하는 `let`과 유사합니다:
 {{/input}}
 ```
 
-## 엄격함
+## 3.9 엄격함
 
 스페이스바는 매우 엄격하게 HTML을 파싱하는 파서가 있습니다.
 예를들어 `div`처럼 단일 닫힘 테그가 아닌 테그가 `<div/>`와 같이 쓰였다면, 고맙게도 파서는 이러한 오류를 발생시키며 어디으 몇번째 줄에 그러한 오류가 발생했는지 알려줍니다.
 
-## 무효화
+## 3.10 무효화
 
 `{{ }}`를 HTML로 표시하고 싶다면, 여는 괄호 다음 `|`를 입력합니다:
 
@@ -771,7 +771,7 @@ JavaScript에서 사용하는 `let`과 유사합니다:
 
 ***
 
-# Blaze에서 재사용가능한 컨포넌트
+# 4. Blaze에서 재사용가능한 컨포넌트
 
 Meteor 가이드 [UI/UX](https://guide.meteor.com/ui-ux.html#smart-components) 섹션에서 명확하고 최소한의 방법으로 재사용 가능한 구성요소를 만드는 것이 장점이라고 했습니다.
 
@@ -780,7 +780,7 @@ Meteor 가이드 [UI/UX](https://guide.meteor.com/ui-ux.html#smart-components) �
 
 앞으로의 예제들은 Todos라는 예제 앱의 `List_show`라는 컴포넌트를 참조할 것입니다.
 
-## 데이터 구조 유효성검사
+## 4.1 데이터 구조 유효성검사
 
 원문:
 
@@ -810,7 +810,7 @@ Template.Lists_show.onCreated(function() {
 
 `autorun()`을 사용하여 데이터 컨텍스트가 바뀔때마다 유효성 검사를 할 수 있습니다.
 
-## 템플릿에 데이터 컨텍스트 추가하기
+## 4.2 템플릿에 데이터 컨텍스트 추가하기
 
 관계성이 있는 객체를 `{{> Todos_item todo}}`처럼 템플릿의 데이터 컨텍스트로 제공하는 것이 좋습니다.
 이 때, `{{> Todos_item todo=todo}}`처럼 명시적으로 이름을 지정해주는 것이 좋습니다.
@@ -840,7 +840,7 @@ Additionally, for better clarity, always explicitly provide a data context to an
 {{> myTemplate ""}}
 ```
 
-## `{{#each .. in}}` 추천
+## 4.3 `{{#each .. in}}` 추천
 
 원문:
 
@@ -866,7 +866,7 @@ Typically the solution to this is to use a sub-component to render the inside of
 
 이제 `Todos_item`의 이벤트 헨들러나 헬퍼 내에서 `this.todo`로 참조할 수 있습니다.
 
-## 헬퍼로 데이터 전달하기
+## 4.4 헬퍼로 데이터 전달하기
 
 원문:
 
@@ -880,7 +880,7 @@ We do this for similar reasons to why we always pass arguments to template inclu
 그래서 우리의 `checkedClass` 도우미는 `todo`를 인수로 사용하고 암묵적으로 `this.todo`를 사용하지 않고 직접 검사합니다.
 "템플릿 변수"에서 `this` 사용이 가능하지 않기 때문에 템플릿에 항상 인자를 전달하는 작업을 수행합니다.
 
-## 템플릿 인스턴스 사용하기
+## 4.5 템플릿 인스턴스 사용하기
 
 Blaze의 간단한 API가 반드시 컴포넌트 화 된 접근 방식을 권장하지는 않습니다.
 템플릿 인스턴스를 내부 기능 및 상태를 저장하는 편리한 위치로 사용할 수 있습니다.
@@ -911,7 +911,7 @@ Template.Lists_show.events({
 });
 ```
 
-## 상태에 따른 reactive dict 사용하기
+## 4.6 상태에 따른 reactive dict 사용하기
 
 [`reactive-dict`](https://atmospherejs.com/meteor/reactive-dict)페키지를 사용하면 간단한 반응형 키-값으로 dict를 정의할 수 있습니다.
 구성요소에 내부 상태를 연결하는 편리한 방법입니다.
@@ -929,7 +929,7 @@ Template.Lists_show.onCreated(function() {
 
 `stats`라는 dict가 만들어지면 헬퍼나 이벤트 헨들러에서 조회 수정이 가능합니다.
 
-## 인스턴스에 함수 추가하기
+## 4.7 인스턴스에 함수 추가하기
 
 만약 여러 이벤트 헨들러에서 사용되어야 하는 함수가 있을 경우, `onCreated()`의 콜백함수에서 템플릿 인스턴스에 직접 함수를 추가하는 것이 좋습니다.
 
@@ -963,7 +963,7 @@ Template.Lists_show.events({
 });
 ```
 
-## 템플릿 인스턴스에 DOM 범위 지정하기
+## 4.8 템플릿 인스턴스에 DOM 범위 지정하기
 
 jQeury의 `$()`를 이용하여 글로벌적으로 DOM을 탐색하는 것은 좋지 않습니다.
 이러한 방법은 현재 컨포넌트와 상관없는 것을 선택할 수 있습니다.
@@ -987,7 +987,7 @@ Template.Lists_show.events({
 });
 ```
 
-### 역주: 이번 섹션은 잘못 된 것이다.
+### 4.8.1 역주: 이번 섹션은 잘못 된 것이다.
 
 이번 섹션에서는 클라이언트 측에서의 더 나은 퍼포먼스를 위해 위와 같이 말하였지만 실험결과 잘못된 것이라 판단된다.
 
@@ -1045,7 +1045,7 @@ return console.timeEnd('this.firstNode.querySelectorAll');
 
 결과는 직접 실행해보자. 참고로 `this.$()`보다 `$()`가 두배가량 빠르다. (애써 생각해서 넣어놓은 빌트인 메서드가 무쓸모라는 소리)
 
-## 이벤트 맵에서 `.js-` 셀렉터 사용하기
+## 4.9 이벤트 맵에서 `.js-` 셀렉터 사용하기
 
 JS파일에 이벤트 맵을 설정할 때 이벤트가 첨부되는 템플릿 요소를 선택(select)해야 합니다.
 요소의 스타일을 지정하는데 사용되고 있는 CSS 클레스를 사용하는대신 이벤트헨들러에서 셀렉터로 사용할 특별한 클레스명을 사용하는 것이 좋습니다.
@@ -1056,7 +1056,7 @@ JS파일에 이벤트 맵을 설정할 때 이벤트가 첨부되는 템플릿 �
 > 그러므로 `'click .js-btn'`과 같이 사용할 경우 부트스트랩을 사용하지 않게되어 `.btn`을 제거하더라도 개발에 혼선의 여지가 없게된다.
 > 즉, Blaze에서는 이러한 방식을 추천한다는 말이지 꼭 `.js-***`과 같이 사용할 필요는 없다.
 
-## 템플릿 인자로 HTML 컨텐츠 전달하기
+## 4.10 템플릿 인자로 HTML 컨텐츠 전달하기
 
 만약 하위 구성요소로 컨텐츠를 전달해야 하는 경우 사용자 정의 [블럭 헬퍼](#블럭-핼퍼)를 사용하여 컨텐츠 블럭을 제공할 수 있습니다.
 보다 더 유연한 방법이 필요할 경우 일반적으로 구성 요소의 이름(템플릿명)을 인수로 제공하는 것이 가장 좋습니다.
@@ -1068,7 +1068,7 @@ JS파일에 이벤트 맵을 설정할 때 이벤트가 첨부되는 템플릿 �
 
 이 방법은 [`kadira:blaze-layout`](https://atmospherejs.com/kadira/blaze-layout)페키지가 작동하는 방식입니다. (한국어 docs는 [여기](#https://github.com/niceplugin/translation/tree/master/BlazeLayout))
 
-## 콜백 전달하기
+## 4.11 콜백 전달하기
 
 만약 상위 계층으로 구성요소를 전달해야 할 필요가 있을경우, 하위 구성요소가 콜백을 호출 할 수 있도록 하는 것이 가장 좋습니다.
 
@@ -1108,7 +1108,7 @@ Template.Todos_item.events({
 });
 ```
 
-## `onRendered()`에서 제3자 라이브러리 사용하기
+## 4.12 `onRendered()`에서 제3자 라이브러리 사용하기
 
 위에서 언급했듯이 `onRendered()`콜백은 컴포넌트가 처음 랜더링 되어 DOM에 추가된 후 *한번만 호출되므로*, 일반적으로 제3자 라이브러리를 호출하기 적당합니다(예를들어 jQuery 플러그인 호출).
 
@@ -1127,14 +1127,14 @@ Template.Lists_show_page.onRendered(function() {
 });
 ```
 
-# Blaze로 스마트 컴포넌트(구성요소) 작성하기
+# 5. Blaze로 스마트 컴포넌트(구성요소) 작성하기
 
 일부 구성요소는 자신의 데이터 컨텍스트에 외부의 무엇인가를 참조시켜야 할 수 있습니다.(예를 들어 서버측의 서브스크립션이나 기타 데이터를 클라이언트의 저장소로)
 [데이터로드](https://guide.meteor.com/data-loading.html#patterns) 및 [UI](https://guide.meteor.com/ui-ux.html#smart-components) 섹션에서 설명한 것처럼 스마트 구성 요소를 사용하는 방법을 신중하게 고려해야합니다.
 
 모든 재사용 가능한 구성요소는 스마트 구성요소에 적용됩니다.
 
-## `onCreated`에서 서브스크립션
+## 5.1 `onCreated`에서 서브스크립션
 
 `onCreated` 콜백에서 서버의 퍼블리케이션(publication)을 서브스크립션 해야 합니다.
 Todos라는 예제 앱의 `Lists_show_page`템플릿에서 `todos.inList`라는 퍼블리케이션을 FlowRouter의 현재 param값 `_id`를 기반으로 서브스크립션 하였습니다:
@@ -1167,7 +1167,7 @@ Template.Lists_show_page.helpers({
 });
 ```
 
-## 헬퍼에서 추출(Fetch)하기
+## 5.2 헬퍼에서 추출(Fetch)하기
 
 원문:
 
@@ -1219,12 +1219,12 @@ Template.Lists_show_page.helpers({
 
 ```
 
-# Blaze에서 코드 재사용하기
+# 6. Blaze에서 코드 재사용하기
 
 서로 관련이없는 두 구성요소간에 코드를 재사용하려는 경우가 일반적입니다.
 Blaze에서 이 작업을 수행하는 주요 두 방법을 소개합니다.
 
-## 구성
+## 6.1 구성
 
 
 가능한 경우 일반적으로 두 구성요소의 재사용 가능한 부분을 추출하여 독립화 하는 것이 가장 좋습니다.
@@ -1263,7 +1263,7 @@ Template.autocompleteInput.helpers({
 
 > 역주: 무슨말을 하려는지는 알겠는데 이 섹션을 재대로 해석하진 못하겠다...
 
-## 라이브러리
+## 6.2 라이브러리
 
 원문:
 
@@ -1279,7 +1279,7 @@ For example, if a component requires a lot of complicated [D3](http://d3js.org) 
 예를들어, 구성요소에 그래프를 그리는데 복잡한 [D3](http://d3js.org)코드가 많이 필요한 경우 코드 자체가 구성요소에서 호출하는 별도의 모듈에 있을 가능성이 큽니다.
 따라서 나중에 코드를 추상화하고 그래프를 그릴 필요가 있는 다양한 구성요소간에 쉽게 코드를 공유 할 수 있습니다.
 
-## 글로벌 헬퍼
+## 6.3 글로벌 헬퍼
 
 여러 템플릿에서 공유해야하는 헬퍼가 있을 경우 전역 스페이스바 헬퍼를 씁니다.
 이것은 `Template.registerHelper()`메서드를 통해 만들 수 있습니다.
@@ -1300,11 +1300,11 @@ Template.registerHelper('shortDate', (date) => {
 </template>
 ```
 
-# Blaze 이해하기
+# 7. Blaze 이해하기
 
 Blaze는 매우 직관적인 랜더링 시스템이지만 복잡한 작업을 수행하려고 할 때 알아야 할 몇 가지 단점과 복잡성이 있습니다.
 
-## 리랜더링(Re-rendering)
+## 7.1 리랜더링(Re-rendering)
 
 블레이즈는 리랜더링 하는 것에 불투명합니다.
 Tracker와 Blaze는 궁극적으로 모든 데이터 변경을 완전히 반영하는 "궁극적인 일관성"시스템으로 설계되었습니다.
@@ -1348,12 +1348,12 @@ Template.myTemplate.helpers({
 });
 ```
 
-## 리랜더링 제어하기
+## 7.2 리랜더링 제어하기
 
 헬퍼나 하위 구성요소를 실행하는데 드는 비용이 비싸거나 자주 재실행 되야 하지만 시각적인 효과가 없다면(미미하다면), 좀 더 세밀하게 반응형 데이터 소스를 만들어 사용하여 불필요한 재실행을 막을 수 있습니다.
 [`peerlibrary:computed-field`](https://atmospherejs.com/peerlibrary/computed-field)페키지는 이러한 페턴을 구상하는데 도움을 줍니다.
 
-## 속성 헬퍼
+## 7.3 속성 헬퍼
 
 원문:
 
@@ -1393,7 +1393,7 @@ Template.myTemplate.helpers({
 
 > 역주: 이 섹션 이해 못함
 
-## 탐색 순서
+## 7.4 탐색 순서
 
 Blaze의 또 다른 복잡한 주제는 탐색입니다.
 `{{something}}`을 쓰면 Blaze에서는 다음과 같은 순서대로 탐색을 실행합니다.
@@ -1404,14 +1404,14 @@ Blaze의 또 다른 복잡한 주제는 탐색입니다.
 4. 글로벌 헬퍼
 5. 현재 데이터 컨텍스트의 필드
 
-## Blaze와 빌드 시스템
+## 7.5 Blaze와 빌드 시스템
 
 [build system](https://guide.meteor.com/build-tool.html#blaze)글에서 언급했듯이, [`blaze-html-templates`](https://atmospherejs.com/meteor/blaze-html-templates)패키지는 소스 코드에서 `.html` 파일을 검색하고, `<template name="templateName">`태그들을 선택합니다.
 그리고 그것들을 JavaScript 파일로 컴파일하여 함수로 정의하고 `Template.templateName` 심볼에 포함시킵니다.
 
 즉, Blaze 템플릿을 랜더링 할 때 클라이언트에서 `.html`파일로 정의한 스페이스바 컨텐츠에 해당하는 함수를 실행하는 것입니다.
 
-## 뷰(view)란 무엇입니까?
+## 7.6 뷰(view)란 무엇입니까?
 
 Blaze의 가장 핵심 개념 중 하나인 '뷰'는 템플릿의 반응적 랜더링 영역을 나타내는 구축영역입니다.
 뷰는 반응형을 추적하고 검색하며, 데이터가 변경 될 때 적절하게 다시 랜더링하기 위해 화면 뒤에서 작동하는 장치입니다.
@@ -1421,11 +1421,11 @@ Blaze의 가장 핵심 개념 중 하나인 '뷰'는 템플릿의 반응적 랜�
 
 더 많은 정보는 [Blaze View](../api/blaze.html#Blaze-View)에서 볼 수 있습니다.
 
-# 라우터
+# 8. 라우터
 
 블레이즈 템플릿의 랜더링을 지원하는 라우팅 패키지 목록입니다.
 
-## Iron Router
+## 8.1 Iron Router
 
 Meteor를 위해 특별히 설계된 *클라이언트 및 서버* 측 라우터.
 
@@ -1437,7 +1437,7 @@ meteor add iron:router
 
 Iron Router가 제공하는 모든 기능에 대한 자세한 내용은 [Iron Router Guide](https://iron-meteor.github.io/iron-router/)를 참조하십시오.
 
-## Flow Router
+## 8.2 Flow Router
 
 Meteor용으로 신중하게 설계된 *클라이언트* 측 라우터.
 
@@ -1450,7 +1450,7 @@ meteor add kadira:flow-router
 Flow Router가 제공하는 모든 기능에 대한 자세한 내용은 [Iron Router Guide](https://github.com/kadirahq/flow-router)를 참조하십시오.
 한국어 가이드는 [여기](https://github.com/niceplugin/translation/tree/master/flowRouter)를 참조하십시오.
 
-## Flow Router Extra
+## 8.3 Flow Router Extra
 
 원문:
 
@@ -1470,7 +1470,7 @@ Flow Router Extra가 제공하는 모든 기능에 대한 자세한 내용은 [F
 
 ***
 
-# Templates
+# 9. Templates
 
 Meteor의 템플릿 API 문서입니다.
 
@@ -1485,12 +1485,12 @@ Meteor는 템플릿 인스턴스가 제거되거나 교체된 경우 이를 정�
 
 템플릿 그리고 그 사용법에 대한 자세한 내용은 [Spacebars](#spacebars)와 [Blaze](#introduction) 글을 참고하십시오.
 
-## Template.\_name\_
+## 9.1 Template.\_name\_
 
 아래에 나열된 섹션들은 위에서 설명한 `Template.foo`라고 이름지은 템플릿 오브젝트를 `Template._name_`이라고 하였을 때,
 `Template._name_.events()`처럼 템플릿 오브젝트 뒤에 사용할 수 있는 메서드에 대한 목록입니다.
 
-### `.events(callback)`
+### 9.1.1 `.events(callback)`
 
 **사용영역:** 클라이언트
 
@@ -1507,7 +1507,7 @@ Meteor는 템플릿 인스턴스가 제거되거나 교체된 경우 이를 정�
 
 `eventMap` 타입과 Meteor에서 이벤트 헨들러가 작동하는 방식에 대한 자세한 설명은 [eventMap](#eventmap)을 참조하십시오.
 
-#### eventMap
+#### 9.1.1.1 eventMap
 
 이벤트멥은 프로퍼티를 가지는 하나의 객체로, 이벤트 헨들이 프로퍼티가 되며 실행할 함수가 값이 됩니다.
 프로퍼티는 다음과 같은 형식중 하나로 이루어져 있습니다.
@@ -1641,7 +1641,7 @@ Template.foo.events({
 
 다른 DOM event들도 사용할 수 있지만 위에 명시된 이벤트들은 모든 브라우저에서 동일하게 작동하도록 Meteor에서 특별히 신경썼습니다.
 
-### `.helpers(helpers)`
+### 9.1.2 `.helpers(helpers)`
 
 **사용영역:** 클라이언트
 
@@ -1700,7 +1700,7 @@ Template.myTemplate.helpers({
 
 모든 템플릿에서 사용 가능한 글로벌 헬퍼를 만드려면 [`Template.registerHelper`](#templateregisterHelper)를 참조하십시오.
 
-### `.onRendered(callback)`
+### 9.1.3 `.onRendered(callback)`
 
 **사용영역:** 클라이언트
 
@@ -1741,7 +1741,7 @@ Template.myPictures.onRendered(function () {
 });
 ```
 
-### `.onCreated(callback)`
+### 9.1.4 `.onCreated(callback)`
 
 **사용영역:** 클라이언트
 
@@ -1775,7 +1775,7 @@ Template.myPictures.onCreated(function () {
 });
 ```
 
-### `.onDestroyed(callback)`
+### 9.1.5 `.onDestroyed(callback)`
 
 **사용영역:** 클라이언트
 
@@ -1801,7 +1801,7 @@ Template.myPictures.onDestroyed(function () {
 });
 ```
 
-## `Template.instances()`
+## 9.2 `Template.instances()`
 
 **사용영역:** 클라이언트
 
@@ -1823,7 +1823,7 @@ Template.myPictures.onDestroyed(function () {
 
 템플릿 인스턴스 객체는 `instanceof Blaze.TemplateInstance`입니다.
 
-### `.findAll(selector)`
+### 9.2.1 `.findAll(selector)`
 
 **사용영역:** 클라이언트
 
@@ -1837,7 +1837,7 @@ Template.myPictures.onDestroyed(function () {
 
 이 템플릿 인스턴스에서 `selector`와 일치하는 모든 DOM 엘리먼트를 반환합니다.
 
-### `.$(selector)`
+### 9.2.2 `.$(selector)`
 
 **사용영역:** 클라이언트
 
@@ -1856,7 +1856,7 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 
 템플릿과 하위 템플릿에 해당하는 범위에서만 셀렉터로 조회할 수 있습니다.
 
-### `.find(selector)`
+### 9.2.3 `.find(selector)`
 
 **사용영역:** 클라이언트
 
@@ -1872,7 +1872,7 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 
 템플릿과 하위 템플릿에 해당하는 범위에서만 셀렉터로 조회할 수 있습니다.
 
-### `.firstNode`
+### 9.2.4 `.firstNode`
 
 **사용영역:** 클라이언트
 
@@ -1886,7 +1886,7 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 이 두 노드는 형제관계이므로 부모가 같으며 `lastNode`는 `firstNode`뒤에 옵니다.
 그렇지 않을 경우 두 노드는 하나의 노드를 가리키는 것입니다.
 
-### `.lastNode`
+### 9.2.5 `.lastNode`
 
 **사용영역:** 클라이언트
 
@@ -1894,7 +1894,7 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 
 **설명:** 이 템플릿 인스턴스 마지막 DOM 노드를 나타냅니다.
 
-### `.data`
+### 9.2.6 `.data`
 
 **사용영역:** 클라이언트
 
@@ -1908,7 +1908,7 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 템플릿이 리랜더링 될 때마다 업데이트 됩니다.
 이 조회는 읽기 전용이며 반응형이 아닙니다.
 
-### `.autorun(runFunc)`
+### 9.2.7 `.autorun(runFunc)`
 
 **사용영역:** 클라이언트
 
@@ -1924,7 +1924,7 @@ jQuery 객체는 배열과 비슷하며 jQuery 라이브러리에 의해 정의 
 
 `template.view.autorun`의 별칭입니다.
 
-### `.subscribe(name, [arg1, arg2, ...], [options])`
+### 9.2.8 `.subscribe(name, [arg1, arg2, ...], [options])`
 
 **사용영역:** 클라이언트
 
@@ -2013,7 +2013,7 @@ Template.listing.onRendered(function () {
 });
 ```
 
-### `.view`
+### 9.2.9 `.view`
 
 **사용영역:** 클라이언트
 
@@ -2025,7 +2025,7 @@ Template.listing.onRendered(function () {
 
 번역: 이 템플릿을 호출 할 때 [View](http://blazejs.org/api/blaze.html#Blaze-View) 객체입니다.
 
-## `Template.registerHelper(name, function)`
+## 9.3 `Template.registerHelper(name, function)`
 
 **사용영역:** 클라이언트
 
@@ -2033,7 +2033,7 @@ Template.listing.onRendered(function () {
 
 **설명:** 모든 템플릿에서 사용할 수 있는 헬퍼 함수를 정의합니다.
 
-## `Template.currentData()`
+## 9.4 `Template.currentData()`
 
 **사용영역:** 클라이언트
 
@@ -2049,7 +2049,7 @@ Template.listing.onRendered(function () {
 
 이 메서드의 결과는 반응형으로 동작합니다.
 
-## `Template.parentData(numLevels)`
+## 9.5 `Template.parentData(numLevels)`
 
 **사용영역:** 클라이언트
 
@@ -2075,7 +2075,7 @@ For example, `Template.parentData(0)` is equivalent to `Template.currentData()`.
 예를 들어, `Template.parentData(0)`는 `Template.currentData()`와 같습니다.
 `Template.parentData(2)`는 템플릿의 `{{../..}}`과 같습니다.
 
-## `Template.body`
+## 9.6 `Template.body`
 
 **사용영역:** 클라이언트
 
@@ -2092,7 +2092,7 @@ For example, `Template.parentData(0)` is equivalent to `Template.currentData()`.
 `Template.body`의 이벤트 맵은 `Blaze.render`, jQuery, DOM API, 에 의해 추가되는 엘리먼트나 `<body>` 자체에는 적용되지 않습니다.
 `<body>`나 window 또는 document에 대한 직접적인 이벤트 헨들러 추가는 jQuery 또는 DOM API를 사용하십시요.
 
-## `{{> Template.dynamic template=template [data=data]}}`
+## 9.7 `{{> Template.dynamic template=template [data=data]}}`
 
 **사용영역:** 템플릿(templates)
 
@@ -2113,14 +2113,14 @@ For example, `Template.parentData(0)` is equivalent to `Template.currentData()`.
 예를들어 "foo"라는 이름의 템플릿이 있다면, `{{> Template.dynamic template="foo"}}`는 `{{> foo}}`와 같습니다.
 `{{#Template.dynamic template="foo"}} ... {{/Template.dynamic}}`와 같이 사용하였다면 이것은 `{{#foo}} ... {{/foo}}`로 사용한 것과 같습니다.
 
-# Blaze
+# 10. Blaze
 
 Meteor의 반응형 랜더링 엔진인 Blaze에 대해 다룹니다.
 
 Blaze는 반응형 템플릿을 만드는 페키지 입니다.
 Blaze API를 사용하여 프로그레밍 적으로 템플릿을 구성하고 반응적으로 "View(보여지는 부분)"를 컨트롤 할 수 있습니다.
 
-## `.render(template *or* View, parentNode, [nextNode], [parentView])`
+## 10.1 `.render(template *or* View, parentNode, [nextNode], [parentView])`
 
 **사용영역:** 클라이언트
 
@@ -2151,7 +2151,7 @@ Blaze API를 사용하여 프로그레밍 적으로 템플릿을 구성하고 �
 > Meteor 또는(기본적으로 Meteor와 통합되는)다른 메커니즘을 통해 뷰가 제거된 경우 뷰는 무한정으로 계속 업데이트될 수 있습니다.
 > 대부분의 사용자는 템플릿을 수동으로 랜더링하여 DOM에 삽입할 필요가 없지만, 수동으로 랜더링 할 경우에는 뷰가 더 이상 필요하지 않을 때 항상 `Blaze.remove`로 제거하십시오.
 
-## `.renderWithData(template or View, data, parentNode, [nextNode], [parentView])`
+## 10.2 `.renderWithData(template or View, data, parentNode, [nextNode], [parentView])`
 
 **사용영역:** 클라이언트
 
@@ -2177,7 +2177,7 @@ Blaze API를 사용하여 프로그레밍 적으로 템플릿을 구성하고 �
 
 `Blaze.renderWithData(Template.myTemplate, data)`는 `Blaze.render(Blaze.With(data, function () { return Template.myTemplate; }))`와 기본적으로 동일하게 동작합니다.
 
-## `.remove(renderedView)`
+## 10.3 `.remove(renderedView)`
 
 **사용영역:** 클라이언트
 
@@ -2200,7 +2200,7 @@ DOM에 랜더링 된 뷰를 제거하여 모든 반응 업데이트 및 이벤�
 [`Blaze.render()`](#rendertemplateorview-parentnode-nextnode-parentview)에서 언급한 바와 같이, `Blaze.render()`에 의해 랜더링 된 컨텐츠를 `Blaze.remove()` 또는 랜더링 된 뷰의 부모 노드 제거를 통하여 삭제하는 것은 중요합니다.
 `Blaze.remove()`는 DOM 노드가 이미 문서에서 제거되었음에도 Blaze가 이 노드를 추적 및 업데이트 하려고 하는 문제를 중단시키는데 사용할 수 있습니다.
 
-## `.getData([element or View])`
+## 10.4 `.getData([element or View])`
 
 **사용영역:** 클라이언트
 
@@ -2214,7 +2214,7 @@ DOM에 랜더링 된 뷰를 제거하여 모든 반응 업데이트 및 이벤�
 
 현재 데이터 컨텍스트 또는 Meteor 템플릿에서 특정 DOM요소 또는 뷰를 랜더링 할 때 사용된 데이터 컨텍스트를 반환합니다.
 
-## `.toHTML(template or View)`
+## 10.5 `.toHTML(template or View)`
 
 **사용영역:** 클라이언트
 
@@ -2241,7 +2241,7 @@ Instead, any reactive data changes will invalidate the current Computation if th
 `Blaze.toHTML()`은 문자열을 반환하기 때문에 반응형 데이터 변화에 따라 DOM을 업데이트할 수 없다.
 대신, 어떠한 반응형 데이터라도 변경이 일어나면 현재 계산은 무효화됩니다(예:`Blaze.toHTML`의 호출자인 오토런).
 
-## `.toHTMLWithData(template or View, data)`
+## 10.6 `.toHTMLWithData(template or View, data)`
 
 **사용영역:** 클라이언트
 
@@ -2255,7 +2255,7 @@ Instead, any reactive data changes will invalidate the current Computation if th
 
 **설명:** 데이터 컨텍스트와 함께 템플릿 또는 뷰를 랜더링 합니다. 그 외에는 `Blaze.toHTML`과 동일합니다.
 
-## `new Blaze.View([name], renderFunction)`
+## 10.7 `new Blaze.View([name], renderFunction)`
 
 **사용영역:** 클라이언트
 
@@ -2325,7 +2325,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 |`template`|Template|템플릿의 호출로 작성된 뷰일 경우 해당 탬플릿 객체를 반환합니다. 예: `Blaze.render(Template.foo).template === Template.foo`|
 |`templateInstance()`|Template Instance|템플릿에 의해 생성된 뷰일 경우 특정 뷰에 대한 [Template Instance](../api/templates.html#Template-instances)를 반환합니다. 예: [`onCreated`](#oncreatedcallback)에서 `this.view.templateInstance() === this`<br> 템플릿 인스턴스 객체는 `data`, `firstNode`, `lastNode`와 같은 필드를 가지지만 반응형이 아니므로 자동으로 최신상태로 유지되진 않습니다. `templateInstance()`를 호출할 경우 필드가 업데이트 됩니다.|
 
-### `.currentView`
+### 10.7.1 `.currentView`
 
 **사용영역:** 클라이언트
 
@@ -2338,7 +2338,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 `currentView`는 [`Template.currentData()`](../api/templates.html#Template-currentData) 및 [`Template.instance()`](../api/templates.html#Template-instance)에서 컨텍스트 및 관련 데이터를 결정하는 데 사용됩니다.
 
-### `.getView([element])`
+### 10.7.2 `.getView([element])`
 
 **사용영역:** 클라이언트
 
@@ -2349,7 +2349,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 - element (DOM Element): 선택적. 인자(엘리먼트)가 지정된 경우 해당 인자를 감싸고 있는 뷰를 반환합니다.<br>
 인자를 전달하지 않을 경우 반드시 현재 뷰나 에러를 반환합니다. 이것은 [`Blaze.currentView`](#currentview)와는 대조적입니다.
 
-### `.With(data, contentFunc)`
+### 10.7.3 `.With(data, contentFunc)`
 
 **사용영역:** 클라이언트
 
@@ -2367,7 +2367,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 템플릿에서 사용되는 `{{#with}}`와는 달리 `Blaze.With`는 'else'케이스가 없으며, 데이터 컨텍스트에 대한 `falsy`값은 내용을 렌더링하는 것을 방지합니다.
 
-### `.If(conditionFunc, contentFunc, [elseFunc])`
+### 10.7.4 `.If(conditionFunc, contentFunc, [elseFunc])`
 
 **사용영역:** 클라이언트
 
@@ -2385,7 +2385,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 `Blaze.render`에 인자로 전달할 수 있는 렌더링 되지 않은 뷰 객체를 반환합니다.
 
-### `.Unless(conditionFunc, contentFunc, [elseFunc])`
+### 10.7.5 `.Unless(conditionFunc, contentFunc, [elseFunc])`
 
 **사용영역:** 클라이언트
 
@@ -2403,7 +2403,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 `Blaze.render`에 인자로 전달할 수 있는 렌더링 되지 않은 뷰 객체를 반환합니다.
 
-### `.Each(argFunc, contentFunc, [elseFunc])`
+### 10.7.6`.Each(argFunc, contentFunc, [elseFunc])`
 
 **사용영역:** 클라이언트
 
@@ -2429,7 +2429,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 템플릿에서 `{{#each}}`와 동일하게 작동합니다.
 
-## `new Blaze.Template([viewName], renderFunction)`
+## 10.8 `new Blaze.Template([viewName], renderFunction)`
 
 **사용영역:** 클라이언트
 
@@ -2455,7 +2455,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 |`renderFunction`|function|생성자의 인자와 동일합니다.|
 |`constructView()`||렌더링 되지 않은 뷰 객체를 생성(construct)하여 리턴합니다. 이 메소드는 Meteor에 의해 `Blaze.render`나 `{{> foo}}`와 같이 템플릿이 사용될 때마다 호출됩니다.<br>구성자 인수로 `viewName`과 `renderFunction`을 사용하여 뷰를 구성한다. 그런 다음 `View.template`, `view.templateInstance()`, 이벤트 맵 등을 설정하여 템플릿 뷰로 구성합니다.|
 
-## `.isTemplate(value)`
+## 10.9 `.isTemplate(value)`
 
 **사용영역:** 클라이언트
 
@@ -2467,7 +2467,7 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 **설명:** `value`가 `Template.myTemplate`와 같은 템플릿 객체이면 true를 반환합니다.
 
-## 렌더링 가능한 컨텐츠
+## 10.10 렌더링 가능한 컨텐츠
 
 값이 다음 중 하나에 해당하는 경우 **렌더링 가능한 컨텐츠**입니다:
 
@@ -2479,14 +2479,14 @@ Blaze.View에서 사용할 수 있는 프로퍼티와 메서드는 다음과 같
 
 > 내부적으로 렌더링 가능한 컨텐츠에는 HTML 태그를 나타내는 객체도 포함되지만, 이러한 객체는 아직까지는 공식적으로 지원되는 공개 API의 일부는 아닙니다.
 
-# Spacebars
+# 11. Spacebars
 
 Meteor의 `spacebars`패키지 문서입니다.
 
 스페이스바는 [Handlebars](http://handlebarsjs.com/)에서 영감을 얻은 Meteor 템플릿 언어입니다.
 Handlebars의 정신 및 구문을 공유하지만 컴파일 할 때 반응형 Meteor 템플릿을 생성하도록 수정되었습니다.
 
-## 시작하기
+## 11.1 시작하기
 
 스페이스바 템플릿은 HTML과 `{{ foo }}`와 같이 두 개의 중괄호를 사용하여 범위를 지정하는 템플릿 테그로 이루어져 있습니다.
 
@@ -2513,11 +2513,11 @@ Handlebars의 정신 및 구문을 공유하지만 컴파일 할 때 반응형 M
 
 - `{{> nav}}`: 템플릿 이름별로 탬플릿 내에 다른 템플릿을 추가할 수 있습니다.
 
-- `{{#each}}`: 블록 탬플릿 태그는 콘텐츠 블록이 있는 것으로 유명합니다. `#if`, `#unless`, `#with`, `#each`는 기본적으로 내장된 블록 테그입니다. `#with`와같은 일부 블럭테그는 컨텐츠를 위해 데이터 컨텍스트를 평가합니다. 위 예제에서 `{{title}}'과 `{{content}}`는 현재 게시물의 속성을 참조 할 가능성이 높습니다 (템플릿 gpfvj를 참조 할 수도 있습니다).
+- `{{#each}}`: 블록 탬플릿 태그는 콘텐츠 블록이 있는 것으로 유명합니다. `#if`, `#unless`, `#with`, `#each`는 기본적으로 내장된 블록 테그입니다. `#with`와같은 일부 블럭테그는 컨텐츠를 위해 데이터 컨텍스트를 평가합니다. 위 예제에서 `{{title}}`과 `{{content}}`는 현재 게시물의 속성을 참조 할 가능성이 높습니다 (템플릿 gpfvj를 참조 할 수도 있습니다).
 
 - `{{{content}}}`: 트리플브레이싱 탬플릿은 HTML을 삽입하는데 사용하므로 주의해야 합니다. 그러므로 적용시킬 컨텐츠의 HTML이 안전한지 여부 확인은 사용자에게 있습니다.
 
-## 반응형 모델
+## 11.2 반응형 모델
 
 스페이스바 템플릿은 변화하는 데이터에 반응하여 세부적인 수준에서 반응적으로 업데이트됩니다.
 
@@ -2525,7 +2525,7 @@ Handlebars의 정신 및 구문을 공유하지만 컴파일 할 때 반응형 M
 예를 들어 이중 보강 태그는 텍스트 값이 변경 될 때 해당 텍스트 노드를 대체합니다.
 `# if`는 조건이 true에서 falsy로 또는 그 반대로 바뀔 때만 내용을 다시 렌더링합니다.
 
-## 식별자와 경로
+## 11.3 식별자와 경로
 
 스페이스바 식별자는 대괄호로 감싼(`[` 그리고 `]`) JavaScript 식별자 이름이거나 아무 문자열 입니다.
 특수식별자 `this`(`.`와 동일함)와 `..`도 있습니다.
@@ -2534,7 +2534,7 @@ JavaScript의 `var`, `for`과 같은 예약어는 대괄호가 필요로 하지 
 
 Spacebars 경로는 `foo`, `foo.bar`, `this.name`, `../ title`, `foo.[0]`과 같이`.` 또는`/`로 구분 된 일련의 하나 이상의 식별자입니다. (숫자 인덱스는 대괄호로 묶어야 함).
 
-## 이름 확인(Name Resolution)
+## 11.4 이름 확인(Name Resolution)
 
 경로의 첫번째 식별자는 아래와 같은 우선순위로 해결됩니다:
 
@@ -2545,14 +2545,14 @@ Spacebars 경로는 `foo`, `foo.bar`, `this.name`, `../ title`, `foo.[0]`과 같
 경로가 `..`일 경우 현재를 감싸고 있는 데이터 컨텍스트를 사용합니다.
 현재를 감싸고 있다함은 `#with`, `#each` 범위 밖 또는 현재 탬플릿을 감싸는 상위 범위를 뜻합니다.
 
-## 경로 평가(Path Evaluation)
+## 11.5 경로 평가(Path Evaluation)
 
 경로를 평가할 때 첫번째 경로 뒤에 오는 식별자는 JavaScript에서 객체에 색인하기 위해 `.`를 쓰는 것처럼 사용하면 됩니다.
 그러나 객체가 아닌 값이나 정의되지 않은 값(undefined)에 색인을 시도할 때 오류가 발생하진 않습니다.
 
 또한 스페이스바는 함수를 호출하는 것이기 때문에 `{{foo.bar}}`는 `{{foo().bar}}`, `{{foo.bar()}}`, `{{foo().bar()}}`여도 됩니다.
 
-## 헬퍼 인자
+## 11.6 헬퍼 인자
 
 헬퍼의 인자가 될 수 있는 것은 식별자, 문자열, 숫자, `boolean`, `null` 입니다.
 
@@ -2570,7 +2570,7 @@ frob(a, b, c, Spacebars.kw({verily: true}))
 
 헬퍼에서 현재 데이터 컨텍스트를 'this'로 액세스 함으로서 구현 할 수 있습니다.
 
-## 포함과 블록 인자(Inclusion and Block Arguments)
+## 11.7 포함과 블록 인자(Inclusion and Block Arguments)
 
 포함테그(`{{> }}`)와 블록테그(`{{# }}`)는 인자가 없거나 단일 인자만 취합니다.
 다른 형식의 인자는 *객체사양* 또는 *헬퍼 중첩*으로 해석합니다.
@@ -2579,7 +2579,7 @@ frob(a, b, c, Spacebars.kw({verily: true}))
 
 * **헬퍼 중첩:** 인자가 위치해야 할 곳 뒤에 또다른 인자가 있을 경우 첫번째 인자는 뒤에 있는 인자를 인자로 전달하는 헬퍼 호출 규칙을 따릅니다.
 
-## 템플릿 테그 배치 제한사항
+## 11.8 템플릿 테그 배치 제한사항
 
 순전히 문자열 기반 템플릿 시스템과 달리, 스페이스바는 HTML을 인식하고 DOM을 자동으로 업데이트하도록 설계되었습니다.
 
@@ -2601,7 +2601,7 @@ The behavior of a template tag is affected by where it is located in the HTML, a
 번역:
 템플릿 태그의 동작은 HTML에 있는 위치의 영향을받으며 모든 태그가 모든 위치에서 허용되지는 않습니다.
 
-### 더블 브레싱 테그
+### 11.8.1 더블 브레싱 테그
 
 엘리먼트 또는 속성 내에서 더블브레싱 테그는 일반적으로 문자열로 평가합니다.
 평가되는 값이 `null`, `undefined`, `false` 일 경우에는 아무것도 표시되지 않습니다.
@@ -2610,7 +2610,7 @@ The behavior of a template tag is affected by where it is located in the HTML, a
 (문자열일 경우 `&lt;`가 아닌 `<`로 표시해야 합니다.)
 템플릿이 HTML로 렌더링되면 스페이스바가 필요한 경우에 이스케이핑 합니다.
 
-### 안전한 문자열
+### 11.8.2 안전한 문자열
 
 원문:
 
@@ -2624,7 +2624,7 @@ is safe to insert.
 만약 엘리먼트 레벨에서 더블 브레이싱 테그가 `Spacebars.SafeString("<span>Some HTML</span>")`에 의해 생성된 객체라면 평가되는 위치에서 HTML이 삽입됩니다.
 `SafeString`을 호출하는 코드는 HTML을 삽입하는 것이 안전하다는 것을 의미합니다.
 
-## 속성값
+## 11.9 속성값
 
 더블 브레이싱 테그는 HTML 속성값의 일부 또는 전체일 수 있습니다:
 
@@ -2635,7 +2635,7 @@ is safe to insert.
 `null`, `undefined`, `false`값을 반환할 경우 해당 속성은 없는 것으로 관주합니다.
 그렇지 않을 경우 값이 비어있더라고 속성이 존재한다고 관주합니다.
 
-### 동적 속성
+### 11.9.1 동적 속성
 
 더블 브레이싱 테그는 HTML (시작)테그에 임의의 속성 집합을 지정하기 위해 사용할 수 있습니다.
 
@@ -2682,7 +2682,7 @@ of `myClass`, `attrs1`, or `attrs2` changes reactively.
 여러 속성 태그가 동일한 속성을 가리킬 경우 어떠한 방식으로도 병합되지 않으먀 마지막으로 해석한 속성태그로 속성을 덮어씁니다.
 당연한 소리입니다만, `myClass`, `attrs1`, `attrs2` 중 하나가 반응 적으로 변경되면 스페이스바는 엘리먼트의 속성을 다시 계산합니다.
 
-## 트리플 브레이싱 테그
+## 11.10 트리플 브레이싱 테그
 
 트리플 브레이싱 테그는 템플릿에 HTML 소스를 삽입할 때 사용합니다:
 
@@ -2697,7 +2697,7 @@ of `myClass`, `attrs1`, or `attrs2` changes reactively.
 
 이 템플릿 테그는 속성 또는 HTML 시작태그에 사용할 수 없습니다.
 
-## 포함 태그(Inclusion Tags)
+## 11.11 포함 태그(Inclusion Tags)
 
 포함태그는 `{{> templateName}}` 또는 `{{> templateName dataObj}}` 형식을 취합니다.
 다른 인자 형식은 데이터 객체를 구성하기 위한 구문입니다. ([포함 및 블록 인자](#포함과-블록-인자inclusion-and-block-arguments) 참고)
@@ -2724,12 +2724,12 @@ use `Template.parentData(1)` to access the original context. This differs
 from regular helper calls like `{{foo bar}}`, in which `bar` is passed as a
 parameter rather than pushed onto the data context stack.
 
-## 템플릿을 리턴하는 함수(Function Returning a Template)
+## 11.12 템플릿을 리턴하는 함수(Function Returning a Template)
 
 포함태그가 함수로 해석되면, 해당 함수는 반드시 템플릿 객체 또는 `null`을 반환해야 합니다.
 이 함수는 반응형으로 동작할 수 있으며 반환값이 변경되면 템플릿이 변경됩니다.
 
-## 블록 태그
+## 11.13 블록 태그
 
 원문:
 
@@ -2786,7 +2786,7 @@ by the directive or helper.
 {{/foo}}
 ```
 
-## If/Unless
+## 11.14 If/Unless
 
 `#if`라는 템플릿 테그는 인자의 값에 따라 주요 콘텐츠 또는 "else"에 해당하는 콘텐츠를 렌더링 합니다.
 JavaScript에서 "false"로 취급되는 `''`, `0`, `undefined`, `null`, `false`, `[]`가 인자로 올 경우 템플릿 태그 역시 "false"로 취급하며 그 외 값은 모두 "true"로 취급합니다.
@@ -2801,7 +2801,7 @@ JavaScript에서 "false"로 취급되는 `''`, `0`, `undefined`, `null`, `false`
 
 `#unless`는 `#if`와 반대로 동작합니다.
 
-## With
+## 11.15 With
 
 `#with` 템플릿 태그는 감싸고 있는 컨텐츠 영역을 위한 새로운 데이터 컨텍스트를 만듭니다.
 데이터 컨텍스트 객체의 속성은 템플릿 태그 이름을 해석 할 때 스페이스 바가 보이는 위치입니다.
@@ -2830,7 +2830,7 @@ JavaScript에서 "false"로 취급되는 `''`, `0`, `undefined`, `null`, `false`
 > 역주: 인자로 'foo'라는 문자열을 전달할 경우
 > `this`는 'foo'라는 원시 문자열이 아닌 `new String('foo')`로 생성한 문자열 객체를 가지게 됨을 의미합니다.
 
-## Each
+## 11.16 Each
 
 `#each` 템플릿 테그는 순서대로 인자를 조회하여 각 항목을 각각의 데이터 컨텍스트로 사용하여 컨텐츠를 렌더링 합니다.
 
@@ -2860,7 +2860,7 @@ JavaScript에서 "false"로 취급되는 `''`, `0`, `undefined`, `null`, `false`
 
 `#each`의 본문에는 특별한 변수인 `@index`를 사용하여 인덱스를 활용 할 수 있습니다.
 
-### Each의 반응형 모델
+### 11.16.1 Each의 반응형 모델
 
 원문:
 
@@ -2909,7 +2909,7 @@ get full control over the identity of rendered elements.
 식별 키가 중복될 경우 첫 번째 이후의 모든 중복되는 키는 임의의 키로 대체됩니다.
 고유 한 `_id` 필드가 있는 객체를 사용하면 렌더링 된 요소의 신원(identity)을 완전히 제어 할 수 있습니다.
 
-## Let
+## 11.17 Let
 
 `#let`태그는 주어진 표현식으로 새로운 변수를 만듭니다.
 데이터 컨텍스트는 변경되지 않으며, 간단하게 헬퍼, 데이터 컨텍스트, 다른 변수를 참조할 수 있습니다.
@@ -2922,7 +2922,7 @@ get full control over the identity of rendered elements.
 
 이 방법으로 생긴 변수는 템플릿 네임, 전역 헬퍼, 현재 데이터 컨텍스트의 필드, 이전에 선언된 같은 이름의 변수 보다 우선시 됩니다.
 
-## 커스텀 블록 헬퍼
+## 11.18 커스텀 블록 헬퍼
 
 사용자 정의 블록 헬퍼를 정의하려면, 템플릿을 선언 한 다음 `{{> someTemplate}}`가 아닌 `{{> someTemplate}}`과 같이 템플릿을 호출하면 됩니다.
 
@@ -2979,7 +2979,7 @@ Template.elseBlock}}` to invoke it with a data context of your choice.  You can
 also use `{{#if Template.contentBlock}}` to see if the current template was
 invoked as a block helper rather than an inclusion.
 
-## 주석 테그
+## 11.19 주석 테그
 
 템플릿의 주석 테그는 `{{!`로 시작하여 `}}`로 끝납니다.
 주석 테그는 컴파일로 생성된 HTML 내에는 존재하지 않습니다.
@@ -3002,7 +3002,7 @@ We can write {{foo}} and it doesn't matter.
 
 주석테그는 템플릿 테그가 허용되는 곳이라면 어디서든 쓸 수 있습니다.
 
-## 중첩된 하위 표현식
+## 11.20 중첩된 하위 표현식
 
 헬퍼 호출에 대한 인자는 다른 식의 반환 값으로 표현하는 것이 가장 좋습니다.
 이 경우 및 기타 경우 괄호를 사용하여 내포된 식의 평가 순서를 나타낼 수 있습니다.
@@ -3021,7 +3021,7 @@ We can write {{foo}} and it doesn't matter.
 {{> tmpl arg=(helper post)}}
 ```
 
-## HTML 비표준에 관하여(HTML Dialect)
+## 11.21 HTML 비표준에 관하여(HTML Dialect)
 
 스페이스바 템플릿은 [표준 HTML](http://developers.whatwg.org/syntax.html)로 작성되며 추가 구문(예: 템플릿 태그)으로 확장됩니다.
 
@@ -3037,7 +3037,7 @@ We can write {{foo}} and it doesn't matter.
 
 HTML 스펙에서는 `p`, `li`와 같은 일부 테그들은 종료 테그를 생략할 수 있지만, 스페이스바는 현재 이를 지원하진 않습니다.
 
-## `*.html` 파일의 최상위 엘리먼트
+## 11.22 `*.html` 파일의 최상위 엘리먼트
 
 엄밀히 말하면 `<template>` 엘리먼트는 스페이스바 언어의 일부가 아닙니다.
 Meteor의 `foo.html` 템플릿 파일은 다음 요소 중 하나 이상으로 구성됩니다:
@@ -3048,7 +3048,7 @@ Meteor의 `foo.html` 템플릿 파일은 다음 요소 중 하나 이상으로 �
 
 * **`<body>`**<br>`<body>`에 삽입될 템플릿으로 `Template.body`로 컴포넌트 컴파일 됩니다. `<body>`도 여러번 선언되면 내부 내용은 모두 합쳐지게 됩니다.
 
-## 중괄호 이스케이프
+## 11.23 중괄호 이스케이프
 
 갯수에 상관없이 중괄호를 삽입하고 이것을 HTML로 출력하고 싶을 경우, 중괄호 바로 뒤에 세로막대(역주: 이것을 명칭은 버티컬바 VERTICAL BAR) `|`를 입력하면 됩니다.
 `{{|`라고 입력하면 이것은 `{{`라고 출력됩니다.
