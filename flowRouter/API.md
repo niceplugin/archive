@@ -1,0 +1,35 @@
+- FlowRouter
+  - .route(path, obj)
+    - path
+    - obj
+      - name: string
+      - action: function(param, queryParam)
+      - triggersEnter: array
+      - triggersExit: array
+      - subscriptions: function
+  - .group(obj)
+    - obj
+      - prefix: string
+      - name: string
+      - triggersEnter: array
+      - triggersExit: array
+  - .triggers
+    - .enter(arr, option)
+    - .exit(arrm, option)
+  - .notFound
+  - .subscriptions
+  - .subsReady(???, callback)
+  - .withReplaceState(func)
+  - .watchPathChange()
+  - .current()
+  - .reload()
+  - .wait()
+  - .initialize()
+  - .path(pathDef, params, queryParams)
+  - .go(pathDef, params, queryParams)
+  - .url(pathDef, params, queryParams)
+  - .getParam(paramName)
+  - .getQueryParam(queryStringKey)
+  - .getRouteName()
+  - .setParam(newParamName)
+  - .setQueryParam(newQueryParam)
