@@ -1,12 +1,22 @@
 - FlowRouter
   - .route(path, obj)
-    - path
+    - path: string
     - obj
       - name: string
-      - action: function(param, queryParam)
+      - action: function(param, queryParam) {}
+        - param: object
+        - queryParam: object
       - triggersEnter: array
+        - array: [function, function ... function]
+          - function(context, redirect, stop) {}
+            - context: object === FlowRouter.current()
+            - redirect: function(url, param, queryParam) { needs to be done in sync! }
+            - stop: function() { stop routing }
       - triggersExit: array
-      - subscriptions: function
+        - array: [function, function ... function]
+      - subscriptions: function(param, queryParam) {}
+        - param: object
+        - queryParam: object
   - .group(obj)
     - obj
       - prefix: string
