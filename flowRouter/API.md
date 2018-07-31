@@ -85,15 +85,21 @@
 1. Other Template onRendered
 
 > 설명1
+>
 > `onCreated` 내에서 `autorun`을 선언했을 경우 위 순소를 따른다.
+>
 > `onRendered` 내에서 `autorun`을 선언했을 경우
-> `onCreated > helpers > onRendered > autorun > helpers`
-> 와 같이 실행된다. (해당 `helpers`가 `autorun` 내에서 리셋되는 리엑티브 타입의 무엇인가를 참조할 경우)
+>
+> `onCreated > helpers > onRendered > autorun > helpers`와 같이 실행된다. (해당 `helpers`가 `autorun` 내에서 리셋되는 리엑티브 타입의 무엇인가를 참조할 경우)
+>
 > 따라서 `autorun`은 `onCreated` 내에서 선언하여야 한다.
 
 > 설명2
+>
 > 유일하게 `FlowRouter.route`가 `FlowRouter.group` 보다 먼저 실행되는 구간임을 주의하자.
 
 > 설명3
+>
 > 보다시피 `onDestroyed`는 이미 다른 라우터로 변경 된 후 `Other Template onCreated` 직전에 실행된다.
+>
 > 따라서 FlowRouter 정보에 의존하는 코드를 실행해야 할 경우 `Flowrouter.triggers exit` 또는 `triggersExit`를 활용해야 한다.
