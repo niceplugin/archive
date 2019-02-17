@@ -320,4 +320,4 @@ db.createUser(
 [c런타임업데이트링크]:https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows
 [2015비쥬얼c다운로드링크]:https://www.microsoft.com/ko-kr/download/details.aspx?id=48145
 [robo3t홈페이지]:https://robomongo.org/download
-[몽고디비권한문서]:https://docs.mongodb.com/manual/reference/built-in-roles/#userAdminAnyDatabase
+[몽고디비권한문서]:https://docs.mongodb.com/manual/reference/built-in-roles/#all-database-roles
