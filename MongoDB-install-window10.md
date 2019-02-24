@@ -305,19 +305,21 @@ db.createUser(
 
 ## about roles
 
-몽고디비 문서에서 허우적 거릴 일부 입문자를 위해 아주 간단하게 권한종류에 대해 써놓겠다.  
+몽고디비 문서에서 허우적 거릴 일부 입문자를 위해 아주 간단하게 몇몇 권한에 대해 써놓겠다.  
 (자세한 정보는 공식문서 [이곳][몽고디비권한문서]에서 확인)
 
 |등급|설명|
 |:---:|:----|
 |userAdminAnyDatabase|admin 디비를 포함한 모든 디비에 모든 권한 부여|
-|dbAdminAnyDatabase|admin 디비를 제외한 모든 디비에 모든 권한 부여|
-|readWriteAnyDatabase|지정한 디비에서만 읽기,쓰기 권한 부여|
-|readAnyDatabase|지정한 디비에서만 읽기 권한만 부여|
+|dbOwner|데이터베이스 소유자는 데이터베이스에 대한 관리 조치를 수행 할 수 있도록 readWrite, dbAdmin, userAdmin의 모든 권한을 가집니다.|
+|dbAdmin|지정한 디비에서 스키마 관련 작업, 인덱싱 및 통계 수집과 같은 관리 작업을 수행 할 수 있는 권한을 가집니다. userAdmin의 권한은 없습니다.|
+|userAdmin|지정한 디비에서 사용자를 만들고 권한을 설정 및 수정할 수 있는 권한을 가집니다. dbAdmin의 권한은 없습니다.|
+|readWrite|지정한 디비에서 시스템이 아닌 모든 콜렉션 및 콜렉션의 데이터를 읽고 수정할 수 있는 권한을 가집니다.|
+|read|지정한 디비에서 모든 데이터를 읽을 수있는 권한을 가집니다.|
 
 [몽고디비공식홈페이지]:https://www.mongodb.com
 [몽고디비다운로드센터]:https://www.mongodb.com/download-center/community?jmp=docs
 [c런타임업데이트링크]:https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows
 [2015비쥬얼c다운로드링크]:https://www.microsoft.com/ko-kr/download/details.aspx?id=48145
 [robo3t홈페이지]:https://robomongo.org/download
-[몽고디비권한문서]:https://docs.mongodb.com/manual/reference/built-in-roles/#all-database-roles
+[몽고디비권한문서]:https://docs.mongodb.com/manual/reference/built-in-roles/
