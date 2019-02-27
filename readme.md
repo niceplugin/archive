@@ -8,7 +8,10 @@
 
 1. [미티어 프로젝트 AWS에 배포하기][미티어프로젝트AWS에배포]
 
+1. [AWS에 SSL 적용하기][SSL적용]
+
 [미티어설치하기]:https://github.com/niceplugin/howto/blob/master/Meteor-install-window10.md
 [윈도우에몽고디비설치하기]:https://github.com/niceplugin/howto/blob/master/MongoDB-install-window10.md
 [우분투에몽고디비설치하기]:https://github.com/niceplugin/howto/blob/master/MongoDB-install-AWS-ubuntu.md
 [미티어프로젝트AWS에배포]:https://github.com/niceplugin/howto/blob/master/meteor-deployment-at-aws.md
+[SSL적용]:https://github.com/niceplugin/howto/blob/master/AWS-SSL.md
