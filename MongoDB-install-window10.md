@@ -317,6 +317,20 @@ db.createUser(
 |readWrite|지정한 디비에서 시스템이 아닌 모든 콜렉션 및 콜렉션의 데이터를 읽고 수정할 수 있는 권한을 가집니다.|
 |read|지정한 디비에서 모든 데이터를 읽을 수있는 권한을 가집니다.|
 
+## mongod service not run
+
+몽고디비 아래와 같은 오류로 서비스 실행 안될때
+```
+Failed to start mongod.service: Unit mongod.service not found.
+```
+
+해결책
+```
+sudo systemctl enable mongod
+sudo service mongod stop
+sudo service mongod start
+```
+
 [몽고디비공식홈페이지]:https://www.mongodb.com
 [몽고디비다운로드센터]:https://www.mongodb.com/download-center/community?jmp=docs
 [c런타임업데이트링크]:https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows
