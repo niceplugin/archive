@@ -6,11 +6,10 @@
 
   // 쿠키 읽어오기 함수
   function load() {
-    var cookies = document.cookie.split('; ')
+    var cookies = document.cookie && document.cookie.split('; ')
       , i, idx, name, value;
-    if (!cookies) {
-      return;
-    }
+
+    if (!cookies) {return; }
 
     for (i = 0; i < cookies.length; i++) {
       idx = cookies[i].indexOf('=');

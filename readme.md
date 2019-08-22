@@ -10,7 +10,7 @@ npm에 올릴까 하다가 이미 cookie 라는 이름으로 있길레 관둠.(�
 
 IE는 9부터
 
-나머지는 버전 크게 신경 안써도 잘 돌아감
+나머지는 버전 신경 안써도 잘 돌아감
 
 ## API
 
@@ -44,7 +44,15 @@ cookie.get('hello'); // 'world'
 
 쿠키를 생성, 수정할 수 있다.(성공시 true 반환) 객체 구성은 아래와 같다.
 
-`{name, value[, domain, path, expires, secure, samesite]}`
+|프로퍼티|기본값|타입|기타|
+|---|---|---|---|
+|name|-|string||
+|value|-|string||
+|domain (옵션)|-|string||
+|path (옵션)|-|string||
+|expires (옵션)|현재시각|number||
+|secure (옵션)|false|boolean||
+|samesite (옵션)|-|string|유효 값은 'strict' 또는 'lax'|
 
 자세한 정보는 [여기](https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie#Write_a_new_cookie)에서 알아보도록 하자.
 
@@ -64,7 +72,11 @@ cookie.set({
 
 쿠키를 삭제한다.(성공시 true 반환) 객체 구성은 아래와 같다.
 
-`{name[, domain, path]}`
+|프로퍼티|기본값|타입|
+|---|---|---|
+|name|-|string|
+|domain (옵션)|-|string|
+|path (옵션)|-|string|
 
 ```
 cookie.remove('color');
