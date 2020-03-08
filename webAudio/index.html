@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <title>Web Audio API</title>
+  <style>
+    canvas {
+      display: block;
+      margin: auto;
+      width: 100%;
+    }
+    label {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <canvas id="canvas"></canvas>
+  <button id="btn-test">test</button>
+  <label for="ipt-octave">
+    octave:
+    <input id="ipt-octave" type="range" min="1" max="7" step="1" value="4">
+  </label>
+  <label for="ipt-note">
+    note:
+    <input id="ipt-note" type="range" min="1" max="12" step="1" value="10">
+  </label>
+  <label for="ipt-gain">
+    gain:
+    <input id="ipt-gain" type="range" min="0" max="1" step="0.1" value="1">
+  </label>
+  <label for="ipt-master-gain">
+    master gain:
+    <input id="ipt-master-gain" type="range" min="0" max="1" step="0.001" value="1">
+  </label>
+  <label for="ipt-type">
+    type:
+    <input id="ipt-type" type="range" min="0" max="3" step="1" value="1">
+  </label>
+  <label for="ipt-harmonics">
+    harmonics:
+    <input id="ipt-harmonics" type="range" min="1" max="10" step="1" value="1">
+  </label>
+</div>
+<script src="common.js"></script>
+<script src="sound.js"></script>
+<script src="canvas.js"></script>
+</body>
+</html>
