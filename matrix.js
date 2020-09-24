@@ -11,13 +11,17 @@ function matrix(x, y) {
 // ====================
 
 // 매트릭스 문자열 시각화
-String.prototype.MtxToStr = function() {
+String.prototype.mtxToStr = function() {
   // 문자열이 매트릭스라고 판단될 경우 매트릭스 문자열 반환, 아닐경우 원본 반환
   return this.startsWith('[[') && this.endsWith(']]') ?
     this.replace(/\[\[/, '[')
       .replace(/\]\]/, ']')
       .replace(/\]\,\[/g, ']\n[') :
     this;
+}
+// 문자열 매트릭스 배열로 반환
+String.prototype.toMtx = function() {
+  return JSON.parse(this);
 }
 
 // ====================
@@ -109,4 +113,61 @@ Array.prototype.isUnique = function(mtx) {
   else {
     return false;
   }
+}
+// 유니크 목적지인지 확인
+Array.prototype.isUniqueXY = function(xy) {
+  if (this.indexOf(xy) === -1) {
+    this.push(xy);
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+// 행열 내 모든 값의 합
+Array.prototype.sum = function() {
+  return this.reduce((acc, cur)=>{
+    return acc + cur.reduce((acc, cur)=>{
+      return acc + cur;
+    }, 0);
+  }, 0);
+}
+// 행열 내 유일 유효값의 좌표
+Array.prototype.point = function() {
+  let y = this.length;
+  while (y--) {
+    let x = this[0].length;
+    while (x--) {
+      if (this[y][x] > 0) {
+        return [x, y];
+      }
+    }
+  }
+}
+// 주어진 위치 사방의 값을 중앙으로 이동하여 더함
+Array.prototype.toCenter = function(x, y) {
+  const y_length = this.length, x_length = this[0].length;
+  let sum = 0;
+  if (y - 1 >= 0) {
+    sum += this.gets(x, y - 1);
+    this.sets(x, y - 1, 0);
+  }
+  if (y + 1 < y_length) {
+    sum += this.gets(x, y + 1);
+    this.sets(x, y + 1, 0);
+  }
+  if (x - 1 >= 0) {
+    sum += this.gets(x - 1, y);
+    this.sets(x - 1, y, 0);
+  }
+  if (x + 1 < x_length) {
+    sum += this.gets(x + 1, y);
+    this.sets(x + 1, y, 0);
+  }
+  return this.sets(x, y, sum);
+}
+
+// todo 임시로 사용할 메서드
+Array.prototype.printWay = function(idx) {
+  this[idx].forEach((str)=>{console.log(str.mtxToStr()); });
 }
