@@ -1,0 +1,31 @@
+#rslt {
+    margin-top: 1rem;
+}
+.row {
+    border: 2px solid #000000;
+    margin-top: -2px;
+    padding: 1rem;
+    overflow: auto;
+}
+p {
+    margin: 0;
+    white-space: pre;
+}
+p:first-child {
+    border-bottom: 2px solid #000000;
+}
+p:not(:last-child) {
+    margin-bottom: 1rem;
+}
+span {
+    margin: 0 1rem;
+    padding: 0.5rem;
+    border: 1px solid #777777;
+    display: inline-block;
+}
+span:first-child {
+    margin-left: 0;
+}
+span:last-child {
+    margin-right: 0;
+}
