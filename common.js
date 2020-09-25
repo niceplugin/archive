@@ -72,8 +72,8 @@ function Collect_Solve_All(arr) {
       ways: [ /* ["문제를", "풀어내는", "단계적", "과정"], ..... */ ], // 풀어나간 과정
       xy: [ /* ['x','y'], ..... */ ], // ways의 해당 인덱스의 최종 집결지 좌표
       u_cases: 0,
-      u_ways: [],
-      u_xy: []
+      u_xy: [], // 중첩되지 않은 최종 집결지 좌표 모음
+      u_xy_case: [] // 각각의 중첩되지 않은 최종 집결지 좌표가 가지는 ways 개수
     };
 
     Collect_Solve(arr[i].toMtx(), [], total, one);
@@ -98,7 +98,9 @@ function Collect_Solve(mtx, log, total, one) {
     one.xy.push(xy);
     if (one.u_xy.isUniqueXY(xy)) {
       one.u_cases++;
-      one.u_ways.push(log);
+      one.u_xy_case.push(1);
+    } else {
+      one.u_xy_case[one.u_xy_case.length - 1]++;
     }
     return;
   }
@@ -123,18 +125,17 @@ function Collect_Solve(mtx, log, total, one) {
   }
 }
 
-console.time('Disperse');
-Disperse_Solve(matrix(6,6).sets(1,1,7), []);
-console.timeEnd('Disperse');
-console.log(UNIQUE_DB.length);
-
-console.time('Collect');
-Collect_Solve_All(UNIQUE_DB);
-console.timeEnd('Collect');
-console.log(CASE_DB.length);
-
-CASE_DB.sort((a, b)=>{return b.u_cases - a.u_cases; });
-console.log(CASE_DB[0].problem.mtxToStr());
-console.log(CASE_DB[0].u_xy);
-console.log(CASE_DB[0].u_ways.printWay(2));
-console.log(CASE_DB);
+// console.time('Disperse');
+// Disperse_Solve(matrix(6,6).sets(2,2,7), []);
+// console.timeEnd('Disperse');
+// console.log(UNIQUE_DB.length);
+//
+// console.time('Collect');
+// Collect_Solve_All(UNIQUE_DB);
+// console.timeEnd('Collect');
+// console.log(CASE_DB.length);
+//
+// CASE_DB.sort((a, b)=>{return b.u_cases - a.u_cases; });
+// console.log(CASE_DB[0].problem.mtxToStr());
+// console.log(CASE_DB[0].u_xy);
+// console.log(CASE_DB);

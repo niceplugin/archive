@@ -108,6 +108,7 @@ Array.prototype.isUnique = function(mtx) {
     && (this.indexOf(mtx.ry().toString()) === -1)
     && (this.indexOf(mtx.ro().toString()) === -1)) {
     this.push(mtx.toString());
+    if (this.length % 1000 === 0) {console.log('unique: ', this.length); }
     return true;
   }
   else {
