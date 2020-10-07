@@ -1,13 +1,12 @@
 class UDB {
 
-  constructor(max_depth = 1, max_value = 1, max_size = 3) {
+  constructor(max_value = 1, max_size = 3) {
     this.unique_patterns = {};
     /* unique_patterns
-     각 키는 d0v0w0h0 으로 depth, value, width, height 값을 키로 하는 Map 자료형
+     각 키는 v0w0h0 으로 value, width, height 값을 키로 하는 Map 자료형
      맵 자료형 내 각각의 키는 Matrix.data.toString 이고 값은 true 로 이루어짐
     */
     this.db = []; // 프로퍼티는 Matrix로 이루어짐
-    this.max_depth = max_depth < max_value ? max_value : max_depth; // 허용 가능한 최대 깊이
     this.max_value = max_value; // 허용 가능한 최대 행렬 내 숫자 합계
     this.max_size = max_size; // 행렬의 허용 가능한 최대 가로 또는 세로 사이즈
     this.chip_only_first = [
@@ -27,8 +26,7 @@ class UDB {
   generator(mtx, isFirst = false) {
     this._numOfRecursion++;
     // 허용 범위를 초과할 경우 종료
-    if (mtx.depth > this.max_depth ||
-    mtx.value > this.max_value ||
+    if (mtx.value > this.max_value ||
     mtx.size[0] > this.max_size ||
       mtx.size[1] > this.max_size) {
       return;
@@ -70,7 +68,7 @@ class UDB {
   // 유니크 패턴 저장
   pushUnique(mtx) {
     mtx.wide();
-    const key = `d${mtx.depth}v${mtx.value}w${mtx.size[0]}h${mtx.size[1]}`;
+    const key = `v${mtx.value}w${mtx.size[0]}h${mtx.size[1]}`;
     this.unique_patterns[key] =
       this.unique_patterns[key] ? this.unique_patterns[key] : new Map();
     const unique = this.unique_patterns[key];
@@ -93,7 +91,7 @@ class UDB {
     else {return false; }
   }
 
-  // 유니크 패턴 채크
+  // 유니크 패턴 채크 (유니크일 경우: true, 아닐경우: false)
   _checkUnique(mtx, unique) {
     if (!unique.get(mtx.toString()) &&
       !unique.get(mtx.reverse(0,1).toString()) &&
@@ -111,7 +109,6 @@ class Matrix {
   constructor(x = 3, y = 3, n = 0) {
     this.data = Array.from(new Array(x * y), i => n);
     this.size = [x, y];
-    this.depth = 0; // 몇번만에 모두 모을수 있는지 (clone 에서 값 추가)
     this.value = 0; // 행렬내 숫자의 총합 (splitAround 에서 값 추가)
     this.more = null;
     /*
@@ -136,7 +133,6 @@ class Matrix {
     const clone = new Matrix();
     clone.data = this.data.slice(0);
     clone.size = this.size.slice(0);
-    clone.depth = this.depth + 1;
     clone.value = this.value;
 
     return clone;
