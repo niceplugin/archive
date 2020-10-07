@@ -6,7 +6,7 @@ class UDB {
      각 키는 v0w0h0 으로 value, width, height 값을 키로 하는 Map 자료형
      맵 자료형 내 각각의 키는 Matrix.data.toString 이고 값은 true 로 이루어짐
     */
-    this.db = []; // 프로퍼티는 Matrix로 이루어짐
+    this.db = new Map(); // 프로퍼티는 Matrix로 이루어짐
     this.max_value = max_value; // 허용 가능한 최대 행렬 내 숫자 합계
     this.max_size = max_size; // 행렬의 허용 가능한 최대 가로 또는 세로 사이즈
     this.chip_only_first = [
@@ -83,9 +83,13 @@ class UDB {
 
       // todo 이 사이에 유니크 패턴의 최종 종료 위치의 개수가 몇개인지에 의해 저장할지 말지 로직 필요
 
+      // 해당 벨류 최초 저장일 경우
+      if (!this.db.get(mtx.value)) {this.db.set(mtx.value, []); }
+      const db = this.db.get(mtx.value);
+
       // 유효한 유니크 패턴으로 판단되므로 유니크 디비에 저장
       unique.set(mtx.toString(), true);
-      this.db.push(mtx);
+      db.push(mtx);
       return true;
     }
     else {return false; }
