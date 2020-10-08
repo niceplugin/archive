@@ -28,6 +28,10 @@ class UDB {
       mtx.height > this.max_size) {
       return;
     }
+    // 가로가 세로보다 길 경우 (중복 페턴을 방지하기 위해)
+    else if (mtx.width > mtx.height) {
+      return;
+    }
     // 유니크 패턴이 아닐경우 리턴
     else if (this.pushUnique(mtx)) {
       return;
@@ -43,8 +47,6 @@ class UDB {
     // 행렬 내 1의 개수만큼 루프
     while (idx !== -1) {
       const loc = mtx.idxToXY(idx);
-      const x = loc[0];
-      const y = loc[1];
       let l = chip.length;
       // 다음루프를 위한 idx 계산
       idx = mtx.data.indexOf(1, idx + 1);
@@ -62,7 +64,6 @@ class UDB {
 
   // 유니크 패턴 저장
   pushUnique(mtx) {
-    mtx.wide();
     const key = `v${mtx.total}w${mtx.width}h${mtx.height}`;
     this.unique_patterns[key] =
       this.unique_patterns[key] ? this.unique_patterns[key] : new Map();
@@ -84,7 +85,7 @@ class UDB {
       db.push(mtx);
 
       // todo 행렬 합 과정 종류 개수에 따른 분기 테스트
-      // if (mtx.total > 6 && mtx.more.size < 3) {return false; }
+      if (mtx.total > 5 && mtx.more.size < 2) {return true; }
       return false;
     }
     else {return true; }
@@ -116,10 +117,11 @@ class Matrix {
 
   constructor(x = 3, y = 3, n = 0) {
     this.data = Array.from(new Array(x * y), i => n);
+    this.more = new Map(); // key(end 좌표): value(진행 과정 배열)
+    this.log = [];
     this.width = x;
     this.height = y;
     this.total = 0; // 행렬내 숫자의 합계
-    this.more = new Map(); // key(end 좌표): value(진행 과정 배열)
 
     // init
     this.sets(1,1,1);
@@ -132,6 +134,7 @@ class Matrix {
   copy() {
     const clone = new Matrix();
     clone.data = this.data.slice(0);
+    clone.log = this.log.slice(0);
     clone.width = this.width;
     clone.height = this.height;
     clone.total = this.total;
@@ -244,9 +247,12 @@ class Matrix {
 
   // 원점을 0으로 만들고 원점으로부터 값을 복제한다
   splitAround(direction = [0,0,0,0,0,0]) {
-    // 원점이 0이거나 주위가 비어있지 않을 경우
+    // 원점이 0이거나
+    // 복제한 값이 들어갈 셀이 비지 않았거나
+    // 그외 사방에 비어있지 않은 셀이 있다면
     if (this.gets(direction[0], direction[1]) === 0 ||
-      this.isEmptyAround(direction) === false) {
+      this.isEmptyAround(direction) === false ||
+      this.nonemptyAroundCount(direction) !== 0) {
       return false;
     }
 
@@ -255,6 +261,9 @@ class Matrix {
     if (direction[3]) {this.sets(direction[0]+1, direction[1], 1); }
     if (direction[4]) {this.sets(direction[0], direction[1]+1, 1); }
     if (direction[5]) {this.sets(direction[0]-1, direction[1], 1); }
+
+    this.log.push(`${this.width},${this.height}-${this.toString()}`);
+
     return true;
   }
 
@@ -288,7 +297,7 @@ class Matrix {
 
     this.sets(x, y, sum);
 
-    return this;
+    return sum;
   }
 
   // 행렬의 상하좌우 끝에 라인을 추가하여 사이즈를 늘린다
@@ -349,45 +358,41 @@ class Matrix {
   }
 
   // 행렬이 정사각형이 아닐 경우 가로축이 더 길도록 90도 회전
-  wide(force = false) {
-    // force === true 일 경우 행렬이 정사각형이더라도 회전
-    if (force || this.width < this.height) {
-      const arr = [];
-      let y = this.height;
-      while (y--) {
-        let x = this.width;
-        while (x--) {
-          arr[this.height * x + y] = this.data[this.width * y + x];
-        }
+  rotatie() {
+    const arr = [];
+    let x = this.width;
+    while (x--) {
+      let y = 0;
+      while (y < this.height) {
+        arr.push(this.data[this.width * y + x]);
+        y++;
       }
-      const temp = this.width;
-      this.width = this.height;
-      this.height = temp;
-      this.data = arr;
     }
+    this.data = arr;
+
     return this;
   }
 
   // 행렬이 가질수 있는 모든 페턴 문자열을 배열로 반환
   getPatterns() {
-    const patterns = [];
+    const patterns = new Map();
 
-    patterns.push(this.toString());
-    patterns.push(this.reverse(1,0).toString());
-    patterns.push(this.reverse(0,1).toString());
-    patterns.push(this.reverse(1,1).toString());
+    patterns.set(this.toString(), 0);
+    patterns.set(this.reverse(1,0).toString(), 0);
+    patterns.set(this.reverse(0,1).toString(), 0);
+    patterns.set(this.reverse(1,1).toString(), 0);
 
     if (this.width === this.height) {
-      this.wide(true);
-      patterns.push(this.toString());
-      patterns.push(this.reverse(1,0).toString());
-      patterns.push(this.reverse(0,1).toString());
-      patterns.push(this.reverse(1,1).toString());
+      const clone = this.copy();
+      clone.rotatie();
+      patterns.set(clone.toString(), 0);
+      patterns.set(clone.reverse(1,0).toString(), 0);
+      patterns.set(clone.reverse(0,1).toString(), 0);
+      patterns.set(clone.reverse(1,1).toString(), 0);
     }
 
-    return patterns;
+    return [...patterns.keys()];
   }
-
 
   // 행렬 내 값을 모두 모으기 전 준비단계
   collectSolve() {
@@ -419,13 +424,40 @@ class Matrix {
     while (y--) {
       let x = this.width;
       while (x--) {
-        if (mtx.gets(x, y) !== 0) {continue; } // 합쳐야 할 위치가 비어있는지 확인
-        if (mtx.nonemptyAroundCount([x, y]) >= 2) { // 주위 숫자를 합칠수 있는 경우
-          const clone = mtx.copy();
-          clone.collectAround([x, y]);
-          this._collectSolve_(clone, way.slice(0));
+        const xy = [x, y];
+
+        // 합쳐야 할 위치가 비어있지 않거나
+        // 주위에 합칠수 있는 셀이 없거나
+        if (mtx.gets(x, y) !== 0 ||
+          mtx.nonemptyAroundCount(xy) < 2) {
+          continue;
         }
+
+        const clone = mtx.copy();
+        const sum = clone.collectAround(xy);
+        // 아래 코드 중 1번은 2번에 비해 10배 이상 오래 걸림
+        // 하지만 모든 케이스를 잘 찾아냄
+        // 2번은 빠르지만 누락되는 케이스가 많음
+        // todo 1
+        this._collectSolve_(clone, way.slice(0));
+        // todo 2
+        // 이후 이 셀과 합칠수 있는 셀이 하나라도 있거나
+        // 셀의 값이 total 값일 경우
+        // if (clone.nonemptyAroundCountX(xy) ||
+        //   sum === clone.total) {
+        //   this._collectSolve_(clone, way.slice(0));
+        // }
       }
     }
+  }
+
+  // 계속 숫자를 모아갈 수 있는가
+  isPossibleCollect() {
+    let i = this.data.length;
+    while (i--) {
+      if (!this.data[i]) {continue; }
+      if (this.nonemptyAroundCountX(this.idxToXY(i))) {return true; }
+    }
+    return false;
   }
 }
