@@ -17,6 +17,7 @@ class UDB {
     ];
     this._numOfRecursion = 0;
     this._numOfUnique = 0;
+    this._numSolve = 0;
   }
 
   // 경우의 수 생성
@@ -35,11 +36,6 @@ class UDB {
     // 유니크 패턴이 아닐경우 리턴
     else if (this.pushUnique(mtx)) {
       return;
-    }
-
-    this._numOfUnique++;
-    if (this._numOfUnique % 1000 === 0) {
-      console.log('loop: ', this._numOfRecursion, ', unique: ', this._numOfUnique);
     }
 
     const chip = this.chip;
@@ -71,6 +67,13 @@ class UDB {
 
     // 없는 패턴일 경우
     if (this._checkUnique(mtx, unique)) {
+      this._numOfUnique++;
+
+      if (this._numOfUnique % 1000 === 0) {
+        console.log('loop: ', this._numOfRecursion,
+          ', unique: ', this._numOfUnique,
+          ', solve: ', this._numSolve);
+      }
 
       // todo 이 코드 한줄이 정말 시간 많이 잡아먹음 이것도 개선이 필요함
       // 행렬 합 과정 구하기
@@ -85,7 +88,19 @@ class UDB {
       db.push(mtx);
 
       // todo 행렬 합 과정 종류 개수에 따른 분기 테스트
-      if (mtx.total > 5 && mtx.more.size < 2) {return true; }
+      // total = 11, max_size = 20
+      // total = 10, max_size = 19
+      if (mtx.total > 9 && mtx.more.size < mtx.total + 8) {return true; }
+      // total = 9, max_size = 16
+      else if (mtx.total > 8 && mtx.more.size < mtx.total + 6) {return true; }
+      // total = 8, max_size = 14
+      else if (mtx.total > 7 && mtx.more.size < mtx.total + 5) {return true; }
+      // total = 7, max_size = 11
+      else if (mtx.total > 6 && mtx.more.size < mtx.total + 3) {return true; }
+      // total = 6, max_size = 8
+      else if (mtx.total > 5 && mtx.more.size < mtx.total + 1) {return true; }
+      // total = 5, max_size = 5
+      else if (mtx.total > 4 && mtx.more.size < mtx.total) {return true; }
       return false;
     }
     else {return true; }
@@ -118,7 +133,7 @@ class Matrix {
   constructor(x = 3, y = 3, n = 0) {
     this.data = Array.from(new Array(x * y), i => n);
     this.more = new Map(); // key(end 좌표): value(진행 과정 배열)
-    this.log = [];
+    // this.log = [];
     this.width = x;
     this.height = y;
     this.total = 0; // 행렬내 숫자의 합계
@@ -134,7 +149,7 @@ class Matrix {
   copy() {
     const clone = new Matrix();
     clone.data = this.data.slice(0);
-    clone.log = this.log.slice(0);
+    // clone.log = this.log.slice(0);
     clone.width = this.width;
     clone.height = this.height;
     clone.total = this.total;
@@ -262,7 +277,7 @@ class Matrix {
     if (direction[4]) {this.sets(direction[0], direction[1]+1, 1); }
     if (direction[5]) {this.sets(direction[0]-1, direction[1], 1); }
 
-    this.log.push(`${this.width},${this.height}-${this.toString()}`);
+    // this.log.push(`${this.width},${this.height}-${this.toString()}`);
 
     return true;
   }
@@ -396,68 +411,44 @@ class Matrix {
 
   // 행렬 내 값을 모두 모으기 전 준비단계
   collectSolve() {
-    this._collectSolve_(this.copy(), []);
+    this._collectSolve_(this.copy()/*, []*/);
 
     return this;
   }
 
   // 행렬 내 값을 모두 모은다
-  _collectSolve_(mtx, way) {
+  _collectSolve_(mtx/*, way*/, done = false) {
     const data = mtx.data;
     const more = this.more;
-    const endIdx = data.indexOf(this.total);
+    udb._numSolve++;
 
     // 과정 저장
-    way.push(mtx.toString());
+    // way.push(mtx.toString());
 
     // 행렬 내 숫자를 모두 한곳으로 모았다고 판단된 경우
-    if (endIdx !== -1) {
+    if (done) {
+      const endIdx = data.indexOf(this.total);
       const key = this.idxToXY(endIdx).toString();
       if (more.get(key) === undefined) {
-        more.set(key, way);
+        // more.set(key, way);
+        more.set(key, 0);
       }
       return;
     }
 
     // 아직 행렬 내 숫자를 모두 한곳으로 모으지 못했다고 판단된 경우
-    let y = this.height;
-    while (y--) {
-      let x = this.width;
-      while (x--) {
-        const xy = [x, y];
-
-        // 합쳐야 할 위치가 비어있지 않거나
-        // 주위에 합칠수 있는 셀이 없거나
-        if (mtx.gets(x, y) !== 0 ||
-          mtx.nonemptyAroundCount(xy) < 2) {
-          continue;
-        }
-
-        const clone = mtx.copy();
-        const sum = clone.collectAround(xy);
-        // 아래 코드 중 1번은 2번에 비해 10배 이상 오래 걸림
-        // 하지만 모든 케이스를 잘 찾아냄
-        // 2번은 빠르지만 누락되는 케이스가 많음
-        // todo 1
-        this._collectSolve_(clone, way.slice(0));
-        // todo 2
-        // 이후 이 셀과 합칠수 있는 셀이 하나라도 있거나
-        // 셀의 값이 total 값일 경우
-        // if (clone.nonemptyAroundCountX(xy) ||
-        //   sum === clone.total) {
-        //   this._collectSolve_(clone, way.slice(0));
-        // }
-      }
-    }
-  }
-
-  // 계속 숫자를 모아갈 수 있는가
-  isPossibleCollect() {
-    let i = this.data.length;
+    let i = mtx.data.length;
     while (i--) {
-      if (!this.data[i]) {continue; }
-      if (this.nonemptyAroundCountX(this.idxToXY(i))) {return true; }
+      // 합쳐야 할 위치가 비어있지 않다면
+      if (mtx.data[i] !== 0) {continue; }
+
+      const xy = mtx.idxToXY(i);
+      // 주위에 합칠수 있는 셀이 없다면
+      if (mtx.nonemptyAroundCount(xy) < 2) {continue; }
+
+      const clone = mtx.copy();
+      const done = clone.total === clone.collectAround(xy);
+      this._collectSolve_(clone/*, way.slice(0)*/, done);
     }
-    return false;
   }
 }
