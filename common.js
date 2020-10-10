@@ -1,4 +1,4 @@
-const udb = new UDB(10,6);
+const udb = new UDB(5,6);
 console.time('generator');
 udb.generator(new Matrix(), true);
 console.timeEnd('generator');

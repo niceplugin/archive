@@ -133,13 +133,14 @@ class Matrix {
   constructor(x = 3, y = 3, n = 0) {
     this.data = Array.from(new Array(x * y), i => n);
     this.more = new Map(); // key(end 좌표): value(진행 과정 배열)
-    // this.log = [];
+    this.log = [];
     this.width = x;
     this.height = y;
     this.total = 0; // 행렬내 숫자의 합계
+    this.sum = 1; // 현재 합쳐진 숫자 개수
 
     // init
-    this.sets(1,1,1);
+    this.add(1,1,1);
   }
 
   toString() {
@@ -149,10 +150,11 @@ class Matrix {
   copy() {
     const clone = new Matrix();
     clone.data = this.data.slice(0);
-    // clone.log = this.log.slice(0);
+    clone.log = this.log.slice(0);
     clone.width = this.width;
     clone.height = this.height;
     clone.total = this.total;
+    clone.sum = this.sum;
 
     return clone;
   }
@@ -174,10 +176,15 @@ class Matrix {
 
   gets(x, y) {
     return (this.width === x || this.height === y || x < 0 || y < 0) ?
-      undefined : this.data[this.width * y + x];
+      null : this.data[this.width * y + x];
   }
 
   sets(x, y, n) {
+    this.data[this.width * y + x] = n;
+    return this;
+  }
+
+  add(x, y, n) {
     this.data[this.width * y + x] += n;
     this.total += n;
     return this;
@@ -193,7 +200,7 @@ class Matrix {
   // 해당 위치의 주위가 비어있는지 확인
   isEmptyAround(direction = [0,0,0,0,0,0]) {
     // direction 인자의 [2~5]는 해당 위치에 값을 삽입할 예정이므로
-    // gets 리턴값이 undefined가 나올경우 라인을 추가해야 함.
+    // gets 리턴값이 null가 나올경우 라인을 추가해야 함.
     // 하지만 최종적으로 false를 리턴해야 할 경우
     // 라인 추가를 할 필요가 없음
     const appendArr = [];
@@ -201,22 +208,22 @@ class Matrix {
 
     if (direction[2]) { // 상단
       num = this.gets(direction[0], direction[1]-1);
-      if (num === undefined) {appendArr.push(2); }
+      if (num === null) {appendArr.push(2); }
       else if (num !== 0) {return false; }
     }
     if (direction[3]) { // 우측
       num = this.gets(direction[0]+1, direction[1]);
-      if (num === undefined) {appendArr.push(3); }
+      if (num === null) {appendArr.push(3); }
       else if (num !== 0) {return false; }
     }
     if (direction[4]) { // 하단
       num = this.gets(direction[0], direction[1]+1);
-      if (num === undefined) {appendArr.push(4); }
+      if (num === null) {appendArr.push(4); }
       else if (num !== 0) {return false; }
     }
     if (direction[5]) { // 좌측
       num = this.gets(direction[0]-1, direction[1]);
-      if (num === undefined) {appendArr.push(5); }
+      if (num === null) {appendArr.push(5); }
       else if (num !== 0) {return false; }
     }
 
@@ -271,11 +278,11 @@ class Matrix {
       return false;
     }
 
-    this.sets(direction[0], direction[1], -1);
-    if (direction[2]) {this.sets(direction[0], direction[1]-1, 1); }
-    if (direction[3]) {this.sets(direction[0]+1, direction[1], 1); }
-    if (direction[4]) {this.sets(direction[0], direction[1]+1, 1); }
-    if (direction[5]) {this.sets(direction[0]-1, direction[1], 1); }
+    this.add(direction[0], direction[1], -1);
+    if (direction[2]) {this.add(direction[0], direction[1]-1, 1); }
+    if (direction[3]) {this.add(direction[0]+1, direction[1], 1); }
+    if (direction[4]) {this.add(direction[0], direction[1]+1, 1); }
+    if (direction[5]) {this.add(direction[0]-1, direction[1], 1); }
 
     // this.log.push(`${this.width},${this.height}-${this.toString()}`);
 
@@ -286,33 +293,19 @@ class Matrix {
   collectAround(direction = [0,0]) {
     const x = direction[0];
     const y = direction[1];
-    let sum = 0;
+    const num = this.gets(x, y-1) + this.gets(x, y+1)
+      + this.gets(x-1, y) + this.gets(x+1, y) - 1;
 
-    let num;
-    num = this.gets(x, y-1);
-    if (num) {
-      sum += num;
-      this.sets(x, y-1, -num);
+    if (num > 0) {
+      this.sum += num;
+      this.sets(x, y-1, 0);
+      this.sets(x, y+1, 0);
+      this.sets(x-1, y, 0);
+      this.sets(x+1, y, 0);
+      this.sets(x, y, 1);
+      return true;
     }
-    num = this.gets(x, y+1);
-    if (num) {
-      sum += num;
-      this.sets(x, y+1, -num);
-    }
-    num = this.gets(x-1, y);
-    if (num) {
-      sum += num;
-      this.sets(x-1, y, -num);
-    }
-    num = this.gets(x+1, y);
-    if (num) {
-      sum += num;
-      this.sets(x+1, y, -num);
-    }
-
-    this.sets(x, y, sum);
-
-    return sum;
+    return false;
   }
 
   // 행렬의 상하좌우 끝에 라인을 추가하여 사이즈를 늘린다
@@ -373,7 +366,7 @@ class Matrix {
   }
 
   // 행렬이 정사각형이 아닐 경우 가로축이 더 길도록 90도 회전
-  rotatie() {
+  rotate() {
     const arr = [];
     let x = this.width;
     while (x--) {
@@ -399,7 +392,7 @@ class Matrix {
 
     if (this.width === this.height) {
       const clone = this.copy();
-      clone.rotatie();
+      clone.rotate();
       patterns.set(clone.toString(), 0);
       patterns.set(clone.reverse(1,0).toString(), 0);
       patterns.set(clone.reverse(0,1).toString(), 0);
@@ -411,44 +404,48 @@ class Matrix {
 
   // 행렬 내 값을 모두 모으기 전 준비단계
   collectSolve() {
-    this._collectSolve_(this.copy()/*, []*/);
+    this._collectSolve_(this.copy(), []);
+    // this._collectSolve_(this.copy());
+    this.sum = 1;
 
     return this;
   }
 
   // 행렬 내 값을 모두 모은다
-  _collectSolve_(mtx/*, way*/, done = false) {
+  _collectSolve_(mtx, way) {
+  // _collectSolve_(mtx) {
     const data = mtx.data;
     const more = this.more;
+    let endIdx = data.indexOf(1);
+    let xy = this.idxToXY(endIdx);
     udb._numSolve++;
 
     // 과정 저장
-    // way.push(mtx.toString());
+    way.push(mtx.toString());
 
     // 행렬 내 숫자를 모두 한곳으로 모았다고 판단된 경우
-    if (done) {
-      const endIdx = data.indexOf(this.total);
-      const key = this.idxToXY(endIdx).toString();
+    if (mtx.total === mtx.sum) {
+      const key = xy.toString();
       if (more.get(key) === undefined) {
-        // more.set(key, way);
-        more.set(key, 0);
+        more.set(key, way);
+        // more.set(key, 0);
       }
       return;
     }
 
     // 아직 행렬 내 숫자를 모두 한곳으로 모으지 못했다고 판단된 경우
-    let i = mtx.data.length;
-    while (i--) {
-      // 합쳐야 할 위치가 비어있지 않다면
-      if (mtx.data[i] !== 0) {continue; }
-
-      const xy = mtx.idxToXY(i);
-      // 주위에 합칠수 있는 셀이 없다면
-      if (mtx.nonemptyAroundCount(xy) < 2) {continue; }
-
-      const clone = mtx.copy();
-      const done = clone.total === clone.collectAround(xy);
-      this._collectSolve_(clone/*, way.slice(0)*/, done);
+    while (endIdx !== -1) {
+      let clone = mtx.copy();
+      if (clone.collectAround([xy[0]+1, xy[1]])) {
+        this._collectSolve_(clone, way.slice(0));
+        // this._collectSolve_(clone);
+      }
+      clone = mtx.copy();
+      if (clone.collectAround([xy[0]-1, xy[1]])) {
+        this._collectSolve_(clone, way.slice(0));
+        // this._collectSolve_(clone);
+      }
+      endIdx = data.indexOf(1, endIdx + 1);
     }
   }
 }
