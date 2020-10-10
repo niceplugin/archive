@@ -180,11 +180,13 @@ class Matrix {
   }
 
   sets(x, y, n) {
+    if (this.width === x || this.height === y || x < 0 || y < 0) {return this; }
     this.data[this.width * y + x] = n;
     return this;
   }
 
   add(x, y, n) {
+    if (this.width === x || this.height === y || x < 0 || y < 0) {return this; }
     this.data[this.width * y + x] += n;
     this.total += n;
     return this;
@@ -451,6 +453,13 @@ class Matrix {
         // this._collectSolve_(clone, way.slice(0));
         this._collectSolve_(clone);
       }
+
+      clone = mtx.copy();
+      if (clone.collectAround([xy[0], xy[1]+1])) {
+        // this._collectSolve_(clone, way.slice(0));
+        this._collectSolve_(clone);
+      }
+
       endIdx = data.indexOf(1, endIdx + 1);
     }
   }
