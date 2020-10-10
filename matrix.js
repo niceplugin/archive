@@ -133,7 +133,7 @@ class Matrix {
   constructor(x = 3, y = 3, n = 0) {
     this.data = Array.from(new Array(x * y), i => n);
     this.more = new Map(); // key(end 좌표): value(진행 과정 배열)
-    this.log = [];
+    // this.log = [];
     this.width = x;
     this.height = y;
     this.total = 0; // 행렬내 숫자의 합계
@@ -150,7 +150,7 @@ class Matrix {
   copy() {
     const clone = new Matrix();
     clone.data = this.data.slice(0);
-    clone.log = this.log.slice(0);
+    // clone.log = this.log.slice(0);
     clone.width = this.width;
     clone.height = this.height;
     clone.total = this.total;
@@ -293,6 +293,8 @@ class Matrix {
   collectAround(direction = [0,0]) {
     const x = direction[0];
     const y = direction[1];
+
+    if (this.gets(x, y) !== 0) {return false; }
     const num = this.gets(x, y-1) + this.gets(x, y+1)
       + this.gets(x-1, y) + this.gets(x+1, y) - 1;
 
@@ -404,16 +406,16 @@ class Matrix {
 
   // 행렬 내 값을 모두 모으기 전 준비단계
   collectSolve() {
-    this._collectSolve_(this.copy(), []);
-    // this._collectSolve_(this.copy());
+    // this._collectSolve_(this.copy(), []);
+    this._collectSolve_(this.copy());
     this.sum = 1;
 
     return this;
   }
 
   // 행렬 내 값을 모두 모은다
-  _collectSolve_(mtx, way) {
-  // _collectSolve_(mtx) {
+  // _collectSolve_(mtx, way) {
+  _collectSolve_(mtx) {
     const data = mtx.data;
     const more = this.more;
     let endIdx = data.indexOf(1);
@@ -421,29 +423,33 @@ class Matrix {
     udb._numSolve++;
 
     // 과정 저장
-    way.push(mtx.toString());
+    // way.push(mtx.toString());
 
     // 행렬 내 숫자를 모두 한곳으로 모았다고 판단된 경우
     if (mtx.total === mtx.sum) {
       const key = xy.toString();
       if (more.get(key) === undefined) {
-        more.set(key, way);
-        // more.set(key, 0);
+        // more.set(key, way);
+        more.set(key, 0);
       }
       return;
     }
 
     // 아직 행렬 내 숫자를 모두 한곳으로 모으지 못했다고 판단된 경우
     while (endIdx !== -1) {
-      let clone = mtx.copy();
+      let clone;
+      xy = this.idxToXY(endIdx);
+
+      clone = mtx.copy();
       if (clone.collectAround([xy[0]+1, xy[1]])) {
-        this._collectSolve_(clone, way.slice(0));
-        // this._collectSolve_(clone);
+        // this._collectSolve_(clone, way.slice(0));
+        this._collectSolve_(clone);
       }
+
       clone = mtx.copy();
       if (clone.collectAround([xy[0]-1, xy[1]])) {
-        this._collectSolve_(clone, way.slice(0));
-        // this._collectSolve_(clone);
+        // this._collectSolve_(clone, way.slice(0));
+        this._collectSolve_(clone);
       }
       endIdx = data.indexOf(1, endIdx + 1);
     }
