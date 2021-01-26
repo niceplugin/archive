@@ -1,0 +1,87 @@
+<div class="row justify-content-center">
+  <div class="col-sm-8 col-md-6">
+    <div class="input-group">
+      <span class="input-group-text">나의 닉네임</span>
+      <input id="name_ipt" type="text" class="form-control text-end">
+      <button id="name_change_btn" class="btn btn-outline-dark" type="button">변경</button>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-sm-8 col-md-6">
+
+    <div class="msg-window">
+      <div class="msg-wrap">
+        <div class="msg-box">
+          <div class="msg-name">name</div>
+          <div class="msg-text">message message e</div>
+        </div>
+        <div class="msg-time">00:00</div>
+      </div>
+
+      <div class="msg-wrap msg-right">
+        <div class="msg-box">
+          <div class="msg-name">name</div>
+          <div class="msg-text">message message message message messagemessage</div>
+        </div>
+        <div class="msg-time">00:00</div>
+      </div>
+    </div>
+
+
+    <style>
+        .msg-window {
+            height: calc(100vh - 11.5rem);
+            overflow-y: scroll;
+        }
+        .msg-none {
+            display: none;
+        }
+        .msg-hidden {
+            visibility: hidden;
+        }
+        .msg-window {
+            background-color: #aaaaaa;
+        }
+        .msg-wrap {
+            display: flex;
+            margin: 2rem;
+            margin-left: 0.5rem;
+        }
+        .msg-right {
+            flex-direction: row-reverse;
+            margin-left: 2rem;
+            margin-right: 0.5rem;
+        }
+        .msg-right .msg-name {
+            display: none;
+        }
+        .msg-time {
+            align-self: flex-end;
+            padding: 0 0.25rem;
+        }
+        .msg-text {
+            padding: 0 0.5rem 0.3rem;
+            border-radius: 10px;
+            border-top-left-radius: 0;
+            max-width: 320px;
+            word-break: break-all;
+            background-color: #ffffff;
+        }
+        .msg-right .msg-text {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 0;
+            background-color: #ffd700;
+        }
+    </style>
+
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-sm-8 col-md-6">
+    <div class="input-group mb-3">
+      <input id="chat_ipt" type="text" class="form-control" placeholder="전송할 메세지 입력하기 ...">
+      <button id="send_text_btn" class="btn btn-primary" type="button">전송</button>
+    </div>
+  </div>
+</div>
