@@ -1,5 +1,5 @@
 - [English](https://github.com/niceplugin/nicedb)
-- [한국어](https://github.com/niceplugin/nicedb/blob/master/docs/readme_ko.md)
+- [한국어](https://github.com/niceplugin/nicedb/blob/master/docs/readme.ko.md)
 
 * * *
 
