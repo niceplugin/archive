@@ -19,6 +19,17 @@
 
 ## 설치
 
+### CDN
+
+```html
+<script src="https://unpkg.com/nicedb/dist/iife.js"></script>
+```
+설치 이후 자바스크립트 파일에서 사용:
+```js
+nicedb.define( /* 저장소를 정의하는 객체 */ );
+// ...
+```
+
 ### NPM
 
 ```shell
@@ -27,6 +38,7 @@ npm install nicedb
 설치 이후 자바스크립트 파일에서 사용:
 ```js
 import nicedb from "nicedb"
+nicedb.define( /* 저장소를 정의하는 객체 */ );
 // ...
 ```
 
@@ -124,7 +136,7 @@ define( stores )
 ### 예제
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 const store = {
   // user 라는 이름의 저장소를 정의했습니다.
@@ -138,7 +150,7 @@ const store = {
   // ...
 };
 
-NiceDB.define( store )
+nicedb.define( store )
   .then( event => { /* 저장소 정의가 성공적으로 완료됬을 경우 실행 코드 */ } ) 
   .catch( event => { /* 어떠한 이유로 오류가 발생. 라이브러리 사용불가 시 실행 코드 */ } );
 ```
@@ -167,14 +179,14 @@ getStore( storeName )
 ### 예제
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
-NiceDB.define( { /* ... */ } ).then( /* Success_Handler */ ).catch( /* ... */ );
+nicedb.define( { /* ... */ } ).then( /* Success_Handler */ ).catch( /* ... */ );
 
 // Success_Handler 실행 된 이후
 
-const User = NiceDB.getStore( "user" );
-const Car = NiceDB.getStore( "car" );
+const User = nicedb.getStore( "user" );
+const Car = nicedb.getStore( "car" );
 ```
 
 ## onversionchange
@@ -184,7 +196,7 @@ const Car = NiceDB.getStore( "car" );
 ### 문법
 
 ```js
-NiceDB.onversionchange = callback;
+nicedb.onversionchange = callback;
 ```
 
 ## onblocked
@@ -197,7 +209,7 @@ NiceDB.onversionchange = callback;
 ### 문법
 
 ```js
-NiceDB.onblocked = callback;
+nicedb.onblocked = callback;
 ```
 
 # API `Store class`
@@ -209,11 +221,11 @@ NiceDB.onblocked = callback;
 ### 예제
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 // ...
 
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 console.log( FooStore.foo ); // "user"
 ```
@@ -227,13 +239,13 @@ console.log( FooStore.foo ); // "user"
 ### 예제
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 const store = { foo: ['a', 'b', 'c'] };
-NiceDB.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
+nicedb.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
 
 // Success_Handler 실행 된 이후
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 console.log( FooStore.indexList ); // ['a', 'b', 'c']
 ```
 
@@ -244,13 +256,13 @@ console.log( FooStore.indexList ); // ['a', 'b', 'c']
 ### 예제
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 const store = { foo: ['a', {b: {unique: true} }, {c: {multiEntry: true}}] };
-NiceDB.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
+nicedb.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
 
 // Success_Handler 실행 된 이후
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 console.log( FooStore.indexInfo );
 // [
 //  { field: 'a', unique: false, multiEntry: false },
@@ -297,7 +309,7 @@ find( query, limit )
 ### 예제
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 // foo 저장소에 저장된 문서 중 필드 값이 100 인 문서를 조회하고 반환합니다.
 FooStore.find( {bar: 100} ).then( result => console.log(result) );
@@ -338,7 +350,7 @@ findOne( query )
 ### 예제
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 // foo 저장소에 저장된 문서 중 bar의 값이 100 인 문서를 조회하고 반환합니다.
 FooStore.find( {bar: 100} ).then( result => console.log(result) ); // { _id: 33, bar: 100, ... }
@@ -370,7 +382,7 @@ count( query )
 ### 예제
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 // foo 저장소에 저장된 문서 중 필드 값이 40 이상인 문서의 개수를 반환.
 FooStore.count( {bar: {$gte: 40} } ); // 13
@@ -401,7 +413,7 @@ insert( doc )
 ### 예제
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 const doc = {
   txt: 'text',
@@ -451,7 +463,7 @@ update( query, doc, change )
 ### 예제
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 const query = { bar: { $gte: 9 } }; // bar 필드 값이 9 이상
 const doc = { bar: 9, etc: 'love' };
@@ -489,7 +501,7 @@ remove( query )
 ### 예제
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 const query = { bar: 9 };
 
@@ -519,7 +531,7 @@ clear()
 ### 예제
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 FooStore.clear().then( result => console.log(result) ); // undefined
 ```
@@ -539,14 +551,14 @@ FooStore.clear().then( result => console.log(result) ); // undefined
 ### 문법
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 const store = { foo: ['num'] };
-NiceDB.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
+nicedb.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
 
 // Success_Handler 실행 된 이후
 
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 // 문서 배열의 _id 를 출력하는 함수
 function log( docs ) {

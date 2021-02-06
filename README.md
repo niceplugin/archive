@@ -19,6 +19,17 @@ Using it has the following advantages:
 
 ## Install
 
+### CDN
+
+```html
+<script src="https://unpkg.com/nicedb/dist/iife.js"></script>
+```
+Use in JavaScript files after installation:
+```js
+nicedb.define( /* Object defining stores */ );
+// ...
+```
+
 ### NPM
 
 ```shell
@@ -27,6 +38,7 @@ npm install nicedb
 Use in JavaScript files after installation:
 ```js
 import nicedb from "nicedb"
+nicedb.define( /* Object defining stores */ );
 // ...
 ```
 
@@ -124,7 +136,7 @@ define( stores )
 ### Example
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 const store = {
   // You have defined a store named 'user'.
@@ -138,7 +150,7 @@ const store = {
   // ...
 };
 
-NiceDB.define( store )
+nicedb.define( store )
   .then( event => { /* Execution code when store definition is successed */ } )
   .catch( event => { /* Executable code when library is unavailable due to error */ } );
 ```
@@ -167,14 +179,14 @@ getStore( storeName )
 ### Example
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
-NiceDB.define( { /* ... */ } ).then( /* Success_Handler */ ).catch( /* ... */ );
+nicedb.define( { /* ... */ } ).then( /* Success_Handler */ ).catch( /* ... */ );
 
 // Since Success_Handler is executed
 
-const User = NiceDB.getStore( "user" );
-const Car = NiceDB.getStore( "car" );
+const User = nicedb.getStore( "user" );
+const Car = nicedb.getStore( "car" );
 ```
 
 ## onversionchange
@@ -184,7 +196,7 @@ Handling the `onversionchange` of **IndexedDB**. [link](https://developer.mozill
 ### Syntax
 
 ```js
-NiceDB.onversionchange = callback;
+nicedb.onversionchange = callback;
 ```
 
 ## onblocked
@@ -197,7 +209,7 @@ Handling the `onblocked` of **IndexedDB**. [link](https://developer.mozilla.org/
 ### Syntax
 
 ```js
-NiceDB.onblocked = callback;
+nicedb.onblocked = callback;
 ```
 
 # API `Store class`
@@ -209,11 +221,11 @@ Read only. The name of the store. (String)
 ### Example
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 // ...
 
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 console.log( FooStore.foo ); // "user"
 ```
@@ -227,13 +239,13 @@ Read only. Field array registered as an index in the store.
 ### Example
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 const store = { foo: ['a', 'b', 'c'] };
-NiceDB.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
+nicedb.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
 
 // Since Success_Handler is executed
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 console.log( FooStore.indexList ); // ['a', 'b', 'c']
 ```
 
@@ -244,13 +256,13 @@ Read only. An array that uses the field information registered as an index in th
 ### Example
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 const store = { foo: ['a', {b: {unique: true} }, {c: {multiEntry: true}}] };
-NiceDB.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
+nicedb.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
 
 // Since Success_Handler is executed
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 console.log( FooStore.indexInfo );
 // [
 //  { field: 'a', unique: false, multiEntry: false },
@@ -297,7 +309,7 @@ find( query, limit )
 ### Example
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 // Retrieves and returns documents with bar value of 100 among
 // the documents stored in the foo repository.
@@ -339,7 +351,7 @@ findOne( query )
 ### Example
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 // Retrieves and returns documents with bar value of 100 among
 // the documents stored in the foo repository.
@@ -374,7 +386,7 @@ count( query )
 ### Example
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 // Returns the number of documents with a field value of 40 or more among
 // documents stored in foo store.
@@ -407,7 +419,7 @@ insert( doc )
 ### Example
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 const doc = {
   txt: 'text',
@@ -460,7 +472,7 @@ update( query, doc, change )
 ### Example
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 const query = { bar: { $gte: 9 } }; // bar field value is 9 or more
 const doc = { bar: 9, etc: 'love' };
@@ -500,7 +512,7 @@ remove( query )
 ### Example
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 const query = { bar: 9 };
 
@@ -530,7 +542,7 @@ none.
 ### Example
 
 ```js
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 FooStore.clear().then( result => console.log(result) ); // undefined
 ```
@@ -550,14 +562,14 @@ but it does support some of the comparison query operators used by **MongoDB**.
 ### Syntax
 
 ```js
-import NiceDB from "nicedb"
+import nicedb from "nicedb"
 
 const store = { foo: ['num'] };
-NiceDB.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
+nicedb.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
 
 // Since Success_Handler is executed
 
-const FooStore = NiceDB.getStore( "foo" );
+const FooStore = nicedb.getStore( "foo" );
 
 // Function to print _id of document array
 function log( docs ) {
