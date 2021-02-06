@@ -8,6 +8,11 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'commonjs2'
   },
+  // entry: './src/unpkg.js',
+  // output: {
+  //   filename: 'iife.js',
+  //   path: path.resolve(__dirname, 'dist'),
+  // },
   module: {
     rules: [
       {
