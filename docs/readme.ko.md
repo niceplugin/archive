@@ -98,8 +98,7 @@ nicedb.define( /* 저장소를 정의하는 객체 */ );
 
 ## `define()`
 
-라이브러리를 사용하기 전 저장소를 정의하는 메서드.
-라이브러리에서 재공되는 모든 메서드는 `define()`의 `Promise.resolve` 이후 사용할 수 있습니다.
+A method to define the stores before using the library.
 
 ### 문법
 

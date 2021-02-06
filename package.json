@@ -1,6 +1,6 @@
 {
   "name": "nicedb",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "It makes IndexedDB simple and easy to use.",
   "main": "./dist/main.js",
   "scripts": {
