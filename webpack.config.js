@@ -8,10 +8,12 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'commonjs2'
   },
-  // entry: './src/unpkg.js',
+  // entry: './src/index.js',
   // output: {
   //   filename: 'iife.js',
   //   path: path.resolve(__dirname, 'dist'),
+  //   library: 'nicedb',
+  //   libraryExport: 'default'
   // },
   module: {
     rules: [
