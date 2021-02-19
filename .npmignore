@@ -1,6 +1,7 @@
 examples
 src
 docs
+test
 
 .gitignore
 webpack.config.js
