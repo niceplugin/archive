@@ -1,1 +1,376 @@
-var nicedb;nicedb=(()=>{"use strict";var e={352:(e,t,r)=>{function n(e,t){var r=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),r.push.apply(r,n)}return r}function o(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{};t%2?n(Object(r),!0).forEach((function(t){i(e,t,r[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(r)):n(Object(r)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(r,t))}))}return e}function i(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}function a(e){return function(e){if(Array.isArray(e))return u(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||function(e,t){if(e){if("string"==typeof e)return u(e,t);var r=Object.prototype.toString.call(e).slice(8,-1);return"Object"===r&&e.constructor&&(r=e.constructor.name),"Map"===r||"Set"===r?Array.from(e):"Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r)?u(e,t):void 0}}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function u(e,t){(null==t||t>e.length)&&(t=e.length);for(var r=0,n=new Array(t);r<t;r++)n[r]=e[r];return n}function c(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function l(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function s(e,t,r){return t&&l(e.prototype,t),r&&l(e,r),e}function f(e,t){var r=t.get(e);if(!r)throw new TypeError("attempted to get private field on non-instance");return r.get?r.get.call(e):r.value}function d(e,t,r){var n=t.get(e);if(!n)throw new TypeError("attempted to set private field on non-instance");if(n.set)n.set.call(e,r);else{if(!n.writable)throw new TypeError("attempted to set read only private field");n.value=r}return r}function p(e){return(p="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function y(e){return null!==e&&!Array.isArray(e)&&"object"===p(e)}function h(e){return"boolean"==typeof e}r.d(t,{default:()=>I});var b=new WeakMap,v=new WeakMap,m=new WeakMap,w=new WeakMap,g=new WeakMap,j=new WeakMap,O=new WeakMap,E=function(){function e(t,r){c(this,e),b.set(this,{writable:!0,value:void 0}),v.set(this,{writable:!0,value:void 0}),m.set(this,{writable:!0,value:void 0}),w.set(this,{writable:!0,value:void 0}),g.set(this,{writable:!0,value:void 0}),j.set(this,{writable:!0,value:void 0}),O.set(this,{writable:!0,value:void 0});var n=this,o=t;d(this,b,t),d(this,v,r),d(this,m,{_id:{$gt:0}}),d(this,w,(function(e,t){var r=f(n,v).result.transaction(o,t);r.onerror=function(){throw r.error};var i=r.objectStore(o),a=Object.keys(e)[0];return{objectStore:i="_id"===a?i:i.index(a),field:a}})),d(this,g,(function(e){var t=e[Object.keys(e)[0]];if(y(t)){var r,n=Object.keys(t),o={};n.forEach((function(e){var r=t[e];"$lt"===e?(o.upper=r,o.upperOpen=!0):"$lte"===e?(o.upper=r,o.upperOpen=!1):"$gt"===e?(o.lower=r,o.lowerOpen=!0):"$gte"===e&&(o.lower=r,o.lowerOpen=!1)}));var i=Object.keys(o);if(i.includes("lower")&&i.includes("upper")?r=IDBKeyRange.bound(o.lower,o.upper,o.lowerOpen,o.upperOpen):i.includes("lower")?r=IDBKeyRange.lowerBound(o.lower,o.lowerOpen):i.includes("upper")&&(r=IDBKeyRange.upperBound(o.upper,o.upperOpen)),!r)throw new URIError("The value of the query is invalid.");return r}return IDBKeyRange.only(t)})),d(this,j,(function(e,t,r){e.onsuccess=function(){t(e.result)},e.onerror=function(){r(e.error)}})),d(this,O,(function(e,t,r){return new Promise((function(o,i){try{var a=f(n,w).call(n,t,"readonly").objectStore,u=f(n,g).call(n,t),c=r&&r>0?a[e](u,r):a[e](u);f(n,j).call(n,c,o,i)}catch(e){i(e)}}))}))}return s(e,[{key:"name",get:function(){return f(this,b)},set:function(e){return e}},{key:"indexList",get:function(){return a(f(this,w).call(this,f(this,m),"readonly").objectStore.indexNames)},set:function(e){return e}},{key:"indexInfo",get:function(){var e=f(this,w).call(this,f(this,m),"readonly").objectStore;return a(e.indexNames).map((function(t){var r=e.index(t);return{field:r.keyPath,multiEntry:r.multiEntry,unique:r.unique}}))},set:function(e){return e}},{key:"find",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:f(this,m),t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0;return"number"==typeof e&&(t=e,e=f(this,m)),e||(e=f(this,m)),f(this,O).call(this,"getAll",e,t)}},{key:"findOne",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:f(this,m);return f(this,O).call(this,"get",e)}},{key:"count",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:f(this,m);return f(this,O).call(this,"count",e)}},{key:"insert",value:function(e){var t=this;return new Promise((function(r,n){try{y(e)||n(new URIError("The second argument must be an object.")),delete e._id,0===Object.keys(e).length&&n(new URIError("The document to be inserted cannot be an empty object."));var o=f(t,w).call(t,f(t,m),"readwrite").objectStore.add(e);f(t,j).call(t,o,r,n)}catch(e){n(e)}}))}},{key:"update",value:function(){for(var e=this,t=arguments.length,r=new Array(t),n=0;n<t;n++)r[n]=arguments[n];return new Promise((function(t,n){try{var i,a=f(e,m),u=!1,c=null;if(0===r.length)return n(new URIError("There are no parameters."));if(1===r.length){if(!y(r[0]))return n(new URIError('"doc" parameter must be an object.'));i=r[0],c=!1}else if(2===r.length)if(h(r[1])){if(!y(r[0]))return n(new URIError('"doc" parameter must be an object.'));i=r[0],u=!!r[1],c=!1}else{if(!y(r[0])||!y(r[1]))return n(new URIError('"query" and "doc" parameters must be an object.'));a=r[0],i=r[1]}else{if(!y(r[0])||!y(r[1]))return n(new URIError('"query" and "doc" parameters must be an object.'));a=r[0],i=r[1],u=!!r[2]}var l=f(e,w).call(e,a,"readwrite"),s=l.objectStore,d=l.field;c=null===c?"_id"===d:c;var p=f(e,g).call(e,a),b=c?s.get(p):s.openCursor(p),v=[];delete i._id,b.onerror=function(){n(b.error)},b.onsuccess=function(){var e=c?s:b.result;if(!e)return t(v);var r=c?b.result:e.value;if(void 0===r)return t(v);var a=o(u?{_id:r._id}:o({},r),i);if(!c&&-1!==v.indexOf(e.primaryKey))return e.continue();var l=c?e.put(a):e.update(a);l.onerror=function(e){n(e.target.error)},l.onsuccess=function(){c?t([l.result]):(v.push(e.primaryKey),e.continue())}}}catch(e){n(e)}}))}},{key:"remove",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:f(this,m);return new Promise((function(r,n){try{var o=f(e,w).call(e,t,"readwrite"),i=o.objectStore,a="_id"===o.field,u=f(e,g).call(e,t),c=a?i.delete(u):i.openCursor(u);a?f(e,j).call(e,c,r,n):(c.onerror=function(){n(c.error)},c.onsuccess=function(){var e=c.result;e?(e.delete(),e.continue()):r()})}catch(e){n(e)}}))}},{key:"clear",value:function(){var e=this;return new Promise((function(t,r){try{var n=f(e,w).call(e,f(e,m),"readwrite").objectStore.clear();f(e,j).call(e,n,t,r)}catch(e){r(e)}}))}}]),e}(),k=new WeakMap,S=new WeakMap;const I=new(function(){function e(){c(this,e),k.set(this,{writable:!0,value:void 0}),S.set(this,{writable:!0,value:void 0}),d(this,k,null),d(this,S,null),this.onversionchange=null,this.onblocked=null}return s(e,[{key:"define",value:function(e){var t=this;return new Promise((function(r,n){if(!indexedDB)throw new ReferenceError("IndexedDB is not supported at this runtime.");if(!y(e)||!Object.keys(e).length)throw new URIError("The parameter must be an object defining the stores of IndexedDB.");var o=t;d(t,S,JSON.parse(JSON.stringify(e))),d(t,k,indexedDB.open("niceDB",+new Date)),f(t,k).onerror=function(){n(f(o,k).error)},f(t,k).onblocked=function(){var e=new Error("Your database version can't be upgraded because the app is open somewhere else.");"function"==typeof o.onblocked?o.onblocked(e):n(e)},f(t,k).onsuccess=function(e){r(e)},f(t,k).onupgradeneeded=function(e){try{var t=f(o,k).result;t.onversionchange=function(e){"function"==typeof o.onversionchange&&o.onversionchange(e)};var r=a(Object.keys(f(o,S)));a(t.objectStoreNames).filter((function(e){return!r.includes(e)})).forEach((function(e){return t.deleteObjectStore(e)})),r.forEach((function(r){var n,i=e.target.transaction;n=t.objectStoreNames.contains(r)?i.objectStore(r):t.createObjectStore(r,{keyPath:"_id",autoIncrement:!0});var u=function(e){var t=f(o,S)[e];if(!Array.isArray(t)||!t.length)throw new URIError("The field of store '".concat(e,"' is invalid. Field must be an array."));return t.map((function(t,r){var n="The index in problem is ".concat(r," of the field array of '").concat(e,"' store."),o="string"==typeof t&&!t.length,i=null===t||Array.isArray(t),a="object"!==p(t)&&"string"!=typeof t;if(o||i||a)throw new URIError("The properties of the Field array, must be 'strings of longer then 1' or object. ".concat(n));if("string"==typeof t)return{name:t,unique:!1,multiEntry:!1};if(!t.name||"string"!=typeof t.name||!t.name.length)throw new URIError("If the property of the field array is an object, it must have name property with a string of longer than 1. ".concat(n));return{name:t.name,unique:!!t.unique,multiEntry:!!t.multiEntry}}))}(r),c=u.map((function(e){return e.name})),l=a(n.indexNames),s=l.filter((function(e){return!c.includes(e)})),d=u.filter((function(e){return!l.includes(e.name)})),y=u.filter((function(e){return l.includes(e.name)}));s.forEach((function(e){return n.deleteIndex(e)})),d.forEach((function(e){var t=e.name,r={unique:e.unique,multiEntry:e.multiEntry};"_id"!==t&&n.createIndex(t,t,r)})),y.forEach((function(e){var t=n.index(e.name);if(e.unique!==t.unique||e.multiEntry!==t.multiEntry){var r=e.name,o={unique:e.unique,multiEntry:e.multiEntry};n.deleteIndex(r),n.createIndex(r,r,o)}}))}))}catch(e){n(e)}}}))}},{key:"getStore",value:function(e){return a(f(this,k).result.objectStoreNames).includes(e)?new E(e,f(this,k)):null}}]),e}())}},t={};function r(n){if(t[n])return t[n].exports;var o=t[n]={exports:{}};return e[n](o,o.exports,r),o.exports}return r.d=(e,t)=>{for(var n in t)r.o(t,n)&&!r.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),r(352)})().default;
+// todo readme.md 인덱스 옵션 객체 {필드명: {...옵션}} 을 {필드명, ...옵션} 으로 변경 필요
+
+function isObject(obj) {
+  return obj !== null && !Array.isArray(obj) && typeof(obj) === 'object';
+}
+function isBoolean(boo) {
+  return typeof(boo) === 'boolean';
+}
+
+class NiceStore {
+  #storeName;
+  #nicedb;
+  #DBOpenRequest;
+  #defQuery;
+
+  #requestHandler;
+  #getCursor;
+  #getStoreIndex;
+  #getRange;
+  #getKeys;
+  #getKeysPromises;
+  #getDocs;
+  #processReadonly;
+
+  constructor(storeName, nicedb, DBOpenRequest) {
+    const it = this;
+
+    this.#storeName = storeName;
+    this.#nicedb = nicedb;
+    this.#DBOpenRequest = DBOpenRequest;
+    this.#defQuery = { _id: { $gt: 0 } };
+
+    // 요청에 대한 성공 애러 이벤트 핸들러
+    this.#requestHandler = function(request, resolve, reject) {
+      request.onsuccess = function() { resolve(request.result) };
+      request.onerror = function() { reject(request.error) };
+    }
+
+    // 리턴 값: field 에 해당하는 IDBIndex
+    this.#getStoreIndex = function(field) {
+      const name = it.#storeName;
+      const transaction = it.#DBOpenRequest.result.transaction(name, 'readonly');
+      const iDBObjectStore = transaction.objectStore(name)
+
+      transaction.onerror = () => { throw transaction.error };
+
+      return field === '_id' ? iDBObjectStore : iDBObjectStore.index(field);
+    }
+
+    // 리턴 값: IDBKeyRange
+    this.#getRange = function(query) {
+      // 쿼리 식별자: $lt, $lte, $gt, $gte
+      //            upperBound, lowerBound
+      //                     bound
+
+      // 쿼리가 논리적인 범위를 나타내야 할 경우
+      if ( isObject(query) ) {
+        const keys = Object.keys(query);
+        const options = {};
+
+        keys.forEach(key=>{
+          const value = query[key];
+          if (key === '$lt') {
+            options.upper = value;
+            options.upperOpen = true;
+          } else if (key === '$lte') {
+            options.upper = value;
+            options.upperOpen = false;
+          } else if (key === '$gt') {
+            options.lower = value;
+            options.lowerOpen = true;
+          } else if (key === '$gte') {
+            options.lower = value;
+            options.lowerOpen = false;
+          }
+        });
+
+        let range;
+        const oKeys = Object.keys(options);
+        if (oKeys.includes('lower') && oKeys.includes('upper')) {
+          range = IDBKeyRange.bound(options.lower, options.upper, options.lowerOpen, options.upperOpen);
+        } else if (oKeys.includes('lower')) {
+          range = IDBKeyRange.lowerBound(options.lower, options.lowerOpen);
+        } else if (oKeys.includes('upper')) {
+          range = IDBKeyRange.upperBound(options.upper, options.upperOpen);
+        }
+
+        if (!range) { // 내용: 쿼리의 값이 잘못되었습니다.
+          throw new URIError('The value of the query is invalid.');
+        }
+        return range;
+      } else {
+        return IDBKeyRange.only(query);
+      }
+    }
+
+    // 리턴 값: 검색된 문서의 Promise 로 이루어진 배열 Promise
+    this.#getKeysPromises = function( queries = it.#defQuery ) {
+      let fields = Object.keys(queries);
+      fields = fields.length ? fields : it.#defQuery;
+      // promises = 쿼리즈 내에 모든 필드를 루프하고, 각각의 리턴 값 Promise 로 이루어진 배열
+      const promises = fields.map( field => {
+        return new Promise((resolve, reject) => { try {
+          const iDBIndex = it.#getStoreIndex(field);
+          const iDBKeyRange = it.#getRange( queries[field] );
+          const iDBRequest = iDBIndex.getAllKeys(iDBKeyRange);
+          it.#requestHandler(iDBRequest, resolve, reject);
+        } catch(e) { reject(e) } })
+      });
+
+      return Promise.all(promises);
+    }
+
+    // 리턴 값: 검색된 문서의 _id 로 이루어진 배열 Promise
+    this.#getKeys = function(queries) {
+      return new Promise((resolve, reject) => { try {
+        it.#getKeysPromises(queries).then( arrays => {
+          // 사용자가 IDBObjectStore.createIndex 옵션을 { multiEntry: true } 로 할 경우
+          // 해당 문서의 필드의 배열 내 값이 여러번 일치 할 경우
+          // 그 때 마다 key(_id) 를 배열에 담으므로, key 가 중복된 상태일 수 있으니
+          // 값이 유니크 할 수 있도록 필터조치
+          arrays = arrays.map( arr => arr.filter( (value, index, self) => {
+            return self.indexOf(value) === index
+          }) );
+
+          // arrays = 쿼리즈 내에 모든 필드를 각각 검색한 결과 값 key 로 이루어진 배열로 이루어진 2차원 배열
+          // result = arrays 내의 모든 배열들의 교집합 배열
+          const result = arrays.reduce((accumulator, currentValue) => {
+            const a = accumulator.length < currentValue.length ? accumulator : currentValue;
+            const b = a !== accumulator ? accumulator : currentValue;
+            return a.filter( key => -1 !== b.indexOf(key) );
+          });
+
+          resolve(result);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+
+    // 리턴 값: 모드에 해당하는 IDBCursor Promise
+    this.#getCursor = function(mode, callback) {
+      return new Promise( (resolve, reject) => { try {
+        const name = it.#storeName;
+        const transaction = it.#DBOpenRequest.result.transaction(name, mode);
+        transaction.onerror = () => { throw transaction.error };
+        const request = transaction.objectStore(name).openCursor();
+        request.onerror = () => reject(request.error);
+
+        // 커서를 성공적으로 호출할 경우: 이후 커서 호출을 콜백함수로 지정 후 resolve
+        request.onsuccess = (event) => {
+          request.onsuccess = callback;
+          resolve(event);
+        };
+      } catch(e) { reject(e) } })
+    }
+
+    // 리턴 값: 검색된 문서로 이루어진 배열 Promise
+    this.#getDocs = function(queries) {
+      return new Promise( (resolve, reject) => { try {
+        // keys = 쿼리즈에 해당하는 문서들의 _id 배열
+        it.#getKeys(queries).then( keys => {
+          const docs = [];
+
+          // 커서 컨트롤러: keys 에 해당하는 문서 수집
+          function callback(event) {
+            const cursor = event.target.result;
+            if (cursor) {
+              if ( cursor.value._id === keys[0] ) {
+                docs.push( cursor.value );
+                keys.shift();
+              }
+
+              const _id = keys[0]; // 다음 문서로 이동 할 _id 추출
+              if ( _id !== undefined ) {
+                cursor.continue( _id ) }
+              else { resolve(docs) }
+            } else { resolve(docs) }
+          }
+
+          it.#getCursor( 'readonly', callback ).then( callback, e => reject(e) );
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+  }
+
+  find( queries, options = {} ) {
+    const it = this;
+    return new Promise((resolve, reject) => { try {
+      it.#getDocs(queries).then( result => resolve(result), e => reject(e) );
+    } catch(e) { reject(e) } })
+  }
+}
+
+class NiceDB {
+  #queue;
+  #DBOpenRequest;
+  #stores;
+  #success;
+  #niceStores;
+
+  constructor() {
+    this.#queue = [];
+    this.#DBOpenRequest = null;
+    this.#stores = null;
+    this.#success = false;
+    this.#niceStores = {};
+    this.onblocked = null;
+  }
+
+  // indexedDB 사용 가능 여부
+  // 리턴 값: Boolean
+  get support() { return !!indexedDB; }
+  set support(value) { return value; }
+
+  define(stores) {
+    const it = this;
+
+    // stores 유효성 검사
+    (() => {
+      if ( !isObject(stores) || !Object.keys(stores).length ) {
+        // 내용: 매개 변수는 IndexedDB의 저장소를 정의하는 객체 여야합니다.
+        throw new URIError('The parameter must be an object defining the stores of IndexedDB.');
+      }
+
+      const storesNames = [ ...Object.keys(stores) ];
+      storesNames.forEach( storeName => {
+        let indexes = stores[storeName];
+
+        if ( !Array.isArray(indexes) || !indexes.length ) {
+          // 내용: ${storeName} 스토어의 값이 잘못되었습니다. 값은 0보다 긴 길이의 배열이어야 합니다.
+          throw new URIError(`The '${storeName}' store's value is invalid. The value must be an array of length greater than 0.`);
+        }
+
+        indexes.map( (field, i) => {
+          // 내용: 잘못된 값: ${storeName} 스토어의 인덱스 ${i}.
+          const errText = `Invalid value: "${i}" index in "${storeName}" store's array.`;
+
+          // 허용되지 않는 필드 데이터 타입 예외처리
+          const a = typeof(field) === 'string' && !field.length;
+          const b = field === null || Array.isArray(field);
+          const c = typeof(field) !== 'object' && typeof(field) !== 'string';
+          if (a || b || c) {
+            // 내용: 반드시 문자이거나 객체여야 함.
+            throw new URIError(`${errText} Must be "String" or "Object".`);
+          }
+
+          // field 가 유효한 문자열일 경우 객체 유효성 검사 생략
+          if ( typeof(field) === 'string' ) { return }
+
+          // 필드가 객체일 경우 name 속성 여부와 그 값의 허용여부에 따른 예외처리
+          if ( !field.name || typeof(field.name) !== 'string' || !field.name.length ) {
+            // 내용: 객체의 경우 { name : String }을 포함해야합니다.
+            throw new URIError(`${errText} For an object, it must contain { name: String }.`);
+          }
+        });
+      });
+    })();
+
+    // 리턴 값: IDBObjectStore.createIndex 에 전달될 옵션 파라미터 포멧 형식의 객체로 이루어진 배열
+    function indexExtraction(storeName) {
+      let indexes = it.#stores[storeName];
+
+      return indexes.map( (field) => {
+        return (typeof(field) === 'string') ?
+          { name: field, unique: false, multiEntry: false } :
+          { name: field.name, unique: !!field.unique, multiEntry: !!field.multiEntry };
+      });
+    }
+
+    // indexedDB 버전은 항상 최신 시간 (밀리 초)으로 업데이트 됨.
+    const DBOpenRequest = indexedDB.open('niceDB', +new Date());
+    this.#stores = JSON.parse(JSON.stringify(stores));
+    this.#DBOpenRequest = DBOpenRequest;
+
+    // DBOpenRequest.onerror 콘솔로 애러 출력 처리
+    DBOpenRequest.onerror = function() { console.error(DBOpenRequest.error) };
+
+    // 앱이 이미 실행중이고, 새 탭을 열어 추가로 앱을 실행할 경우,
+    // 새로 실행 된 앱에서 onblocked 이벤트가 호출됨.
+    DBOpenRequest.onblocked = function(event) {
+      // 사용자 정의 함수가 있을 경우, 애러를 파라미터로 전달하며 함수를 실행.
+      if ( typeof(it.onblocked) === 'function' ) { it.onblocked(event) }
+      // 내용: 앱이 다른 곳에서 열려 있기 때문에 데이터베이스 버전을 업그레이드 할 수 없습니다.
+      else { console.error("Your database version can't be upgraded because the app is open somewhere else.") }
+    };
+
+    // DBOpenRequest 성공 이벤트 헨들러를 사용자 정의 콜백으로 처리.
+    DBOpenRequest.onsuccess = function() {
+      it.#success = true;
+      // todo 큐 처리
+      // onsuccess 이전에 요청된 모든 NiceStore 를 처리한다.
+    };
+
+    // 항상 indexedDB 버전 업데이트에 따른 upgradeneeded 이벤트 헨들링 로직.
+    // - 더이상 사용되지 않는 스토어 및 필드는 삭제.
+    // - 새로운 스토어 및 필드 등록.
+    // - 변경된 필드 옵션 업데이트.
+    DBOpenRequest.onupgradeneeded = function(event) {try {
+      const db = it.#DBOpenRequest.result;
+      const newStores = [ ...Object.keys(it.#stores) ];
+      const oldStores = [ ...db.objectStoreNames ];
+      const removeSList = oldStores.filter( store => !newStores.includes(store) );
+
+      // 더 이상 사용하지 않는 오래된 Store 를 제거.
+      removeSList.forEach( store => db.deleteObjectStore(store) );
+
+      // 스토어 및 인덱스 생성 또는 업데이트 로직.
+      newStores.forEach( storeName => {
+        let objectStore;
+        const transaction = event.target.transaction;
+        const sOptions = { keyPath: '_id', autoIncrement: true };
+
+        // 새로운 Store 를 작성하거나 이미있는 경우 참조.
+        if ( !db.objectStoreNames.contains(storeName) ) {
+          objectStore = db.createObjectStore(storeName, sOptions);
+        } else {
+          objectStore = transaction.objectStore(storeName);
+        }
+
+        const newIndexesExtract = indexExtraction(storeName);
+        const newIndexes = newIndexesExtract.map( obj => obj.name );
+        const oldIndexes = [ ...objectStore.indexNames ];
+        // oldIndexes - newIndexes
+        const removeIList = oldIndexes.filter( field => !newIndexes.includes(field) );
+        // newIndexesExtract - oldIndexes
+        const createIList = newIndexesExtract.filter( obj => !oldIndexes.includes(obj.name) );
+        // newIndexesExtract ∩ oldIndexes
+        const updateIList = newIndexesExtract.filter( obj => oldIndexes.includes(obj.name) );
+
+        // 더 이상 사용하지 않는 이전 인덱스를 제거.
+        removeIList.forEach( index => objectStore.deleteIndex(index) );
+
+        // 이전에 사용되지 않은 새 인덱스를 생성.
+        createIList.forEach( field => {
+          const name = field.name;
+          const options = { unique: field.unique, multiEntry: field.multiEntry };
+
+          // _id는 store 에서 사용하는 key 의 별칭으로 필드로 사용 안함
+          if (name === '_id') { return }
+          objectStore.createIndex(name, name, options)
+        });
+
+        // 이미 사용중인 인덱스의 옵션 값을 확인하고
+        // 사용자가 선언한 옵션과 이미 사용중인 옵션값이 다를 경우
+        // 해당 인덱스를 지웠다가 재생성 하는 방식으로 업데이트를 진행
+        updateIList.forEach( field => {
+          const index = objectStore.index( field.name );
+          if ( field.unique !== index.unique || field.multiEntry !== index.multiEntry ) {
+            const name = field.name;
+            const options = { unique: field.unique, multiEntry: field.multiEntry };
+
+            objectStore.deleteIndex(name);
+            objectStore.createIndex(name, name, options);
+          }
+        });
+      });
+    } catch(error) { console.error(error) }};
+  }
+
+  // 데이터베이스에서 지정한 스토어를 반환
+  // 리턴 값: NiceStore 객체
+  getStore(name) {
+    const storeList = Object.keys(this.#stores);
+    const niceStore = this.#niceStores;
+
+    if ( !storeList.includes(name) ) {
+      throw new URIError(`The "${name}" store is undefined.`);
+    }
+
+    niceStore[name] = niceStore[name] ?
+      niceStore[name] : new NiceStore( name, this, this.#DBOpenRequest );
+
+    return niceStore[name];
+  }
+}
+
+window.nicedb = new NiceDB();
