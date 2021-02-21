@@ -20,6 +20,9 @@ class NiceStore {
   #getKeys;
   #getKeysPromises;
   #getDocs;
+  #doSort;
+  #doSkip;
+  #doLimit;
   #processReadonly;
 
   constructor(storeName, nicedb, DBOpenRequest) {
@@ -97,7 +100,12 @@ class NiceStore {
     // 리턴 값: 검색된 문서의 Promise 로 이루어진 배열 Promise
     this.#getKeysPromises = function( queries = it.#defQuery ) {
       let fields = Object.keys(queries);
-      fields = fields.length ? fields : it.#defQuery;
+
+      if (!fields.length) {
+        fields = ['_id'];
+        queries = it.#defQuery;
+      }
+
       // promises = 쿼리즈 내에 모든 필드를 루프하고, 각각의 리턴 값 Promise 로 이루어진 배열
       const promises = fields.map( field => {
         return new Promise((resolve, reject) => { try {
@@ -180,12 +188,103 @@ class NiceStore {
         }, e => reject(e) );
       } catch(e) { reject(e) } })
     }
+
+    // 리턴 값: 없음.
+    this.#doSort = function(request, sorts) {
+      if ( !sorts || typeof(sorts) !== 'object' ) { return }
+
+      sorts = Array.isArray(sorts) ? sorts : Object.entries(sorts);
+
+      function sameSort(a, b, type, i) {
+        if (type === 'number') {
+          return (a - b) * i
+        } else if (type === 'string') {
+          if (a > b) { return 1 * i }
+          else if (a < b) { return -1 * i }
+          else { return 0 }
+        } else if (type === 'array') {
+          if (a.length > b.length) { return 1 * i }
+          else if (a.length < b.length) { return -1 * i }
+          else { return 0 }
+        } else {
+          if (a === b) { return 0 }
+          else if (a > b) { return 1 * i }
+          else if (a < b) { return -1 * i }
+          else { return 0 }
+        }
+      }
+      function diffSort(a, b, typeA, typeB) {
+        if (typeA === 'number') { return -1 }
+        else if (typeB === 'number') { return 1 }
+        else if (typeA === 'NaN') { return -1 }
+        else if (typeB === 'NaN') { return 1 }
+        else if (typeA === 'string') { return -1 }
+        else if (typeB === 'string') { return 1 }
+        else if (typeA === 'boolean') { return -1 }
+        else if (typeB === 'boolean') { return 1 }
+        else if (typeA === 'array') { return -1 }
+        else if (typeB === 'array') { return 1 }
+        else if (typeA === 'date') { return -1 }
+        else if (typeB === 'date') { return 1 }
+        else if (typeA === 'object') { return -1 }
+        else if (typeB === 'object') { return 1 }
+        else if (typeA === 'null') { return -1 }
+        else if (typeB === 'null') { return 1 }
+        else { return 0 }
+      }
+      function getType(value) {
+        let type = typeof value;
+
+        if (type === 'number') {
+          type = Number.isNaN(value) ? 'NaN' : type;
+        } else if (type === 'object') {
+          type = Array.isArray(value) ? 'array' :
+            value instanceof Date ? 'date' :
+              value instanceof Object ? 'object' :
+                value === null ? 'null' : type;
+        }
+
+        return type;
+      }
+
+      request.sort( (a, b) => {
+        return sorts.reduce( (acc, cur) => {
+          if (acc !== 0) { return acc }
+
+          const field = cur[0];
+          const i = cur[1];
+          const valueA = a[field];
+          const valueB = b[field];
+          const typeA = getType(valueA);
+          const typeB = getType(valueB);
+
+          if ( typeA === typeB ) { return sameSort(valueA, valueB, typeA, i) }
+          else { return diffSort(valueA, valueB, typeA, typeB) }
+        }, 0 );
+      } );
+    }
+
+    // 리턴 값: 없음. request 배열의 0 ~ n 인덱스 요소 삭제
+    this.#doSkip = function(request, n) {
+      if ( Number.isInteger(n) ) { request.splice(0, n) }
+    }
+
+    // 리턴 값: 없음. request 배열의 n 이후 인덱스 요소 삭제
+    this.#doLimit = function(request, n) {
+      if ( Number.isInteger(n) ) { request.splice(n) }
+    }
   }
 
   find( queries, options = {} ) {
+    // todo NiceDB #success 여부에 따른 queque 조건분기 필요
     const it = this;
     return new Promise((resolve, reject) => { try {
-      it.#getDocs(queries).then( result => resolve(result), e => reject(e) );
+      it.#getDocs(queries).then( result => {
+        it.#doSort(result, options.sort);
+        it.#doSkip(result, options.skip);
+        it.#doLimit(result, options.limit);
+        resolve(result);
+      }, e => reject(e) );
     } catch(e) { reject(e) } })
   }
 }
@@ -210,6 +309,11 @@ class NiceDB {
   // 리턴 값: Boolean
   get support() { return !!indexedDB; }
   set support(value) { return value; }
+
+  // indexedDB DBOpenRequest.onsuccess 여부
+  // 리턴 값: Boolean
+  get isSuccess() { return this.#success; }
+  set isSuccess(value) { return value; }
 
   define(stores) {
     const it = this;
