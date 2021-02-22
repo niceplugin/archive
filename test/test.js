@@ -21,6 +21,7 @@ class NiceStore {
   #getKeys;
   #getKeysPromises;
   #getDocs;
+  #getDocOne;
   #doSort;
   #doSkip;
   #doLimit;
@@ -192,6 +193,20 @@ class NiceStore {
       } catch(e) { reject(e) } })
     }
 
+    // 리턴 값: 검색된 문서 객체 || undefined
+    this.#getDocOne = function(queries) {
+      return new Promise( (resolve, reject) => { try {
+        // keys = 쿼리즈에 해당하는 문서들의 _id 배열
+        it.#getKeys(queries).then( keys => {
+          if ( !keys.length ) { return resolve(undefined) }
+
+          const request = it.#getStoreIndex('_id').get(keys[0]);
+
+          it.#requestHandler(request, resolve, reject);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+
     // 리턴 값: 없음. request 배열 정렬
     // sorts: {...fields} || [ ['field', i] ... ]
     this.#doSort = function(request, sorts) {
@@ -292,6 +307,8 @@ class NiceStore {
     }
   }
 
+  // 쿼리에 해당하는 문서를 모두 조회.
+  // 리턴 값: 조회된 문서 객체를 인자로 포함하는 배열
   find( queries, options = {} ) {
     const it = this;
 
@@ -305,6 +322,23 @@ class NiceStore {
         it.#doSort(result, options.sort);
         it.#doSkip(result, options.skip);
         it.#doLimit(result, options.limit);
+        resolve(result);
+      }, e => reject(e) );
+    } catch(e) { reject(e) } })
+  }
+
+  // 쿼리에 해당하는 문서를 조회.
+  // 리턴 값: 조회된 문서 객체 또는 undefined
+  findOne( queries ) {
+    const it = this;
+
+    // indexedDB.onsuccess 가 진행되지 않았을 경우, 실행을 큐에 예약 후 종료.
+    if (!this.#nicedb.isSuccess) {
+      return this.#DBQueueAdd( 'findOne', [ ...arguments ] );
+    }
+
+    return new Promise((resolve, reject) => { try {
+      it.#getDocOne(queries).then( result => {
         resolve(result);
       }, e => reject(e) );
     } catch(e) { reject(e) } })
