@@ -349,6 +349,19 @@ class NiceStore {
         }, e => reject(e) );
       } catch(e) { reject(e) } })
   }
+
+  // 저장된 모든 데이터를 지운다
+  // 리턴 값: 없음
+  clear() {
+    const it = this;
+
+    return this.#DBQueueAdd( 'clear', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        const iDBObjectStore = it.#getStoreIndex('_id', 'readwrite');
+        const request = iDBObjectStore.clear();
+        it.#requestHandler(request, resolve, reject);
+      } catch(e) { reject(e) } })
+  }
 }
 
 class NiceDB {
