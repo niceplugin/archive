@@ -362,6 +362,30 @@ class NiceStore {
         it.#requestHandler(request, resolve, reject);
       } catch(e) { reject(e) } })
   }
+
+  // 문서를 추가.
+  // 리턴 값: 추가된 문서의 _id 반환
+  insert(doc) {
+    const it = this;
+
+    return this.#DBQueueAdd( 'insert', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        // doc 데이터 타입 예외처리
+        if ( !isObject(doc) ) {
+          // 내용: 문서 삽입 실패: 객체 타입이 아닙니다.
+          reject( new URIError('Document Insert failed: It is not object type.') );
+        }
+        delete doc._id;
+        if ( Object.keys(doc).length === 0 ) {
+          // 내용: 문서 삽입 실패: 빈 객체 입니다.
+          reject( new URIError('Document Insert failed: It is an empty object.') );
+        }
+
+        const iDBObjectStore = it.#getStoreIndex('_id', 'readwrite');
+        const request = iDBObjectStore.add(doc);
+        it.#requestHandler(request, resolve, reject);
+      } catch(e) { reject(e) } })
+  }
 }
 
 class NiceDB {
