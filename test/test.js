@@ -293,12 +293,13 @@ class NiceStore {
       if ( Number.isInteger(n) ) { request.splice(n) }
     }
 
-    // 리턴 값: 큐에 예약된 promise
+    // 리턴 값: 큐 예약이 필요할 경우 예약된 promise || 아닌 경우 undefined
     this.#DBQueueAdd = function(methodName, methodArguments) {
       const it = this;
       const storeName = it.#storeName;
+      const pass = it.#nicedb.isSuccess;
 
-      return new Promise((resolve, reject) => { try {
+      return pass ? undefined : new Promise((resolve, reject) => { try {
         const queue = {
           storeName, methodName, methodArguments, resolve
         };
@@ -312,19 +313,15 @@ class NiceStore {
   find( queries, options = {} ) {
     const it = this;
 
-    // indexedDB.onsuccess 가 진행되지 않았을 경우, 실행을 큐에 예약 후 종료.
-    if (!this.#nicedb.isSuccess) {
-      return this.#DBQueueAdd( 'find', [ ...arguments ] );
-    }
-
-    return new Promise((resolve, reject) => { try {
-      it.#getDocs(queries).then( result => {
-        it.#doSort(result, options.sort);
-        it.#doSkip(result, options.skip);
-        it.#doLimit(result, options.limit);
-        resolve(result);
-      }, e => reject(e) );
-    } catch(e) { reject(e) } })
+    return this.#DBQueueAdd( 'find', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        it.#getDocs(queries).then( result => {
+          it.#doSort(result, options.sort);
+          it.#doSkip(result, options.skip);
+          it.#doLimit(result, options.limit);
+          resolve(result);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
   }
 
   // 쿼리에 해당하는 문서를 조회.
@@ -332,16 +329,25 @@ class NiceStore {
   findOne( queries ) {
     const it = this;
 
-    // indexedDB.onsuccess 가 진행되지 않았을 경우, 실행을 큐에 예약 후 종료.
-    if (!this.#nicedb.isSuccess) {
-      return this.#DBQueueAdd( 'findOne', [ ...arguments ] );
-    }
+    return this.#DBQueueAdd( 'findOne', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        it.#getDocOne(queries).then( result => {
+          resolve(result);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+  }
 
-    return new Promise((resolve, reject) => { try {
-      it.#getDocOne(queries).then( result => {
-        resolve(result);
-      }, e => reject(e) );
-    } catch(e) { reject(e) } })
+  // 지쿼리에 해당하는 문서의 개수를 조회.
+  // 리턴 값: 조회된 문서 개수
+  count( queries ) {
+    const it = this;
+
+    return this.#DBQueueAdd( 'count', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        it.#getKeys(queries).then( result => {
+          resolve(result.length);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
   }
 }
 
