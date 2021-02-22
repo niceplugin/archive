@@ -3,13 +3,10 @@
 function isObject(obj) {
   return obj !== null && !Array.isArray(obj) && typeof(obj) === 'object';
 }
-function isBoolean(boo) {
-  return typeof(boo) === 'boolean';
-}
 
 class NiceStore {
   #storeName;
-  #nicedb;
+  #NiceDB;
   #DBOpenRequest;
   #DBQueue;
   #defQuery;
@@ -28,13 +25,12 @@ class NiceStore {
   #doSkip;
   #doLimit;
   #DBQueueAdd;
-  #processReadonly;
 
-  constructor(storeName, nicedb, DBOpenRequest, DBQueue) {
+  constructor(storeName, NiceDB, DBOpenRequest, DBQueue) {
     const it = this;
 
     this.#storeName = storeName;
-    this.#nicedb = nicedb;
+    this.#NiceDB = NiceDB;
     this.#DBOpenRequest = DBOpenRequest;
     this.#DBQueue = DBQueue;
     this.#defQuery = { _id: { $gt: 0 } };
@@ -356,7 +352,15 @@ class NiceStore {
     this.#DBQueueAdd = function(methodName, methodArguments) {
       const it = this;
       const storeName = it.#storeName;
-      const pass = it.#nicedb.isSuccess;
+      const support = it.#NiceDB.support;
+      const pass = it.#NiceDB.isSuccess;
+
+      if (!support) {
+        return new Promise((resolve, reject) => {
+          // 내용: 불가능 : IndexedDB 가 지원되지 않습니다.
+          reject( new Error('Impossible: IndexedDB is not supported.') )
+        })
+      }
 
       return pass ? undefined : new Promise((resolve, reject) => { try {
         const queue = {
@@ -565,9 +569,11 @@ class NiceDB {
       });
     }
 
+    this.#stores = JSON.parse(JSON.stringify(stores));
+    // indexedDB 지원하지 않을 경우 종료
+    if (!this.support) { return }
     // indexedDB 버전은 항상 최신 시간 (밀리 초)으로 업데이트 됨.
     const DBOpenRequest = indexedDB.open('niceDB', +new Date());
-    this.#stores = JSON.parse(JSON.stringify(stores));
     this.#DBOpenRequest = DBOpenRequest;
 
     // DBOpenRequest.onerror 콘솔로 애러 출력 처리
