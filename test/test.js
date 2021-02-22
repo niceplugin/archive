@@ -23,6 +23,7 @@ class NiceStore {
   #getDocs;
   #getDocOne;
   #removeDocs;
+  #updateDocs;
   #doSort;
   #doSkip;
   #doLimit;
@@ -235,6 +236,36 @@ class NiceStore {
       } catch(e) { reject(e) } })
     }
 
+    // 리턴 값: 업데이트 된 문서 _id 로 이루어진 배열 Promise
+    this.#updateDocs = function(queries, doc, change) {
+      return new Promise( (resolve, reject) => { try {
+        // keys = 쿼리즈에 해당하는 문서들의 _id 배열
+        it.#getKeys(queries).then( keys => {
+          const _ids = JSON.parse( JSON.stringify(keys) );
+
+          // 커서 컨트롤러: keys 에 해당하는 문서 업데이트
+          function callback(event) {
+            const cursor = event.target.result;
+            if (cursor) {
+              if ( cursor.value._id === keys[0] ) {
+                const oldDoc = cursor.value;
+                const newDoc = !!change ? { _id: oldDoc._id, ...doc } : { ...oldDoc, ...doc };
+                cursor.update(newDoc);
+                keys.shift();
+              }
+
+              const _id = keys[0]; // 다음 문서로 이동 할 _id 추출
+              if ( _id !== undefined ) {
+                cursor.continue( _id ) }
+              else { resolve(_ids) }
+            } else { resolve(_ids) }
+          }
+
+          it.#getCursor( callback, 'readwrite' ).then( callback, e => reject(e) );
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+
     // 리턴 값: 없음. request 배열 정렬
     // sorts: {...fields} || [ ['field', i] ... ]
     this.#doSort = function(request, sorts) {
@@ -424,6 +455,30 @@ class NiceStore {
       new Promise((resolve, reject) => { try {
         it.#removeDocs(queries).then( () => {
           resolve();
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+  }
+
+  // 쿼리에 해당하는 모든 문서를 업데이트.
+  // 리턴 값: 업데이트 된 문서의 _id 로 이루어진 배열
+  update( queries, doc, change = false ) {
+    const it = this;
+
+    return this.#DBQueueAdd( 'update', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        // doc 데이터 타입 예외처리
+        if ( !isObject(doc) ) {
+          // 내용: 문서 업데이트 실패: 두 번째 인자가 객체 타입이 아닙니다.
+          reject( new URIError('Document Update failed: Second argument is not object type.') );
+        }
+        delete doc._id;
+        if ( Object.keys(doc).length === 0 ) {
+          // 내용: 문서 업데이트 실패: 두 번째 인자가 빈 객체 입니다.
+          reject( new URIError('Document Insert failed: Second argument is an empty object.') );
+        }
+
+        it.#updateDocs( queries, doc, change ).then( result => {
+          resolve(result);
         }, e => reject(e) );
       } catch(e) { reject(e) } })
   }
