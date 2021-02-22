@@ -22,6 +22,7 @@ class NiceStore {
   #getKeysPromises;
   #getDocs;
   #getDocOne;
+  #removeDocs;
   #doSort;
   #doSkip;
   #doLimit;
@@ -207,6 +208,33 @@ class NiceStore {
       } catch(e) { reject(e) } })
     }
 
+    // 리턴 값: undefined 의 Promise
+    this.#removeDocs = function(queries) {
+      return new Promise( (resolve, reject) => { try {
+        // keys = 쿼리즈에 해당하는 문서들의 _id 배열
+        it.#getKeys(queries).then( keys => {
+
+          // 커서 컨트롤러: keys 에 해당하는 문서 삭제
+          function callback(event) {
+            const cursor = event.target.result;
+            if (cursor) {
+              if ( cursor.value._id === keys[0] ) {
+                cursor.delete();
+                keys.shift();
+              }
+
+              const _id = keys[0]; // 다음 문서로 이동 할 _id 추출
+              if ( _id !== undefined ) {
+                cursor.continue( _id ) }
+              else { resolve() }
+            } else { resolve() }
+          }
+
+          it.#getCursor( callback, 'readwrite' ).then( callback, e => reject(e) );
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+
     // 리턴 값: 없음. request 배열 정렬
     // sorts: {...fields} || [ ['field', i] ... ]
     this.#doSort = function(request, sorts) {
@@ -337,7 +365,7 @@ class NiceStore {
       } catch(e) { reject(e) } })
   }
 
-  // 지쿼리에 해당하는 문서의 개수를 조회.
+  // 쿼리에 해당하는 문서의 개수를 조회.
   // 리턴 값: 조회된 문서 개수
   count( queries ) {
     const it = this;
@@ -384,6 +412,19 @@ class NiceStore {
         const iDBObjectStore = it.#getStoreIndex('_id', 'readwrite');
         const request = iDBObjectStore.add(doc);
         it.#requestHandler(request, resolve, reject);
+      } catch(e) { reject(e) } })
+  }
+
+  // 쿼리에 해당하는 모든 문서를 지운다.
+  // 리턴 값: 없음
+  remove( queries ) {
+    const it = this;
+
+    return this.#DBQueueAdd( 'remove', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        it.#removeDocs(queries).then( () => {
+          resolve();
+        }, e => reject(e) );
       } catch(e) { reject(e) } })
   }
 }
