@@ -11,6 +11,7 @@ class NiceStore {
   #storeName;
   #nicedb;
   #DBOpenRequest;
+  #DBQueue;
   #defQuery;
 
   #requestHandler;
@@ -23,14 +24,16 @@ class NiceStore {
   #doSort;
   #doSkip;
   #doLimit;
+  #DBQueueAdd;
   #processReadonly;
 
-  constructor(storeName, nicedb, DBOpenRequest) {
+  constructor(storeName, nicedb, DBOpenRequest, DBQueue) {
     const it = this;
 
     this.#storeName = storeName;
     this.#nicedb = nicedb;
     this.#DBOpenRequest = DBOpenRequest;
+    this.#DBQueue = DBQueue;
     this.#defQuery = { _id: { $gt: 0 } };
 
     // 요청에 대한 성공 애러 이벤트 핸들러
@@ -189,7 +192,8 @@ class NiceStore {
       } catch(e) { reject(e) } })
     }
 
-    // 리턴 값: 없음.
+    // 리턴 값: 없음. request 배열 정렬
+    // sorts: {...fields} || [ ['field', i] ... ]
     this.#doSort = function(request, sorts) {
       if ( !sorts || typeof(sorts) !== 'object' ) { return }
 
@@ -273,11 +277,29 @@ class NiceStore {
     this.#doLimit = function(request, n) {
       if ( Number.isInteger(n) ) { request.splice(n) }
     }
+
+    // 리턴 값: 큐에 예약된 promise
+    this.#DBQueueAdd = function(methodName, methodArguments) {
+      const it = this;
+      const storeName = it.#storeName;
+
+      return new Promise((resolve, reject) => { try {
+        const queue = {
+          storeName, methodName, methodArguments, resolve
+        };
+        it.#DBQueue.push(queue);
+      } catch(e) { reject(e) } })
+    }
   }
 
   find( queries, options = {} ) {
-    // todo NiceDB #success 여부에 따른 queque 조건분기 필요
     const it = this;
+
+    // indexedDB.onsuccess 가 진행되지 않았을 경우, 실행을 큐에 예약 후 종료.
+    if (!this.#nicedb.isSuccess) {
+      return this.#DBQueueAdd( 'find', [ ...arguments ] );
+    }
+
     return new Promise((resolve, reject) => { try {
       it.#getDocs(queries).then( result => {
         it.#doSort(result, options.sort);
@@ -390,8 +412,13 @@ class NiceDB {
     // DBOpenRequest 성공 이벤트 헨들러를 사용자 정의 콜백으로 처리.
     DBOpenRequest.onsuccess = function() {
       it.#success = true;
-      // todo 큐 처리
+
       // onsuccess 이전에 요청된 모든 NiceStore 를 처리한다.
+      it.#queue.map((queue) => {
+        const { storeName, methodName, methodArguments, resolve } = queue;
+        const promise = it.#niceStores[storeName][methodName]( ...methodArguments );
+        resolve(promise);
+      });
     };
 
     // 항상 indexedDB 버전 업데이트에 따른 upgradeneeded 이벤트 헨들링 로직.
@@ -471,7 +498,7 @@ class NiceDB {
     }
 
     niceStore[name] = niceStore[name] ?
-      niceStore[name] : new NiceStore( name, this, this.#DBOpenRequest );
+      niceStore[name] : new NiceStore( name, this, this.#DBOpenRequest, this.#queue );
 
     return niceStore[name];
   }
