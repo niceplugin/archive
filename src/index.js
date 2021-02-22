@@ -1,53 +1,68 @@
 function isObject(obj) {
   return obj !== null && !Array.isArray(obj) && typeof(obj) === 'object';
 }
-function isBoolean(boo) {
-  return typeof(boo) === 'boolean';
-}
 
 class NiceStore {
   #storeName;
+  #NiceDB;
   #DBOpenRequest;
+  #DBQueue;
   #defQuery;
 
-  #getObjectStore;
-  #getRange;
   #requestHandler;
-  #processReadonly;
+  #getCursor;
+  #getStoreIndex;
+  #getRange;
+  #getKeys;
+  #getKeysPromises;
+  #getDocs;
+  #getDocOne;
+  #removeDocs;
+  #updateDocs;
+  #doSort;
+  #doSkip;
+  #doLimit;
+  #DBQueueAdd;
 
-  constructor(storeName, DBOpenRequest) {
+  constructor(storeName, NiceDB, DBOpenRequest, DBQueue) {
     const it = this;
-    const name = storeName;
 
     this.#storeName = storeName;
+    this.#NiceDB = NiceDB;
     this.#DBOpenRequest = DBOpenRequest;
-    this.#defQuery = {_id: {$gt: 0}};
+    this.#DBQueue = DBQueue;
+    this.#defQuery = { _id: { $gt: 0 } };
 
-    // 해당하는 이름의 objectStore 와 필드네임을 리턴
-    this.#getObjectStore = function(query, mode) {
-      const transaction = it.#DBOpenRequest.result.transaction(name, mode);
-      transaction.onerror = function() {throw transaction.error; }
-      let objectStore = transaction.objectStore(name);
-      const field = Object.keys(query)[0];
-      objectStore = field === '_id' ? objectStore : objectStore.index(field);
-      return { objectStore, field }
+    // 요청에 대한 성공 애러 이벤트 핸들러
+    this.#requestHandler = function(request, resolve, reject) {
+      request.onsuccess = function() { resolve(request.result) };
+      request.onerror = function() { reject(request.error) };
     }
 
-    // 쿼리를 해석해 IDBKeyRange 객체를 리턴
+    // 리턴 값: field 에 해당하는 IDBIndex
+    this.#getStoreIndex = function(field, mode = 'readonly') {
+      const name = it.#storeName;
+      const transaction = it.#DBOpenRequest.result.transaction(name, mode);
+      const iDBObjectStore = transaction.objectStore(name)
+
+      transaction.onerror = () => { throw transaction.error };
+
+      return field === '_id' ? iDBObjectStore : iDBObjectStore.index(field);
+    }
+
+    // 리턴 값: IDBKeyRange
     this.#getRange = function(query) {
       // 쿼리 식별자: $lt, $lte, $gt, $gte
       //            upperBound, lowerBound
       //                     bound
-      const queryKey = Object.keys(query)[0];
-      const queryValue = query[queryKey];
 
       // 쿼리가 논리적인 범위를 나타내야 할 경우
-      if ( isObject(queryValue) ) {
-        const keys = Object.keys(queryValue);
+      if ( isObject(query) ) {
+        const keys = Object.keys(query);
         const options = {};
 
         keys.forEach(key=>{
-          const value = queryValue[key];
+          const value = query[key];
           if (key === '$lt') {
             options.upper = value;
             options.upperOpen = true;
@@ -78,403 +93,591 @@ class NiceStore {
         }
         return range;
       } else {
-        return IDBKeyRange.only(queryValue);
+        return IDBKeyRange.only(query);
       }
     }
 
-    // 요청에 대한 성공 애러 이벤트 핸들러
-    this.#requestHandler = function(request, resolve, reject) {
-      request.onsuccess = function() {resolve(request.result); };
-      request.onerror = function() {reject(request.error); };
+    // 리턴 값: 검색된 문서의 Promise 로 이루어진 배열 Promise
+    this.#getKeysPromises = function( queries = it.#defQuery ) {
+      let fields = Object.keys(queries);
+
+      if (!fields.length) {
+        fields = ['_id'];
+        queries = it.#defQuery;
+      }
+
+      // promises = 쿼리즈 내에 모든 필드를 루프하고, 각각의 리턴 값 Promise 로 이루어진 배열
+      const promises = fields.map( field => {
+        return new Promise((resolve, reject) => { try {
+          const iDBIndex = it.#getStoreIndex(field);
+          const iDBKeyRange = it.#getRange( queries[field] );
+          const iDBRequest = iDBIndex.getAllKeys(iDBKeyRange);
+          it.#requestHandler(iDBRequest, resolve, reject);
+        } catch(e) { reject(e) } })
+      });
+
+      return Promise.all(promises);
     }
 
-    this.#processReadonly = function(type, query, limit) {return new Promise((resolve, reject)=>{try {
-      let { objectStore } = it.#getObjectStore(query, 'readonly');
-      const range = it.#getRange(query);
-      const request = (limit && limit > 0) ?
-        objectStore[type](range, limit) : objectStore[type](range);
-      it.#requestHandler(request, resolve, reject);
-    } catch (e) {reject(e); }})}
+    // 리턴 값: 검색된 문서의 _id 로 이루어진 배열 Promise
+    this.#getKeys = function(queries) {
+      return new Promise((resolve, reject) => { try {
+        it.#getKeysPromises(queries).then( arrays => {
+          // 사용자가 IDBObjectStore.createIndex 옵션을 { multiEntry: true } 로 할 경우
+          // 해당 문서의 필드의 배열 내 값이 여러번 일치 할 경우
+          // 그 때 마다 key(_id) 를 배열에 담으므로, key 가 중복된 상태일 수 있으니
+          // 값이 유니크 할 수 있도록 필터조치
+          arrays = arrays.map( arr => arr.filter( (value, index, self) => {
+            return self.indexOf(value) === index
+          }) );
+
+          // arrays = 쿼리즈 내에 모든 필드를 각각 검색한 결과 값 key 로 이루어진 배열로 이루어진 2차원 배열
+          // result = arrays 내의 모든 배열들의 교집합 배열
+          const result = arrays.reduce((accumulator, currentValue) => {
+            const a = accumulator.length < currentValue.length ? accumulator : currentValue;
+            const b = a !== accumulator ? accumulator : currentValue;
+            return a.filter( key => -1 !== b.indexOf(key) );
+          });
+
+          resolve(result);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+
+    // 리턴 값: 모드에 해당하는 IDBCursor Promise
+    this.#getCursor = function(callback, mode = 'readonly') {
+      return new Promise( (resolve, reject) => { try {
+        const name = it.#storeName;
+        const transaction = it.#DBOpenRequest.result.transaction(name, mode);
+        transaction.onerror = () => { throw transaction.error };
+        const request = transaction.objectStore(name).openCursor();
+        request.onerror = () => reject(request.error);
+
+        // 커서를 성공적으로 호출할 경우: 이후 커서 호출을 콜백함수로 지정 후 resolve
+        request.onsuccess = (event) => {
+          request.onsuccess = callback;
+          resolve(event);
+        };
+      } catch(e) { reject(e) } })
+    }
+
+    // 리턴 값: 검색된 문서로 이루어진 배열 Promise
+    this.#getDocs = function(queries) {
+      return new Promise( (resolve, reject) => { try {
+        // keys = 쿼리즈에 해당하는 문서들의 _id 배열
+        it.#getKeys(queries).then( keys => {
+          const docs = [];
+
+          // 커서 컨트롤러: keys 에 해당하는 문서 수집
+          function callback(event) {
+            const cursor = event.target.result;
+            if (cursor) {
+              if ( cursor.value._id === keys[0] ) {
+                docs.push( cursor.value );
+                keys.shift();
+              }
+
+              const _id = keys[0]; // 다음 문서로 이동 할 _id 추출
+              if ( _id !== undefined ) {
+                cursor.continue( _id ) }
+              else { resolve(docs) }
+            } else { resolve(docs) }
+          }
+
+          it.#getCursor( callback ).then( callback, e => reject(e) );
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+
+    // 리턴 값: 검색된 문서 객체 || undefined
+    this.#getDocOne = function(queries) {
+      return new Promise( (resolve, reject) => { try {
+        // keys = 쿼리즈에 해당하는 문서들의 _id 배열
+        it.#getKeys(queries).then( keys => {
+          if ( !keys.length ) { return resolve(undefined) }
+
+          const request = it.#getStoreIndex('_id').get(keys[0]);
+
+          it.#requestHandler(request, resolve, reject);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+
+    // 리턴 값: undefined 의 Promise
+    this.#removeDocs = function(queries) {
+      return new Promise( (resolve, reject) => { try {
+        // keys = 쿼리즈에 해당하는 문서들의 _id 배열
+        it.#getKeys(queries).then( keys => {
+
+          // 커서 컨트롤러: keys 에 해당하는 문서 삭제
+          function callback(event) {
+            const cursor = event.target.result;
+            if (cursor) {
+              if ( cursor.value._id === keys[0] ) {
+                cursor.delete();
+                keys.shift();
+              }
+
+              const _id = keys[0]; // 다음 문서로 이동 할 _id 추출
+              if ( _id !== undefined ) {
+                cursor.continue( _id ) }
+              else { resolve() }
+            } else { resolve() }
+          }
+
+          it.#getCursor( callback, 'readwrite' ).then( callback, e => reject(e) );
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+
+    // 리턴 값: 업데이트 된 문서 _id 로 이루어진 배열 Promise
+    this.#updateDocs = function(queries, doc, change) {
+      return new Promise( (resolve, reject) => { try {
+        // keys = 쿼리즈에 해당하는 문서들의 _id 배열
+        it.#getKeys(queries).then( keys => {
+          const _ids = JSON.parse( JSON.stringify(keys) );
+
+          // 커서 컨트롤러: keys 에 해당하는 문서 업데이트
+          function callback(event) {
+            const cursor = event.target.result;
+            if (cursor) {
+              if ( cursor.value._id === keys[0] ) {
+                const oldDoc = cursor.value;
+                const newDoc = !!change ? { _id: oldDoc._id, ...doc } : { ...oldDoc, ...doc };
+                cursor.update(newDoc);
+                keys.shift();
+              }
+
+              const _id = keys[0]; // 다음 문서로 이동 할 _id 추출
+              if ( _id !== undefined ) {
+                cursor.continue( _id ) }
+              else { resolve(_ids) }
+            } else { resolve(_ids) }
+          }
+
+          it.#getCursor( callback, 'readwrite' ).then( callback, e => reject(e) );
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+    }
+
+    // 리턴 값: 없음. request 배열 정렬
+    // sorts: {...fields} || [ ['field', i] ... ]
+    this.#doSort = function(request, sorts) {
+      if ( !sorts || typeof(sorts) !== 'object' ) { return }
+
+      sorts = Array.isArray(sorts) ? sorts : Object.entries(sorts);
+
+      function sameSort(a, b, type, i) {
+        if (type === 'number') {
+          return (a - b) * i
+        } else if (type === 'string') {
+          if (a > b) { return 1 * i }
+          else if (a < b) { return -1 * i }
+          else { return 0 }
+        } else if (type === 'array') {
+          if (a.length > b.length) { return 1 * i }
+          else if (a.length < b.length) { return -1 * i }
+          else { return 0 }
+        } else {
+          if (a === b) { return 0 }
+          else if (a > b) { return 1 * i }
+          else if (a < b) { return -1 * i }
+          else { return 0 }
+        }
+      }
+      function diffSort(a, b, typeA, typeB) {
+        if (typeA === 'number') { return -1 }
+        else if (typeB === 'number') { return 1 }
+        else if (typeA === 'NaN') { return -1 }
+        else if (typeB === 'NaN') { return 1 }
+        else if (typeA === 'string') { return -1 }
+        else if (typeB === 'string') { return 1 }
+        else if (typeA === 'boolean') { return -1 }
+        else if (typeB === 'boolean') { return 1 }
+        else if (typeA === 'array') { return -1 }
+        else if (typeB === 'array') { return 1 }
+        else if (typeA === 'date') { return -1 }
+        else if (typeB === 'date') { return 1 }
+        else if (typeA === 'object') { return -1 }
+        else if (typeB === 'object') { return 1 }
+        else if (typeA === 'null') { return -1 }
+        else if (typeB === 'null') { return 1 }
+        else { return 0 }
+      }
+      function getType(value) {
+        let type = typeof value;
+
+        if (type === 'number') {
+          type = Number.isNaN(value) ? 'NaN' : type;
+        } else if (type === 'object') {
+          type = Array.isArray(value) ? 'array' :
+            value instanceof Date ? 'date' :
+              value instanceof Object ? 'object' :
+                value === null ? 'null' : type;
+        }
+
+        return type;
+      }
+
+      request.sort( (a, b) => {
+        return sorts.reduce( (acc, cur) => {
+          if (acc !== 0) { return acc }
+
+          const field = cur[0];
+          const i = cur[1];
+          const valueA = a[field];
+          const valueB = b[field];
+          const typeA = getType(valueA);
+          const typeB = getType(valueB);
+
+          if ( typeA === typeB ) { return sameSort(valueA, valueB, typeA, i) }
+          else { return diffSort(valueA, valueB, typeA, typeB) }
+        }, 0 );
+      } );
+    }
+
+    // 리턴 값: 없음. request 배열의 0 ~ n 인덱스 요소 삭제
+    this.#doSkip = function(request, n) {
+      if ( Number.isInteger(n) ) { request.splice(0, n) }
+    }
+
+    // 리턴 값: 없음. request 배열의 n 이후 인덱스 요소 삭제
+    this.#doLimit = function(request, n) {
+      if ( Number.isInteger(n) ) { request.splice(n) }
+    }
+
+    // 리턴 값: 큐 예약이 필요할 경우 예약된 promise || 아닌 경우 undefined
+    this.#DBQueueAdd = function(methodName, methodArguments) {
+      const it = this;
+      const storeName = it.#storeName;
+      const support = it.#NiceDB.support;
+      const pass = it.#NiceDB.isSuccess;
+
+      if (!support) {
+        return new Promise((resolve, reject) => {
+          // 내용: 불가능 : IndexedDB 가 지원되지 않습니다.
+          reject( new Error('Impossible: IndexedDB is not supported.') )
+        })
+      }
+
+      return pass ? undefined : new Promise((resolve, reject) => { try {
+        const queue = {
+          storeName, methodName, methodArguments, resolve
+        };
+        it.#DBQueue.push(queue);
+      } catch(e) { reject(e) } })
+    }
   }
-
-  // 스토어 이름 조회
-  // 리턴 값: 스토어 이름 문자열
-  get name() {
-    return this.#storeName;
-  }
-
-  // 인덱스 keyPath 를 조회한다.
-  // 리턴 값: keyPath 를 인자로 하는 배열
-  get indexList() {
-    const objectStore = this.#getObjectStore(this.#defQuery, 'readonly').objectStore;
-    return [ ...objectStore.indexNames ];
-  }
-
-  // indexList 의 상세정보
-  // 리턴 값: keyPath 의 상세정보 객체를 인자로 하는 배열
-  get indexInfo() {
-    const objectStore = this.#getObjectStore(this.#defQuery, 'readonly').objectStore;
-    const indexList = [ ...objectStore.indexNames ];
-
-    return indexList.map(name => {
-      const { keyPath, multiEntry, unique } = objectStore.index(name);
-      return { field: keyPath, multiEntry, unique };
-    });
-  }
-
-  set name(value) {return value; }
-  set indexList(value) {return value; }
-  set indexInfo(value) {return value; }
 
   // 쿼리에 해당하는 문서를 모두 조회.
   // 리턴 값: 조회된 문서 객체를 인자로 포함하는 배열
-  find(query = this.#defQuery, limit = 0) {
-    if (typeof(query) === 'number') {
-      limit = query;
-      query = this.#defQuery;
-    }
-    if (!query) {
-      query = this.#defQuery;
-    }
-    return this.#processReadonly('getAll', query, limit);
+  find( queries, options = {} ) {
+    const it = this;
+
+    return this.#DBQueueAdd( 'find', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        it.#getDocs(queries).then( result => {
+          it.#doSort(result, options.sort);
+          it.#doSkip(result, options.skip);
+          it.#doLimit(result, options.limit);
+          resolve(result);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
   }
 
   // 쿼리에 해당하는 문서를 조회.
   // 리턴 값: 조회된 문서 객체 또는 undefined
-  findOne(query = this.#defQuery) {
-    return this.#processReadonly('get', query);
+  findOne( queries ) {
+    const it = this;
+
+    return this.#DBQueueAdd( 'findOne', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        it.#getDocOne(queries).then( result => {
+          resolve(result);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
   }
 
-  // 지쿼리에 해당하는 문서의 개수를 조회.
+  // 쿼리에 해당하는 문서의 개수를 조회.
   // 리턴 값: 조회된 문서 개수
-  count(query = this.#defQuery) {
-    return this.#processReadonly('count', query);
+  count( queries ) {
+    const it = this;
+
+    return this.#DBQueueAdd( 'count', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        it.#getKeys(queries).then( result => {
+          resolve(result.length);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+  }
+
+  // 저장된 모든 데이터를 지운다
+  // 리턴 값: 없음
+  clear() {
+    const it = this;
+
+    return this.#DBQueueAdd( 'clear', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        const iDBObjectStore = it.#getStoreIndex('_id', 'readwrite');
+        const request = iDBObjectStore.clear();
+        it.#requestHandler(request, resolve, reject);
+      } catch(e) { reject(e) } })
   }
 
   // 문서를 추가.
   // 리턴 값: 추가된 문서의 _id 반환
-  insert(doc) {return new Promise((resolve, reject)=>{try {
-    // doc 데이터 타입 예외처리.
-    if ( !isObject(doc) ) {
-      // 내용: 두 번째 인자는 반드시 객체여야 합니다.
-      reject(new URIError('The second argument must be an object.'));
-    }
-    delete doc._id;
-    if (Object.keys(doc).length === 0) {
-      // 내용: 삽입 할 문서는 빈 개체 일 수 없습니다.
-      reject(new URIError('The document to be inserted cannot be an empty object.'));}
+  insert(doc) {
+    const it = this;
 
-
-    let { objectStore } = this.#getObjectStore(this.#defQuery, 'readwrite');
-    const request = objectStore.add(doc);
-    this.#requestHandler(request, resolve, reject);
-  } catch (e) {reject(e); }})}
-
-  // 쿼리에 해당하는 문서를 업데이트.
-  // change === true 일 경우, 해당하는 문서를 doc 으로 교체.
-  // 리턴 값: 업데이트 된 문서의 _id 를 인자로 가지는 배열 반환
-  // update(query = this.#defQuery, doc, change = false) {return new Promise((resolve, reject)=>{try {
-  update( ...arg ) {return new Promise((resolve, reject)=>{try {
-    let query = this.#defQuery, doc, change = false;
-    let single = null; // 값이 false 일 경우 커서를 사용해야 함을 의미.
-
-    // 파라미터 유효성 검사
-    if (arg.length === 0) {
-      // 내용: 파라미터가 없습니다.
-      return reject(new URIError('There are no parameters.'));
-    }
-    // update( doc )
-    else if (arg.length === 1) {
-      if ( !isObject(arg[0]) ) {
-        // 내용: doc 파라미터는 반드시 객체여야 합니다.
-        return reject(new URIError('"doc" parameter must be an object.'));
-      }
-      doc = arg[0];
-      single = false;
-    }
-    // update( doc, change )
-    // update( query, doc )
-    else if (arg.length === 2) {
-      if ( isBoolean(arg[1]) ) { // update( doc, change )
-        if ( !isObject(arg[0]) ) {
-          // 내용: doc 파라미터는 반드시 객체여야 합니다.
-          return reject(new URIError('"doc" parameter must be an object.'));
+    return this.#DBQueueAdd( 'insert', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        // doc 데이터 타입 예외처리
+        if ( !isObject(doc) ) {
+          // 내용: 문서 삽입 실패: 객체 타입이 아닙니다.
+          reject( new URIError('Document Insert failed: It is not object type.') );
         }
-        doc = arg[0];
-        change = !!arg[1];
-        single = false;
-      }
-      else { // update( query, doc )
-        if ( !isObject(arg[0]) || !isObject(arg[1]) ) {
-          // 내용: doc 파라미터는 반드시 객체여야 합니다.
-          return reject(new URIError('"query" and "doc" parameters must be an object.'));
+        delete doc._id;
+        if ( Object.keys(doc).length === 0 ) {
+          // 내용: 문서 삽입 실패: 빈 객체 입니다.
+          reject( new URIError('Document Insert failed: It is an empty object.') );
         }
-        query = arg[0];
-        doc = arg[1];
-      }
-    }
-    // update( query, doc, change )
-    else {
-      if ( !isObject(arg[0]) || !isObject(arg[1]) ) {
-        // 내용: doc 파라미터는 반드시 객체여야 합니다.
-        return reject(new URIError('"query" and "doc" parameters must be an object.'));
-      }
-      query = arg[0];
-      doc = arg[1];
-      change = !!arg[2];
-    }
 
-    let { objectStore, field } = this.#getObjectStore(query, 'readwrite');
-    single = single === null ? field === '_id' : single;
-    const range = this.#getRange(query);
-    const request = single ? objectStore.get(range) : objectStore.openCursor(range);
-    const cursorResult = [];
-    delete doc._id;
+        const iDBObjectStore = it.#getStoreIndex('_id', 'readwrite');
+        const request = iDBObjectStore.add(doc);
+        it.#requestHandler(request, resolve, reject);
+      } catch(e) { reject(e) } })
+  }
 
-    request.onerror = function() {reject(request.error); };
-    request.onsuccess = function() {
-      // put 또는 update 메서드를 부르기 위한 객체를 cursor 에 할당.
-      const cursor = single ? objectStore : request.result;
-      // 커서가 없을 경우 cursor.continue() 의 결과가 더는 없음을 의미.
-      if (!cursor) {return resolve(cursorResult); }
-      // 갱신 할 문서의 원본.
-      const oldDoc = single ? request.result : cursor.value;
-      // single === true 일 경우에만 해당하는 조건문으로, query 결과가 없음을 의미.
-      if (oldDoc === undefined) {return resolve(cursorResult); }
-      // 문서의 일부 필드만 갱신 또는 문서 자체 교체에 따른 새로운 문서.
-      const newDoc = change ? { _id: oldDoc._id, ...doc } : { ...oldDoc, ...doc };
-
-      /* Important ===============================================================
-      ** 이러한 조건문 로직이 들어간 이유는 커서가 중복으로 도는 경우가 있기때문.
-      ** 아래 내용은 그 예시와 경우를 설명.
-      ** query = {key: {$gt:5}}, update = {key: 9, foo: 'bar'} 일때
-      ** 쿼리에 해당하고 업데이트 될 값 9 미만인 키값을 가지는 문서들이
-      ** 내부적으로 루프가 key===9 를 확인하기 전 값이 갱신되기 때문에
-      ** 이후 cursor.continue() 에 의해 루프가 key===9 를 확인 할 때
-      ** 업데이트 되었던 문서들이 한 번 더 노출 됨.
-      ** 이러한 경우 의미없는 update() 수행을 막기 위해 return 으로 함수실행을 종료시키지만
-      ** 이 때 cursor.continue() 를 호출하는 이유는
-      ** 원래부터 key===9 였던 다른 문서들의 foo 필드 값을 'bar' 로 갱신하기 위함임. */
-      if (!single && cursorResult.indexOf(cursor.primaryKey) !== -1) {return cursor.continue(); }
-
-      // 갱신 메서드 호출 후 받는 IDBRequest 객체를 updated 에 할당.
-      const updated = single ? cursor.put(newDoc) : cursor.update(newDoc);
-
-      updated.onerror = function(event) {reject(event.target.error); }
-      updated.onsuccess = function() {
-        if (single) {resolve([updated.result]); }
-        else { // 커서를 사용해서 갱신했을 경우, 다음 커서로 이동
-          cursorResult.push(cursor.primaryKey);
-          cursor.continue();
-        }
-      }
-    };
-  } catch (e) {reject(e); }})}
-
-  // query 에 해당하는 모든 문서를 지운다.
+  // 쿼리에 해당하는 모든 문서를 지운다.
   // 리턴 값: 없음
-  remove(query = this.#defQuery) {return new Promise((resolve, reject)=>{try {
-    let { objectStore, field } = this.#getObjectStore(query, 'readwrite');
-    const single = field === '_id'; // 값이 false 일 경우 커서를 사용해야 함을 의미.
-    const range = this.#getRange(query);
-    const request = single ? objectStore.delete(range) : objectStore.openCursor(range);
+  remove( queries ) {
+    const it = this;
 
-    if (single) {
-      this.#requestHandler(request, resolve, reject);
-    } else {
-      request.onerror = function() {reject(request.error); };
-      request.onsuccess = function() {
-        const cursor = request.result;
-        if (cursor) {
-          cursor.delete();
-          cursor.continue();
-        } else {
+    return this.#DBQueueAdd( 'remove', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        it.#removeDocs(queries).then( () => {
           resolve();
-        }
-      }
-    }
-  } catch (e) {reject(e); }})}
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+  }
 
-  // 저장된 모든 데이터를 지운다
-  // 리턴 값: 없음
-  clear() {return new Promise((resolve, reject)=>{try {
-    let { objectStore } = this.#getObjectStore(this.#defQuery, 'readwrite');
-    const request = objectStore.clear();
-    this.#requestHandler(request, resolve, reject);
-  } catch (e) {reject(e); }})}
+  // 쿼리에 해당하는 모든 문서를 업데이트.
+  // 리턴 값: 업데이트 된 문서의 _id 로 이루어진 배열
+  update( queries, doc, change = false ) {
+    const it = this;
+
+    return this.#DBQueueAdd( 'update', [ ...arguments ] ) ||
+      new Promise((resolve, reject) => { try {
+        // doc 데이터 타입 예외처리
+        if ( !isObject(doc) ) {
+          // 내용: 문서 업데이트 실패: 두 번째 인자가 객체 타입이 아닙니다.
+          reject( new URIError('Document Update failed: Second argument is not object type.') );
+        }
+        delete doc._id;
+        if ( Object.keys(doc).length === 0 ) {
+          // 내용: 문서 업데이트 실패: 두 번째 인자가 빈 객체 입니다.
+          reject( new URIError('Document Insert failed: Second argument is an empty object.') );
+        }
+
+        it.#updateDocs( queries, doc, change ).then( result => {
+          resolve(result);
+        }, e => reject(e) );
+      } catch(e) { reject(e) } })
+  }
 }
 
 class NiceDB {
+  #queue;
   #DBOpenRequest;
   #stores;
+  #success;
+  #niceStores;
 
   constructor() {
+    this.#queue = [];
     this.#DBOpenRequest = null;
     this.#stores = null;
-    this.onversionchange = null;
+    this.#success = false;
+    this.#niceStores = {};
     this.onblocked = null;
   }
 
-  // DB를 사용하기 전 초기화 하는 함수.
-  // 리턴 값: DBOpenRequest.onsuccess event
-  define(stores) {return new Promise((resolve, reject)=>{
+  // indexedDB 사용 가능 여부
+  // 리턴 값: Boolean
+  get support() { return !!indexedDB; }
+  set support(value) { return value; }
 
-    function indexExtraction(storeName) {
-      // init 함수에서 전달받은 stores 객체의 각각의 프로퍼티(스토어)에서
-      // 사용할 각각의 필드를 createIndex 파라미터로 전달할 포멧에 객체화 하여
-      // 각 객체를 프로퍼티로 하는 배열로 리턴
-      let indexes = it.#stores[storeName];
+  // indexedDB DBOpenRequest.onsuccess 여부
+  // 리턴 값: Boolean
+  get isSuccess() { return this.#success; }
+  set isSuccess(value) { return value; }
 
-      if (!Array.isArray(indexes) || !indexes.length) {
-        // 내용: ${storeName} 스토어의 필드가 잘못되었습니다. 필드는 배열이어야 합니다.
-        throw new URIError(`The field of store '${storeName}' is invalid. Field must be an array.`);
+  define(stores) {
+    const it = this;
+
+    // stores 유효성 검사
+    (() => {
+      if ( !isObject(stores) || !Object.keys(stores).length ) {
+        // 내용: 매개 변수는 IndexedDB의 저장소를 정의하는 객체 여야합니다.
+        throw new URIError('The parameter must be an object defining the stores of IndexedDB.');
       }
 
-      // indexes 배열의 인자들을 정제된 데이터 인자로 변환하여 반환하는 로직
-      // 정제된 데이터 포멧(obj): {field: String, unique: Boolean, multiEntry: Boolean}
-      // 리턴 데이터 예시: [obj, obj, ...]
-      return indexes.map(function (field, i) {
-        // 내용: ${storeName} 스토어의 필드 배열의 인덱스 ${i}에 문제가 있습니다.
-        const errIText = `The index in problem is ${i} of the field array of '${storeName}' store.`;
+      const storesNames = [ ...Object.keys(stores) ];
+      storesNames.forEach( storeName => {
+        let indexes = stores[storeName];
 
-        // 허용되지 않는 필드 데이터 타입 예외처리
-        const a = typeof(field) === 'string' && !field.length;
-        const b = field === null || Array.isArray(field);
-        const c = typeof(field) !== 'object' && typeof(field) !== 'string';
-        if (a || b || c) {
-          // 내용: 필드 배열의 속성들은 '1보다 긴 문자열' 또는 객체로 구성되야 합니다.
-          throw new URIError(`The properties of the Field array, must be 'strings of longer then 1' or object. ${errIText}`);
+        if ( !Array.isArray(indexes) || !indexes.length ) {
+          // 내용: ${storeName} 스토어의 값이 잘못되었습니다. 값은 0보다 긴 길이의 배열이어야 합니다.
+          throw new URIError(`The '${storeName}' store's value is invalid. The value must be an array of length greater than 0.`);
         }
 
-        // 필드가 문자열일 경우 기본값 객체로 리턴
-        if (typeof(field) === 'string') {
-          return {name: field, unique: false, multiEntry: false};
-        }
+        indexes.map( (field, i) => {
+          // 내용: 잘못된 값: ${storeName} 스토어의 인덱스 ${i}.
+          const errText = `Invalid value: "${i}" index in "${storeName}" store's array.`;
 
-        // 필드가 객체일 경우 name 속성 여부와 그 값의 허용여부에 따른 예외처리
-        if (!field.name || typeof(field.name) !== 'string' || !field.name.length) {
-          // 내용: 필드 배열의 속성이 객체인 경우, 1이상 길이의 문자열을 값으로 가지는 name 속성이 있어야합니다.
-          throw new URIError(`If the property of the field array is an object, it must have name property with a string of longer than 1. ${errIText}`);
-        }
+          // 허용되지 않는 필드 데이터 타입 예외처리
+          const a = typeof(field) === 'string' && !field.length;
+          const b = field === null || Array.isArray(field);
+          const c = typeof(field) !== 'object' && typeof(field) !== 'string';
+          if (a || b || c) {
+            // 내용: 반드시 문자이거나 객체여야 함.
+            throw new URIError(`${errText} Must be "String" or "Object".`);
+          }
 
-        return {name: field.name, unique: !!field.unique, multiEntry: !!field.multiEntry};
+          // field 가 유효한 문자열일 경우 객체 유효성 검사 생략
+          if ( typeof(field) === 'string' ) { return }
+
+          // 필드가 객체일 경우 name 속성 여부와 그 값의 허용여부에 따른 예외처리
+          if ( !field.name || typeof(field.name) !== 'string' || !field.name.length ) {
+            // 내용: 객체의 경우 { name : String }을 포함해야합니다.
+            throw new URIError(`${errText} For an object, it must contain { name: String }.`);
+          }
+        });
+      });
+    })();
+
+    // 리턴 값: IDBObjectStore.createIndex 에 전달될 옵션 파라미터 포멧 형식의 객체로 이루어진 배열
+    function indexExtraction(storeName) {
+      let indexes = it.#stores[storeName];
+
+      return indexes.map( (field) => {
+        return (typeof(field) === 'string') ?
+          { name: field, unique: false, multiEntry: false } :
+          { name: field.name, unique: !!field.unique, multiEntry: !!field.multiEntry };
       });
     }
 
-    // 파라미터 데이터 타입 예외처리
-    if (!indexedDB) {
-      // 내용: IndexedDB를 지원하지 않는 환경입니다.
-      throw new ReferenceError('IndexedDB is not supported at this runtime.');
-    }
-    if ( !isObject(stores) || !Object.keys(stores).length ) {
-      // 내용: 매개 변수는 IndexedDB의 저장소를 정의하는 객체 여야합니다.
-      throw new URIError('The parameter must be an object defining the stores of IndexedDB.');
-    }
-
-    const it = this;
     this.#stores = JSON.parse(JSON.stringify(stores));
-    // onupgradeneeded 핸들러를 호출하기 위해 indexedDB 버전은
-    // 항상 최신 시간 (밀리 초)으로 업데이트됩니다.
-    this.#DBOpenRequest = indexedDB.open('niceDB', +new Date());
+    // indexedDB 지원하지 않을 경우 종료
+    if (!this.support) { return }
+    // indexedDB 버전은 항상 최신 시간 (밀리 초)으로 업데이트 됨.
+    const DBOpenRequest = indexedDB.open('niceDB', +new Date());
+    this.#DBOpenRequest = DBOpenRequest;
 
-    // NiceDB 에서 DBOpenRequest 프로세스 예외 처리.
-    this.#DBOpenRequest.onerror = function() {
-      reject(it.#DBOpenRequest.error);
-    };
+    // DBOpenRequest.onerror 콘솔로 애러 출력 처리
+    DBOpenRequest.onerror = function() { console.error(DBOpenRequest.error) };
 
     // 앱이 이미 실행중이고, 새 탭을 열어 추가로 앱을 실행할 경우,
     // 새로 실행 된 앱에서 onblocked 이벤트가 호출됨.
-    this.#DBOpenRequest.onblocked = function() {
-      // 내용: 앱이 다른 곳에서 열려 있기 때문에 데이터베이스 버전을 업그레이드 할 수 없습니다.
-      const err = new Error("Your database version can't be upgraded because the app is open somewhere else.");
+    DBOpenRequest.onblocked = function(event) {
       // 사용자 정의 함수가 있을 경우, 애러를 파라미터로 전달하며 함수를 실행.
-      if (typeof(it.onblocked) === 'function') {it.onblocked(err); }
-      else {reject(err); }
+      if ( typeof(it.onblocked) === 'function' ) { it.onblocked(event) }
+      // 내용: 앱이 다른 곳에서 열려 있기 때문에 데이터베이스 버전을 업그레이드 할 수 없습니다.
+      else { console.error("Your database version can't be upgraded because the app is open somewhere else.") }
     };
 
-    // NiceDB 에서 DBOpenRequest 프로세스 성공 이벤트 헨들러를 사용자 정의 콜백으로 처리.
-    this.#DBOpenRequest.onsuccess = function(event) {
-      resolve(event);
+    // DBOpenRequest 성공 이벤트 헨들러를 사용자 정의 콜백으로 처리.
+    DBOpenRequest.onsuccess = function() {
+      it.#success = true;
+
+      // onsuccess 이전에 요청된 모든 NiceStore 를 처리한다.
+      it.#queue.map((queue) => {
+        const { storeName, methodName, methodArguments, resolve } = queue;
+        const promise = it.#niceStores[storeName][methodName]( ...methodArguments );
+        resolve(promise);
+      });
     };
 
-    // NiceDB 에서 DBOpenRequest 의 upgradeneeded 이벤트 헨들링 로직.
+    // 항상 indexedDB 버전 업데이트에 따른 upgradeneeded 이벤트 헨들링 로직.
     // - 더이상 사용되지 않는 스토어 및 필드는 삭제.
     // - 새로운 스토어 및 필드 등록.
     // - 변경된 필드 옵션 업데이트.
-    this.#DBOpenRequest.onupgradeneeded = function(event) {try {
+    DBOpenRequest.onupgradeneeded = function(event) {try {
       const db = it.#DBOpenRequest.result;
-
-      // 사용자 정의 onversionchange 핸들러가있는 경우에만 호출.
-      db.onversionchange = function (event) {
-        if (typeof (it.onversionchange) === 'function') {
-          it.onversionchange(event);
-        }
-      };
-
-      const newStores = [...Object.keys(it.#stores)];
-      const oldStores = [...db.objectStoreNames];
-      const removeSList = oldStores.filter(store => !newStores.includes(store));
+      const newStores = [ ...Object.keys(it.#stores) ];
+      const oldStores = [ ...db.objectStoreNames ];
+      const removeSList = oldStores.filter( store => !newStores.includes(store) );
 
       // 더 이상 사용하지 않는 오래된 Store 를 제거.
-      removeSList.forEach(store => db.deleteObjectStore(store));
+      removeSList.forEach( store => db.deleteObjectStore(store) );
 
       // 스토어 및 인덱스 생성 또는 업데이트 로직.
-      newStores.forEach(function (store) {
+      newStores.forEach( storeName => {
         let objectStore;
         const transaction = event.target.transaction;
-        const sOptions = {keyPath: '_id', autoIncrement: true};
+        const sOptions = { keyPath: '_id', autoIncrement: true };
 
         // 새로운 Store 를 작성하거나 이미있는 경우 참조.
-        if (!db.objectStoreNames.contains(store)) {
-          objectStore = db.createObjectStore(store, sOptions);
+        if ( !db.objectStoreNames.contains(storeName) ) {
+          objectStore = db.createObjectStore(storeName, sOptions);
         } else {
-          objectStore = transaction.objectStore(store);
+          objectStore = transaction.objectStore(storeName);
         }
 
-        const newIndexesExtract = indexExtraction(store);
-        const newIndexes = newIndexesExtract.map(obj=>obj.name);
-        const oldIndexes = [...objectStore.indexNames];
-        const removeIList = oldIndexes.filter(field => !newIndexes.includes(field));
-        const createIList = newIndexesExtract.filter(obj => !oldIndexes.includes(obj.name));
-        const updateIList = newIndexesExtract.filter(obj=>oldIndexes.includes(obj.name));
+        const newIndexesExtract = indexExtraction(storeName);
+        const newIndexes = newIndexesExtract.map( obj => obj.name );
+        const oldIndexes = [ ...objectStore.indexNames ];
+        // oldIndexes - newIndexes
+        const removeIList = oldIndexes.filter( field => !newIndexes.includes(field) );
+        // newIndexesExtract - oldIndexes
+        const createIList = newIndexesExtract.filter( obj => !oldIndexes.includes(obj.name) );
+        // newIndexesExtract ∩ oldIndexes
+        const updateIList = newIndexesExtract.filter( obj => oldIndexes.includes(obj.name) );
 
         // 더 이상 사용하지 않는 이전 인덱스를 제거.
-        removeIList.forEach(index => objectStore.deleteIndex(index));
+        removeIList.forEach( index => objectStore.deleteIndex(index) );
 
         // 이전에 사용되지 않은 새 인덱스를 생성.
-        createIList.forEach(function(field) {
+        createIList.forEach( field => {
           const name = field.name;
-          const options = {unique: field.unique, multiEntry: field.multiEntry};
+          const options = { unique: field.unique, multiEntry: field.multiEntry };
 
           // _id는 store 에서 사용하는 key 의 별칭으로 필드로 사용 안함
-          if (name === '_id') {return; }
+          if (name === '_id') { return }
           objectStore.createIndex(name, name, options)
         });
 
         // 이미 사용중인 인덱스의 옵션 값을 확인하고
         // 사용자가 선언한 옵션과 이미 사용중인 옵션값이 다를 경우
         // 해당 인덱스를 지웠다가 재생성 하는 방식으로 업데이트를 진행
-        updateIList.forEach(function (field) {
-          const index = objectStore.index(field.name);
-          if (field.unique !== index.unique || field.multiEntry !== index.multiEntry) {
+        updateIList.forEach( field => {
+          const index = objectStore.index( field.name );
+          if ( field.unique !== index.unique || field.multiEntry !== index.multiEntry ) {
             const name = field.name;
-            const options = {unique: field.unique, multiEntry: field.multiEntry};
+            const options = { unique: field.unique, multiEntry: field.multiEntry };
 
             objectStore.deleteIndex(name);
             objectStore.createIndex(name, name, options);
           }
         });
       });
-    }catch (error) {reject(error); }};
-  })}
+    } catch(error) { console.error(error) }};
+  }
 
   // 데이터베이스에서 지정한 스토어를 반환
-  // 리턴 값: NiceStore 객체 || null
+  // 리턴 값: NiceStore 객체
   getStore(name) {
-    const db = this.#DBOpenRequest.result;
-    const storeList = [ ...db.objectStoreNames ];
+    const storeList = Object.keys(this.#stores);
+    const niceStore = this.#niceStores;
 
-    return storeList.includes(name) ? new NiceStore(name, this.#DBOpenRequest) : null;
+    if ( !storeList.includes(name) ) {
+      throw new URIError(`The "${name}" store is undefined.`);
+    }
+
+    niceStore[name] = niceStore[name] ?
+      niceStore[name] : new NiceStore( name, this, this.#DBOpenRequest, this.#queue );
+
+    return niceStore[name];
   }
 }
 

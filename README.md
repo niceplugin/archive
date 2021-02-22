@@ -60,29 +60,21 @@ To avoid confusion, we define some of the words to be used here.
 - Field: The key used in the document (object).
 - Query: Conditional statements to find documents.
 
-### Restrictions
-
-- Does not support compound queries.
-- Does not support `skip`, `sort`.
-
 ### Browser support
 
 **IndexedDB** is part of the official web spec.
-Therefore, it works in the latest browsers such as `Chrome`, `Firefox`, `Safari`, and `Edge`. [link](https://caniuse.com/?search=indexeddb)
+Therefore, it works in the latest browsers such as `Chrome`, `Firefox`, `Safari`, and `Edge`.
+[link](https://caniuse.com/?search=indexeddb)
 
 `IE` does not support it because it uses **IndexedDB 2.0** API.
 
 ## Index
 
 - [API `NiceDB class`](#api-nicedb-class)
-    - [`define()`](#define)
+    - [`define()` sync](#define-sync)
     - [`getStore()` sync](#getstore-sync)
-    - [`onversionchange`](#onversionchange)
     - [`onblocked`](#onblocked)
 - [API `Store class`](#api-store-class)
-    - [`name`](#name)
-    - [`indexList`](#indexlist)
-    - [`indexInfo`](#indexinfo)
     - [`find()`](#find)
     - [`findOne()`](#findone)
     - [`count()`](#count)
@@ -96,7 +88,7 @@ Therefore, it works in the latest browsers such as `Chrome`, `Firefox`, `Safari`
 
 # API `NiceDB class`
 
-## `define()`
+## `define()` sync
 
 A method to define the stores before using the library.
 
@@ -124,7 +116,7 @@ define( stores )
 > But when searching for Boolean value, the document is not searched.
 > Therefore, it is recommended to use 0 and 1 instead of Boolean. [link](https://stackoverflow.com/questions/13672906/indexeddb-boolean-index)
 
-> Option information when an object such as `{field_name: option_object}` is declared instead of a string in field_array.. [link](https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/createIndex)
+> Option information when an object such as `{ ...options }` is declared instead of a string in field_array.. [link](https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/createIndex)
 
 ### Return value
 
@@ -145,13 +137,11 @@ const store = {
 
   // You have defined a store named 'car'.
   // The modelNum field used options.
-  car: ['name', 'color', {modelNum: {unique: true, multiEntry: false} }]
+  car: ['name', 'color', {name: 'modelNum', unique: true, multiEntry: false}]
   // ...
 };
 
-nicedb.define( store )
-  .then( event => { /* Execution code when store definition is successed */ } )
-  .catch( event => { /* Executable code when library is unavailable due to error */ } );
+nicedb.define( store );
 ```
 
 ## `getStore()` sync
@@ -180,22 +170,10 @@ getStore( storeName )
 ```js
 import nicedb from "nicedb"
 
-nicedb.define( { /* ... */ } ).then( /* Success_Handler */ ).catch( /* ... */ );
-
-// Since Success_Handler is executed
+nicedb.define( { /* ... */ } );
 
 const User = nicedb.getStore( "user" );
 const Car = nicedb.getStore( "car" );
-```
-
-## onversionchange
-
-Handling the `onversionchange` of **IndexedDB**. [link](https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase/onversionchange)
-
-### Syntax
-
-```js
-nicedb.onversionchange = callback;
 ```
 
 ## onblocked
@@ -213,63 +191,6 @@ nicedb.onblocked = callback;
 
 # API `Store class`
 
-## `name`
-
-Read only. The name of the store. (String)
-
-### Example
-
-```js
-import nicedb from "nicedb"
-
-// ...
-
-const FooStore = nicedb.getStore( "foo" );
-
-console.log( FooStore.foo ); // "user"
-```
-
-## indexList
-
-Read only. Field array registered as an index in the store.
-
-> When defining a store, the specified field is registered as an index.
-
-### Example
-
-```js
-import nicedb from "nicedb"
-
-const store = { foo: ['a', 'b', 'c'] };
-nicedb.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
-
-// Since Success_Handler is executed
-const FooStore = nicedb.getStore( "foo" );
-console.log( FooStore.indexList ); // ['a', 'b', 'c']
-```
-
-## indexInfo
-
-Read only. An array that uses the field information registered as an index in the store as an object.
-
-### Example
-
-```js
-import nicedb from "nicedb"
-
-const store = { foo: ['a', {b: {unique: true} }, {c: {multiEntry: true}}] };
-nicedb.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
-
-// Since Success_Handler is executed
-const FooStore = nicedb.getStore( "foo" );
-console.log( FooStore.indexInfo );
-// [
-//  { field: 'a', unique: false, multiEntry: false },
-//  { field: 'b', unique: true, multiEntry: false },
-//  { field: 'c', unique: false, multiEntry: true }
-// ]
-```
-
 ## `find()`
 
 Retrieve all documents corresponding to the query.
@@ -279,25 +200,36 @@ Retrieve all documents corresponding to the query.
 ```js
 find()
 find( query )
-find( limit )
-find( query, limit )
+find( query, options )
 ```
 
 ### Parameters
 
 `query`(Optional - Object)
 
-- Object of `{ field_name : value || operator }`.
+- Object of `{ field_name1 : value || operator, field_name2 : value || operator, ... }`.
 - If omitted, all documents in the store are returned.
-- Only one field can be queried. (Multi-field query not supported)
 - Support for comparison query operators. [link](#comparison-query-operators)
 
-`limit`(Optional - Number):
+`options`(Optional - Object):
 
-- Only positive integers are possible.
-- The maximum number of documents to be returned.
+- `sort`(Object || Array)
+  - Defines the sorting of the result documents list.
+  - `{ field_name1 : number, field_name2 : number }` 형식.
+    - number `1`: Ascending
+    - number `-1`: Descending
+- `skip`(Number)
+  - Set the quantity to be omitted from the front of the result value.
+- `limit`(Number)
+  - Setting the maximum quantity of result values.
 
-> All search results are returned sorted by `_id` in ascending order.
+> It tries to sort the result list according to the order in which `sort` objects are defined.
+>
+> In general, modern browsers can detect the order in which objects are defined, but it is not perfect.
+>
+> In this case, it can be solved by defining `sort` as a two-dimensional array rather than an object.
+>
+> `[ ['field_name1', number], ['field_name2', number], ... ]`
 
 ### Return value
 
@@ -310,14 +242,33 @@ find( query, limit )
 ```js
 const FooStore = nicedb.getStore( "foo" );
 
-// Retrieves and returns documents with bar value of 100 among
-// the documents stored in the foo repository.
-FooStore.find( {bar: 100} ).then( result => console.log(result) );
+// Suppose, have the following data in FooStore:
+//   { _id: 1, bar: 10, foo: 1 }
+//   { _id: 2, bar: 10, foo: 2 }
+//   { _id: 3, bar: 22, foo: 3 }
+//   { _id: 4, bar: 10, foo: 1 }
+//   { _id: 5, bar: 10, foo: 2 }
+//   { _id: 6, bar: 33, foo: 3 }
+//   { _id: 7, bar: 10, foo: 1 }
+//   { _id: 8, bar: 10, foo: 2 }
+//   { _id: 9, bar: 44, foo: 3 }
+//  { _id: 10, bar: 10, foo: 1 }
+
+const query = {
+  _id: { $lte: 9 },
+  bar: 10
+};
+const options = {
+  sort: { foo: 1, _id: -1 },
+  skip: 1,
+  limit: 4
+};
+FooStore.find( query, options ).then( result => console.log(result) );
 // [
-//   { _id: 33, bar: 100, ... },
-//   { _id: 54, bar: 100, ... },
-//   { _id: 89, bar: 100, ... },
-//    ....
+//   { _id: 4, bar: 10, foo: 1 },
+//   { _id: 1, bar: 10, foo: 1 },
+//   { _id: 8, bar: 10, foo: 2 },
+//   { _id: 5, bar: 10, foo: 2 },
 // ]
 ```
 
@@ -336,10 +287,7 @@ findOne( query )
 
 `query`(Optional - Object)
 
-- Object of `{ field_name : value || operator }`.
 - If omitted, the document with the lowest `_id` value.
-- Only one field can be queried. (Multi-field query not supported)
-- Support for comparison query operators. [link](#comparison-query-operators)
 
 ### Return value
 
@@ -360,7 +308,7 @@ FooStore.findOne( {bar: 100} )
 
 ## `count()`
 
-Retrieve all documents corresponding to the query.
+Retrieve all documents count number corresponding to the query.
 
 ### Syntax
 
@@ -371,10 +319,6 @@ count( query )
 ### Parameters
 
 `query`(Optional - Object)
-
-- Object of `{ field_name : value || operator }`.
-- Only one field can be queried. (Multi-field query not supported)
-- Support for comparison query operators. [link](#comparison-query-operators)
 
 ### Return value
 
@@ -437,24 +381,18 @@ Update the document that corresponds to the query.
 ### Syntax
 
 ```js
-update( doc )
-update( doc, change )
 update( query, doc )
 update( query, doc, change )
 ```
 
 ### Parameters
 
+`query`(Required - Object)
+
 `doc`(Required - Object)
 
 - The document object to be saved consisting of <br>
   `{ field_name1: value_1, field_name2: value_2, ... }`.
-
-`query`(Optional - Object)
-
-- Object of `{ field_name : value || operator }`.
-- Only one field can be queried. (Multi-field query not supported)
-- Support for comparison query operators. [link](#comparison-query-operators)
 
 `change`(Optional - Boolean)
 
@@ -488,6 +426,7 @@ Delete the document corresponding to the query.
 ### Syntax
 
 ```js
+remove()
 remove( query )
 ```
 
@@ -495,11 +434,8 @@ remove( query )
 
 `query`(Optional - Object)
 
-- Object of `{ field_name : value || operator }`.
-- Only one field can be queried. (Multi-field query not supported)
-- Support for comparison query operators. [link](#comparison-query-operators)
-
 > If you omit the query, all documents in the store are deleted.
+> 
 > However, if you need to delete all documents, you should use `clear()` instead of `remove()` for performance reasons.
 
 ### Return value
@@ -515,7 +451,7 @@ const FooStore = nicedb.getStore( "foo" );
 
 const query = { bar: 9 };
 
-FooStore.remove( query ).then( result => console.log(result) ); // [ 1, 5, 32, 78 ]
+FooStore.remove( query ).then( result => console.log(result) ); // undefined
 ```
 
 ## `clear()`
@@ -564,9 +500,7 @@ but it does support some of the comparison query operators used by **MongoDB**.
 import nicedb from "nicedb"
 
 const store = { foo: ['num'] };
-nicedb.define( store ).then( /* Success_Handler */ ).catch( /* ... */ );
-
-// Since Success_Handler is executed
+nicedb.define( store );
 
 const FooStore = nicedb.getStore( "foo" );
 
@@ -584,11 +518,11 @@ function log( docs ) {
 //      { _id: 4, num: 7  }
 //      { _id: 5, num: 13 }
 
-FooStore.find( {num: 5} ).then( log ); // 5 === num   →   [ 2 ]
+FooStore.find( {num: 5} ).then( log );           // 5 === num  →   [ 2 ]
 FooStore.find( {num: { $gt: 10 }} ).then( log ); // 10 < num   →   [ 3, 5 ]
 FooStore.find( {num: { $lte: 7 }} ).then( log ); // 7 >= num   →   [ 2, 4 ]
 FooStore.find( {num: { $gte: 7, $lt: 15 }})
-  .then( log ); // 7 <= num && 15 > num    →   [ 1, 2, 4, 5 ]
+  .then( log );                      // 7 <= num && 15 > num   →   [ 1, 2, 4, 5 ]
 ```
 
 > All search results are returned sorted by `_id` in ascending order.

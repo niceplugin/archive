@@ -1,5 +1,3 @@
-// todo readme.md 인덱스 옵션 객체 {필드명: {...옵션}} 을 {필드명, ...옵션} 으로 변경 필요
-
 function isObject(obj) {
   return obj !== null && !Array.isArray(obj) && typeof(obj) === 'object';
 }
