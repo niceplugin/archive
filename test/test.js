@@ -7,9 +7,14 @@ class NiceStore {
   #NiceDB;
   #DBOpenRequest;
   #DBQueue;
+  #StoreQueue;
+  #isWork;
   #defQuery;
 
   #requestHandler;
+  #requestHandlerRW;
+  #requestOnsuccessRW;
+  #requestOnerrorRW;
   #getCursor;
   #getStoreIndex;
   #getRange;
@@ -22,7 +27,8 @@ class NiceStore {
   #doSort;
   #doSkip;
   #doLimit;
-  #DBQueueAdd;
+  #queueSwitching;
+  #queueProcessing;
 
   constructor(storeName, NiceDB, DBOpenRequest, DBQueue) {
     const it = this;
@@ -31,13 +37,29 @@ class NiceStore {
     this.#NiceDB = NiceDB;
     this.#DBOpenRequest = DBOpenRequest;
     this.#DBQueue = DBQueue;
+    this.#StoreQueue = [];
+    this.#isWork = false;
     this.#defQuery = { _id: { $gt: 0 } };
 
-    // 요청에 대한 성공 애러 이벤트 핸들러
+    // 요청에 대한 이벤트 핸들러. use only private
     this.#requestHandler = function(request, resolve, reject) {
       request.onsuccess = function() { resolve(request.result) };
       request.onerror = function() { reject(request.error) };
     }
+
+    // 요청에 대한 이벤트 핸들러. use only public methods
+    this.#requestHandlerRW = function(request, resolve, reject) {
+      request.onsuccess = function() { it.#requestOnsuccessRW(request.result, resolve) };
+      request.onerror = function() { it.#requestOnerrorRW(request.error, reject) };
+    }
+    this.#requestOnsuccessRW = function(result, resolve) {
+      resolve(result);
+      it.#queueProcessing();
+    };
+    this.#requestOnerrorRW = function(error, reject) {
+      reject(error);
+      it.#queueProcessing();
+    };
 
     // 리턴 값: field 에 해당하는 IDBIndex
     this.#getStoreIndex = function(field, mode = 'readonly') {
@@ -347,12 +369,15 @@ class NiceStore {
     }
 
     // 리턴 값: 큐 예약이 필요할 경우 예약된 promise || 아닌 경우 undefined
-    this.#DBQueueAdd = function(methodName, methodArguments) {
-      const it = this;
+    this.#queueSwitching = function(methodName, methodArguments) {
       const storeName = it.#storeName;
       const support = it.#NiceDB.support;
-      const pass = it.#NiceDB.isSuccess;
+      const success = it.#NiceDB.isSuccess;
+      const work = it.#isWork;
+      const queueType = !success ? it.#DBQueue :
+        work ? it.#StoreQueue : null;
 
+      // indexedDB 를 지원하지 않을 경우
       if (!support) {
         return new Promise((resolve, reject) => {
           // 내용: 불가능 : IndexedDB 가 지원되지 않습니다.
@@ -360,12 +385,27 @@ class NiceStore {
         })
       }
 
-      return pass ? undefined : new Promise((resolve, reject) => { try {
+      // niceDB 정의가 완료 되었고 niceStore 가 실행중이지 않을 경우: 상태 실행중으로 변경
+      if ( success && !work ) { it.#isWork = true }
+
+      return !queueType ? undefined : new Promise((resolve, reject) => { try {
         const queue = {
           storeName, methodName, methodArguments, resolve
         };
-        it.#DBQueue.push(queue);
+        queueType.push(queue);
       } catch(e) { reject(e) } })
+    }
+
+    // niceStore 작업이 종료 된 후 호출되며, 예약된 다음 작업을 시작.
+    this.#queueProcessing = function() {
+      const queue = it.#StoreQueue;
+
+      it.#isWork = false;
+
+      if (queue.length) {
+        const { methodName, methodArguments, resolve } = queue.shift();
+        resolve( it[methodName]( ...methodArguments ) );
+      }
     }
   }
 
@@ -374,15 +414,15 @@ class NiceStore {
   find( queries, options = {} ) {
     const it = this;
 
-    return this.#DBQueueAdd( 'find', [ ...arguments ] ) ||
+    return this.#queueSwitching( 'find', [ ...arguments ] ) ||
       new Promise((resolve, reject) => { try {
         it.#getDocs(queries).then( result => {
           it.#doSort(result, options.sort);
           it.#doSkip(result, options.skip);
           it.#doLimit(result, options.limit);
-          resolve(result);
-        }, e => reject(e) );
-      } catch(e) { reject(e) } })
+          it.#requestOnsuccessRW(result, resolve);
+        }, e => it.#requestOnerrorRW(e, reject) );
+      } catch(e) { it.#requestOnerrorRW(e, reject) } })
   }
 
   // 쿼리에 해당하는 문서를 조회.
@@ -390,12 +430,12 @@ class NiceStore {
   findOne( queries ) {
     const it = this;
 
-    return this.#DBQueueAdd( 'findOne', [ ...arguments ] ) ||
+    return this.#queueSwitching( 'findOne', [ ...arguments ] ) ||
       new Promise((resolve, reject) => { try {
         it.#getDocOne(queries).then( result => {
-          resolve(result);
-        }, e => reject(e) );
-      } catch(e) { reject(e) } })
+          it.#requestOnsuccessRW(result, resolve);
+        }, e => it.#requestOnerrorRW(e, reject) );
+      } catch(e) { it.#requestOnerrorRW(e, reject) } })
   }
 
   // 쿼리에 해당하는 문서의 개수를 조회.
@@ -403,12 +443,12 @@ class NiceStore {
   count( queries ) {
     const it = this;
 
-    return this.#DBQueueAdd( 'count', [ ...arguments ] ) ||
+    return this.#queueSwitching( 'count', [ ...arguments ] ) ||
       new Promise((resolve, reject) => { try {
         it.#getKeys(queries).then( result => {
-          resolve(result.length);
-        }, e => reject(e) );
-      } catch(e) { reject(e) } })
+          it.#requestOnsuccessRW(result, resolve);
+        }, e => it.#requestOnerrorRW(e, reject) );
+      } catch(e) { it.#requestOnerrorRW(e, reject) } })
   }
 
   // 저장된 모든 데이터를 지운다
@@ -416,12 +456,12 @@ class NiceStore {
   clear() {
     const it = this;
 
-    return this.#DBQueueAdd( 'clear', [ ...arguments ] ) ||
+    return this.#queueSwitching( 'clear', [ ...arguments ] ) ||
       new Promise((resolve, reject) => { try {
         const iDBObjectStore = it.#getStoreIndex('_id', 'readwrite');
         const request = iDBObjectStore.clear();
-        it.#requestHandler(request, resolve, reject);
-      } catch(e) { reject(e) } })
+        it.#requestHandlerRW(request, resolve, reject);
+      } catch(e) { it.#requestOnerrorRW(e, reject) } })
   }
 
   // 문서를 추가.
@@ -429,23 +469,23 @@ class NiceStore {
   insert(doc) {
     const it = this;
 
-    return this.#DBQueueAdd( 'insert', [ ...arguments ] ) ||
+    return this.#queueSwitching( 'insert', [ ...arguments ] ) ||
       new Promise((resolve, reject) => { try {
         // doc 데이터 타입 예외처리
         if ( !isObject(doc) ) {
           // 내용: 문서 삽입 실패: 객체 타입이 아닙니다.
-          reject( new URIError('Document Insert failed: It is not object type.') );
+          throw new URIError('Document Insert failed: It is not object type.');
         }
         delete doc._id;
         if ( Object.keys(doc).length === 0 ) {
           // 내용: 문서 삽입 실패: 빈 객체 입니다.
-          reject( new URIError('Document Insert failed: It is an empty object.') );
+          throw new URIError('Document Insert failed: It is an empty object.');
         }
 
         const iDBObjectStore = it.#getStoreIndex('_id', 'readwrite');
         const request = iDBObjectStore.add(doc);
-        it.#requestHandler(request, resolve, reject);
-      } catch(e) { reject(e) } })
+        it.#requestHandlerRW(request, resolve, reject);
+      } catch(e) { it.#requestOnerrorRW(e, reject) } })
   }
 
   // 쿼리에 해당하는 모든 문서를 지운다.
@@ -453,12 +493,12 @@ class NiceStore {
   remove( queries ) {
     const it = this;
 
-    return this.#DBQueueAdd( 'remove', [ ...arguments ] ) ||
+    return this.#queueSwitching( 'remove', [ ...arguments ] ) ||
       new Promise((resolve, reject) => { try {
         it.#removeDocs(queries).then( () => {
-          resolve();
-        }, e => reject(e) );
-      } catch(e) { reject(e) } })
+          it.#requestOnsuccessRW(undefined, resolve);
+        }, e => it.#requestOnerrorRW(e, reject) );
+      } catch(e) { it.#requestOnerrorRW(e, reject) } })
   }
 
   // 쿼리에 해당하는 모든 문서를 업데이트.
@@ -466,23 +506,23 @@ class NiceStore {
   update( queries, doc, change = false ) {
     const it = this;
 
-    return this.#DBQueueAdd( 'update', [ ...arguments ] ) ||
+    return this.#queueSwitching( 'update', [ ...arguments ] ) ||
       new Promise((resolve, reject) => { try {
         // doc 데이터 타입 예외처리
         if ( !isObject(doc) ) {
           // 내용: 문서 업데이트 실패: 두 번째 인자가 객체 타입이 아닙니다.
-          reject( new URIError('Document Update failed: Second argument is not object type.') );
+          throw new URIError('Document Update failed: Second argument is not object type.');
         }
         delete doc._id;
         if ( Object.keys(doc).length === 0 ) {
           // 내용: 문서 업데이트 실패: 두 번째 인자가 빈 객체 입니다.
-          reject( new URIError('Document Insert failed: Second argument is an empty object.') );
+          throw new URIError('Document Insert failed: Second argument is an empty object.');
         }
 
         it.#updateDocs( queries, doc, change ).then( result => {
-          resolve(result);
-        }, e => reject(e) );
-      } catch(e) { reject(e) } })
+          it.#requestOnsuccessRW(result, resolve);
+        }, e => it.#requestOnerrorRW(e, reject) );
+      } catch(e) { it.#requestOnerrorRW(e, reject) } })
   }
 }
 

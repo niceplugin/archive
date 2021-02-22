@@ -40,6 +40,6 @@ test.findOne({a:{$gt:3}}).then(r=>console.log('findOne: ',r))
 
 test.count({b:2}).then(r=>console.log('count: ',r))
 
-test.update({b: 2}, {z:'xxx'}, true).then(r=>console.log('update: ',r))
-
 test.remove({a: {$gt:7, $lte:10}}).then(r=>console.log('remove: ',r))
+
+test.update({b: 2}, {z:'xxx'}, true).then(r=>console.log('update: ',r))
