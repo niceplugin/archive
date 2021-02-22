@@ -44,9 +44,9 @@ class NiceStore {
     }
 
     // 리턴 값: field 에 해당하는 IDBIndex
-    this.#getStoreIndex = function(field) {
+    this.#getStoreIndex = function(field, mode = 'readonly') {
       const name = it.#storeName;
-      const transaction = it.#DBOpenRequest.result.transaction(name, 'readonly');
+      const transaction = it.#DBOpenRequest.result.transaction(name, mode);
       const iDBObjectStore = transaction.objectStore(name)
 
       transaction.onerror = () => { throw transaction.error };
@@ -149,7 +149,7 @@ class NiceStore {
     }
 
     // 리턴 값: 모드에 해당하는 IDBCursor Promise
-    this.#getCursor = function(mode, callback) {
+    this.#getCursor = function(callback, mode = 'readonly') {
       return new Promise( (resolve, reject) => { try {
         const name = it.#storeName;
         const transaction = it.#DBOpenRequest.result.transaction(name, mode);
@@ -188,7 +188,7 @@ class NiceStore {
             } else { resolve(docs) }
           }
 
-          it.#getCursor( 'readonly', callback ).then( callback, e => reject(e) );
+          it.#getCursor( callback ).then( callback, e => reject(e) );
         }, e => reject(e) );
       } catch(e) { reject(e) } })
     }
