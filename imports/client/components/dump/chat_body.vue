@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import ChatMsg from '/imports/client/ui/chat_msg_window'
+import ChatMsg from '/imports/client/components/dump/chat_msg_window'
 export default {
   components: {
     ChatMsg

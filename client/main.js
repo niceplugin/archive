@@ -1,18 +1,16 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import App from '/imports/client/App.vue'
+import vuetify from '/imports/client/plugins/vuetify'
+import router from '/imports/client/plugins/router'
 import VueMeteorTracker from 'vue-meteor-tracker'
-Vue.use(VueRouter);
-Vue.use(VueMeteorTracker);
-
-import router from '/imports/client/routes'
-import AppLayout from '/imports/client/AppLayout.vue'
 
 Meteor.startup(()=>{
+  Vue.config.productionTip = false
+  Vue.use(VueMeteorTracker)
+
   new Vue({
-    el: '#app',
-    render: c => c(AppLayout),
+    vuetify,
     router,
-  });
-});
+    render: h => h(App),
+  }).$mount('#app')
+})

@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import ChatHeader from '/imports/client/ui/chat_header.vue'
-import ChatBody from '/imports/client/ui/chat_body.vue'
-import ChatFooter from '/imports/client/ui/chat_footer.vue'
-import ChatLoading from '/imports/client/ui/chat_loading.vue'
+import ChatHeader from '/imports/client/components/dump/chat_header.vue'
+import ChatBody from '/imports/client/components/dump/chat_body.vue'
+import ChatFooter from '/imports/client/components/dump/chat_footer.vue'
+import ChatLoading from '/imports/client/components/dump/chat_loading.vue'
 
 export default {
   components: {

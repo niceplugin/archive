@@ -1,27 +1,27 @@
 import { ShortUrl } from '/imports/common/collections'
 
 WebApp.connectHandlers.use('/', (req, res, next)=>{
-  const isIE = req.headers['user-agent'].match('Trident');
-  if (isIE) {
-    const page = Assets.getText('no_ie.html');
-    // res.writeHead(200);
-    return res.end(page);
-  }
-
+  const DEFAULT_DOMAIN = 'url-zip.com'
+  const host = req.headers.host;
   const path = req.url.replace('/', '');
+  const isIE = req.headers['user-agent'].match('Trident');
 
-  // 정해진 경로일 경우
-  if (!path || path === 'chat' || path === 'zip') {
+  // 호스트 도메인이 url-zip.com 일 경우
+  if (Meteor.isDevelopment || host === DEFAULT_DOMAIN) {
+    if (isIE) { // 구형 브라우저 IE 일 경우
+      const page = Assets.getText('no_ie.html');
+      // res.writeHead(200);
+      return res.end(page);
+    }
     return next();
   }
 
-  // 압축 URL 일 경우
-  const data = ShortUrl.findOne({zip: path});
-  if (data) {
-    res.writeHead(301, {'Location': data.url});
-    return res.end();
-  }
+  // 압축 URL 서비스 커넥션으로 판단될 경우
+  const result = ShortUrl.findOne( {zip: path} );
+  const _default = `https://${DEFAULT_DOMAIN}`;
+  const url = result ? result.url : _default;
+  const status = result ? 301 : 302;
 
-  // 그외 페이지 클라이언트 라우터가 404 처리
-  return next();
+  res.writeHead(status, { 'Location': url });
+  return res.end();
 });
