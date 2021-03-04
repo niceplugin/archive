@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '/imports/client/components/dump/home.vue'
+import Home from '/imports/client/components/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -11,25 +11,15 @@ const routes = [
     component: Home
   },
   {
-    path: '/chat',
-    name: 'Chat',
-    component: () => import('/imports/client/components/dump/chat.vue')
-  },
-  {
-    path: '/zip',
-    name: 'Zip',
-    component: () => import('/imports/client/components/dump/zip.vue')
-  },
-  {
     path: '*',
     name: 'NotFound',
-    component: () => import('/imports/client/components/dump/NotFound.vue')
+    component: () => import('/imports/client/components/NotFound.vue')
   },
 ];
 
 const router = new VueRouter({
+  routes,
   mode: 'history',
-  routes: routes
 })
 
 export default router;

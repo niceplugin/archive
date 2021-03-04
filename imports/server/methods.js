@@ -55,15 +55,18 @@ Meteor.methods({
   getUrl(code) {
     return Collections.ShortUrl.findOne({ code });
   },
-  zipUrl(url) {
-    let { zip } = Collections.ShortUrl.findOne({ url }) || {};
+  compressUrl(url) {
+    if (url.match(/^https:\/\/u-z\.me\//i)) {
+      throw new Meteor.Error('already compress url')
+    }
 
-    if (zip) {return zip; }
+    let doc = Collections.ShortUrl.findOne({ url })
+    if (doc) { return doc }
 
-    let doc = { url, zip: digits(+new Date()) };
-    doc = Validation('ShortUrl', doc);
-    Collections.ShortUrl.insert(doc);
+    doc = { url, zip: digits(+new Date()) }
+    doc = Validation('ShortUrl', doc)
+    Collections.ShortUrl.insert(doc)
 
-    return doc.zip;
+    return doc
   }
 });
