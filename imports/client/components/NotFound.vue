@@ -8,6 +8,7 @@
         404
       </h1>
       <p class="mt-10 mt-md-14 mb-0 text-h6">page not found</p>
+      <p class="mt-10 mt-md-14 mb-0 text-h6">Go to <a class="deep-orange--text" href="/">home</a></p>
     </v-col>
   </v-row>
 </template>
