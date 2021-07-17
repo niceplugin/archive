@@ -1,0 +1,16 @@
+examples
+src
+docs
+test
+
+.gitignore
+webpack.config.js
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
