@@ -13,7 +13,7 @@ module.exports = {
   // output: {
   //   filename: 'iife.js',
   //   path: path.resolve(__dirname, 'dist'),
-  //   library: 'MY_MODULE_NAME', // 모듈을 내보낼 전역변수 이름
+  //   library: 'imageMinify', // 모듈을 내보낼 전역변수 이름
   //   libraryExport: 'default'
   // },
 
@@ -25,8 +25,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-proposal-class-properties']
+            presets: ['@babel/preset-env']
           }
         }
       }
