@@ -32,16 +32,19 @@ class ImageMinifyClient {
   #idxMaximum = 0 // #idx 의 유효 가능한 최대 값
   #isRunning = false // 모듈 실행중 여부
   #needStop = false // 모듈 실행 중지 필요
+  #validSize = [16384, 8192, 4096, 2048, 1024] // 허용 가능 켄버스 크기 리스트
   #onstop = ()=>{} // 모듈 실행 중지 이후 실행할 콜백
 
   constructor() {
+    const it = this
+
     this.#ctx = this.#canvas.getContext ?
       this.#canvas.getContext('2d') : null
     this.enable = !!this.#ctx && !!this.#canvas.toBlob
     this.data = null
 
-    this.#image.onload = this.imageLoad
-    this.#image.onerror = this.imageError
+    this.#image.onload = event => it.imageLoad.call(it, event)
+    this.#image.onerror = event => it.imageError.call(it, event)
   }
 
   // 모듈 초기화 및 최적화 작업 시작 메서드
@@ -111,33 +114,116 @@ class ImageMinifyClient {
 
   // 오리지날 이미지 로드 완료 이벤트 헨들러
   imageLoad() {
+    // 정상적으로 로드 된 이미지이지만 사이즈에 문제가 있는경우
+    if (!this.#image.naturalWidth || !this.#image.naturalHeight) {
+      return this.imageError()
+    }
+
     const it = this
+
+    // 원본 이미지 가로/세로 비율
+    const ratio = this.#image.naturalWidth / this.#image.naturalHeight
+
+    // 원본 이미지 사이즈 정보 객체
+    const oSize = {
+      width: this.#image.naturalWidth,
+      height: this.#image.naturalHeight
+    }
 
     // 리사이징 정보 객체
     const resize = {
       width: this.data.width === undefined ?
-        this.#image.naturalWidth : this.data.width,
+        oSize.width : this.data.width,
       height: this.data.height === undefined ?
-        this.#image.naturalHeight : this.data.height
+        oSize.height : this.data.height
     }
-    // todo: contain 타입으로 리사이징 하기 위한 resize 값 재계산 로직 필요
+
+    // 리사이징이 필요할 경우 contain 타입으로 리사이징 값 재계산
+    {
+      // 원본사이즈 가로가 리사이징 가로보다 클 경우
+      if (oSize.width > resize.width) {
+        resize.height = Math.floor(resize.width / ratio)
+      }
+      // 원본사이즈 세로가 리사이징 세로보다 클 경우
+      if (oSize.height > resize.height) {
+        resize.width = Math.floor(resize.height * ratio)
+      }
+      // 리사이징 사이즈를 원본 이미지 비율에 맞게 수정
+      resize.height = Math.floor(resize.width / ratio)
+    }
 
     // 브라우저가 허용 가능한 켄버스 크기 정보 객체
-    const canvasSize = {
+    const cvsSize = {
       width: resize.width,
       height: resize.height
     }
-    // todo: 켄버스가 지원하는 최대크기 이내인지 계산하고 조정하는 로직 필요
+
+    // 브라우저에서 지원하는 켄버스 크기 찾아서 적용하는 함수
+    function validateSupportSize(validSize) {
+      // 사용 가능한 캔버스 크기를 찾을 수 없을 때 예외처리
+      if (!validSize.length) {
+        it.error(2,
+          `Could not find any available canvas sizes.`,
+          it.#idx
+        )
+        return false
+      }
+
+      // 켄버스 width 가 허용가능 수치보다 클 때 사이즈 수정
+      if (cvsSize.width > validSize[0]) {
+        cvsSize.width = validSize[0]
+        cvsSize.height = validSize[0] / ratio
+      }
+      // 켄버스 height 가 허용가능 수치보다 클 때 사이즈 수정
+      if (cvsSize.height > validSize[0]) {
+        cvsSize.height = validSize[0]
+        cvsSize.width = validSize[0] * ratio
+      }
+
+      // 켄버스 사이즈 찾기 시도
+      try {
+        // 적용된 켄버스 크기를 브라우저가 허용할 수 있다면
+        // 마지막 위치에 빨간색 점을 그리고 그 위치를 다시 읽어서
+        // 색 코드를 불러올 수 있다.
+        // 이 과정중에 애러가 생기거나(ex: firefox),
+        // 불러오는 색상코드가 빨간색이 아닐경우
+        // 현재 켄버스 사이즈가 브라우저가 지원하는 사이즈보다 크다는 의미이다.
+        it.#canvas.width = cvsSize.width
+        it.#canvas.height = cvsSize.height
+        it.#ctx.fillStyle = '#ff0000'
+        it.#ctx.fillRect(
+          cvsSize.width-1,cvsSize.height-1,
+          cvsSize.width,cvsSize.height
+        )
+
+        const rgba =
+          it.#ctx.getImageData(cvsSize.width-1,cvsSize.height-1,1,1).data
+
+        if (rgba[0] !== 255) { throw new Error() }
+      }
+      catch (error) {
+        // 허용 가능한 켄버스 리스트를 쉬프트 하고 재귀
+        validSize.shift()
+        return validateSupportSize(validSize)
+      }
+
+      return true
+    }
+
+    // 지원되는 크기를 찾을 수 없을 때 종료 (실행된 함수 내부에서 예외처리 함)
+    if (!validateSupportSize([...it.#validSize])) {
+      return
+    }
 
     // 켄버스에 이미지 그리기
     this.#ctx.drawImage(
       this.#image,
       0, 0,
-      canvasSize.width, canvasSize.height
+      cvsSize.width, cvsSize.height
     )
 
     // 켄버스 toBlob 실행 (요청옵션에 맞게 이미지 출력)
-    canvas.toBlob(
+    this.#canvas.toBlob(
       blob => it.success(blob, it.#idx),
       it.data.outputType,
       it.data.quality
@@ -161,6 +247,7 @@ class ImageMinifyClient {
     }
     // 모든 실행이 종료된 경우
     else {
+      this.#isRunning = false
       this.data.onend && this.data.onend()
     }
   }
@@ -175,7 +262,10 @@ class ImageMinifyClient {
     }
 
     const name = this.data.files[this.#idx].name
-    const file = new File(blob, name)
+    // todo: 옵션으로 파일타입 반드시 넣어줘야 함....
+    // 옵션이긴 하나 안넣으면 빈값으로 파일 생성됨...
+    // 파일명은 변경되는 아웃풋 확장자가 뒤에 붙도록 해야 함
+    const file = new File([blob], name)
 
     this.data.onsuccess({
       file,
@@ -258,7 +348,7 @@ export default function(data = {}, onstop) {
   }
 
   // 실행 중지 요청처리
-  if (data && data.toLowerCase() === 'stop') {
+  if (typeof(data) === 'string' && data.toLowerCase() === 'stop') {
     imageMinifyClient.stop(onstop)
     return
   }
