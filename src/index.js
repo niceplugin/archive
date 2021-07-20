@@ -3,7 +3,6 @@
 //   1: 파라미터가 유효하지 않음
 //   2: 파일이 유효하지 않음
 //   3: 실행 오류
-//   999: 기타 애러
 
 // 지원되는 인풋 이미지 포멧 종류
 const supInputFormat = [
@@ -374,7 +373,7 @@ export default function(_data = {}, onstop) {
 
       value = (max && value > max) ? max : value
 
-      return (!isNaN && isFin && isPos) ? value : defaulted
+      return (value && !isNaN && isFin && isPos) ? value : defaulted
     }
 
     // 단일 인자가 비정상적일 경우 예외처리
@@ -389,7 +388,11 @@ export default function(_data = {}, onstop) {
     data.onended = typeof(data.onended) !== 'function' ?
       undefined : data.onended
     data.width = detectValidNumber(data.width)
+    data.width = data.width ?
+      Math.floor(data.width) : data.width
     data.height = detectValidNumber(data.height)
+    data.height = data.height ?
+      Math.floor(data.height) : data.height
     data.quality = detectValidNumber(data.quality, .8, 1)
     data.outputType = !data.outputType ?
       'jpeg' : data.outputType.toLowerCase()
