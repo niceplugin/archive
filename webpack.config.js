@@ -11,9 +11,9 @@ module.exports = {
     libraryTarget: 'commonjs2'
   },
   // output: {
-  //   filename: 'iife.js',
+  //   filename: 'imageMinifyClient.js',
   //   path: path.resolve(__dirname, 'dist'),
-  //   library: 'imageMinify', // 모듈을 내보낼 전역변수 이름
+  //   library: 'imageMinifyClient', // 모듈을 내보낼 전역변수 이름
   //   libraryExport: 'default'
   // },
 

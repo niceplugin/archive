@@ -5,21 +5,16 @@
 //   3: 실행 오류
 //   999: 기타 애러
 
-// todo: 허용가능한 인풋 이미지 포멧확인 필요
-// bmp, webp(파일포멧 지원여부),
-// jpeg(비슷한 확장자명들 파싱여부),
-// png(투명도)
-
 // 지원되는 인풋 이미지 포멧 종류
 const supInputFormat = [
   'bmp',
+  'gif',
   'png',
   'jpeg',
   'webp',
 ]
 // 지원되는 아웃풋 이미지 포멧 종류
 const supOutputFormat = [
-  'png',
   'jpeg',
   'webp',
 ]
@@ -248,7 +243,7 @@ class ImageMinifyClient {
     // 모든 실행이 종료된 경우
     else {
       this.#isRunning = false
-      this.data.onend && this.data.onend()
+      this.data.onended && this.data.onended()
     }
   }
 
@@ -261,11 +256,22 @@ class ImageMinifyClient {
       return
     }
 
-    const name = this.data.files[this.#idx].name
-    // todo: 옵션으로 파일타입 반드시 넣어줘야 함....
-    // 옵션이긴 하나 안넣으면 빈값으로 파일 생성됨...
-    // 파일명은 변경되는 아웃풋 확장자가 뒤에 붙도록 해야 함
-    const file = new File([blob], name)
+    const bits = [blob]
+    const originalFile = this.data.files[this.#idx]
+    const fullName = originalFile.name
+    const prevName = fullName.replace(/\.[a-z]+$/i, '')
+    const minifyTypeName = this.data.minifyTypeName
+    const outputName= `${prevName}.${minifyTypeName}`
+    const originalTypeName = originalFile.type.replace(/^.+\//i, '')
+    const options = { type: this.data.outputType }
+
+    const minifyFile = new File( bits, outputName, options )
+
+    // 원본과 축소본의 확장자가 다르다 || 확장자는 같으나 축소본 사이즈가 더 작다
+    const minified =
+      ( minifyTypeName !== originalTypeName ) ||
+      ( originalFile.size > minifyFile.size )
+    const file = minified ? minifyFile : originalFile
 
     this.data.onsuccess({
       file,
@@ -303,7 +309,7 @@ class ImageMinifyClient {
 
 const imageMinifyClient = new ImageMinifyClient()
 
-export default function(data = {}, onstop) {
+export default function(_data = {}, onstop) {
   // 다중 인자일 경우
   // data: String
   // onstop: Function
@@ -313,7 +319,7 @@ export default function(data = {}, onstop) {
   //   files: FileList (require),
   //   onsuccess: Function (require),
   //                  이미지 최적화를 성공할 때마다 호출되는 콜백
-  //   onend: Function (options - default: undefined),
+  //   onended: Function (options - default: undefined),
   //                  FileList 내에 모든 이미지 최적화 작업이 끝났을 때 호출되는 콜백
   //   onerror: Function (options - default: undefined),
   //                  (모듈 실행간 애러가 발생할 경우 || 이미지 최적화에 실패할 때마다)
@@ -324,9 +330,12 @@ export default function(data = {}, onstop) {
   //                  (min: 0, max: browserSupportValue)
   //   quality: Number (options - default: 0.8),
   //                  (min: 0, max: 1)
-  //   outputType: String (options - default: 'jpeg'),
-  //                  (valid: ['png', 'jpeg', 'webp'])
+  //   outputType: String (options - default: 'jpeg')
+  //   minifyTypeName: String
+  //                  (사용자 입력이 아닌 내부 로직으로 생성되는 값으로 축소 이미지 확장자 명)
   // }
+
+  const data = { ..._data }
 
   // 예외처리 실행 함수
   function throwError(code, message, index = -1) {
@@ -348,7 +357,7 @@ export default function(data = {}, onstop) {
   }
 
   // 실행 중지 요청처리
-  if (typeof(data) === 'string' && data.toLowerCase() === 'stop') {
+  if (typeof(_data) === 'string' && _data.toLowerCase() === 'stop') {
     imageMinifyClient.stop(onstop)
     return
   }
@@ -356,8 +365,8 @@ export default function(data = {}, onstop) {
   // 인자 유효성 검사
   {
     // 숫자 기본값 설정 함수
-    function detectValidNumber(value, max) {
-      value = Number.parseInt(value)
+    function detectValidNumber(value, defaulted, max) {
+      value = Number(value)
 
       const isNaN = Number.isNaN(value)
       const isFin = Number.isFinite(value)
@@ -365,7 +374,7 @@ export default function(data = {}, onstop) {
 
       value = (max && value > max) ? max : value
 
-      return (!isNaN && isFin && isPos) ? value : max
+      return (!isNaN && isFin && isPos) ? value : defaulted
     }
 
     // 단일 인자가 비정상적일 경우 예외처리
@@ -377,15 +386,16 @@ export default function(data = {}, onstop) {
 
     data.onerror = typeof(data.onerror) !== 'function' ?
       undefined : data.onerror
-    data.onend = typeof(data.onend) !== 'function' ?
-      undefined : data.onend
+    data.onended = typeof(data.onended) !== 'function' ?
+      undefined : data.onended
     data.width = detectValidNumber(data.width)
     data.height = detectValidNumber(data.height)
-    data.quality = detectValidNumber(data.quality, 0.8)
+    data.quality = detectValidNumber(data.quality, .8, 1)
     data.outputType = !data.outputType ?
       'jpeg' : data.outputType.toLowerCase()
     data.outputType = (supOutputFormat.indexOf(data.outputType) === -1) ?
       'jpeg' : data.outputType
+    data.minifyTypeName = data.outputType
     data.outputType = `image/${data.outputType}`
   }
 
@@ -434,5 +444,5 @@ export default function(data = {}, onstop) {
   //
   // data 객체의 참조값은 비동기 실행중에 변경될 수 있으므로,
   // 값을 복사하여 미연에 객체 참조값에 의한 오작동을 방지한다
-  imageMinifyClient.run({...data})
+  imageMinifyClient.run( data )
 }
