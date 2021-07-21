@@ -30,7 +30,7 @@ It use the Canvas API. [link](https://developer.mozilla.org/en-US/docs/Web/API/H
 ### CDN
 
 ```html
-<script src="https://unpkg.com/nicedb/dist/imageMinifyClient.js"></script>
+<script src="https://unpkg.com/image-minify-client/dist/imageMinifyClient.js"></script>
 ```
 Use in JavaScript files after installation:
 ```js
@@ -40,7 +40,7 @@ imageMinifyClient( /* Object defining working */ )
 ### NPM
 
 ```shell
-npm install nicedb
+npm install image-minify-client
 ```
 Use in JavaScript files after installation:
 ```js
@@ -58,7 +58,7 @@ imageMinifyClient( /* Object defining working */ )
 <img id="img" src="">
 <input id="input" type="file" multiple>
 
-<script src="https://unpkg.com/nicedb/dist/imageMinifyClient.js"></script>
+<script src="https://unpkg.com/image-minify-client/dist/imageMinifyClient.js"></script>
 <script >
   const img = document.getElementById('img')
   const input = document.getElementById('input')

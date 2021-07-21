@@ -30,7 +30,7 @@
 ### CDN
 
 ```html
-<script src="https://unpkg.com/nicedb/dist/imageMinifyClient.js"></script>
+<script src="https://unpkg.com/image-minify-client/dist/imageMinifyClient.js"></script>
 ```
 설치 이후 자바스크립트 파일에서 사용:
 ```js
@@ -40,7 +40,7 @@ imageMinifyClient( /* 작업을 정의하는 객체 */ )
 ### NPM
 
 ```shell
-npm install nicedb
+npm install image-minify-client
 ```
 설치 이후 자바스크립트 파일에서 사용:
 ```js
@@ -58,7 +58,7 @@ imageMinifyClient( /* 작업을 정의하는 객체 */ )
 <img id="img" src="">
 <input id="input" type="file" multiple>
 
-<script src="https://unpkg.com/nicedb/dist/imageMinifyClient.js"></script>
+<script src="https://unpkg.com/image-minify-client/dist/imageMinifyClient.js"></script>
 <script >
   const img = document.getElementById('img')
   const input = document.getElementById('input')
