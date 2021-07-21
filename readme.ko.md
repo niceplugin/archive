@@ -1,5 +1,5 @@
 - [English](https://github.com/niceplugin/image-minify-client)
-- [한국어](https://github.com/niceplugin/image-minify-client/blob/master/readme.ko.md)
+- [한국어](https://github.com/niceplugin/image-minify-client/blob/main/readme.ko.md)
 
 * * *
 
