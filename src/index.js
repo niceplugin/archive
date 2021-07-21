@@ -308,7 +308,7 @@ class ImageMinifyClient {
 
 const imageMinifyClient = new ImageMinifyClient()
 
-export default function(_data = {}, onstop) {
+function minifier(data = {}, onstop) {
   // 다중 인자일 경우
   // data: String
   // onstop: Function
@@ -334,8 +334,6 @@ export default function(_data = {}, onstop) {
   //                  (사용자 입력이 아닌 내부 로직으로 생성되는 값으로 축소 이미지 확장자 명)
   // }
 
-  const data = { ..._data }
-
   // 예외처리 실행 함수
   function throwError(code, message, index = -1) {
     if (typeof(data.onerror) === 'function') {
@@ -356,7 +354,7 @@ export default function(_data = {}, onstop) {
   }
 
   // 실행 중지 요청처리
-  if (typeof(_data) === 'string' && _data.toLowerCase() === 'stop') {
+  if (typeof(data) === 'string' && data.toLowerCase() === 'stop') {
     imageMinifyClient.stop(onstop)
     return
   }
@@ -449,3 +447,5 @@ export default function(_data = {}, onstop) {
   // 값을 복사하여 미연에 객체 참조값에 의한 오작동을 방지한다
   imageMinifyClient.run( data )
 }
+
+export default param => minifier({...param})
