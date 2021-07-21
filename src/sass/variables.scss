@@ -1,0 +1,19 @@
+@import '~vuetify/src/styles/settings/_variables.scss';
+
+// global
+$container-max-widths: (
+  'md': map-get($grid-breakpoints, 'md') * 0.9375,
+  'lg': map-get($grid-breakpoints, 'md') * 0.9375,
+  'xl': map-get($grid-breakpoints, 'md') * 0.9375
+);
+
+// color
+$light-green: (
+  'base': #69A88D,
+);
+$green: (
+  'base': #176560,
+);
+
+// v-toolbar
+$toolbar-content-padding-x: 0px !default;
