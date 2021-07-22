@@ -3,7 +3,9 @@
     @click="handlerZoneClick"
     @drop.prevent="handlerDrop"
     @dragover.prevent="handlerDragover"
+    @dragleave="handlerDragleave"
     id="drop-zone-box"
+    ref="dropZoneBox"
     class="mx-auto rounded-lg"
     color="light-green"
     width="480"
@@ -41,22 +43,49 @@ export default {
     // 드랍존 클릭 핸들러
     handlerZoneClick() {
       const el = this.$refs.input
+
       el && el.click()
     },
 
     // 드롭 이벤트 핸들러
-    handlerDrop() {
-      console.log('handlerDrop')
+    handlerDrop(event) {
+      const files = event.dataTransfer.files
+
+      this.insertInputFileList(files)
     },
 
     // 드레그 오버 이벤트 핸들러
     handlerDragover() {
-      console.log('handlerDragover')
+      this.$refs.dropZoneBox.$el.classList.add('c-dragover')
+    },
+
+    // 드레그 리브 이벤트 핸들러
+    handlerDragleave() {
+      this.$refs.dropZoneBox.$el.classList.remove('c-dragover')
     },
 
     // 인풋 체인지 핸들러
     handlerChange(event) {
-      console.log(event)
+      const files = event.target.files
+
+      this.insertInputFileList(files)
+    },
+
+    // 파일리스트 인서트
+    insertInputFileList(fileList) {
+      const length = fileList.length
+
+      if (length) {
+        const arrList = []
+        let i = 0
+
+        while (i < length) {
+          arrList[i] = fileList[i]
+          i += 1
+        }
+
+        this.$emit('insertInputFileList', fileList, arrList)
+      }
     }
   }
 }
@@ -70,6 +99,7 @@ export default {
   cursor: pointer
   opacity: .75
   transition: opacity 250ms
+  user-select: none
   .c-border-dash
     position: absolute
     top: 1rem
@@ -78,6 +108,6 @@ export default {
     bottom: 1rem
     width: auto
     border: thick dashed map-get($green, 'base')
-#drop-zone-box:hover
+#drop-zone-box.c-dragover
   opacity: 1
 </style>
