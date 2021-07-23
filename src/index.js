@@ -448,4 +448,7 @@ function minifier(data = {}, onstop) {
   imageMinifyClient.run( data )
 }
 
-export default param => minifier({...param})
+export default (param, callback) => {
+  typeof(param) === 'string' ? minifier(param, callback) : minifier({...param})
+  return
+}
