@@ -117,33 +117,45 @@ class ImageMinifyClient {
 
     // 원본 이미지 가로/세로 비율
     const ratio = this.#image.naturalWidth / this.#image.naturalHeight
-
+//0.9471598414795244
     // 원본 이미지 사이즈 정보 객체
     const oSize = {
       width: this.#image.naturalWidth,
       height: this.#image.naturalHeight
     }
 
+    // 입력된 리사이징 값 있는지 여부
+    const dataSize = {
+      width: this.data.width,
+      height: this.data.height
+    }
+
     // 리사이징 정보 객체
     const resize = {
-      width: this.data.width === undefined ?
-        oSize.width : this.data.width,
-      height: this.data.height === undefined ?
-        oSize.height : this.data.height
+      width: dataSize.width ?
+        this.data.width : oSize.width,
+      height: dataSize.height ?
+        this.data.height : oSize.height
     }
 
     // 리사이징이 필요할 경우 contain 타입으로 리사이징 값 재계산
     {
       // 원본사이즈 가로가 리사이징 가로보다 클 경우
       if (oSize.width > resize.width) {
-        resize.height = Math.floor(resize.width / ratio)
+        const height = Math.floor(resize.width / ratio)
+
+        resize.height = resize.height > height ?
+          height : resize.height
       }
+      // 입력값이 있고,
+      // 리사이징 값보다 입력값이 작고,
       // 원본사이즈 세로가 리사이징 세로보다 클 경우
-      if (oSize.height > resize.height) {
-        resize.width = Math.floor(resize.height * ratio)
+      if (dataSize.height && oSize.height > dataSize.height) {
+        const width = Math.ceil(dataSize.height * ratio)
+
+        resize.width = resize.width > width ?
+          width : resize.width
       }
-      // 리사이징 사이즈를 원본 이미지 비율에 맞게 수정
-      resize.height = Math.floor(resize.width / ratio)
     }
 
     // 브라우저가 허용 가능한 켄버스 크기 정보 객체

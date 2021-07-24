@@ -11,6 +11,10 @@
 
 켄버스 API를 사용합니다. [링크](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob)
 
+## 대모 웹사이트
+
+[imageMinify](https://imageminify.com/)
+
 ## 장점
 
 - 사용이 쉬움 :)

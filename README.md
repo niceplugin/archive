@@ -11,6 +11,10 @@ It was created to reduce bandwidth and server CPU load. :)
 
 It use the Canvas API. [link](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob)
 
+## Demo website
+
+[imageMinify](https://imageminify.com/)
+
 ## Advantages
 
 - Easy to use :)
