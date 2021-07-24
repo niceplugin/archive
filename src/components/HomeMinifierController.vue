@@ -223,7 +223,7 @@ export default {
 
   data: () => ({
     // 상세 옵션 표시
-    showOptions: true,
+    showOptions: false,
 
     // 사용중인 상세 옵션
     active: {
