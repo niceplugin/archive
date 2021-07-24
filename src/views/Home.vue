@@ -11,7 +11,9 @@
       @changeOutputType="changeOutputType"
       @minifierStop="minifierStop"
       @downloadAll="downloadAll"
+      @downloadOne="downloadOne"
       :isWorking="!!workList.length"
+      :hasResult="hasResult"
       :stopping="stopping"
       :enabledAllDownload="enabledAllDownload"
       :allDownloading="allDownloading"
@@ -19,6 +21,14 @@
 
     <!--  아이템 리스트  -->
     <home-image-minified-list
+      :inputFileList="inputFileList"
+      :outputFileList="outputFileList"
+    />
+
+    <!--  아이템 리스트  -->
+    <home-image-minified-result
+      :isWorking="!!workList.length"
+      :hasResult="hasResult"
       :inputFileList="inputFileList"
       :outputFileList="outputFileList"
     />
@@ -33,6 +43,7 @@
 import HomeDropZone from "../components/HomeDropZone"
 import HomeMinifierController from "../components/HomeMinifierController"
 import HomeImageMinifiedList from "../components/HomeImageMinifiedList"
+import HomeImageMinifiedResult from "../components/HomImageMinifiedResult"
 import HomeArticle from "../components/HomeArticle"
 import JSZip from "jszip"
 
@@ -43,6 +54,7 @@ export default {
     HomeDropZone,
     HomeMinifierController,
     HomeImageMinifiedList,
+    HomeImageMinifiedResult,
     HomeArticle
   },
 
@@ -73,6 +85,11 @@ export default {
       const many = this.outputFileList.filter(file => file).length > 1
 
       return notWorking && many
+    },
+
+    // 다운로드 할 유효한 결과값이 있는지
+    hasResult() {
+      return this.outputFileList.filter(file => file).length > 0
     }
   },
 
@@ -112,6 +129,24 @@ export default {
       this.imageMinifier('stop', this.onstop)
     },
 
+    // 단일 다운로드
+    downloadOne() {
+      const file = this.outputFileList.find(file => file)
+
+      // 파일이 유효하지 않으면 리턴
+      if (!file) { return }
+      let a = document.createElement('a')
+      const base64 = URL.createObjectURL(file)
+
+      a.href = base64
+      a.download = file.name
+      a.target = '_blank'
+
+      a.click()
+      a = null
+
+    },
+
     // 전체 다운로드
     downloadAll() {
       const it = this
@@ -124,8 +159,6 @@ export default {
         let i = 1
         let name = file.name.replace(/\.[^.]+$/i, '')
         const type = file.name.replace(name, '')
-
-        console.log(name, type)
 
         if (added.indexOf(name) > -1) {
           while (added.indexOf(`${name}(${i})`) > -1) { i++ }

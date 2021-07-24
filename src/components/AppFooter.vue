@@ -5,14 +5,15 @@
   >
     <v-container>
       <v-row>
-        <v-col class="text-center black--text">
+        <v-col class="px-0 text-center black--text">
           <span>Copyright {{ years }}.</span>
+          <br v-if="BP.xsOnly">
           <v-btn
-            class="text-capitalize"
+            class="text-capitalize px-2"
             href="mailto:receive_only@imageminify.com"
             text
           >imageMinify.com</v-btn>
-          <span>all rights reserved</span>
+          <span>all rights reserved.</span>
         </v-col>
       </v-row>
     </v-container>

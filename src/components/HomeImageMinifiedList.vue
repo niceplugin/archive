@@ -2,7 +2,7 @@
   <v-list>
     <v-list-item
       v-for="(file, index) in inputFileList"
-      class="justify-space-between c-after-none c-list-item"
+      class="justify-space-between blue-grey lighten-5 c-after-none c-list-item"
       :key="`file-list-${index}`"
     >
 
@@ -15,7 +15,7 @@
       <v-list-item-content class="pa-0 flex-grow-1 flex-shrink-0 c-content-progress body-2">
         <v-row class="mx-0">
           <v-col class="py-0 d-flex align-center justify-end flex-grow-0 c-file-size">
-            <span>{{ size(file.size) }}</span>
+            <span>{{ sizeToString(file.size) }}</span>
           </v-col>
           <v-col class="flex-grow-1 flex-shrink-0 px-0">
             <v-progress-linear
@@ -30,7 +30,7 @@
           </v-col>
           <v-col class="py-0 d-flex align-center justify-start flex-grow-0 c-file-size">
             <span  v-if="outputFileList[index]">
-              {{ size(outputFileList[index].size) }}
+              {{ sizeToString(outputFileList[index].size) }}
             </span>
           </v-col>
         </v-row>
@@ -96,19 +96,6 @@ export default {
           'fail' : 'wait'
     },
 
-    // 파일 사이즈
-    size(value) {
-      const type = [ 'byte', 'KB', 'MB', 'GB' ]
-      let i = 0
-
-      while (value > 999) {
-        value /= 1024
-        i++
-      }
-
-      return `${+value.toFixed(1)} ${type[i]}`
-    },
-
     // 압축된 용량 비율
     efficiency(index) {
       // 결과가 없을 경우 빈값으로 리턴
@@ -162,7 +149,6 @@ export default {
     @media (max-width: 639px)
       display: none !important
 .c-list-item
-  background-color: #ECEFF1
   border-radius: 8px
   cursor: default
   user-select: none

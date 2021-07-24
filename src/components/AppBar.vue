@@ -2,20 +2,31 @@
   <v-app-bar
     class="px-0"
     color="light-green"
-    elevate-on-scroll
+    height="64"
+    max-height="64"
     dark
-    app
+    flat
   >
-    <v-container class="pl-1">
+    <v-container class="d-flex align-center pl-1">
 
       <v-img
         class="shrink mr-2"
         alt="Image Minify Website Logo"
-        :width="$vuetify.breakpoint.width >= 960 ? 222 : 194"
-        :height="$vuetify.breakpoint.height >= 960 ? 64 : 56"
+        :width="222"
+        :height="64"
         :src="require('../assets/logo.svg')"
         contain
       />
+
+      <v-spacer/>
+
+      <v-btn
+        href="https://github.com/niceplugin/image-minify-client"
+        target="_blank"
+        icon
+      >
+        <v-icon>mdi-github</v-icon>
+      </v-btn>
 
     </v-container>
   </v-app-bar>

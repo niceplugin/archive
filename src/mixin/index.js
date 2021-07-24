@@ -7,6 +7,7 @@ Vue.mixin({
       return this.$vuetify.breakpoint
     }
   },
+
   methods: {
     imageMinifier,
 
@@ -31,6 +32,19 @@ Vue.mixin({
       })
       this.workList = []
       this.stopping = false
-    }
+    },
+
+    // 파일 사이즈
+    sizeToString(value) {
+      const type = [ 'byte', 'KB', 'MB', 'GB' ]
+      let i = 0
+
+      while (value > 999) {
+        value /= 1024
+        i++
+      }
+
+      return `${+value.toFixed(1)} ${type[i]}`
+    },
   }
 })

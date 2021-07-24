@@ -47,8 +47,8 @@
 
       <!--  전체 다운로드  -->
       <v-btn
-        v-if="enabledAllDownload"
-        @click="$emit('downloadAll')"
+        v-if="hasResult"
+        @click="enabledAllDownload ? $emit('downloadAll') : $emit('downloadOne')"
         class="mt-5 text-capitalize"
         elevation="0"
         color="light-blue"
@@ -59,7 +59,7 @@
       >
         <template slot="default">
           <v-icon class="ml-n4 mr-2">mdi-cloud-download-outline</v-icon>
-          Download All
+          {{ downloadText }}
         </template>
         <template slot="loader">
           <v-progress-circular
@@ -67,7 +67,7 @@
             size="24"
             indeterminate
           />
-          Download All
+          {{ downloadText }}
         </template>
       </v-btn>
     </v-card-title>
@@ -95,6 +95,10 @@ export default {
       type: Boolean,
       default: false
     },
+    hasResult: {
+      type: Boolean,
+      default: false
+    },
   },
 
   data: () => ({
@@ -106,7 +110,13 @@ export default {
 
     // 선택된 출력 포맷
     outputType: 'jpeg'
-  })
+  }),
+
+  computed: {
+    downloadText() {
+      return this.enabledAllDownload ? 'Download All' : 'Download One'
+    }
+  }
 }
 </script>
 
