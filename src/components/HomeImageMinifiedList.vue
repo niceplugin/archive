@@ -1,61 +1,56 @@
 <template>
   <v-list>
     <v-list-item
-      v-for="i in 5"
-      class="py-0 justify-space-between c-after-none"
-      :key="`test-${i}`"
+      v-for="(file, index) in inputFileList"
+      class="justify-space-between c-after-none c-list-item"
+      :key="`file-list-${index}`"
     >
 
       <!--  파일명  -->
-      <v-list-item-content class="text-truncate flex-grow-0 flex-shrink-1 c-content-file-name">
-        undefined.png
+      <v-list-item-content class="pa-0 text-truncate flex-grow-0 flex-shrink-1 c-content-file-name">
+        {{ file.name }}
       </v-list-item-content>
 
       <!--  프로그레시브  -->
-      <v-list-item-content class=" flex-grow-1 flex-shrink-0 c-content-progress body-2">
+      <v-list-item-content class="pa-0 flex-grow-1 flex-shrink-0 c-content-progress body-2">
         <v-row class="mx-0">
-          <v-col class="d-flex align-center justify-end flex-grow-0 c-file-size">
-            <span>00.0 MB</span>
+          <v-col class="py-0 d-flex align-center justify-end flex-grow-0 c-file-size">
+            <span>{{ size(file.size) }}</span>
           </v-col>
           <v-col class="flex-grow-1 flex-shrink-0 px-0">
             <v-progress-linear
               class="rounded-lg"
               height="24"
-              color="light-green"
-              indeterminate
+              :value="value(index)"
+              :color="color(index)"
+              :indeterminate="file === undefined"
             >
-              <strong>text</strong>
+              <strong>{{ state(index) }}</strong>
             </v-progress-linear>
           </v-col>
-          <v-col class="d-flex align-center justify-start flex-grow-0 c-file-size">
-            00.0 MB
+          <v-col class="py-0 d-flex align-center justify-start flex-grow-0 c-file-size">
+            <span  v-if="outputFileList[index]">
+              {{ size(outputFileList[index].size) }}
+            </span>
           </v-col>
         </v-row>
       </v-list-item-content>
 
       <!--  결과  -->
       <v-list-item-content class="py-0 pr-2  flex-grow-0 flex-shrink-1 flex-row justify-end c-content-result">
-        <template v-if="true">
+        <template v-if="outputFileList[index]">
           <v-btn
-            v-if="BP.smAndUp"
-            @click.stop=""
-            class="text-lowercase text-decoration-underline c-contents"
+            @click="downloadOne(index)"
+            :class="`c-contents${BP.smAndUp ? ' text-lowercase text-decoration-underline' : ''}`"
             small
-            text
+            :text="BP.smAndUp"
+            :icon="!BP.smAndUp"
           >
-            <span>download</span>
+            <span v-if="BP.smAndUp">download</span>
+            <v-icon v-else>mdi-download</v-icon>
           </v-btn>
-          <v-btn
-            v-else
-            @click.stop=""
-            class="mr-2 c-contents"
-            small
-            icon
-          >
-            <v-icon>mdi-download</v-icon>
-          </v-btn>
-          <div class="mr-n2 text-right c-contents c-result-percent">
-            -00%
+          <div class="mr-n2 body-2 text-right c-contents c-result-percent">
+            <span>{{ efficiency(index) }}</span>
           </div>
         </template>
       </v-list-item-content>
@@ -79,13 +74,63 @@ export default {
     }
   },
 
-  mounted() {
-    console.log(this.inputFileList)
-  },
+  methods: {
+    // 프로그래시브 컬러
+    color(index) {
+      return this.outputFileList[index] ?
+        'light-green' : this.outputFileList[index] === false ?
+          'orange' : 'blue-grey'
+    },
 
-  watch: {
-    inputFileList(cur, old) {
-      console.log(cur, old)
+    // 프로그래시브 진행률
+    value(index) {
+      const result = this.outputFileList[index]
+      return result || result === false ?
+        100 : 0
+    },
+
+    // 파일 진행 상태
+    state(index) {
+      return this.outputFileList[index] ?
+        'success' : this.outputFileList[index] === false ?
+          'fail' : 'wait'
+    },
+
+    // 파일 사이즈
+    size(value) {
+      const type = [ 'byte', 'KB', 'MB', 'GB' ]
+      let i = 0
+
+      while (value > 999) {
+        value /= 1024
+        i++
+      }
+
+      return `${+value.toFixed(1)} ${type[i]}`
+    },
+
+    // 압축된 용량 비율
+    efficiency(index) {
+      // 결과가 없을 경우 빈값으로 리턴
+      if (!this.outputFileList[index]) { return '' }
+
+      const a = this.inputFileList[index].size
+      const b = this.outputFileList[index].size - a
+
+      return `${Math.floor(b / a * 100)} %`
+    },
+
+    // 단일 파일 다운로드
+    downloadOne(index) {
+      let a = document.createElement('a')
+      const base64 = URL.createObjectURL(this.outputFileList[index])
+
+      a.href = base64
+      a.download = this.outputFileList[index].name
+      a.target = '_blank'
+
+      a.click()
+      a = null
     }
   }
 }
@@ -116,6 +161,13 @@ export default {
     min-width: 96px
     @media (max-width: 639px)
       display: none !important
-
-
+.c-list-item
+  background-color: #ECEFF1
+  border-radius: 8px
+  cursor: default
+  user-select: none
+  &:hover
+    background-color: #CFD8DC
+  &:not(:last-child)
+    margin-bottom: 8px
 </style>

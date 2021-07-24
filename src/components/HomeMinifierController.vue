@@ -5,6 +5,8 @@
     flat
   >
     <v-card-title>
+
+      <!--  아웃풋 확장자 설정  -->
       <v-select
         @change="$emit('changeOutputType', outputType)"
         v-model="outputType"
@@ -12,9 +14,62 @@
         color="green"
         item-color="green"
         :items="items"
+        :disabled="isWorking"
         hide-details
         outlined
-      ></v-select>
+      />
+
+      <!--  정지  -->
+      <v-btn
+        v-if="isWorking"
+        @click="$emit('minifierStop')"
+        class="mt-5 text-capitalize"
+        elevation="0"
+        color="red"
+        :loading="stopping"
+        x-large
+        block
+        dark
+      >
+        <template slot="default">
+          <v-icon class="ml-n4 mr-2">mdi-stop-circle-outline</v-icon>
+          STOP
+        </template>
+        <template slot="loader">
+          <v-progress-circular
+            class="ml-n4 mr-2"
+            size="24"
+            indeterminate
+          />
+          Stopping
+        </template>
+      </v-btn>
+
+      <!--  전체 다운로드  -->
+      <v-btn
+        v-if="enabledAllDownload"
+        @click="$emit('downloadAll')"
+        class="mt-5 text-capitalize"
+        elevation="0"
+        color="light-blue"
+        :loading="allDownloading"
+        x-large
+        block
+        dark
+      >
+        <template slot="default">
+          <v-icon class="ml-n4 mr-2">mdi-cloud-download-outline</v-icon>
+          Download All
+        </template>
+        <template slot="loader">
+          <v-progress-circular
+            class="ml-n4 mr-2"
+            size="24"
+            indeterminate
+          />
+          Download All
+        </template>
+      </v-btn>
     </v-card-title>
   </v-card>
 </template>
@@ -22,6 +77,25 @@
 <script>
 export default {
   name: "HomeMinifierController",
+
+  props: {
+    isWorking: {
+      type: Boolean,
+      default: false
+    },
+    stopping: {
+      type: Boolean,
+      default: false
+    },
+    enabledAllDownload: {
+      type: Boolean,
+      default: false
+    },
+    allDownloading: {
+      type: Boolean,
+      default: false
+    },
+  },
 
   data: () => ({
     // 지원되는 출력 포멧

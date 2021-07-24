@@ -6,7 +6,7 @@
     @dragleave="handlerDragleave"
     id="drop-zone-box"
     ref="dropZoneBox"
-    class="mx-auto rounded-lg"
+    class="mx-auto my-4 rounded-lg"
     color="light-green"
     width="480"
     height="270"
