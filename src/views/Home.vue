@@ -117,8 +117,6 @@ export default {
           ...this.options
         }
 
-        console.log('options: ', this.options)
-
         this.imageMinifier(data)
       }
 
@@ -190,9 +188,11 @@ export default {
 
           a.click()
           a = null
-
-          it.allDownloading = false
-        }, error => console.log('zip error: ', error))
+        }, error => {
+          console.log('zip error: ', error)
+          alert('Failed to convert files to .zip.')
+        })
+        .finally(() => it.allDownloading = false )
     }
   },
 }

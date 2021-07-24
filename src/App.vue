@@ -19,6 +19,11 @@ import AppFooter from "./components/AppFooter"
 export default {
   name: 'App',
 
+  created() {
+    document.addEventListener( 'drop', eve => eve.preventDefault() )
+    document.addEventListener( 'dragover', eve => eve.preventDefault() )
+  },
+
   components: {
     AppBar,
     AppFooter
