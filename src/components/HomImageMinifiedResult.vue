@@ -1,7 +1,7 @@
 <template>
   <v-card
     v-if="!isWorking && hasResult"
-    class="mx-auto"
+    class="mx-auto mt-3"
     width="238"
     outlined
     flat
@@ -74,7 +74,7 @@ export default {
     efficiency(a, c) {
       if (!a) { return '0 %' }
 
-      const b = c - a
+      const b = a - c
 
       return `${Math.floor(b / a * 100)}%`
     },

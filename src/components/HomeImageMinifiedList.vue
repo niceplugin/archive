@@ -1,13 +1,16 @@
 <template>
-  <v-list>
+  <v-list
+    v-if="inputFileList.length"
+    class="pa-3 c-outline"
+  >
     <v-list-item
       v-for="(file, index) in inputFileList"
-      class="justify-space-between blue-grey lighten-5 c-after-none c-list-item"
+      class="px-3 justify-space-between blue-grey lighten-5 c-after-none c-list-item"
       :key="`file-list-${index}`"
     >
 
       <!--  파일명  -->
-      <v-list-item-content class="pa-0 text-truncate flex-grow-0 flex-shrink-1 c-content-file-name">
+      <v-list-item-content class="pa-0 pr-3 text-truncate flex-grow-0 flex-shrink-1 c-content-file-name">
         {{ file.name }}
       </v-list-item-content>
 
@@ -156,4 +159,7 @@ export default {
     background-color: #CFD8DC
   &:not(:last-child)
     margin-bottom: 8px
+.c-outline
+  margin-top: 1px
+  outline: thin dotted
 </style>

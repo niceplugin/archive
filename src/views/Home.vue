@@ -8,7 +8,7 @@
 
     <!--  압축기 컨트롤러  -->
     <home-minifier-controller
-      @changeOutputType="changeOutputType"
+      @changeOptions="changeOptions"
       @minifierStop="minifierStop"
       @downloadAll="downloadAll"
       @downloadOne="downloadOne"
@@ -17,6 +17,8 @@
       :stopping="stopping"
       :enabledAllDownload="enabledAllDownload"
       :allDownloading="allDownloading"
+      :showButtonGroup="!!inputFileList.length"
+      :_options="options"
     />
 
     <!--  아이템 리스트  -->
@@ -68,8 +70,14 @@ export default {
     // 아웃풋 파일리스트
     outputFileList: [],
 
-    // 아웃풋 포멧
-    outputType: 'jpeg',
+    // 옵션
+    options: {
+      // 아웃풋 포멧
+      outputType: 'jpeg',
+      width: undefined,
+      height: undefined,
+      quality: undefined
+    },
 
     // 상태: 작동 중지를 시도하는 중
     stopping: false,
@@ -106,8 +114,10 @@ export default {
           onsuccess: this.onsuccess,
           onerror: this.onerror,
           onended: this.onended,
-          outputType: this.outputType
+          ...this.options
         }
+
+        console.log('options: ', this.options)
 
         this.imageMinifier(data)
       }
@@ -116,8 +126,8 @@ export default {
     },
 
     // 아웃풋 타입 체인지
-    changeOutputType(type) {
-      this.outputType = type
+    changeOptions(doc) {
+      this.options = { ...this.options, ...doc}
       this.workList = []
       this.inputFileList = []
       this.outputFileList = []
