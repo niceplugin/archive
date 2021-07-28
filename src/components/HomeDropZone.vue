@@ -39,6 +39,28 @@
 export default {
   name: "HomeDropZone",
 
+  props: {
+    options: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+
+  watch: {
+    options() {
+      // 옵션이 변경되면 인풋 파일리스트를 초기화 한다.
+      // 이 로직이 없을경우 예를들어
+      // a.png 를 jpeg 로 변경했고
+      // 옵션을 변경 후 시각적으로 업로드 리스트는 초기화 됬지만
+      // 인풋.벨류 를 초기화 하지 않을 경우
+      // a.png 를 다시 업로드 할 경우
+      // 이미 동일 파일이 인풋 파일리스트에 있으므로 업데이트 되지 않는다.
+      // 이것은 사용자가 웹페이지가 동작하지 않는다고 생각할 수 있다
+      // 따라서 이러한 악성 UX를 해결하기 위해 초기화 로직을 넣는다
+      this.$refs.input.value = ''
+    }
+  },
+
   methods: {
     // 드랍존 클릭 핸들러
     handlerZoneClick() {

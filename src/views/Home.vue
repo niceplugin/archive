@@ -4,6 +4,7 @@
     <!--  드랍존  -->
     <home-drop-zone
       @insertInputFileList="insertInputFileList"
+      :options="options"
     />
 
     <!--  압축기 컨트롤러  -->
