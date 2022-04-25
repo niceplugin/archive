@@ -1,15 +1,15 @@
-const path = require('path');
+// const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.js',
+  // entry: './src/index.js',
 
   // 웹팩 빌드시 어디에 어떻게 출력물을 만들지 설정
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'commonjs2'
-  },
+  // output: {
+  //   filename: 'main.js',
+  //   path: path.resolve(__dirname, 'dist'),
+  //   libraryTarget: 'commonjs2'
+  // },
   // output: {
   //   filename: 'imageMinifyClient.js',
   //   path: path.resolve(__dirname, 'dist'),

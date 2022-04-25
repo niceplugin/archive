@@ -2,7 +2,7 @@
   "name": "image-minify-client",
   "version": "0.1.4",
   "description": "JavaScript module for running image optimization in web browser.",
-  "main": "./dist/main.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
@@ -34,6 +34,7 @@
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.7",
     "babel-loader": "^8.2.2",
+    "typescript": "^4.6.3",
     "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2"
   }
