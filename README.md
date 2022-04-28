@@ -5,202 +5,122 @@
 
 # Image Minify Client
 
-**Image Minify Client** is an image compression library that is easy to use in your browser.
+**Image Minify Client** scales down by removing metadata from the browser and adjusting quality using canvas APIs.
 
 It was created to reduce bandwidth and server CPU load. :)
-
-It use the Canvas API. [link](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob)
 
 ## Demo website
 
 [imageMinify](https://imageminify.com/)
 
-## Advantages
+## Note
 
-- Easy to use :)
-- Can request multiple image minify at once
-- Resizing possible (maintain original image ratio, if original size is smaller then keep original size)
-
-## Limitations
-
-- Not support Internet Explorer
 - Support input type only `bmp`, `png`, `gif`, `jpeg`, `webp`
 - Support output type only `jpeg` and `webp`
-- `image/png` type loses transparency if it has transparency
-- `image/gif` type loses animation if it has animation
+- Loses animation if it has animation
 
 ## Install
-
-### CDN
-
-```html
-<script src="https://unpkg.com/image-minify-client/dist/imageMinifyClient.js"></script>
-```
-Use in JavaScript files after installation:
-```js
-imageMinifyClient( /* Object defining working */ )
-```
-
-### NPM
 
 ```shell
 npm install image-minify-client
 ```
-Use in JavaScript files after installation:
-```js
-import imageMinifyClient from "image-minify-client"
-imageMinifyClient( /* Object defining working */ )
-```
-
-* * *
-
-# How to use
 
 ## Quickstart example code
 
 ```html
 <img id="img" src="">
-<input id="input" type="file" multiple>
+<input id="input" type="file">
+```
 
-<script src="https://unpkg.com/image-minify-client/dist/imageMinifyClient.js"></script>
-<script >
-  const img = document.getElementById('img')
-  const input = document.getElementById('input')
+```js
+import imc from "image-minify-client"
 
-  input.addEventListener('change', event => {
-    const files = event.target.files // This is FileList
+const img = document.getElementById('img')
+const input = document.getElementById('input')
 
-    imageMinifyClient({
-      files,
-      onsuccess: result => {
-        const imageFile = result.file
-        const base64 = URL.createObjectURL(imageFile)
-        
-        img.src = base64
-      }
-    })
+imc.init()
+
+input.addEventListener('change', event => {
+  const file = event.target.files[0]
+  
+  if (!file) { return }
+
+  imc.minify(file).then(rslt => {
+    const newFile = rslt[0]
+    const oldFile = rslt[1]
+
+    img.src = URL.createObjectURL(newFile)
+
+    console.log(newFile, oldFile)
   })
-</script>
+})
 ```
 
-## Run image minify
+## Methods
 
-To run images minify, you just set to pass an object as a parameter.
+### init()
 
-### Syntax
+#### Description
+
+Initialize the module. If the module is used without initialization, an error is returned.
+
+#### Return
+
+- `true` : If the module init is successful or has already been.
+- `false` : If the module cannot be init.
+
+#### Syntax
 
 ```js
-const data = {
-  // required
-  files: FileList,
-  onsuccess: Function,
-
-  // options
-  onerror: Function,
-  onended: Function,
-  width: Number,
-  height: Number,
-  quality: Number,
-  outputType: String
-}
-
-imageMinifyClient( data )
+import imc from "image-minify-client"
+imc.init()
 ```
 
-### Parameters
+### minify(File[, options])
 
-#### `files` (Required - FileList)
+#### Description
 
-`FileList` means a list of files uploaded with `<input type="file">`.
-It's not difficult!
+Attempt to reduce the image file size.
 
-**Quickstart example code** makes it easy to see what `FileList` is.
+#### Parameter
 
-#### `onsuccess` (Required - Function)
+- `File` : Require. Image object of file type.
+- `options` : Optional.
+    - quality : (default: `0.8`) Number in the `0` < value <= `1` range.
+    - maxWidth : (default: `undefined`) Greater then `0`. If the width of the image is greater than maxWidth, the width is adjusted to maxWidth while maintaining the proportions.
+    - maxHeight : (default: `undefined`) Greater then `0`. If the height of the image is greater than maxHeight, the height is adjusted to maxHeight while maintaining the proportions.
+    - outputType : (default: `jpeg`) String `jpeg` | `webp`
 
-This is a callback function that is called whenever one image file minified in `FileList`.
-If there are total 5 images files in `FileList`, it is called 5 times.
-The callback function passes an object as an argument.
+#### Return
+
+Since this method is asynchronous, it returns a `promise`. In case of `resolve`, an array of `File` objects is returned as shown below.
+
+`[ newFile , oldFile ]`
+
+#### Syntax
 
 ```js
-// onsuccess callback function
-function success(result) {
-  // result === { file, index }
-
-  const file = result.file // minified image file
-  const index = result.index // Index pointing to source file inside FileList
-
-  const base64 = URL.createObjectURL(file) // If you need base64 data
-}
+imc.minify(File, {
+  quality: 0.75,
+  maxHeight: 300,
+  outputType: 'webp'
+}).then(result => {
+  console.log('Before minify file: ', result[1])
+  console.log('After minify file: ', result[0])
+})
 ```
+#### error
 
-#### `onerror` (Options - Function)
+If an error occurs during operation, an object such as `{ code: number, message: string }` is returned as an error. Even with the same error code, the message may be different. Details are as follows.
 
-This is a callback function that is called whenever one image file fails to minified in `FileList`.
-If the `FileList` length is 5 and one file among them is `*.txt`, the error callback is called once.
-The callback function passes an object as an argument.
-
-```js
-// onerror callback function
-function onerror(error) {
-  // result === { index, code, message }
-
-  // error code (error type)
-  //   0: Module not supported
-  //   1: Parameter is invalid
-  //   2: File is invalid
-  //   3: Runtime error
-
-  const index = error.index // Index pointing to source file where error in the FileList
-  const code = error.code
-  const message = error.message
-}
-```
-
-#### `onended` (Options - Function)
-
-Callback function that is called after worked with all image files in `FileList`.
-No arguments pass to callback function.
-
-#### `width`, `height` (Options - Number)
-
-The size to resize when minifying the image.
-If the image size is smaller than the input value, the original size is maintained.
-When resizing, the original image ratio (horizontal:vertical) is maintained.
-
-- Default: `undefined`
-- Minimum: `1`
-- Maximum: Maximum horizontal and vertical values supported by each browser
-
-> If the size or resizing value of the original image is larger than the maximum size supported by each browser, it is automatically resized to the maximum size supported by the browser.
-
-#### `quality` (Options - Number)
-
-Set the image quality.
-
-- Default: `0.8`
-- Range: `0 < n <= 1`
-
-#### `outputType` (Options - String)
-
-Set the format of the minified result image.
-
-- Default: `jpeg`
-- Support format: `jpeg`, `webp`
-
-## Stop image minify
-
-When the module is in minifying images, it can be stopped.
-
-### Syntax
-
-```js
-const text = 'stop'
-const onstop = function() {
-  // Callback function called when module is successfully stopped
-  // Called immediately if the module is not running
-  // No arguments passed
-}
-
-imageMinifyClient( text, onstop )
-```
+| Code | Message                                       |
+|------|-----------------------------------------------|
+| 400  | The first parameter cannot be empty.          |
+| 400  | The first parameter is not a File type.       |
+| 401  | Module initialization is required.            |
+| 404  | The image could not be loaded.                |
+| 409  | The process is already running.               |
+| 412  | Failed to minify image.                       |
+| 415  | The first parameter is not a Image File type. |
+| 415  | "${ fileFormat }" format is not support       |
+| 501  | Does not support modules.                     |
