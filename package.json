@@ -1,6 +1,6 @@
 {
   "name": "image-minify-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript module for running image optimization in web browser.",
   "main": "./dist/index.js",
   "scripts": {
