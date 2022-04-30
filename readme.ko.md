@@ -28,7 +28,7 @@ npm install image-minify-client
 ## 빠른시작 예제 코드
 
 ```html
-<img id="img" src="">
+<img id="img" src="" alt="">
 <input id="input" type="file">
 ```
 
@@ -38,14 +38,12 @@ import imc from "image-minify-client"
 const img = document.getElementById('img')
 const input = document.getElementById('input')
 
-imc.init()
-
 input.addEventListener('change', event => {
   const file = event.target.files[0]
   
   if (!file) { return }
 
-  imc.minify(file).then(rslt => {
+  imc(file).then(rslt => {
     const newFile = rslt[0]
     const oldFile = rslt[1]
 
@@ -56,51 +54,37 @@ input.addEventListener('change', event => {
 })
 ```
 
-## 메서드
+## 사용법
 
-### init()
+### 문법
 
-#### 설명
-
-모듈을 초기화 합니다. 초기화하지 않고 모듈을 사용할 경우 에러를 반환합니다.
-
-#### 반환 값
-
-- `true` : 모듈 초기화에 성공하거나, 이미 초기화 한 경우.
-- `false` : 모듈을 초기화 할 수 없는 경우.
-
-#### 문법
-
-```js
-import imc from "image-minify-client"
-imc.init()
+```
+module(File[, options])
 ```
 
-### minify(File[, options])
+### 파라미터
 
-#### 설명
+#### File
 
-이미지 파일 용량 축소를 시도합니다.
+필수. File 타입의 이미지 객체.
 
-#### 파라미터
+#### options
+선택.
+- quality : (기본값: `0.8`) `0` < 값 <= `1` 범위의 숫자.
+- maxWidth : (기본값: `undefined`) `0` 보다 큰 값. 이미지의 가로가 maxWidth 보다 클 경우, 비율을 유지한 채 가로가 maxWidth로 조정됩니다.
+- maxHeight : (기본값: `undefined`) `0` 보다 큰 값. 이미지의 세로가 maxHeight 보다 클 경우, 비율을 유지한 채 세로가 maxHeight로 조정됩니다.
+- outputType : (기본값: `jpeg`) 문자열 `jpeg` | `webp`
 
-- `File` : 필수. File 타입의 이미지 객체.
-- `options` : 선택.
-    - quality : (기본값: `0.8`) `0` < 값 <= `1` 범위의 숫자.
-    - maxWidth : (기본값: `undefined`) `0` 보다 큰 값. 이미지의 가로가 maxWidth 보다 클 경우, 비율을 유지한 채 가로가 maxWidth로 조정됩니다.
-    - maxHeight : (기본값: `undefined`) `0` 보다 큰 값. 이미지의 세로가 maxHeight 보다 클 경우, 비율을 유지한 채 세로가 maxHeight로 조정됩니다.
-    - outputType : (기본값: `jpeg`) 문자열 `jpeg` | `webp`
-
-#### 반환 값
+### 반환 값
 
 이 메서드는 비동기이므로 `promise`를 반환합니다. `resolve` 일 경우 아래와 같이 `File` 객체로 이루어진 배열을 반환합니다.
 
 `[ newFile , oldFile ]`
 
-#### 문법
+### 예제
 
 ```js
-imc.minify(File, {
+imc(File, {
   quality: 0.75,
   maxHeight: 300,
   outputType: 'webp'
@@ -109,7 +93,8 @@ imc.minify(File, {
   console.log('After minify file: ', result[0])
 })
 ```
-#### error
+
+### error
 
 작업 중 에러가 발생할 경우 `{ code: number, message: string }` 과 같은 객체를 에러로 반환합니다. 같은 에러 코드라도 메시지는 다를 수 있습니다. 상세 내용은 아래와 같습니다.
 
@@ -117,10 +102,10 @@ imc.minify(File, {
 |-----|-----------------------------------------------|
 | 400 | The first parameter cannot be empty.          |
 | 400 | The first parameter is not a File type.       |
-| 401 | Module initialization is required.            |
 | 404 | The image could not be loaded.                |
 | 409 | The process is already running.               |
 | 412 | Failed to minify image.                       |
+| 413 | Image is over than the size supported.        |
 | 415 | The first parameter is not a Image File type. |
 | 415 | "${ fileFormat }" format is not support       |
 | 501 | Does not support modules.                     |

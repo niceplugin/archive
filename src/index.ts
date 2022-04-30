@@ -20,9 +20,7 @@ class ImageMinifyClient {
   #context: CanvasRenderingContext2D | null = null
   #image: HTMLImageElement | null = null
   #file: File | null = null
-  #allowableMaximumSize: number = 0 // 지원 가능한 이미지의 최대 크기
   #available: boolean = true // 모듈 사용 가능
-  #initialized: boolean = false // 모듈 초기화
   #processing: boolean = false // 모듈 작업 처리 중
   #promise: promise = { // 모듈 작업 종료 후 호출해야 하는 resolve, reject 참조 객체
     resolve: null,
@@ -84,6 +82,42 @@ class ImageMinifyClient {
     const canvasWidth: number = Math.floor(width / ratio)
     const canvasHeight: number = Math.floor(height / ratio)
 
+    let catched: boolean
+    try {
+      /* ********************************************************
+        켄버스가 지원하는 사이즈라면,
+        우하단 모서리에 빨간점을 그리고 해당 위치 색 코드를 불러올 수 있다.
+        이 과정 중 애러 발생(firefox) 또는 색 코드가 빨간색이 아니라면,
+        브라우저가 지원하는 사이즈를 넘어선 경우이다.
+      ******************************************************** */
+
+      const x: number = canvasWidth - 1
+      const y: number = canvasHeight - 1
+      canvas.width = canvasWidth
+      canvas.height = canvasHeight
+      context.fillStyle = '#ff0000'
+      context.fillRect(x, y, 1, 1)
+      const rgba: Uint8ClampedArray = context.getImageData(x, y, 1, 1).data
+      context.clearRect(x, y, canvasWidth, canvasHeight)
+
+      catched = rgba[0] !== 255
+    }
+    catch {
+      /* ********************************************************
+        지원 사이즈를 넘어선 경우,
+        켄버스의 사이즈를 조절하더라도 컨텍스트가 작동하지 않으므로
+        켄버스와 컨텍스트를 새로 생성해야 한다.
+      ******************************************************** */
+      this.#canvas = document.createElement('canvas')
+      this.#context = this.#canvas.getContext('2d')
+      catched = true
+    }
+
+    if (catched) { return this.#reject({
+      code: 413,
+      message: 'Image is over than the size supported.'
+    })}
+
     // 켄버스 크기를 출력될 이미지 크기로 조정
     canvas.width = canvasWidth
     canvas.height = canvasHeight
@@ -95,60 +129,6 @@ class ImageMinifyClient {
       outputType,
       this.#options.quality
     )
-  }
-
-  // 모듈이 지원 가능한 이미지 최대 크기 찾기
-  #findMaximumSize(): void {
-    const minimum: number = 2048 // 원활한 모듈사용을 위해 지원 가능해야 하는 최소크기
-    let maximum: number = 16384 // 예상되는 켄버스 지원가능 최대크기
-
-    /* ********************************************************
-      브라우저 내 켄버스가 지원하는 최대 사이즈는 2의 배수.
-      켄버스가 maximum 사이즈를 허용한다면,
-      우하단 모서리에 빨간점을 그리고 해당 위치 색 코드를 불러올 수 있다.
-      이 과정 중 애러 발생(firefox) 또는 색 코드가 빨간색이 아니라면,
-      브라우저가 지원하는 사이즈를 넘어선 경우이다.
-      지원 사이즈를 넘어선 경우,
-      켄버스의 사이즈를 조절하더라도 컨텍스트가 작동하지 않으므로
-      켄버스와 컨텍스트를 새로 생성해야 한다.
-    ******************************************************** */
-
-    while (maximum >= minimum) {
-      const position: number = maximum - 1 // 우하단 모서리 좌표 값
-
-      try {
-        // @ts-ignore
-        this.#canvas.width = this.#canvas.height = maximum
-        // @ts-ignore
-        this.#context.fillStyle = '#ff0000'
-        // @ts-ignore
-        this.#context.fillRect(position, position, 1, 1)
-        // @ts-ignore
-        const rgba: number[] = this.#context.getImageData(position, position, 1, 1).data
-        // @ts-ignore
-        this.#context.clearRect(position, position, maximum, maximum)
-
-        // 조건: 색 코드가 빨간색이 아니다
-        if (rgba[0] !== 255) { throw false }
-      }
-      catch {
-        this.#canvas = document.createElement('canvas')
-        this.#context = this.#canvas.getContext('2d')
-        maximum /= 2
-        continue
-      }
-      break
-    }
-
-    // @ts-ignore
-    this.#canvas.width = this.#canvas.height = 1
-
-    if (maximum >= minimum) {
-      this.#allowableMaximumSize = maximum
-    }
-    else {
-      this.#available = false
-    }
   }
 
   // 압축 성공 핸들러
@@ -187,23 +167,6 @@ class ImageMinifyClient {
     this.#processing = false
   }
 
-  // 모듈 초기화
-  init(): boolean {
-    // 조건: 모듈 사용 불가
-    if (!this.#available) {
-      return false
-    }
-    // 조건: 이미 초기화 됨
-    else if (this.#initialized) {
-      return this.#available
-    }
-
-    this.#findMaximumSize()
-    this.#initialized = true
-
-    return this.#available
-  }
-
   // 압축
   minify(file: File, options: options): Promise<File> {
     return new Promise<File>(function(this: ImageMinifyClient, resolve: Function, reject: Function): void {
@@ -226,11 +189,6 @@ class ImageMinifyClient {
       if (!this.#available) { error = {
         code: 501,
         message: 'Does not support modules.'
-      }}
-      // 예외: 초기화 되지 않음
-      else if (this.#processing) { error = {
-        code: 401,
-        message: 'Module initialization is required.'
       }}
       // 예외: 이미 작동중
       else if (this.#processing) { error = {
@@ -271,8 +229,6 @@ class ImageMinifyClient {
         this.#options.outputType = 'jpeg'
       }
       else {
-        const maximum: number = this.#allowableMaximumSize
-
         let quality: number = Math.abs(Number(options.quality)) || 0.8
         quality = isFinite(quality) ? quality : 0.8
         quality = quality > 1 ? 1 : quality
@@ -280,12 +236,10 @@ class ImageMinifyClient {
 
         let maxWidth: number = Math.abs(Number(options.maxWidth)) || 0
         maxWidth = isFinite(maxWidth) ? maxWidth : 0
-        maxWidth = maxWidth > maximum ? maximum : maxWidth
         this.#options.maxWidth = Math.floor(maxWidth)
 
         let maxHeight: number = Math.abs(Number(options.maxHeight)) || 0
         maxHeight = isFinite(maxHeight) ? maxHeight : 0
-        maxHeight = maxHeight > maximum ? maximum : maxHeight
         this.#options.maxHeight = Math.floor(maxHeight)
 
         this.#options.outputType =
@@ -301,4 +255,6 @@ class ImageMinifyClient {
   }
 }
 
-export default new ImageMinifyClient
+const imc = new ImageMinifyClient
+
+export default (file: File, options: options) => imc.minify(file, options)
