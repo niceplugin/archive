@@ -1,33 +1,33 @@
 <template>
   <v-footer
-    color="green"
+    color="light-green"
     dark
   >
-    <v-container>
-      <v-row>
-        <v-col class="px-0 text-center black--text">
-          <span>Copyright {{ years }}.</span>
-          <br v-if="BP.xsOnly">
-          <v-btn
-            class="text-capitalize px-2"
-            href="mailto:receive_only@imageminify.com"
-            text
-          >imageMinify.com</v-btn>
-          <span>all rights reserved.</span>
-        </v-col>
-      </v-row>
+    <v-container class="d-flex flex-wrap align-center justify-end pa-0">
+      <v-img
+        :src="require('../assets/logo.svg')"
+        alt="Image Minify Website Logo"
+        width="180"
+        height="48"
+        position="left center"
+        contain
+      />
+      <v-spacer/>
+      <v-btn
+        href="https://github.com/niceplugin/image-minify-client"
+        class="px-2 text-capitalize"
+        target="_blank"
+        text
+      >
+        <v-icon class="mr-1">mdi-github</v-icon>
+        Source on Github
+      </v-btn>
     </v-container>
   </v-footer>
 </template>
 
 <script>
 export default {
-  name: "AppFooter",
-
-  computed: {
-    years() {
-      return new Date().getUTCFullYear()
-    }
-  }
+  name: "AppFooter"
 }
 </script>
