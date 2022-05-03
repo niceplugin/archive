@@ -1,5 +1,6 @@
 <template>
   <v-container class="py-4 py-sm-8">
+    <options/>
     <upload-button/>
     <process-button/>
     <table-list/>
@@ -10,6 +11,7 @@
 </template>
 
 <script>
+import options from '@/components/Options'
 import uploadButton from '@/components/UploadButton'
 import processButton from '@/components/ProcessButton'
 import tableList from '@/components/TableList'
@@ -20,6 +22,7 @@ export default {
   name: 'Main',
 
   components: {
+    options,
     uploadButton,
     processButton,
     tableList,

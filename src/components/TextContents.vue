@@ -1,5 +1,5 @@
 <template>
-  <div class="px-0 px-sm-16">
+  <div class="content-wrap">
     <div v-if="!$store.state.resultList.length" class="text-center">
       <h1 class="text-h2 font-weight-bold my-4 mt-md-8 text-decoration-underline">
         Image Minify
@@ -54,6 +54,10 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.content-wrap
+  max-width: 720px
+  margin: auto
+  padding: 0 1rem
 section
   display: grid
   grid-template-columns: 1fr 1fr

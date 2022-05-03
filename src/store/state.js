@@ -4,7 +4,7 @@ export default {
 
   options: {
     quality: 0.75,
-    maxWidth:0,
+    maxWidth: 0,
     maxHeight: 0,
     outputType: 'jpeg'
   },

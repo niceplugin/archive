@@ -130,8 +130,9 @@ export default {
     howMuchSave(data) {
       const oldSize = data.oldFile.size
       const newSize = data.newFile.size - oldSize
+      const saved = newSize / oldSize * 100
 
-      return `${ Math.floor(newSize / oldSize * 100) } %`
+      return `${ saved > 0 ? Math.floor(saved) : Math.ceil(saved) } %`
     },
 
     continueMinify() {

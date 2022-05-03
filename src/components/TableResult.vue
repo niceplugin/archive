@@ -33,8 +33,9 @@ export default {
     savedText() {
       const oldSize = this.totalSize('old')
       const newSize = this.totalSize('new') - oldSize
+      const saved = newSize / oldSize * 100
 
-      return `${ Math.floor(newSize / oldSize * 100) } %`
+      return `${ saved > 0 ? Math.floor(saved) : Math.ceil(saved) } %`
     },
 
     footerText() {
@@ -88,7 +89,6 @@ export default {
   align-items: center
   justify-content: center
   .main-content
-    display: flex
     align-items: end
     padding: 4px 0
 </style>
