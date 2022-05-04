@@ -1,5 +1,6 @@
 <template>
   <div id="options-wrap">
+    <install-app/>
     <v-menu
       v-model="menu"
       attach="#options-wrap"
@@ -139,8 +140,13 @@
 </template>
 
 <script>
+import installApp from '@/components/InstallApp'
 export default {
   name: 'Options',
+
+  components: {
+    installApp,
+  },
 
   computed: {
     disabledResetBtn() {
@@ -231,11 +237,14 @@ export default {
 <style lang="sass" scoped>
 #options-wrap
   position: sticky
+  overflow: visible
+  text-align: right
+  display: flex
+  flex-direction: column
+  align-items: flex-end
   height: 0
   right: 0
   top: 1rem
-  overflow: visible
-  text-align: right
   z-index: 1
   .force-enable
     pointer-events: initial !important

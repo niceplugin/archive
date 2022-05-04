@@ -1,5 +1,6 @@
 <template>
   <v-footer
+    id="footer"
     color="light-green"
     dark
   >
@@ -31,3 +32,10 @@ export default {
   name: "AppFooter"
 }
 </script>
+
+<style lang="sass" scoped>
+#footer
+  display: none
+  @media (display-mode: browser)
+    display: block
+</style>
