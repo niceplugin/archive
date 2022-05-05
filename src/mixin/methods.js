@@ -28,9 +28,11 @@ export default {
           // 압축타입 !== 원본타입 ? 압축파일 : 원본파일
           newFile.type !== oldFile.type ? newFile : oldFile
         data.state = 'done'
+        it.analyticsResult(data)
       })
-      .catch(() => {
+      .catch(error => {
         data.state = 'error'
+        it.analyticsReject(error.code, data.oldFile.type)
       })
       .finally(() => {
         store.commit('subRequestList')
@@ -50,5 +52,31 @@ export default {
     }
 
     return `${ +value.toFixed(1) } ${ type[i] }`
+  },
+
+  analyticsResult(data) {
+    const old_size = this.sizeRange(data.oldFile.size)
+    const new_size = this.sizeRange(data.newFile.size)
+    this.analytics('minify_result', {
+      old_type: data.oldFile.type,
+      new_type: data.newFile.type,
+      old_size,
+      new_size
+    })
+  },
+
+  analyticsReject(error_code, file_type) {
+    this.analytics('minify_error', {
+      file_type,
+      error_code
+    })
+  },
+
+  // n ~ m 용량 구분 문자열 반환
+  sizeRange(size) {
+    return size < 1048576 ? '~ 1MB' :
+      size < 5242880 ? '1MB ~ 5MB' :
+        size < 10485760 ? '5MB ~ 10MB' :
+          size < 26214400 ? '10MB ~ 25MB' : '25MB ~'
   },
 }

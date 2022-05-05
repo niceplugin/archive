@@ -22,6 +22,10 @@ export default {
     document.addEventListener('drop', e => e.preventDefault())
     document.addEventListener('dragover', e => e.preventDefault())
     document.addEventListener('dragenter', this.onDragenter)
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      this.analytics('pwa_view')
+    }
   },
 
   methods: {
