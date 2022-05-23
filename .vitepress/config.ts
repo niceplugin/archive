@@ -124,11 +124,11 @@ const nav = [
 export const sidebar = {
   '/guide/': [
     {
-      text: 'Getting Started',
+      text: '시작하기',
       items: [
-        { text: 'Introduction', link: '/guide/introduction' },
+        { text: '소개', link: '/guide/introduction' },
         {
-          text: 'Quick Start',
+          text: '빠른 시작',
           link: '/guide/quick-start'
         }
       ]
@@ -621,8 +621,8 @@ export default defineConfigWithTheme<ThemeConfig>({
     ],
 
     editLink: {
-      repo: 'vuejs/docs',
-      text: 'Edit this page on GitHub'
+      repo: 'niceplugin/vue3-docs-ko',
+      text: 'GitHub에서 이 페이지 편집'
     },
 
     footer: {
