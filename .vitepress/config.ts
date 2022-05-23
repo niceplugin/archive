@@ -134,46 +134,46 @@ export const sidebar = {
       ]
     },
     {
-      text: 'Essentials',
+      text: '핵심 사항',
       items: [
         {
-          text: 'Creating an Application',
+          text: '애플리케이션 생성',
           link: '/guide/essentials/application'
         },
         {
-          text: 'Template Syntax',
+          text: '템플릿 구문',
           link: '/guide/essentials/template-syntax'
         },
         {
-          text: 'Reactivity Fundamentals',
+          text: '반응성 기초',
           link: '/guide/essentials/reactivity-fundamentals'
         },
         {
-          text: 'Computed Properties',
+          text: '계산된 속성',
           link: '/guide/essentials/computed'
         },
         {
-          text: 'Class and Style Bindings',
+          text: '클래스 및 스타일 바인딩',
           link: '/guide/essentials/class-and-style'
         },
         {
-          text: 'Conditional Rendering',
+          text: '조건부 렌더링',
           link: '/guide/essentials/conditional'
         },
-        { text: 'List Rendering', link: '/guide/essentials/list' },
+        { text: '리스트 렌더링', link: '/guide/essentials/list' },
         {
-          text: 'Event Handling',
+          text: '이벤트 핸들링',
           link: '/guide/essentials/event-handling'
         },
-        { text: 'Form Input Bindings', link: '/guide/essentials/forms' },
+        { text: '양식 입력 바인딩', link: '/guide/essentials/forms' },
         {
-          text: 'Lifecycle Hooks',
+          text: '수명주기 훅',
           link: '/guide/essentials/lifecycle'
         },
-        { text: 'Watchers', link: '/guide/essentials/watchers' },
-        { text: 'Template Refs', link: '/guide/essentials/template-refs' },
+        { text: '감시자', link: '/guide/essentials/watchers' },
+        { text: '템플릿 참조', link: '/guide/essentials/template-refs' },
         {
-          text: 'Components Basics',
+          text: '컴포넌트 기본 사항',
           link: '/guide/essentials/component-basics'
         }
       ]
