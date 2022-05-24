@@ -114,7 +114,7 @@ TypeScript 및 테스트 지원과 같은 여러 선택적 기능에 대한 프�
 const { createApp, ref } = Vue
 ```
 
-글로벌 빌드가 작동하는 동안 일관성을 위해 문서의 나머지 부분에서 주로 [ES 모듈](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) 구문을 사용합니다.
+글로벌 빌드가 작동하는 동안 일관성을 위해 문서의 나머지 부분에서 주로 [ES 모듈](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) 문법을 사용합니다.
 네이티브 ES 모듈에서 Vue를 사용하려면 HTML을 아래와 같이 사용하십시오:
 
 ```html
@@ -190,7 +190,7 @@ export default {
 올바른 MIME 유형으로 정적 파일을 제공할 수 있는 다른 HTTP 서버를 사용할 수도 있습니다.
 
 가져온 컴포넌트의 템플릿이 JavaScript 문자열로 인라인된 것을 보았을 것입니다.
-VSCode를 사용하는 경우 [es6-string-html](https://marketplace.visualstudio.com/items?itemName=Tobermory.es6-string-html) 확장자를 설치하고 문자열에 `/*html*/` 주석을 붙여서 구문 강조 표시를 얻을 수 있습니다.
+VSCode를 사용하는 경우 [es6-string-html](https://marketplace.visualstudio.com/items?itemName=Tobermory.es6-string-html) 확장자를 설치하고 문자열에 `/*html*/` 주석을 붙여서 문법 강조 표시를 얻을 수 있습니다.
 
 ## 다음 단계
 
