@@ -137,11 +137,11 @@ export const sidebar = {
       text: '핵심 사항',
       items: [
         {
-          text: '애플리케이션 생성',
+          text: '앱 생성',
           link: '/guide/essentials/application'
         },
         {
-          text: '템플릿 구문',
+          text: '템플릿 문법',
           link: '/guide/essentials/template-syntax'
         },
         {
