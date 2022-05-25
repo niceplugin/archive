@@ -145,7 +145,7 @@ export const sidebar = {
           link: '/guide/essentials/template-syntax'
         },
         {
-          text: '반응성 기초',
+          text: '반응형 기초',
           link: '/guide/essentials/reactivity-fundamentals'
         },
         {
