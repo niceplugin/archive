@@ -79,7 +79,7 @@ defineProps<Props>()
 
 This is because Vue components are compiled in isolation and the compiler currently does not crawl imported files in order to analyze the source type. This limitation could be removed in a future release.
 
-### Props Default Values <sup class="vt-badge experimental" />
+### Props Default Values <sup class="vt-badge 실험적" />
 
 When using type-based declaration, we lose the ability to declare default values for the props. This can be resolved by the currently experimental [Reactivity Transform](/guide/extras/reactivity-transform.html):
 

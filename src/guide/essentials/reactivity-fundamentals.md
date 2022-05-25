@@ -91,7 +91,7 @@ const state = reactive({ count: 0 })
 일반 객체와 차이점은 Vue가 속성에 접근 및 반응형 객체의 변경사항을 감지할 수 있다는 것입니다.
 자세한 내용이 궁금하시다면 [반응형 심화](/guide/extras/reactivity-in-depth.html)에서 Vue의 반응형 시스템이 어떻게 작동하는지 설명하지만, 메인 가이드를 마친 후 읽는 것을 권장합니다.
 
-See also: [반응형에 타입 지정하기](/guide/typescript/composition-api.html#typing-reactive) <sup class="vt-badge ts" />
+참조: [반응형에 타입 지정하기](/guide/typescript/composition-api.html#typing-reactive) <sup class="vt-badge ts" />
 
 컴포넌트의 템플릿에서 반응형 상태를 사용하려면, 컴포넌트의 `setup()'` 함수에서 반응형 상태를 선언하고 반환해야 합니다:
 
@@ -418,7 +418,7 @@ count.value++
 console.log(count.value) // 1
 ```
 
-See also: [Refs에 타입 지정하기](/guide/typescript/composition-api.html#typing-ref) <sup class="vt-badge ts" />
+참조: [Refs에 타입 지정하기](/guide/typescript/composition-api.html#typing-ref) <sup class="vt-badge ts" />
 
 반응형 객체의 속성과 유사하게 ref의 `.value` 속성은 반응형입니다.
 또한 객체 유형을 가지고 있는 경우, ref는 자동으로 `.value`를 `reactive()`로 변환합니다.
@@ -607,7 +607,7 @@ export default {
 
 <div class="composition-api">
 
-## 반응형 변환 <sup class="vt-badge experimental" /> \*\*
+## 반응형 변환 <sup class="vt-badge 실험적" /> \*\*
 
 JavaScript의 언어적 제약으로 인해 ref를 `.value`와 같이 사용해야 하는 단점이 있습니다.
 그러나 컴파일 시 변환을 사용해 적절한 위치에 `.value`를 자동으로 추가하여 개발간 편의성을 개선할 수 있습니다.
