@@ -259,7 +259,7 @@ Now when you run `fullName.value = 'John Doe'`, the setter will be invoked and `
 
 </div>
 
-## Best Practices
+## 모범 사례
 
 ### Getters should be side-effect free
 
