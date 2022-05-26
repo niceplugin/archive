@@ -153,7 +153,7 @@ export const sidebar = {
           link: '/guide/essentials/computed'
         },
         {
-          text: '클래스 및 스타일 바인딩',
+          text: '클래스와 스타일 바인딩',
           link: '/guide/essentials/class-and-style'
         },
         {
