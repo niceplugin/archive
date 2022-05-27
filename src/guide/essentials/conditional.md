@@ -114,7 +114,7 @@ const awesome = ref(true)
 
 ## `v-if` with `v-for`
 
-::: warning 주의
+:::warning 참고
 `v-if`와 `v-for`를 함께 사용하는 것은 **권장되지 않습니다**.
 
 [//]: # (자세한 내용은 [스타일 가이드]&#40;/style-guide/rules-essential.html#avoid-v-if-with-v-for&#41;를 참조하세요.)

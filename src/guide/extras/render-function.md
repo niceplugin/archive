@@ -72,7 +72,7 @@ vnode.children // []
 vnode.key // null
 ```
 
-:::warning Note
+:::warning 참고
 The full `VNode` interface contains many other internal properties, but it is strongly recommended to avoid relying on any properties other than the ones listed here. This avoids unintended breakage in case the internal properties are changed.
 :::
 
