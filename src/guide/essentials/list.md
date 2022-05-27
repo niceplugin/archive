@@ -350,6 +350,7 @@ Vue는 배열을 수정하는 메서드를 래핑하고 관찰하며 뷰(view) �
 <div class="composition-api">
 
 ```js
+// `items`는 값이 있는 배열의 ref라고 가정된 경우입니다.
 items.value = items.value.filter((item) => item.message.match(/Foo/))
 ```
 
@@ -357,6 +358,7 @@ items.value = items.value.filter((item) => item.message.match(/Foo/))
 <div class="options-api">
 
 ```js
+// `items`는 값이 있는 배열의 ref라고 가정된 경우입니다.
 this.items = this.items.filter((item) => item.message.match(/Foo/))
 ```
 
