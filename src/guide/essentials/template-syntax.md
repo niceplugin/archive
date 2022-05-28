@@ -304,4 +304,4 @@ DOM 내 템플릿(HTML 파일에 직접 작성된 템플릿)을 사용할 때, �
 ![지시문 문법 그래프](./images/directive.png)
 
 <!-- https://www.figma.com/file/BGWUknIrtY9HOmbmad0vFr/Directive -->
-<!-- https://www.figma.com/file/al5C8iirhnfOKZ6izKwDw4/Directive-(Copy)?node-id=0%3A1 -->
+<!-- https://www.figma.com/file/al5C8iirhnfOKZ6izKwDw4/Directive-(ko-kr) -->

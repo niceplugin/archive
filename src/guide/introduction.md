@@ -190,7 +190,7 @@ function increment() {
   count.value++
 }
 
-// 생명주기 훅
+// 수명 주기 훅
 onMounted(() => {
   console.log(`숫자 세기의 초기값은 ${ count.value } 입니다.`)
 })
