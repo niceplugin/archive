@@ -165,7 +165,7 @@ export const sidebar = {
           text: '이벤트 핸들링',
           link: '/guide/essentials/event-handling'
         },
-        { text: '양식 입력 바인딩', link: '/guide/essentials/forms' },
+        { text: 'Form 입력 바인딩', link: '/guide/essentials/forms' },
         {
           text: '수명주기 훅',
           link: '/guide/essentials/lifecycle'

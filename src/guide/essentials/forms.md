@@ -13,17 +13,10 @@ const selected = ref('')
 const multiSelected = ref([])
 </script>
 
-# Form Input Bindings
+# Form 입력 바인딩
 
-<div class="options-api">
-  <VueSchoolLink href="https://vueschool.io/lessons/user-inputs-vue-devtools-in-vue-3" title="Free Lesson on User Inputs with Vue.js"/>
-</div>
-
-<div class="composition-api">
-  <VueSchoolLink href="https://vueschool.io/lessons/vue-fundamentals-capi-user-inputs-in-vue" title="Free Lesson on User Inputs with Vue.js"/>
-</div>
-
-When dealing with forms on the frontend, we often need to sync the state of form input elements with corresponding state in JavaScript. It can be cumbersome to manually wire up value bindings and change event listeners:
+프론트엔드에서 폼을 처리할 때, 폼 입력 엘리먼트의 상태를 JavaScript의 상태와 동기화해야 하는 경우가 많습니다.
+값 바인딩을 수동으로 연결하고 이벤트 리스너를 변경하는 것은 번거로운 작업입니다:
 
 ```vue-html
 <input
@@ -31,34 +24,37 @@ When dealing with forms on the frontend, we often need to sync the state of form
   @input="event => text = event.target.value">
 ```
 
-The `v-model` directive helps us simplify the above to:
+`v-model` 지시문은 위의 내용을 다음과 같이 단순화하는 데 도움이 됩니다:
 
 ```vue-html
 <input v-model="text">
 ```
 
-In addition, `v-model` can be used on inputs of different types, `<textarea>`, and `<select>` elements. It automatically expands to different DOM property and event pairs based on the element it is used on:
+또한 `v-model`은 다른 유형의 입력인 `<textarea>` 및 `<select>` 엘리먼트에 사용할 수 있습니다.
+사용되는 엘리먼트에 따라 자동으로 다른 DOM 속성 및 이벤트 쌍으로 확장됩니다.
 
-- `<input>` with text types and `<textarea>` elements use `value` property and `input` event;
-- `<input type="checkbox">` and `<input type="radio">` use `checked` property and `change` event;
-- `<select>` use `value` as a prop and `change` as an event.
+- 텍스트 유형의 `<input>`과 `<textarea>` 경우, `value` 속성과 `input` 이벤트를 사용합니다.
+- `<input type="checkbox">`과 `<input type="radio">` 경우, `checked` 속성과 `change` 이벤트를 사용합니다.
+- `<select>`는 `value`를 속성으로 사용하고 `change`를 이벤트로 사용합니다.
 
-::: tip Note
-`v-model` will ignore the initial `value`, `checked` or `selected` attributes found on any form elements. It will always treat the current bound JavaScript state as the source of truth. You should declare the initial value on the JavaScript side, using <span class="options-api">the `data` option</span><span class="composition-api">reactivity APIs</span>.
+::: tip 참고
+`v-model`은 모든 폼 엘리먼트에서 감지되는 초기 `value`, `checked` 또는 `selected` 속성 값을 무시합니다.
+항상 현재 바인딩된 JavaScript 상태를 유효한 값으로 취급합니다.
+<span class="options-api">`data` 옵션을</span><span class="composition-api">reactivity API를</span> 사용하여 JavaScript에서 초기 값을 선언해야 합니다.
 :::
 
-## Basic Usage
+## 기본 사용법
 
-### Text
+### 텍스트
 
 ```vue-html
-<p>Message is: {{ message }}</p>
-<input v-model="message" placeholder="edit me" />
+<p>메세지: {{ message }}</p>
+<input v-model="message" placeholder="메세지 입력하기" />
 ```
 
 <div class="demo">
   <p>Message is: {{ message }}</p>
-  <input v-model="message" placeholder="edit me" />
+  <input v-model="message" placeholder="메세지 입력하기" />
 </div>
 
 <div class="composition-api">
@@ -73,22 +69,23 @@ In addition, `v-model` can be used on inputs of different types, `<textarea>`, a
 </div>
 
 <span id="vmodel-ime-tip"></span>
-::: tip Note
-For languages that require an [IME](https://en.wikipedia.org/wiki/Input_method) (Chinese, Japanese, Korean etc.), you'll notice that `v-model` doesn't get updated during IME composition. If you want to respond to these updates as well, use an `input` event listener and `value` binding instead of using `v-model`.
+::: tip 참고
+[IME](https://en.wikipedia.org/wiki/Input_method)가 필요한 언어(중국어, 일본어, 한국어 등)의 경우 IME 구성 중에 `v-model`이 업데이트되지 않는 것을 알 수 있습니다.
+이러한 업데이트에도 응답하려면 `v-model`을 사용하는 대신 `input` 이벤트 리스너와 `value` 바인딩을 사용해 기능을 구성해야 합니다.
 :::
 
-### Multiline text
+### 여러 줄 텍스트
 
 ```vue-html
-<span>Multiline message is:</span>
+<span>여러 줄 메세지:</span>
 <p style="white-space: pre-line;">{{ message }}</p>
-<textarea v-model="message" placeholder="add multiple lines"></textarea>
+<textarea v-model="message" placeholder="여러 줄을 추가해보세요"></textarea>
 ```
 
 <div class="demo">
-  <span>Multiline message is:</span>
+  <span>여러 줄 메세지:</span>
   <p style="white-space: pre-line;">{{ message }}</p>
-  <textarea v-model="message" placeholder="add multiple lines"></textarea>
+  <textarea v-model="message" placeholder="여러 줄을 추가해보세요"></textarea>
 </div>
 
 <div class="composition-api">
@@ -102,19 +99,19 @@ For languages that require an [IME](https://en.wikipedia.org/wiki/Input_method) 
 
 </div>
 
-Note that interpolation inside `<textarea>` won't work. Use `v-model` instead.
+`<textarea>` 내부에 이중 중괄호 문법은 작동하지 않으므로 `v-model`을 사용해야 합니다.
 
 ```vue-html
-<!-- bad -->
+<!-- 잘못된 사례 -->
 <textarea>{{ text }}</textarea>
 
-<!-- good -->
+<!-- 올바른 사례 -->
 <textarea v-model="text"></textarea>
 ```
 
-### Checkbox
+### 체크박스
 
-Single checkbox, boolean value:
+단일 체크박스는 불리언을 값을 사용합니다:
 
 ```vue-html
 <input type="checkbox" id="checkbox" v-model="checked" />
@@ -137,7 +134,7 @@ Single checkbox, boolean value:
 
 </div>
 
-We can also bind multiple checkboxes to the same array or [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) value:
+배열 또는 [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)에 여러 개의 체크박스 값을 바인딩할 수도 있습니다.
 
 <div class="composition-api">
 
@@ -161,32 +158,32 @@ export default {
 </div>
 
 ```vue-html
-<div>Checked names: {{ checkedNames }}</div>
+<div>체크된 이름: {{ checkedNames }}</div>
 
-<input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
-<label for="jack">Jack</label>
+<input type="checkbox" id="jack" value="젝" v-model="checkedNames">
+<label for="jack">젝</label>
 
-<input type="checkbox" id="john" value="John" v-model="checkedNames">
-<label for="john">John</label>
+<input type="checkbox" id="john" value="존" v-model="checkedNames">
+<label for="john">존</label>
 
-<input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
-<label for="mike">Mike</label>
+<input type="checkbox" id="mike" value="마이크" v-model="checkedNames">
+<label for="mike">마이크</label>
 ```
 
 <div class="demo">
-  <div>Checked names: {{ checkedNames }}</div>
+  <div>체크된 이름: {{ checkedNames }}</div>
 
-  <input type="checkbox" id="demo-jack" value="Jack" v-model="checkedNames">
-  <label for="demo-jack">Jack</label>
+  <input type="checkbox" id="demo-jack" value="젝" v-model="checkedNames">
+  <label for="demo-jack">젝</label>
 
-  <input type="checkbox" id="demo-john" value="John" v-model="checkedNames">
-  <label for="demo-john">John</label>
+  <input type="checkbox" id="demo-john" value="존" v-model="checkedNames">
+  <label for="demo-john">존</label>
 
-  <input type="checkbox" id="demo-mike" value="Mike" v-model="checkedNames">
-  <label for="demo-mike">Mike</label>
+  <input type="checkbox" id="demo-mike" value="마이크" v-model="checkedNames">
+  <label for="demo-mike">마이크</label>
 </div>
 
-In this case, the `checkedNames` array will always contain the values from the currently checked boxes.
+이 경우 `checkedNames` 배열은 항상 현재 체크된 순서대로 값을 포함합니다.
 
 <div class="composition-api">
 
@@ -199,26 +196,26 @@ In this case, the `checkedNames` array will always contain the values from the c
 
 </div>
 
-### Radio
+### 라디오
 
 ```vue-html
-<div>Picked: {{ picked }}</div>
+<div>선택한 것: {{ picked }}</div>
 
-<input type="radio" id="one" value="One" v-model="picked" />
-<label for="one">One</label>
+<input type="radio" id="one" value="하나" v-model="picked" />
+<label for="one">하나</label>
 
-<input type="radio" id="two" value="Two" v-model="picked" />
-<label for="two">Two</label>
+<input type="radio" id="two" value="둘" v-model="picked" />
+<label for="two">둘</label>
 ```
 
 <div class="demo">
-  <div>Picked: {{ picked }}</div>
+  <div>선택한 것: {{ picked }}</div>
 
-  <input type="radio" id="one" value="One" v-model="picked" />
-  <label for="one">One</label>
+  <input type="radio" id="one" value="하나" v-model="picked" />
+  <label for="one">하나</label>
 
-  <input type="radio" id="two" value="Two" v-model="picked" />
-  <label for="two">Two</label>
+  <input type="radio" id="two" value="둘" v-model="picked" />
+  <label for="two">둘</label>
 </div>
 
 <div class="composition-api">
@@ -232,28 +229,28 @@ In this case, the `checkedNames` array will always contain the values from the c
 
 </div>
 
-### Select
+### 셀렉트
 
-Single select:
+단일 셀렉트:
 
 ```vue-html
-<div>Selected: {{ selected }}</div>
+<div>선택됨: {{ selected }}</div>
 
 <select v-model="selected">
-  <option disabled value="">Please select one</option>
-  <option>A</option>
-  <option>B</option>
-  <option>C</option>
+  <option disabled value="">다음 중 하나를 선택하세요</option>
+  <option>가</option>
+  <option>나</option>
+  <option>다</option>
 </select>
 ```
 
 <div class="demo">
-  <div>Selected: {{ selected }}</div>
+  <div>선택됨: {{ selected }}</div>
   <select v-model="selected">
-    <option disabled value="">Please select one</option>
-    <option>A</option>
-    <option>B</option>
-    <option>C</option>
+    <option disabled value="">다음 중 하나를 선택하세요</option>
+    <option>가</option>
+    <option>나</option>
+    <option>다</option>
   </select>
 </div>
 
@@ -269,28 +266,30 @@ Single select:
 </div>
 
 :::tip 참고
-If the initial value of your `v-model` expression does not match any of the options, the `<select>` element will render in an "unselected" state. On iOS this will cause the user not being able to select the first item because iOS does not fire a change event in this case. It is therefore recommended to provide a disabled option with an empty value, as demonstrated in the example above.
+`v-model` 표현식의 초기 값이 옵션과 일치하지 않으면 `<select>` 엘리먼트가 "선택되지 않은" 상태로 렌더링됩니다.
+iOS에서는 이 경우 변경 이벤트를 발생시키지 않기 때문에 사용자가 첫 번째 항목을 선택할 수 없게 됩니다.
+따라서 위의 예에서 설명한 것처럼 비활성화된 옵션에 빈 값을 제공하는 것이 좋습니다.
 :::
 
-Multiple select (bound to array):
+다중 선택(배열로 바인딩 됨):
 
 ```vue-html
-<div>Selected: {{ selected }}</div>
+<div>선택됨: {{ selected }}</div>
 
 <select v-model="selected" multiple>
-  <option>A</option>
-  <option>B</option>
-  <option>C</option>
+  <option>가</option>
+  <option>나</option>
+  <option>다</option>
 </select>
 ```
 
 <div class="demo">
-  <div>Selected: {{ multiSelected }}</div>
+  <div>선택됨: {{ multiSelected }}</div>
 
   <select v-model="multiSelected" multiple>
-    <option>A</option>
-    <option>B</option>
-    <option>C</option>
+    <option>가</option>
+    <option>나</option>
+    <option>다</option>
   </select>
 </div>
 
@@ -305,17 +304,17 @@ Multiple select (bound to array):
 
 </div>
 
-Select options can be dynamically rendered with `v-for`:
+셀렉트 옵션은 `v-for`로 동적으로 렌더링할 수 있습니다:
 
 <div class="composition-api">
 
 ```js
-const selected = ref('A')
+const selected = ref('1')
 
 const options = ref([
-  { text: 'One', value: 'A' },
-  { text: 'Two', value: 'B' },
-  { text: 'Three', value: 'C' }
+  { text: '하나', value: '1' },
+  { text: '둘', value: '2' },
+  { text: '셋', value: '3' }
 ])
 ```
 
@@ -326,11 +325,11 @@ const options = ref([
 export default {
   data() {
     return {
-      selected: 'A',
+      selected: '1',
       options: [
-        { text: 'One', value: 'A' },
-        { text: 'Two', value: 'B' },
-        { text: 'Three', value: 'C' }
+        { text: '하나', value: '1' },
+        { text: '둘', value: '2' },
+        { text: '셋', value: '3' }
       ]
     }
   }
@@ -360,24 +359,26 @@ export default {
 
 </div>
 
-## Value Bindings
+## 값 바인딩 하기
 
-For radio, checkbox and select options, the `v-model` binding values are usually static strings (or booleans for checkbox):
+라디오, 체크박스 및 셀렉트 옵션의 경우, `v-model`에 바인딩된 값은 일반적으로 정적 문자열(체크박스의 경우 불리언)입니다:
 
 ```vue-html
-<!-- `picked` is a string "a" when checked -->
-<input type="radio" v-model="picked" value="a" />
+<!-- `picked`는 선택 시 문자열 "가"입니다. -->
+<input type="radio" v-model="picked" value="가" />
 
-<!-- `toggle` is either true or false -->
+<!-- `toggle`은 true 또는 false입니다. -->
 <input type="checkbox" v-model="toggle" />
 
-<!-- `selected` is a string "abc" when the first option is selected -->
+<!-- `selected`는 첫 번째 옵션이 선택될 때 문자열 "한글"입니다. -->
 <select v-model="selected">
-  <option value="abc">ABC</option>
+  <option value="한글">한글</option>
 </select>
 ```
 
-But sometimes we may want to bind the value to a dynamic property on the current active instance. We can use `v-bind` to achieve that. In addition, using `v-bind` allows us to bind the input value to non-string values.
+그러나 때로는 현재 활성 인스턴스의 동적 속성에 값을 바인딩하고 싶을 수도 있습니다.
+이것을 구현하기 위해서는 `v-bind`를 사용해야 합니다.
+또한 `v-bind`를 사용하면 입력 값을 문자열이 아닌 값에 바인딩할 수 있습니다.
 
 ### Checkbox
 
@@ -385,11 +386,13 @@ But sometimes we may want to bind the value to a dynamic property on the current
 <input
   type="checkbox"
   v-model="toggle"
-  true-value="yes"
-  false-value="no" />
+  true-value="네"
+  false-value="아니오" />
 ```
 
-`true-value` and `false-value` are Vue-specific attributes that only work with `v-model`. Here the `toggle` property's value will be set to `'yes'` when the box is checked, and set to `'no'` when unchecked. You can also bind them to dynamic values using `v-bind`:
+`true-value` 및 `false-value` 속성은 `v-model`을 사용하는 경우에만 작동하는 Vue 전용 속성입니다.
+여기에서 `toggle` 속성의 값은 체크박스가 선택되면 `네`로 설정되고 선택되지 않을 때는 `아니오`로 설정됩니다.
+이 전용 속성에 `v-bind`(`:`)를 사용하여 동적인 값을 바인딩할 수도 있습니다.
 
 ```vue-html
 <input
@@ -400,62 +403,69 @@ But sometimes we may want to bind the value to a dynamic property on the current
 ```
 
 :::tip Tip
-The `true-value` and `false-value` attributes don't affect the input's `value` attribute, because browsers don't include unchecked boxes in form submissions. To guarantee that one of two values is submitted in a form (e.g. "yes" or "no"), use radio inputs instead.
+브라우저는 폼 제출 시 체크되지 않은 상자는 포함하지 않기 때문에,
+`true-value`와 `false-value` 속성은 입력의 `value` 속성에 영향을 주지 않습니다.
+두 값 중 하나가 폼으로 제출되도록 하려면(예: "네" 또는 "아니오") 체크박스 대신 라디오로 구현해야 합니다.
 :::
 
-### Radio
+### 라디오
 
 ```vue-html
 <input type="radio" v-model="pick" :value="first" />
 <input type="radio" v-model="pick" :value="second" />
 ```
 
-`pick` will be set to the value of `first` when the first radio input is checked, and set to the value of `second` when the second one is checked.
+`pick`는 첫 번째 라디오 입력이 확인되면 `first` 값으로 설정되고 두 번째 라디오 입력이 확인되면 `second` 값으로 설정됩니다.
 
-### Select Options
+### 셀렉트 옵션
 
 ```vue-html
 <select v-model="selected">
-  <!-- inline object literal -->
+  <!-- 인라인 객체 리터럴 -->
   <option :value="{ number: 123 }">123</option>
 </select>
 ```
 
-`v-model` supports value bindings of non-string values as well! In the above example, when the option is selected, `selected` will be set to the object literal value of `{ number: 123 }`.
+`v-model`은 문자열이 아닌 값의 바인딩도 지원합니다!
+위의 예에서 옵션이 선택되면 `selected`는 `{ number: 123 }` 객체 값으로 설정됩니다.
 
-## Modifiers
+## 수식어
 
 ### `.lazy`
 
-By default, `v-model` syncs the input with the data after each `input` event (with the exception of IME composition as [stated above](#vmodel-ime-tip)). You can add the `lazy` modifier to instead sync after `change` events:
+기본적으로 `v-model`은 각 `input` 이벤트 이후 데이터와 입력을 동기화합니다([위에 언급된 IME 구성 제외](#vmodel-ime-tip)).
+대신 `change` 이벤트 이후에 동기화하기 위해 `.lazy` 수식어를 추가할 수 있습니다.
 
 ```vue-html
-<!-- synced after "change" instead of "input" -->
+<!-- "input" 대신 "change" 이벤트 후에 동기화됨 -->
 <input v-model.lazy="msg" />
 ```
 
 ### `.number`
 
-If you want user input to be automatically typecast as a number, you can add the `number` modifier to your `v-model` managed inputs:
+사용자 입력이 자동으로 숫자로 유형 변환되도록 하려면, `v-model` 수식어로 `.number`를 추가하면 됩니다:
 
 ```vue-html
 <input v-model.number="age" />
 ```
 
-If the value cannot be parsed with `parseFloat()`, then the original value is used instead.
+값을 `parseFloat()`로 파싱할 수 없으면 원래 값이 대신 사용됩니다.
 
-The `number` modifier is applied automatically if the input has `type="number"`.
+인풋에 `type="number"`가 있으면 `.number` 수식어가 자동으로 적용됩니다.
 
 ### `.trim`
 
-If you want whitespace from user input to be trimmed automatically, you can add the `trim` modifier to your `v-model`-managed inputs:
+사용자 입력의 공백이 자동으로 트리밍되도록 하려면 `v-model` 수식어로 `.trim`을 추가하면 됩니다:
 
 ```vue-html
 <input v-model.trim="msg" />
 ```
 
-## `v-model` with Components
+## 컴포넌트에 `v-model` 사용하기
 
-> If you're not yet familiar with Vue's components, you can skip this for now.
+> Vue의 컴포넌트에 아직 익숙하지 않은 경우, 지금은 건너뛰어도 됩니다.
 
-HTML's built-in input types won't always meet your needs. Fortunately, Vue components allow you to build reusable inputs with completely customized behavior. These inputs even work with `v-model`! To learn more, read about [Usage with `v-model`](/guide/components/events.html#usage-with-v-model) in the Components guide.
+HTML의 기본 제공되는 인풋 유형이 항상 요구 사항을 충족하는 것은 아닙니다.
+다행히 Vue 컴포넌트를 사용하면 완전히 사용자 정의된 동작으로 재사용 가능한 인풋을 빌드할 수 있습니다.
+`v-model`은 이러한 인풋에서도 작동합니다!
+자세한 내용은 컴포넌트 가이드에서 [`v-model`과 함께 사용](/guide/components/events.html#usage-with-v-model)에 대해 읽어보세요.
