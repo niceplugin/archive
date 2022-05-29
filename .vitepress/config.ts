@@ -173,7 +173,7 @@ export const sidebar = {
         { text: '감시자', link: '/guide/essentials/watchers' },
         { text: '템플릿 참조', link: '/guide/essentials/template-refs' },
         {
-          text: '컴포넌트 기본 사항',
+          text: '컴포넌트 기초',
           link: '/guide/essentials/component-basics'
         }
       ]
