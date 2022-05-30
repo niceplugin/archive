@@ -607,7 +607,7 @@ export default {
 
 <div class="composition-api">
 
-## 반응형 변환 <sup class="vt-badge 실험적" /> \*\*
+## 반응형 변환 <sup class="vt-badge experimental" /> \*\*
 
 JavaScript의 언어적 제약으로 인해 ref를 `.value`와 같이 사용해야 하는 단점이 있습니다.
 그러나 컴파일 시 변환을 사용해 적절한 위치에 `.value`를 자동으로 추가하여 개발간 편의성을 개선할 수 있습니다.

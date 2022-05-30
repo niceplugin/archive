@@ -39,19 +39,20 @@ const nav = [
     activeMatch: `^/ecosystem/`,
     items: [
       {
+        text: '핵심 라이브러리',
+        items: [
+          { text: 'Vue 라우터', link: 'https://router.vuejs.org/' },
+          { text: '피니아 (상태 관리)', link: 'https://pinia.vuejs.org/' }
+        ]
+      },
+      {
         text: 'Resources',
         items: [
+          { text: 'Sponsor', link: 'https://vuejs.org/sponsor/' },
           { text: 'Partners', link: 'https://vuejs.org/partners/' },
           { text: 'Themes', link: 'https://vuejs.org/ecosystem/themes' },
           { text: 'Jobs', link: 'https://vuejobs.com/?ref=vuejs' },
           { text: 'T-Shirt Shop', link: 'https://vue.threadless.com/' }
-        ]
-      },
-      {
-        text: '핵심 라이브러리',
-        items: [
-          { text: 'Vue Router', link: 'https://router.vuejs.org/' },
-          { text: 'Pinia', link: 'https://pinia.vuejs.org/' }
         ]
       },
       {
@@ -110,15 +111,6 @@ const nav = [
       }
     ]
   },
-  {
-    text: 'Sponsor',
-    link: 'https://vuejs.org/sponsor/'
-  },
-  {
-    text: 'Partners',
-    link: '/partners/',
-    activeMatch: `^/partners/`
-  }
 ]
 
 export const sidebar = {
@@ -614,7 +606,7 @@ export default defineConfigWithTheme<ThemeConfig>({
     // },
 
     socialLinks: [
-      { icon: 'languages', link: 'https://vuejs.org/translations/' },
+      { icon: 'languages', link: '/translations/' },
       { icon: 'github', link: 'https://github.com/vuejs/' },
       { icon: 'twitter', link: 'https://twitter.com/vuejs' },
       { icon: 'discord', link: 'https://discord.com/invite/HBherRA' }
