@@ -179,25 +179,25 @@ export const sidebar = {
       ]
     },
     {
-      text: 'Components In-Depth',
+      text: '컴포넌트 심화',
       items: [
         {
-          text: 'Registration',
+          text: '등록',
           link: '/guide/components/registration'
         },
         { text: 'Props', link: '/guide/components/props' },
-        { text: 'Events', link: '/guide/components/events' },
+        { text: '이벤트', link: '/guide/components/events' },
         {
-          text: 'Fallthrough Attributes',
+          text: '폴스루 속성',
           link: '/guide/components/attrs'
         },
-        { text: 'Slots', link: '/guide/components/slots' },
+        { text: '슬롯', link: '/guide/components/slots' },
         {
           text: 'Provide / inject',
           link: '/guide/components/provide-inject'
         },
         {
-          text: 'Async Components',
+          text: '비동기 컴포넌트',
           link: '/guide/components/async'
         }
       ]
