@@ -7,20 +7,20 @@ import { headerPlugin } from './headerMdPlugin'
 
 const nav = [
   {
-    text: 'Docs',
+    text: '문서',
     activeMatch: `^/(guide|style-guide|cookbook|examples)/`,
     items: [
-      { text: 'Guide', link: '/guide/introduction' },
-      { text: 'Tutorial', link: '/tutorial/' },
-      { text: 'Examples', link: '/examples/' },
-      { text: 'Quick Start', link: '/guide/quick-start' },
+      { text: '가이드', link: '/guide/introduction' },
+      { text: '튜토리얼', link: '/tutorial/' },
+      { text: '예제', link: '/examples/' },
+      { text: '시작하기', link: '/guide/quick-start' },
       // { text: 'Style Guide', link: '/style-guide/' },
       {
-        text: 'Vue 2 Docs',
+        text: 'Vue 2 문서',
         link: 'https://v2.vuejs.org'
       },
       {
-        text: 'Migration from Vue 2',
+        text: 'Vue 2에서 마이그레이션',
         link: 'https://v3-migration.vuejs.org/'
       }
     ]
@@ -31,31 +31,31 @@ const nav = [
     link: '/api/'
   },
   {
-    text: 'Playground',
+    text: '온라인 연습장',
     link: 'https://sfc.vuejs.org'
   },
   {
-    text: 'Ecosystem',
+    text: '생태계',
     activeMatch: `^/ecosystem/`,
     items: [
       {
         text: 'Resources',
         items: [
-          { text: 'Partners', link: '/partners/' },
-          { text: 'Themes', link: '/ecosystem/themes' },
+          { text: 'Partners', link: 'https://vuejs.org/partners/' },
+          { text: 'Themes', link: 'https://vuejs.org/ecosystem/themes' },
           { text: 'Jobs', link: 'https://vuejobs.com/?ref=vuejs' },
           { text: 'T-Shirt Shop', link: 'https://vue.threadless.com/' }
         ]
       },
       {
-        text: 'Core Libraries',
+        text: '핵심 라이브러리',
         items: [
           { text: 'Vue Router', link: 'https://router.vuejs.org/' },
           { text: 'Pinia', link: 'https://pinia.vuejs.org/' }
         ]
       },
       {
-        text: 'Video Courses',
+        text: '비디오 코스',
         items: [
           {
             text: 'Vue Mastery',
@@ -82,7 +82,7 @@ const nav = [
         ]
       },
       {
-        text: 'News',
+        text: '뉴스',
         items: [
           { text: 'Blog', link: 'https://blog.vuejs.org/' },
           { text: 'Twitter', link: 'https://twitter.com/vuejs' },
@@ -97,13 +97,13 @@ const nav = [
     activeMatch: `^/about/`,
     items: [
       { text: 'FAQ', link: '/about/faq' },
-      { text: 'Team', link: '/about/team' },
-      { text: 'Releases', link: '/about/releases' },
+      { text: 'Team', link: 'https://vuejs.org/about/team' },
+      { text: 'Releases', link: 'https://vuejs.org/about/releases' },
       {
         text: 'Community Guide',
-        link: '/about/community-guide'
+        link: 'https://vuejs.org/about/community-guide'
       },
-      { text: 'Code of Conduct', link: '/about/coc' },
+      { text: 'Code of Conduct', link: 'https://vuejs.org/about/coc' },
       {
         text: 'The Documentary',
         link: 'https://www.youtube.com/watch?v=OrxmtDw4pVI'
@@ -112,7 +112,7 @@ const nav = [
   },
   {
     text: 'Sponsor',
-    link: '/sponsor/'
+    link: 'https://vuejs.org/sponsor/'
   },
   {
     text: 'Partners',
@@ -608,22 +608,22 @@ export default defineConfigWithTheme<ThemeConfig>({
       }
     },
 
-    carbonAds: {
-      code: 'CEBDT27Y',
-      placement: 'vuejsorg'
-    },
+    // carbonAds: {
+    //   code: 'CEBDT27Y',
+    //   placement: 'vuejsorg'
+    // },
 
     socialLinks: [
-      { icon: 'languages', link: '/translations/' },
+      { icon: 'languages', link: 'https://vuejs.org/translations/' },
       { icon: 'github', link: 'https://github.com/vuejs/' },
       { icon: 'twitter', link: 'https://twitter.com/vuejs' },
       { icon: 'discord', link: 'https://discord.com/invite/HBherRA' }
     ],
 
-    editLink: {
-      repo: 'niceplugin/vue3-docs-ko',
-      text: 'GitHub에서 이 페이지 편집'
-    },
+    // editLink: {
+    //   repo: 'niceplugin/vue3-docs-ko',
+    //   text: 'GitHub에서 이 페이지 편집'
+    // },
 
     footer: {
       license: {

@@ -8,8 +8,8 @@ import {
   filterHeadersByPreference
 } from './components/preferences'
 import SponsorsAside from './components/SponsorsAside.vue'
-import VueSchoolLink from './components/VueSchoolLink.vue'
-import VueJobs from './components/VueJobs.vue'
+// import VueSchoolLink from './components/VueSchoolLink.vue'
+// import VueJobs from './components/VueJobs.vue'
 
 export default Object.assign({}, VPTheme, {
   Layout: () => {
@@ -17,13 +17,13 @@ export default Object.assign({}, VPTheme, {
     return h(VPTheme.Layout, null, {
       'sidebar-top': () => h(PreferenceSwitch),
       'aside-mid': () => h(SponsorsAside),
-      'aside-bottom': () => h(VueJobs)
+      // 'aside-bottom': () => h(VueJobs)
     })
   },
   enhanceApp({ app }: { app: App }) {
     app.provide('prefer-composition', preferComposition)
     app.provide('prefer-sfc', preferSFC)
     app.provide('filter-headers', filterHeadersByPreference)
-    app.component('VueSchoolLink', VueSchoolLink)
+    // app.component('VueSchoolLink', VueSchoolLink)
   }
 })
