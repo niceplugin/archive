@@ -27,9 +27,10 @@
 
 `<slot>` 엘리먼트는 부모가 제공한 **슬롯 컨텐츠**가 렌더링되어야 하는 위치를 나타내는 **슬롯 아울렛**(outlet)입니다.
 
-![slot diagram](./images/slots.png)
+![슬롯 다이어그램](./images/slots.png)
 
 <!-- https://www.figma.com/file/LjKTYVL97Ck6TEmBbstavX/slot -->
+<!-- https://www.figma.com/file/PuKXOMrFPmfnrtMa3tKL5G/slot-(ko-kr) -->
 
 최종적으로 렌더링된 DOM은:
 
@@ -222,9 +223,10 @@ Vue 컴포넌트의 슬롯 메커니즘은 [네이티브 웹 컴포넌트 `<slot
 `v-slot`에는 전용 단축 문법인 `#`가 있으므로 `<template v-slot:header>`는 `<template #header>`로 단축할 수 있습니다.
 이것은 하위 컴포넌트의 'header' 슬롯에서 이 템플릿 조각을 렌더링 한다는 것입니다.
 
-![named slots diagram](./images/named-slots.png)
+![이름이 있는 슬롯 다이어그램](./images/named-slots.png)
 
 <!-- https://www.figma.com/file/2BhP8gVZevttBu9oUmUUyz/named-slot -->
+<!-- https://www.figma.com/file/KQkd1odvlQeg8gl2r8KeaQ/named-slot-(ko-kr) -->
 
 다음은 단축 문법을 사용하여 세 슬롯의 컨텐츠를 모두 `<BaseLayout>`에 전달하는 코드입니다:
 
@@ -334,7 +336,7 @@ function BaseLayout(slots) {
 
 표현식에는 지시문의 [동적인 인수 문법 제약 조건](/guide/essentials/template-syntax.html#동적인-인수-문법-제약-조건)이 적용됩니다.
 
-## 슬롯의 범위
+## 범위가 지정된 슬롯
 
 [렌더링 범위](#렌더링-범위)에서 논의한 바와 같이 슬롯 콘텐츠는 하위 컴포넌트의 상태에 접근할 수 없습니다.
 
@@ -363,6 +365,7 @@ props를 컴포넌트에 전달하는 것처럼 속성을 슬롯 아울렛에 �
 ![scoped slots diagram](./images/scoped-slots.svg)
 
 <!-- https://www.figma.com/file/QRneoj8eIdL1kw3WQaaEyc/scoped-slot -->
+<!-- https://www.figma.com/file/4MiKw8LEKRgyECRYxDRQUc/scoped-slot-(ko-kr) -->
 
 <div class="composition-api">
 
@@ -374,10 +377,6 @@ props를 컴포넌트에 전달하는 것처럼 속성을 슬롯 아울렛에 �
 [온라인 연습장으로 실행하기](https://sfc.vuejs.org/#eyJBcHAudnVlIjoiPHNjcmlwdD5cbmltcG9ydCBNeUNvbXBvbmVudCBmcm9tICcuL015Q29tcG9uZW50LnZ1ZSdcbiAgXG5leHBvcnQgZGVmYXVsdCB7XG4gIGNvbXBvbmVudHM6IHtcbiAgICBNeUNvbXBvbmVudFxuICB9XG59XG48L3NjcmlwdD5cblxuPHRlbXBsYXRlPlxuXHQ8TXlDb21wb25lbnQgdi1zbG90PVwic2xvdFByb3BzXCI+XG4gIFx0e3sgc2xvdFByb3BzLnRleHQgfX0ge3sgc2xvdFByb3BzLmNvdW50IH19XG4gIDwvTXlDb21wb25lbnQ+XG48L3RlbXBsYXRlPiIsImltcG9ydC1tYXAuanNvbiI6IntcbiAgXCJpbXBvcnRzXCI6IHtcbiAgICBcInZ1ZVwiOiBcImh0dHBzOi8vc2ZjLnZ1ZWpzLm9yZy92dWUucnVudGltZS5lc20tYnJvd3Nlci5qc1wiLFxuICAgIFwidnVlL3NlcnZlci1yZW5kZXJlclwiOiBcImh0dHBzOi8vc2ZjLnZ1ZWpzLm9yZy9zZXJ2ZXItcmVuZGVyZXIuZXNtLWJyb3dzZXIuanNcIlxuICB9XG59IiwiTXlDb21wb25lbnQudnVlIjoiPHNjcmlwdD5cbmV4cG9ydCBkZWZhdWx0IHtcbiAgZGF0YSgpIHtcbiAgICByZXR1cm4ge1xuICAgICAgZ3JlZXRpbmdNZXNzYWdlOiAn7JWI64WVJ1xuICAgIH1cbiAgfVxufVxuPC9zY3JpcHQ+XG5cbjx0ZW1wbGF0ZT5cbiAgPGRpdj5cbiAgXHQ8c2xvdCA6dGV4dD1cImdyZWV0aW5nTWVzc2FnZVwiIDpjb3VudD1cIjFcIj48L3Nsb3Q+XG5cdDwvZGl2PlxuPC90ZW1wbGF0ZT4ifQ==)
 
 </div>
-
-The props passed to the slot by the child are available as the value of the corresponding `v-slot` directive, which can be accessed by expressions inside the slot.
-
-You can think of a scoped slot as a function being passed into the child component. The child component then calls it, passing props as arguments:
 
 자식이 슬롯에 전달한 props는 해당 '`v-slot'` 지시문의 값으로 사용할 수 있으며 슬롯 내부의 표현식에서 접근할 수 있습니다.
 
