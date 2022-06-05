@@ -185,10 +185,8 @@ export default {
 
 </div>
 
-선택 사항이지만 컴포넌트가 작동하는 방식을 더 잘 문서화하기 위해 발신되는 모든 이벤트를 정의하는 것이 좋습니다.
-또한 Vue는 [폴스루 속성](/guide/components/attrs.html#v-on-listener-inheritance)에서 알려진 리스너를 제외할 수 있습니다.
-
-[comment]: <> (/guide/components/attrs.md 번역 후 링크 수정 필요)
+선택 사항으로 컴포넌트가 작동하는 방식을 더 잘 문서화하기 위해 발신되는 모든 이벤트를 정의하는 것이 좋습니다.
+또한 상위로부터 전달된 리스너는 [폴스루 속성](/guide/components/attrs.html#v-on-리스터-상속)에 의해 제외할 수 있습니다.
 
 :::tip
 네이티브 이벤트(예: `click`)가 `emits` 옵션에 정의된 경우 리스너는 이제 컴포넌트에서 발생하는 `click` 이벤트만 수신 대기하고 네이티브 `click` 이벤트에 더 이상 응답하지 않습니다.
