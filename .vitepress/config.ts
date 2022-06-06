@@ -195,17 +195,17 @@ export const sidebar = {
       ]
     },
     {
-      text: 'Reusability',
+      text: '재사용성',
       items: [
         {
-          text: 'Composables',
+          text: '구성화',
           link: '/guide/reusability/composables'
         },
         {
-          text: 'Custom Directives',
+          text: '커스텀 지시문',
           link: '/guide/reusability/custom-directives'
         },
-        { text: 'Plugins', link: '/guide/reusability/plugins' }
+        { text: '플러그인', link: '/guide/reusability/plugins' }
       ]
     },
     {
