@@ -246,7 +246,7 @@ export const sidebar = {
           link: '/guide/best-practices/production-deployment'
         },
         {
-          text: 'Performance',
+          text: '성능',
           link: '/guide/best-practices/performance'
         },
         {
