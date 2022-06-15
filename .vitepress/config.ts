@@ -250,7 +250,7 @@ export const sidebar = {
           link: '/guide/best-practices/performance'
         },
         {
-          text: 'Accessibility',
+          text: '접근성',
           link: '/guide/best-practices/accessibility'
         },
         {
