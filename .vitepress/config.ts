@@ -254,7 +254,7 @@ export const sidebar = {
           link: '/guide/best-practices/accessibility'
         },
         {
-          text: 'Security',
+          text: '보안',
           link: '/guide/best-practices/security'
         }
       ]
