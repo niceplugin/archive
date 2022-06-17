@@ -274,10 +274,10 @@ export const sidebar = {
       ]
     },
     {
-      text: 'Extra Topics',
+      text: '추가 주제',
       items: [
         {
-          text: 'Ways of Using Vue',
+          text: 'Vue를 사용하는 다양한 방법',
           link: '/guide/extras/ways-of-using-vue'
         },
         {
