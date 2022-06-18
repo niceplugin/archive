@@ -289,7 +289,7 @@ export const sidebar = {
           link: '/guide/extras/reactivity-in-depth'
         },
         {
-          text: 'Rendering Mechanism',
+          text: '렌더링 메커니즘',
           link: '/guide/extras/rendering-mechanism'
         },
         {
