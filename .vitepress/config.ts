@@ -301,7 +301,7 @@ export const sidebar = {
           link: '/guide/extras/web-components'
         },
         {
-          text: 'Animation Techniques',
+          text: '애니메이션 기법',
           link: '/guide/extras/animation'
         },
         {
