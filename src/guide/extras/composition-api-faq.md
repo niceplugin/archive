@@ -2,60 +2,65 @@
 outline: deep
 ---
 
-# Composition API FAQ
+# 컴포지션 API FAQ
 
 :::tip
-This FAQ assumes prior experience with Vue - in particular, experience with Vue 2 while primarily using Options API.
+이 FAQ는 Vue 2를 사용해본 경험이 있거나, 주로 옵션 API를 사용하고 있다는 것을 전제로 합니다.
 :::
 
-## What is Composition API?
+## 컴포지션 API란?
 
-Composition API is a set of APIs that allows us to author Vue components using imported functions instead of declaring options. It is an umbrella term that covers the following APIs:
+컴포지션(Composition) API는 옵션을 선언하는 대신 `import`한 함수를 사용하여 Vue 컴포넌트를 작성할 수 있는 API 세트입니다.
+이것은 아래 API를 다루는 포괄적인 용어입니다:
 
-- [Reactivity API](/api/reactivity-core.html), e.g. `ref()` and `reactive()`, that allows us to directly create reactive state, computed state, and watchers.
+- [반응형(Reactivity) API](/api/reactivity-core.html): 예를 들어 `ref()` 및 `reactive()`를 사용하여 반응형 상태, 계산된 상태 및 감시자를 직접 생성할 수 있습니다.
 
-- [Lifecycle Hooks](/api/composition-api-lifecycle.html), e.g. `onMounted()` and `onUnmounted()`, that allow us to programmatically hook into the component lifecycle.
+- [수명주기 훅](/api/composition-api-lifecycle.html): 예를 들어 `onMounted()` 및 `onUnmounted()`를 사용하여 컴포넌트 수명주기에 프로그래밍 방식으로 연결할 수 있습니다.
 
-- [Dependency Injection](/api/composition-api-dependency-injection.html), i.e. `provide()` and `inject()`, that allow us to leverage Vue's dependency injection system while using Reactivity APIs.
+- [종속성 주입(Dependency Injection)](/api/composition-api-dependency-injection.html): `provide()` 및 `inject()`를 사용하면 반응형 API를 사용하는 동안 Vue의 종속성 주입 시스템을 활용할 수 있습니다.
 
-Composition API is a built-in feature of Vue 3, and is currently available to Vue 2 via the officially maintained [`@vue/composition-api`](https://github.com/vuejs/composition-api) plugin. In Vue 3, it is also primarily used together with the [`<script setup>`](/api/sfc-script-setup.html) syntax in Single-File Components. Here's a basic example of a component using Composition API:
+컴포지션 API는 Vue 3의 빌트인 기능이며,
+현재 공식적으로 유지 관리되는 [`@vue/composition-api`](https://github.com/vuejs/composition-api) 플러그인을 통해 Vue 2에서 사용할 수 있습니다.
+Vue 3는 싱글 파일 컴포넌트에서 [`<script setup>`](/api/sfc-script-setup.html) 문법과 함께 주로 사용됩니다.
+다음은 컴포지션 API를 사용하는 컴포넌트의 기본 예입니다:
 
 ```vue
 <script setup>
 import { ref, onMounted } from 'vue'
 
-// reactive state
+// 반응형 상태
 const count = ref(0)
 
-// functions that mutate state and trigger updates
+// 상태를 변경하고 업데이트를 트리거하는 함수
 function increment() {
   count.value++
 }
 
-// lifecycle hooks
+// 수명주기 훅
 onMounted(() => {
-  console.log(`The initial count is ${count.value}.`)
+  console.log(`숫자를 세기 위한 초기값은 ${count.value} 입니다.`)
 })
 </script>
 
 <template>
-  <button @click="increment">Count is: {{ count }}</button>
+  <button @click="increment">숫자 세기: {{ count }}</button>
 </template>
 ```
 
-Despite an API style based on function composition, **Composition API is NOT functional programming**. Composition API is based on Vue's mutable, fine-grained reactivity paradigm, whereas functional programming emphasizes immutability.
+함수 구성에 기반한 API 스타일에도 불구하고 **컴포지션 API는 함수형 프로그래밍이 아닙니다**.
+컴포지션 API는 Vue의 변경 가능하고 세분화된 반응성 패러다임을 기반으로 하는 반면 기능적 프로그래밍은 불변성을 강조합니다.
 
-If you are interested in learning how to use Vue with Composition API, you can set the site-wide API preference to Composition API using the toggle at the top of the left sidebar, and then go through the guide from the beginning.
+Vue를 컴포지션 API와 함께 사용하는 방법을 배우고 싶다면 왼쪽 사이드바 상단의 토글을 사용하여 사이트 전체 API 환경 설정을 컴포지션 API로 설정한 다음 처음부터 가이드를 살펴보세요.
 
-## Why Composition API?
+## 왜 컴포지션 API인가요?
 
-### Better Logic Reuse
+### 더 나은 로직 재사용성
 
 The primary advantage of Composition API is that it enables clean, efficient logic reuse in the form of [Composable functions](/guide/reusability/composables.html). It solves [all the drawbacks of mixins](/guide/reusability/composables.html#vs-mixins), the primary logic reuse mechanism for Options API.
 
 Composition API's logic reuse capability has given rise to impressive community projects such as [VueUse](https://vueuse.org/), an ever-growing collection of composable utilities. It also serves as a clean mechanism for easily integrating stateful third-party services or libraries into Vue's reactivity system, for example [immutable data](/guide/extras/reactivity-in-depth.html#immutable-data), [state machines](/guide/extras/reactivity-in-depth.html#state-machines), and [RxJS](https://vueuse.org/rxjs/readme.html#vueuse-rxjs).
 
-### More Flexible Code Organization
+### 보다 유연한 코드 구성
 
 Many users love that we write organized code by default with Options API: everything has its place based on the option it falls under. However, Options API poses serious limitations when a single component's logic grows beyond a certain complexity threshold. This limitation is particularly prominent in components that need to deal with multiple **logical concerns**, which we have witnessed first hand in many production Vue 2 apps.
 
@@ -80,7 +85,7 @@ Here's the same component, before and after the [refactor into Composition API](
 
 Notice how the code related to the same logical concern can now be grouped together: we no longer need to jump between different options blocks while working on a specific logical concern. Moreover, we can now move a group of code into an external file with minimal effort, since we no longer need to shuffle the code around in order to extract them. This reduced friction for refactoring is key to the long-term maintainability in large codebases.
 
-### Better Type Inference
+### 더 나은 타입 추론
 
 In recent years, more and more frontend developers are adopting [TypeScript](https://www.typescriptlang.org/) as it helps us write more robust code, make changes with more confidence, and provides a great development experience with IDE support. However, the Options API, originally conceived in 2013, was designed without type inference in mind. We had to implement some [absurdly complex type gymnastics](https://github.com/vuejs/core/blob/44b95276f5c086e1d88fa3c686a5f39eb5bb7821/packages/runtime-core/src/componentPublicInstance.ts#L132-L165) to make type inference work with the Options API. Even with all this effort, type inference for Options API can still break down for mixins and dependency injection.
 
@@ -88,33 +93,33 @@ This had led many developers who wanted to use Vue with TS to lean towards Class
 
 In comparison, Composition API utilizes mostly plain variables and functions, which are naturally type friendly. Code written in Composition API can enjoy full type inference with little need for manual type hints. Most of the time, Composition API code will look largely identical in TypeScript and plain JavaScript. This also makes it possible for plain JavaScript users to benefit from partial type inference.
 
-### Smaller Production Bundle and Less Overhead
+### 더 작은 프로덕션 번들 및 더 적은 오버헤드
 
 Code written in Composition API and `<script setup>` is also more efficient and minification-friendly than Options API equivalent. This is because the template in a `<script setup>` component is compiled as a function inlined in the same scope of the `<script setup>` code. Unlike property access from `this`, the compiled template code can directly access variables declared inside `<script setup>`, without an instance proxy in between. This also leads to better minification because all the variable names can be safely shortened.
 
-## Relationship with Options API
+## 옵션 API와의 관계
 
-### Does Composition API cover all use cases?
+### Composition API는 모든 사용 사례를 포괄합니까?
 
 Yes in terms of stateful logic. When using Composition API, there are only a few options that may still be needed: `props`, `emits`, `name`, and `inheritAttrs`. If using `<script setup>`, then `inheritAttrs` is typically the only option that may require a separate normal `<script>` block.
 
 If you intend to exclusively use Composition API (along with the options listed above), you can shave a few kbs off your production bundle via a [compile-time flag](https://github.com/vuejs/core/tree/main/packages/vue#bundler-build-feature-flags) that drops Options API related code from Vue. Note this also affects Vue components in your dependencies.
 
-### Can I use both APIs together?
+### 두 API를 함께 사용할 수 있습니까?
 
 Yes. You can use Composition API via the [`setup()`](/api/composition-api-setup.html) option in an Options API component.
 
 However, we only recommend doing so if you have an existing Options API codebase that needs to integrate with new features / external libraries written with Composition API.
 
-### Will Options API be deprecated?
+### 옵션 API가 더 이상 사용되지 않습니까?
 
 No, we do not have any plan to do so. Options API is an integral part of Vue and the reason many developers love it. We also realize that many of the benefits of Composition API only manifest in larger-scale projects, and Options API remains a solid choice for many low-to-medium-complexity scenarios.
 
-## Relationship with Class API
+## 클래스 API와의 관계
 
 We no longer recommend using Class API with Vue 3, given that Composition API provides great TypeScript integration with additional logic reuse and code organization benefits.
 
-## Comparison with React Hooks
+## React 훅과의 비교
 
 Composition API provides the same level of logic composition capabilities as React Hooks, but with some important differences.
 
