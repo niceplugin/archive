@@ -285,7 +285,7 @@ export const sidebar = {
           link: '/guide/extras/composition-api-faq'
         },
         {
-          text: 'Reactivity in Depth',
+          text: '반응형 심화',
           link: '/guide/extras/reactivity-in-depth'
         },
         {
