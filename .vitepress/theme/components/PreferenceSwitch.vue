@@ -103,7 +103,7 @@ function useToggleFn(
         <label class="sfc-label" @click="toggleSFC(true)">SFC</label>
         <a
           class="switch-link"
-          title="About SFC"
+          title="SFC에 대하여"
           href="/guide/scaling-up/sfc.html"
           @click="closeSideBar"
         >?</a>
