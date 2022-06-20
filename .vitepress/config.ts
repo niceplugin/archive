@@ -431,7 +431,7 @@ export const sidebar = {
           link: '/examples/#conditionals-and-loops'
         },
         {
-          text: 'Form Bindings',
+          text: '폼(form) 바인딩',
           link: '/examples/#form-bindings'
         },
         {
