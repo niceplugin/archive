@@ -412,10 +412,10 @@ export const sidebar = {
   ],
   '/examples/': [
     {
-      text: 'Basic',
+      text: '기본',
       items: [
         {
-          text: 'Hello World',
+          text: '안녕 Vue',
           link: '/examples/#hello-world'
         },
         {
