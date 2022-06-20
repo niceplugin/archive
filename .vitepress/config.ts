@@ -427,7 +427,7 @@ export const sidebar = {
           link: '/examples/#attribute-bindings'
         },
         {
-          text: 'Conditionals and Loops',
+          text: '조건문과 반복문',
           link: '/examples/#conditionals-and-loops'
         },
         {
