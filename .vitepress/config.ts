@@ -423,7 +423,7 @@ export const sidebar = {
           link: '/examples/#handling-input'
         },
         {
-          text: 'Attribute Bindings',
+          text: '속성 바인딩',
           link: '/examples/#attribute-bindings'
         },
         {
