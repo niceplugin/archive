@@ -502,7 +502,7 @@ export const sidebar = {
           link: '/examples/#crud'
         },
         {
-          text: 'Circle Drawer',
+          text: '원 그리기',
           link: '/examples/#circle-drawer'
         },
         {
