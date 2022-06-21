@@ -456,7 +456,7 @@ export const sidebar = {
           link: '/examples/#grid'
         },
         {
-          text: 'Tree View',
+          text: '트리 뷰',
           link: '/examples/#tree'
         },
         {
