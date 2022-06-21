@@ -460,7 +460,7 @@ export const sidebar = {
           link: '/examples/#tree'
         },
         {
-          text: 'SVG Graph',
+          text: 'SVG 그래프',
           link: '/examples/#svg'
         },
         {
