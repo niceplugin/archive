@@ -4,7 +4,7 @@
 
 A string template for the component.
 
-- **Type**
+- **타입**:
 
   ```ts
   interface ComponentOptions {
@@ -12,7 +12,7 @@ A string template for the component.
   }
   ```
 
-- **Details**
+- **세부 사항**:
 
   A template provided via the `template` option will be compiled on-the-fly at runtime. It is only supported when using a build of Vue that includes the template compiler. The template compiler is **NOT** included in Vue builds that have the word `runtime` in their names, e.g. `vue.runtime.esm-bundler.js`. Consult the [dist file guide](https://github.com/vuejs/core/tree/main/packages/vue#which-dist-file-to-use) for more details about the different builds.
 
@@ -30,7 +30,7 @@ A string template for the component.
 
 A function that programmatically returns the virtual DOM tree of the component.
 
-- **Type**
+- **타입**:
 
   ```ts
   interface ComponentOptions {
@@ -51,13 +51,13 @@ A function that programmatically returns the virtual DOM tree of the component.
   type VNodeArrayChildren = (VNodeArrayChildren | VNodeChildAtom)[]
   ```
 
-- **Details:**
+- **세부 사항**:
 
   `render` is an alternative to string templates that allows you to leverage the full programmatic power of JavaScript to declare the render output of the component.
 
   Pre-compiled templates, for example those in Single-File Components, are compiled into the `render` option at build time. If both `render` and `template` are present in a component, `render` will take higher priority.
 
-- **See also:**
+- **참고**:
   - [Rendering Mechanism](/guide/extras/rendering-mechanism.html)
   - [Render Functions](/guide/extras/render-function.html)
 
@@ -65,7 +65,7 @@ A function that programmatically returns the virtual DOM tree of the component.
 
 Configure runtime compiler options for the component's template.
 
-- **Type**
+- **타입**:
 
   ```ts
   interface ComponentOptions {
@@ -78,8 +78,8 @@ Configure runtime compiler options for the component's template.
   }
   ```
 
-- **Details**
+- **세부 사항**:
 
   This config option is only respected when using the full build (i.e. the standalone `vue.js` that can compile templates in the browser). It supports the same options as the app-level [app.config.compilerOptions](/api/application.html#app-config-compileroptions), and has higher priority for the current component.
 
-- **See also:** [app.config.compilerOptions](/api/application.html#app-config-compileroptions)
+- **참고**: [app.config.compilerOptions](/api/application.html#app-config-compileroptions)
