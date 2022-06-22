@@ -1,8 +1,12 @@
+<script setup>
+import CustomPreferenceSwitch from './CustomPreferenceSwitch.vue'
+</script>
+
 # Application API
 
 ## createApp()
 
-Creates an application instance.
+앱 인스턴스를 생성합니다.
 
 - **타입**:
 
@@ -12,21 +16,22 @@ Creates an application instance.
 
 - **세부 사항**:
 
-  The first argument is the root component. The second optional argument is the props to be passed to the root component.
+  첫 번째 인자는 루트 컴포넌트입니다.
+  선택적인 두 번째 인자는 루트 컴포넌트에 전달할 props입니다.
 
 - **예제**:
 
-  With inline root component:
+  루트 컴포넌트를 직접 서술하는 방식(inline)으로 사용하는 경우:
 
   ```js
   import { createApp } from 'vue'
 
   const app = createApp({
-    /* root component options */
+    /* 루트 컴포넌트 옵션 */
   })
   ```
 
-  With imported component:
+  컴포넌트 불러오기(`import`)로 사용하는 경우:
 
   ```js
   import { createApp } from 'vue'
@@ -35,15 +40,16 @@ Creates an application instance.
   const app = createApp(App)
   ```
 
-- **참고**: [Guide - Creating a Vue Application](/guide/essentials/application.html)
+- **참고**: [가이드 - 앱 생성](/guide/essentials/application.html)
 
 ## createSSRApp()
 
-Creates an application instance in [SSR Hydration](/guide/scaling-up/ssr.html#client-hydration) mode. Usage is exactly the same as `createApp()`.
+[SSR 하이드레이션](/guide/scaling-up/ssr.html#client-hydration) 모드에서 앱 인스턴스를 생성합니다.
+사용법은 `createApp()`과 완전히 동일합니다.
 
 ## app.mount()
 
-Mounts the application instance in a container element.
+컨테이너 엘리먼트에 앱 인스턴스를 마운트합니다.
 
 - **타입**:
 
@@ -55,13 +61,16 @@ Mounts the application instance in a container element.
 
 - **세부 사항**:
 
-  The argument can either be an actual DOM element or a CSS selector (the first matched element will be used). Returns the root component instance.
+  인자는 실제 DOM 엘리먼트 또는 CSS 셀렉터(첫 번째로 일치한 엘리먼트가 사용됨)일 수 있습니다.
+  루트 컴포넌트 인스턴스를 반환합니다.
 
-  If the component has a template or a render function defined, it will replace any existing DOM nodes inside the container. Otherwise, if the runtime compiler is available, the `innerHTML` of the container will be used as the template.
+  컴포넌트에 정의된 템플릿 또는 렌더링 함수가 있는 경우, 컨테이너 내부의 기존 DOM 노드를 대체합니다.
+  만약 런타임 컴파일러를 사용하는 경우, 컨테이너의 `innerHTML`이 템플릿으로 사용됩니다.
 
-  In SSR hydration mode, it will hydrate the existing DOM nodes inside the container. If there are [mismatches](/guide/scaling-up/ssr.html#hydration-mismatch), the existing DOM nodes will be morphed to match the expected output.
+  SSR 하이드레이션 모드에서는 컨테이너 내부의 기존 DOM 노드를 하이드레이트합니다.
+  [불일치](/guide/scaling-up/ssr.html#hydration-mismatch)할 경우, 기존 DOM 노드가 의도하는 출력과 일치하도록 변경됩니다.
 
-  For each app instance, `mount()` can only be called once.
+  각 앱 인스턴스는 `mount()`를 한 번만 호출할 수 있습니다.
 
 - **예제**:
 
@@ -72,7 +81,7 @@ Mounts the application instance in a container element.
   app.mount('#app')
   ```
 
-  Can also mount to an actual DOM element:
+  실제 DOM 엘리먼트에 마운트할 수도 있습니다:
 
   ```js
   app.mount(document.body.firstChild)
@@ -80,7 +89,8 @@ Mounts the application instance in a container element.
 
 ## app.unmount()
 
-Unmounts a mounted application instance, triggering the unmount lifecycle hooks for all components in the application's component tree.
+마운트된 앱 인스턴스를 마운트 해제하여,
+앱의 컴포넌트 트리에 있는 모든 컴포넌트에 마운트 해제 수명 주기 훅을 트리거합니다.
 
 - **타입**:
 
@@ -92,7 +102,7 @@ Unmounts a mounted application instance, triggering the unmount lifecycle hooks 
 
 ## app.provide()
 
-Provide a value that can be injected in all descendent components within the application.
+앱 내의 모든 하위 컴포넌트에 주입할 수 있는 값을 제공합니다.
 
 - **타입**:
 
@@ -104,7 +114,8 @@ Provide a value that can be injected in all descendent components within the app
 
 - **세부 사항**:
 
-  Expects the injection key as the first argument, and the provided value as the second. Returns the application instance itself.
+  첫 번째 인자는 주입 키이고, 두 번째 인자는 제공될 값입니다.
+  반환 값은 앱 인스턴스입니다.
 
 - **예제**:
 
@@ -113,10 +124,12 @@ Provide a value that can be injected in all descendent components within the app
 
   const app = createApp(/* ... */)
 
-  app.provide('message', 'hello')
+  app.provide('message', '안녕!')
   ```
 
-  Inside a component in the application:
+  앱 내 컴포넌트에서:
+
+  <CustomPreferenceSwitch />
 
   <div class="composition-api">
 
@@ -125,7 +138,7 @@ Provide a value that can be injected in all descendent components within the app
 
   export default {
     setup() {
-      console.log(inject('message')) // 'hello'
+      console.log(inject('message')) // '안녕!'
     }
   }
   ```
@@ -137,7 +150,7 @@ Provide a value that can be injected in all descendent components within the app
   export default {
     inject: ['message'],
     created() {
-      console.log(this.message) // 'hello'
+      console.log(this.message) // '안녕!'
     }
   }
   ```
@@ -146,11 +159,12 @@ Provide a value that can be injected in all descendent components within the app
 
 - **참고**:
   - [Provide / Inject](/guide/components/provide-inject.html)
-  - [App-level Provide](/guide/components/provide-inject.html#app-level-provide)
+  - [앱 수준의 Provide](/guide/components/provide-inject.html#app-level-provide)
 
 ## app.component()
 
-Registers a global component if passing both a name string and a component definition, or retrieves an already registered one if only the name is passed.
+이름(문자열)과 컴포넌트정의를 모두 전달하는 경우, 전역 컴포넌트를 등록합니다.
+이름만 전달되는 경우, 이미 등록된 것을 찾습니다.
 
 - **타입**:
 
@@ -168,20 +182,21 @@ Registers a global component if passing both a name string and a component defin
 
   const app = createApp({})
 
-  // register an options object
+  // 선택적으로 객체를 등록할 수 있음
   app.component('my-component', {
     /* ... */
   })
 
-  // retrieve a registered component
+  // 등록된 컴포넌트 찾기
   const MyComponent = app.component('my-component')
   ```
 
-- **참고**: [Component Registration](/guide/components/registration.html)
+- **참고**: [컴포넌트 등록](/guide/components/registration.html)
 
 ## app.directive()
 
-Registers a global custom directive if passing both a name string and a directive definition, or retrieves an already registered one if only the name is passed.
+이름(문자열)과 디렉티브 정의를 모두 전달하는 경우, 전역 커스텀 디렉티브를 등록합니다.
+이름만 전달되는 경우, 이미 등록된 것을 찾습니다.
 
 - **타입**:
 
@@ -201,25 +216,25 @@ Registers a global custom directive if passing both a name string and a directiv
     /* ... */
   })
 
-  // register (object directive)
+  // 등록 (객체 디렉티브)
   app.directive('my-directive', {
-    /* custom directive hooks */
+    /* 커스텀 디렉티브 훅 */
   })
 
-  // register (function directive shorthand)
+  // 등록 (간단하게 사용하기 위한 함수형 디렉티브)
   app.directive('my-directive', () => {
     /* ... */
   })
 
-  // retrieve a registered directive
+  // 등록된 디렉티브 찾기
   const myDirective = app.directive('my-directive')
   ```
 
-- **참고**: [Custom Directives](/guide/reusability/custom-directives.html)
+- **참고**: [커스텀 디렉티브](/guide/reusability/custom-directives.html)
 
 ## app.use()
 
-Installs a [plugin](/guide/reusability/plugins.html).
+[플러그인](/guide/reusability/plugins.html) 설치.
 
 - **타입**:
 
@@ -231,11 +246,13 @@ Installs a [plugin](/guide/reusability/plugins.html).
 
 - **세부 사항**:
 
-  Expects the plugin as the first argument, and optional plugin options as the second argument.
+  첫 번째 인자는 플러그인입니다.
+  선택적인 두 번째 인자는 플러그인 옵션입니다. 
 
-  The plugin can either be an object with an `install()` method, or just a function that will be used as the `install()` method. The options (second argument of `app.use()`) will be passed along to the plugin's `install()` method.
+  플러그인은 `install()` 메소드가 있는 객체이거나, `install()` 메소드로 사용될 함수입니다.
+  `app.use()`의 두 번째 인자인 옵션은 플러그인의 `install()` 메서드에 전달됩니다.
 
-  When `app.use()` is called on the same plugin multiple times, the plugin will be installed only once.
+  동일한 플러그인을 여러 번 `app.use()`로 호출하는 경우, 플러그인은 한 번만 설치됩니다.
 
 - **예제**:
 
@@ -250,16 +267,18 @@ Installs a [plugin](/guide/reusability/plugins.html).
   app.use(MyPlugin)
   ```
 
-- **참고**: [Plugins](/guide/reusability/plugins.html)
+- **참고**: [플러그인](/guide/reusability/plugins.html)
 
 ## app.mixin()
 
-Applies a global mixin (scoped to the application). A global mixin applies its included options to every component instance in the application.
+앱 범위 전역에 믹스인을 적용합니다.
+전역 믹스인에 포함된 옵션은 앱 내에 모든 컴포넌트 인스턴스에 적용됩니다.
 
-:::warning Not Recommended
-Mixins are supported in Vue 3 mainly for backwards compatibility, due to their widespread use in ecosystem libraries. Use of mixins, especially global mixins, should be avoided in application code.
+:::warning 권장하지 않음
+믹스인은 라이브러리 생태계에서 널리 사용되고 있기 때문에, 하위 호환성을 위해 Vue 3에서 지원됩니다.
+하지만 앱 내 코드에서 믹스인(특히 글로벌 믹스인)의 사용은 피해야 합니다.
 
-For logic reuse, prefer [Composables](/guide/reusability/composables.html) instead.
+로직 재상용은 [구성화](/guide/reusability/composables.html)를 추천합니다.
 :::
 
 - **타입**:
@@ -272,7 +291,8 @@ For logic reuse, prefer [Composables](/guide/reusability/composables.html) inste
 
 ## app.version
 
-Provides the version of Vue that the application was created with. This is useful inside [plugins](/guide/reusability/plugins.html), where you might need conditional logic based on different Vue versions.
+앱을 생성한 Vue 버전을 제공합니다.
+이것은 Vue 버전에 기반한 [플러그인](/guide/reusability/plugins.html) 내부에서 조건부 로직이 필요한 경우에 유용합니다.
 
 - **타입**:
 
@@ -284,24 +304,25 @@ Provides the version of Vue that the application was created with. This is usefu
 
 - **예제**:
 
-  Performing a version check inside a plugin:
+  플러그인 내부에서 버전 확인 진행:
 
   ```js
   export default {
     install(app) {
       const version = Number(app.version.split('.')[0])
       if (version < 3) {
-        console.warn('This plugin requires Vue 3')
+        console.warn('이 플러그인은 Vue 3가 필요합니다.')
       }
     }
   }
   ```
 
-- **참고**: [Global API - version](/api/general.html#version)
+- **참고**: [전역 API - version](/api/general.html#version)
 
 ## app.config
 
-Every application instance exposes a `config` object that contains the configuration settings for that application. You can modify its properties (documented below) before mounting your application.
+모든 앱 인스턴스는 해당 앱의 환경 설정이 포함된 `config` 객체를 노출합니다.
+앱을 마운트하기 전에 속성을 수정할 수 있습니다(아래 문서 참조).
 
 ```js
 import { createApp } from 'vue'
@@ -313,7 +334,7 @@ console.log(app.config)
 
 ## app.config.errorHandler
 
-Assign a global handler for uncaught errors propagating from within the application.
+앱 내에서 예외 처리 되지 않은 에러 발생 시, 트리거 될 전역 핸들러를 정의합니다.
 
 - **타입**:
 
@@ -322,8 +343,8 @@ Assign a global handler for uncaught errors propagating from within the applicat
     errorHandler?: (
       err: unknown,
       instance: ComponentPublicInstance | null,
-      // `info` is a Vue-specific error info,
-      // e.g. which lifecycle hook the error was thrown in
+      // `info`는 Vue 고유의 에러 정보입니다.
+      // 예: 에러 발생 수명 주기 훅 표시: 'created hook'
       info: string
     ) => void
   }
@@ -331,29 +352,29 @@ Assign a global handler for uncaught errors propagating from within the applicat
 
 - **세부 사항**:
 
-  The error handler receives three arguments: the error, the component instance that triggered the error, and an information string specifying the error source type.
+  핸들러는 "에러", "에러를 트리거한 컴포넌트 인스턴스", "에러 출처 유형을 나타내는 문자열" 세 인자를 받습니다.
 
-  It can capture errors from the following sources:
+  다음 출처에서 에러를 캡처할 수 있습니다:
 
-  - Component renders
-  - Event handlers
-  - Lifecycle hooks
-  - `setup()` function
-  - Watchers
-  - Custom directive hooks
-  - Transition hooks
+  - 컴포넌트 렌더
+  - 이벤트 핸들러
+  - 수명 주기 훅
+  - `setup()` 함수
+  - 감시자
+  - 커스텀 디렉티브 훅
+  - 트렌지션 훅
 
 - **예제**:
 
   ```js
   app.config.errorHandler = (err, instance, info) => {
-    // handle error, e.g. report to a service
+    // 에러 핸들링: 서비스 에러 로그 기록
   }
   ```
 
 ## app.config.warnHandler
 
-Assign a custom handler for runtime warnings from Vue.
+Vue에서 런타임 경고 발생 시, 트리거 될 커스텀 핸들러를 정의합니다.
 
 - **타입**:
 
@@ -369,45 +390,51 @@ Assign a custom handler for runtime warnings from Vue.
 
 - **세부 사항**:
 
-  The warning handler receives the warning message as the first argument, the source component instance as the second argument, and a component trace string as the third.
+  첫 번째 인자로 경고 메세지, 두 번째 인자로 발생한 컴포넌트 인스턴스, 세 번째 인자로 컴포넌트 추적 문자열을 받습니다. 
 
-  It can be used to filter out specific warnings to reduce console verbosity. All Vue warnings should be addressed during development, so this is only recommended during debug sessions to focus on specific warnings among many, and should be removed once the debugging is done.
+  특정 경고를 필터링하여 콘솔의 장황함을 줄일 수 있습니다.
+  모든 Vue 경고는 개발 중에 해결돼야 합니다.
+  따라서 이 함수는 디버깅 시에 많은 경고 중에서 특정 경고에 초점을 맞추는 것이 좋으며, 디버깅이 완료되면 제거해야 합니다.
 
   :::tip
-  Warnings only work during development, so this config is ignored in production mode.
+  경고는 개발 모드에서만 발생하므로, 이것은 프로덕션 모드에서 무시됩니다.
   :::
 
 - **예제**:
 
   ```js
   app.config.warnHandler = (msg, instance, trace) => {
-    // `trace` is the component hierarchy trace
+    // `trace`는 컴포넌트 계층 구조를 추적한 문자열입니다.
   }
   ```
 
 ## app.config.performance
 
-Set this to `true` to enable component init, compile, render and patch performance tracing in the browser devtool performance/timeline panel. Only works in development mode and in browsers that support the [performance.mark](https://developer.mozilla.org/en-US/docs/Web/API/Performance/mark) API.
+이것을 `true`로 설정하면 (크롬 기준) 브라우저 개발자 도구의 "성능(Performance) 탭 → 소요시간(Timings) 패널"에 컴포넌트 초기화, 컴파일, 렌더링, 패치 성능 추적 기록이 활성화 됩니다.
+브라우저가 [performance.mark](https://developer.mozilla.org/en-US/docs/Web/API/Performance/mark) API를 지원하고 개발 모드일 경우에만 작동(기록)합니다.
 
 - **타입**: `boolean`
 
-- **참고**: [Guide - Performance](/guide/best-practices/performance.html)
+- **참고**: [가이드 - 성능](/guide/best-practices/performance.html)
 
 ## app.config.compilerOptions
 
-Configure runtime compiler options. Values set on this object will be passed to the in-browser template compiler and affect every component in the configured app. Note you can also override these options on a per-component basis using the [`compilerOptions` option](/api/options-rendering.html#compileroptions).
+런타임 컴파일러 옵션을 설정합니다.
+이 객체에 설정된 값은 브라우저 내 템플릿 컴파일러에 전달되고, 설정된 앱의 모든 컴포넌트에 영향을 미칩니다.
+[`compilerOptions` 옵션](/api/options-rendering.html#compileroptions)을 사용하여 컴포넌트별로 이러한 옵션을 재정의할 수도 있습니다.
 
-::: warning Important
-This config option is only respected when using the full build (i.e. the standalone `vue.js` that can compile templates in the browser). If you are using the runtime-only build with a build setup, compiler options must be passed to `@vue/compiler-dom` via build tool configurations instead.
+::: warning 중요
+이 옵션은 전체 빌드(예: 브라우저에서 템플릿을 컴파일할 수 있는 독립 실행형 `vue.js`)를 사용할 때만 적용됩니다.
+빌드 셋업과 함께 런타임 전용 빌드를 사용하는 경우, 빌드 도구 환경설정을 통해 컴파일러 옵션을 `@vue/compiler-dom`으로 전달해야 합니다.
 
-- For `vue-loader`: [pass via the `compilerOptions` loader option](https://vue-loader.vuejs.org/options.html#compileroptions). Also see [how to configure it in `vue-cli`](https://cli.vuejs.org/guide/webpack.html#modifying-options-of-a-loader).
+- `vue-loader`의 경우: [`compilerOptions` 로더 옵션을 통해 전달](https://vue-loader.vuejs.org/options.html#compileroptions). [`vue-cli`에서 환경설정 하는 방법](https://cli.vuejs.org/guide/webpack.html#modifying-options-of-a-loader)도 참고하세요.
 
-- For `vite`: [pass via `@vitejs/plugin-vue` options](https://github.com/vitejs/vite/tree/main/packages/plugin-vue#options).
-  :::
+- `vite`의 경우: [`@vitejs/plugin-vue` 옵션을 통해 전달](https://github.com/vitejs/vite/tree/main/packages/plugin-vue#options).
+:::
 
 ### app.compilerOptions.isCustomElement
 
-Specifies a check method to recognize native custom elements.
+네이티브 커스텀 엘리먼트를 인식하기 위한 검사 방법을 지정합니다.
 
 - **타입**: `(tag: string) => boolean`
 
@@ -426,7 +453,7 @@ Specifies a check method to recognize native custom elements.
   }
   ```
 
-- **참고**: [Vue and Web Components](/guide/extras/web-components.html)
+- **참고**: [Vue와 웹 컴포넌트](/guide/extras/web-components.html)
 
 ### app.compilerOptions.whitespace
 
@@ -510,7 +537,7 @@ An object that can be used to register global properties that can be accessed on
 - **사용법**:
 
   ```js
-  app.config.globalProperties.msg = 'hello'
+  app.config.globalProperties.msg = '안녕!'
   ```
 
   This makes `msg` available inside any component template in the application, and also on `this` of any component instance:
@@ -518,7 +545,7 @@ An object that can be used to register global properties that can be accessed on
   ```js
   export default {
     mounted() {
-      console.log(this.msg) // 'hello'
+      console.log(this.msg) // '안녕!'
     }
   }
   ```

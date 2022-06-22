@@ -322,7 +322,7 @@ export const sidebar = {
   ],
   '/api/': [
     {
-      text: 'Global API',
+      text: '전역 API',
       items: [
         { text: 'Application', link: '/api/application' },
         {
