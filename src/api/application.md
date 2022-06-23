@@ -247,7 +247,7 @@ import CustomPreferenceSwitch from './CustomPreferenceSwitch.vue'
 - **세부 사항**:
 
   첫 번째 인자는 플러그인입니다.
-  선택적인 두 번째 인자는 플러그인 옵션입니다. 
+  선택적인 두 번째 인자는 플러그인 옵션입니다.
 
   플러그인은 `install()` 메소드가 있는 객체이거나, `install()` 메소드로 사용될 함수입니다.
   `app.use()`의 두 번째 인자인 옵션은 플러그인의 `install()` 메서드에 전달됩니다.
@@ -390,7 +390,7 @@ Vue에서 런타임 경고 발생 시, 트리거 될 커스텀 핸들러를 정�
 
 - **세부 사항**:
 
-  첫 번째 인자로 경고 메세지, 두 번째 인자로 발생한 컴포넌트 인스턴스, 세 번째 인자로 컴포넌트 추적 문자열을 받습니다. 
+  첫 번째 인자로 경고 메세지, 두 번째 인자로 발생한 컴포넌트 인스턴스, 세 번째 인자로 컴포넌트 추적 문자열을 받습니다.
 
   특정 경고를 필터링하여 콘솔의 장황함을 줄일 수 있습니다.
   모든 Vue 경고는 개발 중에 해결돼야 합니다.
@@ -430,24 +430,25 @@ Vue에서 런타임 경고 발생 시, 트리거 될 커스텀 핸들러를 정�
 - `vue-loader`의 경우: [`compilerOptions` 로더 옵션을 통해 전달](https://vue-loader.vuejs.org/options.html#compileroptions). [`vue-cli`에서 환경설정 하는 방법](https://cli.vuejs.org/guide/webpack.html#modifying-options-of-a-loader)도 참고하세요.
 
 - `vite`의 경우: [`@vitejs/plugin-vue` 옵션을 통해 전달](https://github.com/vitejs/vite/tree/main/packages/plugin-vue#options).
-:::
+  :::
 
 ### app.compilerOptions.isCustomElement
 
-네이티브 커스텀 엘리먼트를 인식하기 위한 검사 방법을 지정합니다.
+네이티브(native) 커스텀 엘리먼트를 인식하기 위한 검사 방법을 지정합니다.
 
 - **타입**: `(tag: string) => boolean`
 
 - **세부 사항**:
 
-  Should return `true` if the tag should be treated as a native custom element. For a matched tag, Vue will render it as a native element instead of attempting to resolve it as a Vue component.
+  태그가 네이티브 커스텀 엘레먼트로 처리되어야 하는 경우, `true`가 반환돼야 합니다.
+  일치하는 태그의 경우 Vue는 이를 Vue 컴포넌트로 확인하는 대신 기본 요소로 렌더링합니다.
 
-  Native HTML and SVG tags don't need to be matched in this function - Vue's parser recognizes them automatically.
+  네이티브 HTML과 SVG 태그는 Vue 파서가 자동으로 인식하므로, 이 함수로 검사 작업을 할 필요가 없습니다.
 
 - **예제**:
 
   ```js
-  // treat all tags starting with 'ion-' as custom elements
+  // 'ion-'으로 시작하는 모든 태그를 커스텀 엘리먼트로 처리
   app.config.compilerOptions.isCustomElement = (tag) => {
     return tag.startsWith('ion-')
   }
@@ -457,7 +458,7 @@ Vue에서 런타임 경고 발생 시, 트리거 될 커스텀 핸들러를 정�
 
 ### app.compilerOptions.whitespace
 
-Adjusts template whitespace handling behavior.
+템플릿 내 공백 처리 방식을 설정합니다.
 
 - **타입**: `'condense' | 'preserve'`
 
@@ -465,13 +466,14 @@ Adjusts template whitespace handling behavior.
 
 - **세부 사항**:
 
-  Vue removes / condenses whitespace characters in templates to produce more efficient compiled output. The default strategy is "condense", with the following behavior:
+  Vue는 템플릿에서 공백 문자를 제거/축소하여, 보다 효율적으로 컴파일된 결과물을 생성합니다.
+  다음과 같이 기본적으로 "축소"에 초첨을 두어 작동합니다.
 
-  1. Leading / ending whitespace characters inside an element are condensed into a single space.
-  2. Whitespace characters between elements that contain newlines are removed.
-  3. Consecutive whitespace characters in text nodes are condensed into a single space.
+  1. 엘리먼트 내부의 선행/종료 공백 문자열은 단일 공백으로 축소됩니다.
+  2. 엘리먼트 간의 개행(줄바꿈)을 포함하는 공백 문자는 제거됩니다.
+  3. 텍스트 노드의 연속된 공백 문자열는 단일 공백으로 축소됩니다.
 
-  Setting this option to `'preserve'` will disable (2) and (3).
+  이 옵션을 `'preserve'`로 설정하면, (2)와 (3)이 비활성화됩니다.
 
 - **예제**:
 
@@ -481,7 +483,7 @@ Adjusts template whitespace handling behavior.
 
 ### app.compilerOptions.delimiters
 
-Adjusts the delimiters used for text interpolation within the template.
+템플릿 내 텍스트 보간에 사용되는 구분 기호를 설정합니다.
 
 - **타입**: `[string, string]`
 
@@ -489,18 +491,18 @@ Adjusts the delimiters used for text interpolation within the template.
 
 - **세부 사항**:
 
-  This is typically used to avoid conflicting with server-side frameworks that also use mustache syntax.
+  이것은 일반적으로 이중 중괄호 문법을 사용하는 서버 측 프레임워크와의 충돌을 피하기 위해 사용됩니다.
 
 - **예제**:
 
   ```js
-  // Delimiters changed to ES6 template string style
+  // 구분 기호가 ES6 템플릿 문자열 스타일로 변경됨
   app.config.compilerOptions.delimiters = ['${', '}']
   ```
 
 ### app.compilerOptions.comments
 
-Adjusts treatment of HTML comments in templates.
+템플릿에서 HTML 주석 보존 여부를 설정합니다.
 
 - **타입**: `boolean`
 
@@ -508,7 +510,9 @@ Adjusts treatment of HTML comments in templates.
 
 - **세부 사항**:
 
-  By default, Vue will remove the comments in production. Setting this option to `true` will force Vue to preserve comments even in production. Comments are always preserved during development. This option is typically used when Vue is used with other libraries that rely on HTML comments.
+  기본적으로 Vue는 프로덕션에서 주석을 제거하지만, 개발 중에는 항상 보존됩니다.
+  강제로 프로덕션 환경에서 주석을 보존해야 하는 경우, 이 옵션을 `true`로 설정해야 합니다.
+  일반적으로 이 옵션은 Vue와 HTML 주석에 의존하는 다른 라이브러리를 함께 사용해야 할 때 사용됩니다.
 
 - **예제**:
 
@@ -518,7 +522,7 @@ Adjusts treatment of HTML comments in templates.
 
 ## app.config.globalProperties
 
-An object that can be used to register global properties that can be accessed on any component instance inside the application.
+앱 내부의 모든 컴포넌트 인스턴스에서 접근할 수 있는 전역 속성을 등록하는 데 사용되는 객체입니다.
 
 - **타입**:
 
@@ -530,9 +534,9 @@ An object that can be used to register global properties that can be accessed on
 
 - **세부 사항**:
 
-  This is a replacement of Vue 2's `Vue.prototype` which is no longer present in Vue 3. As with anything global, this should be used sparingly.
+  이것은 Vue 3에서 지원하지 않는 Vue 2의 `Vue.prototype`을 대체하며, 특별한 경우에만 사용해야 합니다.
 
-  If a global property conflicts with a component’s own property, the component's own property will have higher priority.
+  전역 속성이 컴포넌트 자체 속성과 충돌하는 경우, 컴포넌트 자체 속성이 더 높은 우선 순위를 갖습니다.
 
 - **사용법**:
 
@@ -540,7 +544,7 @@ An object that can be used to register global properties that can be accessed on
   app.config.globalProperties.msg = '안녕!'
   ```
 
-  This makes `msg` available inside any component template in the application, and also on `this` of any component instance:
+  이렇게 하면 앱 내 모든 컴포넌트 인스턴스의 `this`와 컴포넌트 템플릿에서 `msg`를 사용할 수 있습니다:
 
   ```js
   export default {
@@ -552,7 +556,7 @@ An object that can be used to register global properties that can be accessed on
 
 ## app.config.optionMergeStrategies
 
-An object for defining merging strategies for custom component options.
+컴포넌트 옵션의 커스텀 병합 함수를 정의하기 위한 객체입니다.
 
 - **타입**:
 
@@ -566,37 +570,38 @@ An object for defining merging strategies for custom component options.
 
 - **세부 사항**:
 
-  Some plugins / libraries add support for custom component options (by injecting global mixins). These options may require special merging logic when the same option needs to be "merged" from multiple sources (e.g. mixins or component inheritance).
+  일부 플러그인/라이브러리는 전역 믹스인(mixin)을 삽입하여, 커스텀 컴포넌트 옵션을 추가로 지원합니다.
+  여러 소스(예: 믹스인 또는 컴포넌트 상속)에서 동일한 옵션을 "병합"해야 하는 경우, 이러한 옵션에는 특별한 병합 로직이 필요할 수 있습니다.
 
-  A merge strategy function can be registered for a custom option by assigning it on the `app.config.optionMergeStrategies` object using the option's name as the key.
+  `app.config.optionMergeStrategies` 객체에 옵션 이름을 키(key)로 하는 커스텀 병합 함수를 할당하여 등록할 수 있습니다.
 
-  The merge strategy function receives the value of that option defined on the parent and child instances as the first and second arguments, respectively.
+  병합 함수는 부모 및 자식 인스턴스에 정의된 해당 옵션의 값을 각각 첫 번째 그리고 두 번째 인자로 받습니다.
 
 - **예제**:
 
   ```js
   const app = createApp({
-    // option from self
+    // 자체 옵션
     msg: 'Vue',
-    // option from a mixin
+    // 믹스인으로부터 전달받는 옵션
     mixins: [
       {
-        msg: 'Hello '
+        msg: '안녕 '
       }
     ],
     mounted() {
-      // merged options exposed on this.$options
+      // this.$options에 병합된 옵션이 노출됨
       console.log(this.$options.msg)
     }
   })
 
-  // define a custom merge strategy for `msg`
+  // `msg`의 커스텀 병합 로직 정의
   app.config.optionMergeStrategies.msg = (parent, child) => {
     return (parent || '') + (child || '')
   }
 
   app.mount('#app')
-  // logs 'Hello Vue'
+  // 앱 mounted 트리거 후 로그: '안녕 Vue'
   ```
 
-- **참고**: [Component Instance - `$options`](/api/component-instance.html#options)
+- **참고**: [컴포넌트 인스턴스 - `$options`](/api/component-instance.html#options)
