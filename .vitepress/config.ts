@@ -332,7 +332,7 @@ export const sidebar = {
       ]
     },
     {
-      text: 'Composition API',
+      text: '컴포지션 API',
       items: [
         { text: 'setup()', link: '/api/composition-api-setup' },
         {
