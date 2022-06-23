@@ -71,10 +71,9 @@ function useToggleFn(
 
 .preference-switches {
   font-size: 11px;
-  padding: 8px 12px 16px;
+  padding: 8px 12px;
   background-color: var(--vt-c-bg-soft);
   transition: background-color 0.5s;
-  /*margin: 6px 0 12px;*/
   border-radius: 8px 8px 0 0;
   font-weight: 600;
   /* custom-properties */
@@ -116,5 +115,12 @@ function useToggleFn(
   color: var(--vt-c-green);
   border: 1px solid var(--vt-c-green);
   border-radius: 50%;
+}
+
+/* custom-media */
+@media (max-width: 639px) {
+  .position-hack {
+    margin: 0 -24px;
+  }
 }
 </style>
