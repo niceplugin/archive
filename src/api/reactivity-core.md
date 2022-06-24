@@ -256,7 +256,7 @@ getter 함수를 사용하며, getter로부터 반환된 값을 읽기 전용 �
   type OnCleanup = (cleanupFn: () => void) => void
 
   interface WatchEffectOptions {
-    flush?: 'pre' | 'post' | 'sync' // default: 'pre'
+    flush?: 'pre' | 'post' | 'sync' // 기본 값: 'pre'
     onTrack?: (event: DebuggerEvent) => void
     onTrigger?: (event: DebuggerEvent) => void
   }
@@ -369,12 +369,12 @@ getter 함수를 사용하며, getter로부터 반환된 값을 읽기 전용 �
     | (() => T) // getter
     | T extends object
     ? T
-    : never // reactive object
+    : never // 반응형 객체
 
   interface WatchOptions extends WatchEffectOptions {
-    immediate?: boolean // default: false
-    deep?: boolean // default: false
-    flush?: 'pre' | 'post' | 'sync' // default: 'pre'
+    immediate?: boolean // 기본 값: false
+    deep?: boolean // 기본 값: false
+    flush?: 'pre' | 'post' | 'sync' // 기본 값: 'pre'
     onTrack?: (event: DebuggerEvent) => void
     onTrigger?: (event: DebuggerEvent) => void
   }
