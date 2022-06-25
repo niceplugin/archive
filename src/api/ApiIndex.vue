@@ -47,6 +47,8 @@ const filtered = computed(() => {
 
 // same as vitepress' slugify logic
 function slugify(text: string): string {
+  text = detectCustomAnchor(text)
+
   return (
     text
       // Replace special characters
@@ -60,6 +62,29 @@ function slugify(text: string): string {
       // lowercase
       .toLowerCase()
   )
+}
+
+// 커스텀 앵커 감지
+function detectCustomAnchor(text: string) {
+  const arr = text
+    // 커스텀 앵커가 있는 경우: 닫는 문자열 삭제
+    .replace('}', '')
+    // 커스텀 앵커가 있는 경우: 열리는 문자열 #으로 변경
+    .replace(/\s*\{\s*#/, '#')
+    // #을 기준으로 문자열 나눔
+    .split('#')
+
+  // 커스텀 앵커 || 기본 문자열
+  return arr[1] || arr[0]
+}
+
+// 해더 한글화에 추가된 커스텀 앵커 문법 제거
+function withOutCustomAnchor(text: string) {
+  return text.replace(/\s*\{\s*#[a-z\-]+\s*\}$/, '')
+}
+
+function print(data: any) {
+  console.log(data)
 }
 </script>
 
@@ -93,7 +118,8 @@ function slugify(text: string): string {
           <h3>{{ item.text }}</h3>
           <ul>
             <li v-for="h of item.headers" :key="h">
-              <a :href="item.link + '.html#' + slugify(h)">{{ h }}</a>
+              <div v-show='false'>{{ print(h) }}</div>
+              <a :href="item.link + '.html#' + slugify(h)">{{ withOutCustomAnchor(h) }}</a>
             </li>
           </ul>
         </div>
