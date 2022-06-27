@@ -149,8 +149,6 @@ export default {
 
 ## 렌더 함수와 함께 사용하기 {#usage-with-render-functions}
 
-`setup` can also return a [render function](/guide/extras/render-function.html) which can directly make use of the reactive state declared in the same scope:
-
 `setup`은 범위 내 선언된 반응형 상태에 직접 접근할 수 있는 [렌더 함수](/guide/extras/render-function.html)를 반환할 수도 있습니다:
 
 ```js{6}
