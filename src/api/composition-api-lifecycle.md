@@ -135,7 +135,7 @@
 
 ## onBeforeMount()
 
-컴포넌트가 마운트되기 직전에 호출될 후크를 등록합니다.
+컴포넌트가 마운트되기 직전에 호출될 훅을 등록합니다.
 
 - **타입**:
 
@@ -185,7 +185,7 @@
 
 ## onErrorCaptured()
 
-Registers a hook to be called when an error propagating from a descendent component has been captured.
+자식 컴포넌트에서 전파된 에러가 캡쳐되었을 때 호출될 콜백을 등록합니다.
 
 - **타입**:
 
@@ -201,37 +201,46 @@ Registers a hook to be called when an error propagating from a descendent compon
 
 - **세부 사항**:
 
-  Errors can be captured from the following sources:
+  다음과 같은 출처의 에러를 캡처할 수 있습니다:
 
-  - Component renders
-  - Event handlers
-  - Lifecycle hooks
-  - `setup()` function
-  - Watchers
-  - Custom directive hooks
-  - Transition hooks
+  - 컴포넌트 렌더
+  - 이벤트 핸들러
+  - 수명주기 훅
+  - `setup()` 함수
+  - 감시자
+  - 커스텀 디렉티브 훅
+  - 트랜지션 훅
 
-  The hook receives three arguments: the error, the component instance that triggered the error, and an information string specifying the error source type.
+  훅은 '에러', '에러를 트리거한 컴포넌트 인스턴스', '에러 소스 유형을 지정하는 정보 문자열' 세 개의 인자를 받습니다.
 
-  You can modify component state in `errorCaptured()` to display an error state to the user. However, it is important that the error state should not render the original content that caused the error; otherwise the component will be thrown into an infinite render loop.
+  `errorCaptured` 훅에서 컴포넌트 상태를 수정하여 사용자에게 에러 상태를 표시할 수 있습니다.
+  그러나 애러가 난 컴포넌트에서 에러 상태를 렌더링해서는 안됩니다.
+  그렇지 않으면 컴포넌트가 무한 렌더링 루프에 빠집니다.
 
-  The hook can return `false` to stop the error from propagating further. See error propagation details below.
+  훅은 `false`를 반환하여 에러가 더 이상 전파되지 않도록 할 수 있습니다.
+  아래의 에러 전파 세부 사항을 참조하십시오.
 
-  **Error Propagation Rules**
+  **에러 전파 규칙**
 
-  - By default, all errors are still sent to the application-level [`app.config.errorHandler`](/api/application.html#app-config-errorhandler) if it is defined, so that these errors can still be reported to an analytics service in a single place.
+  - 기본적으로 모든 에러는 단계적으로 전파되며,
+    [`app.config.errorHandler`](/api/application.html#app-config-errorhandler)가 정의된 경우,
+    최종적으로 이곳으로 전파되므로 한 곳에서 서비스 분석 및 보고 작업을 할 수 있습니다.
 
-  - If multiple `errorCaptured` hooks exist on a component's inheritance chain or parent chain, all of them will be invoked on the same error.
+  - 컴포넌트의 상속 또는 부모 체인에 `errorCaptured` 훅이 여러 개 있는 경우,
+    모두 동일한 에러를 호출합니다.
 
-  - If the `errorCaptured` hook itself throws an error, both this error and the original captured error are sent to `app.config.errorHandler`.
+  - `errorCaptured` 훅 자체에서 에러가 발생하면,
+    이 에러와 원래 캡처된 에러가 모두 `app.config.errorHandler`로 전송됩니다.
 
-  - An `errorCaptured` hook can return `false` to prevent the error from propagating further. This is essentially saying "this error has been handled and should be ignored." It will prevent any additional `errorCaptured` hooks or `app.config.errorHandler` from being invoked for this error.
+  - `errorCaptured` 훅에서 `false`를 반환하면 더 이상 에러가 전파되지 않습니다.
+    이것은 본질적으로 "이 에러는 처리되었으므로 무시되어야 합니다."를 의미합니다.
+    따라서 이후 단계적으로 전파되어야 할 `errorCaptured` 훅 또는 `app.config.errorHandler`에 이 에러로 인한 호출 동작은 없습니다.
 
 ## onRenderTracked() <sup class="vt-badge dev-only" />
 
-Registers a debug hook to be called when a reactive dependency has been tracked by the component's render effect.
+컴포넌트의 렌더 이펙트에 의해 반응형 종속성이 추적됐을 때, 호출될 디버그 콜백을 등록합니다.
 
-**This hook is development-mode-only and not called during server-side rendering.**
+**이 훅은 개발 모드 전용이며, 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
 - **타입**:
 
@@ -252,9 +261,9 @@ Registers a debug hook to be called when a reactive dependency has been tracked 
 
 ## onRenderTriggered() <sup class="vt-badge dev-only" />
 
-Registers a debug hook to be called when a reactive dependency triggers the component's render effect to be re-run.
+컴포넌트의 렌더 이펙트가 반응형 종속성에 의해 다시 실행되도록 트리거된 경우, 호출될 디버그 콜백을 등록합니다.
 
-**This hook is development-mode-only and not called during server-side rendering.**
+**이 훅은 개발 모드 전용이며, 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
 - **타입**:
 
@@ -304,9 +313,9 @@ Registers a debug hook to be called when a reactive dependency triggers the comp
 
 - **참고**: [가이드 - 캐시된 인스턴스의 수명 주기](/guide/built-ins/keep-alive.html#lifecycle-of-cached-instance)
 
-## onServerPrefetch() <sup class="vt-badge" data-text="SSR only" />
+## onServerPrefetch() <sup class="vt-badge" data-text="SSR 전용" />
 
-Registers a async function to be resolved before the component instance is to be rendered on the server.
+컴포넌트 인스턴스가 서버에서 렌더링 되기 전에 완료(resolve)되어야 하는 비동기 함수를 등록합니다.
 
 - **타입**:
 
@@ -316,9 +325,11 @@ Registers a async function to be resolved before the component instance is to be
 
 - **세부 사항**:
 
-  If the callback returns a Promise, the server renderer will wait until the Promise is resolved before rendering the component.
+  콜백이 Promise를 반환하면,
+  서버 렌더러는 컴포넌트를 렌더링하기 전 Promise가 해결될 때까지 기다립니다.
 
-  This hook is only called during server-side rendering can be used to perform server-only data fetching.
+  이 훅은 SSR(서버 사이드 렌더링) 중에만 호출되므로,
+  서버 전용 데이터 가져오기를 실행하는 데 사용할 수 있습니다.
 
 - **예제**:
 
@@ -329,16 +340,17 @@ Registers a async function to be resolved before the component instance is to be
   const data = ref(null)
 
   onServerPrefetch(async () => {
-    // component is rendered as part of the initial request
-    // pre-fetch data on server as it is faster than on the client
+    // 서버에서 미리 데이터를 가져오는 것은
+    // 클라이언트에서 데이터를 요청하는 것보다 빠름.
+    // 최초 데이터 요청 결과로 컴포넌트의 일부가 렌더링 됨.
     data.value = await fetchOnServer(/* ... */)
   })
 
   onMounted(async () => {
     if (!data.value) {
-      // if data is null on mount, it means the component
-      // is dynamically rendered on the client. Perform a
-      // client-side fetch instead.
+      // 마운트 시 데이터가 null일 경우,
+      // 컴포넌트가 클라이언트에서 동적으로 렌더링되도록
+      // 클라이언트 측에서 가져오기를 실행해야 함.
       data.value = await fetchOnClient(/* ... */)
     }
   })
