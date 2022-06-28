@@ -352,7 +352,7 @@ export const sidebar = {
           link: '/api/composition-api-lifecycle'
         },
         {
-          text: 'Dependency Injection',
+          text: '종속성 주입',
           link: '/api/composition-api-dependency-injection'
         }
       ]
