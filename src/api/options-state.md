@@ -307,18 +307,33 @@
 
 - **세부 사항**:
 
-  The `watch` option expects an object where keys are the reactive component instance properties to watch (e.g. properties declared via `data` or `computed`) — and values are the corresponding callbacks. The callback receives the new value and the old value of the watched source.
+  `watch` 옵션은 키가 감시할 반응형 컴포넌트 인스턴스 속성(예: `data` 또는 `computed`를 통해 선언된 속성)이고,
+  값이 해당 콜백으로 이루어진 객체입니다.
+  콜백은 감시되는 소스의 새 값과 이전 값을 인자로 수신합니다.
 
-  In addition to a root-level property, the key can also be a simple dot-delimited path, e.g. `a.b.c`. Note that this usage does **not** support complex expressions - only dot-delimited paths are supported. If you need to watch complex data sources, use the imperative [`$watch()`](/api/component-instance.html#watch) API instead.
+  루트 수준 속성이 아닌 경우,
+  키는 `a.b.c`와 같이 점으로 구분된 경로가 될 수도 있습니다.
+  이 사용법은 복잡한 표현식을 **지원하지 않으며**,
+  점으로 구분된 경로만 지원됩니다.
+  복잡한 데이터 소스를 관찰해야 하는 경우,
+  명령형 [`$watch()`](/api/component-instance.html#watch) API를 사용해야 합니다.
 
-  The value can also be a string of a method name (declared via `methods`), or an object that contains additional options. When using the object syntax, the callback should be declared under the `handler` field. Additional options include:
+  값은 메소드 이름에 해당하는 문자열(`methods`를 통해 선언됨) 또는 추가적인 옵션을 포함하는 객체일 수도 있습니다.
+  객체 문법을 사용할 경우,
+  `handler` 필드에 콜백을 선언해야 합니다.
+  추가 옵션은 다음과 같습니다:
 
-  - **`immediate`**: trigger the callback immediately on watcher creation. Old value will be `undefined` on the first call.
-  - **`deep`**: force deep traversal of the source if it is an object or an array, so that the callback fires on deep mutations. 참고: [깊은 감시자](/guide/essentials/watchers.html#deep-watchers).
-  - **`flush`**: adjust the callback's flush timing. 참고: [콜백 실행 타이밍](/guide/essentials/watchers.html#callback-flush-timing).
-  - **`onTrack / onTrigger`**: debug the watcher's dependencies. 참고: [감시자 디버깅](/guide/extras/reactivity-in-depth.html#watcher-debugging).
+  - **`immediate`**: 감시자 생성 시 즉시 콜백 트리거.
+    첫 호출 시 이전 값은 `undefined`.
+  - **`deep`**: 객체 또는 배열인 경우 내부 깊숙한 곳에서 변경 사항 발생 시에도 콜백이 실행되도록 합니다.
+    참고: [깊은 감시자](/guide/essentials/watchers.html#deep-watchers).
+  - **`flush`**: 콜백 실행 타이밍을 조정합니다.
+    참고: [콜백 실행 타이밍](/guide/essentials/watchers.html#callback-flush-timing).
+  - **`onTrack / onTrigger`**: 감시자의 종속성을 디버그합니다.
+    참고: [감시자 디버깅](/guide/extras/reactivity-in-depth.html#watcher-debugging).
 
-  Avoid using arrow functions when declaring watch callbacks as they will not have access to the component instance via `this`.
+  감시 콜백을 선언할 때 화살표 함수를 사용해선 안 되는데,
+  `this`로 컴포넌트 인스턴스에 접근할 수 없기 때문입니다.
 
 - **예제**:
 
@@ -336,39 +351,39 @@
       }
     },
     watch: {
-      // watching top-level property
+      // 루트 레벨 속성 감시
       a(val, oldVal) {
         console.log(`new: ${val}, old: ${oldVal}`)
       },
-      // string method name
+      // 메서드 이름 문자열
       b: 'someMethod',
-      // the callback will be called whenever any of the watched object properties change regardless of their nested depth
+      // 중첩 깊이에 관계없이 감시하는 객체 속성이 변경될 때마다 콜백을 호출
       c: {
         handler(val, oldVal) {
-          console.log('c changed')
+          console.log('c 변경됨')
         },
         deep: true
       },
-      // watching a single nested property:
+      // 중첩 속성 감시:
       'c.d': function (val, oldVal) {
-        // do something
+        /* ... */
       },
-      // the callback will be called immediately after the start of the observation
+      // 콜백은 감시 시작 직후에도 호출됨
       e: {
         handler(val, oldVal) {
-          console.log('e changed')
+          console.log('e 변경됨')
         },
         immediate: true
       },
-      // you can pass array of callbacks, they will be called one-by-one
+      // 콜백 배열을 전달할 수 있으며 하나씩 호출됨
       f: [
         'handle1',
         function handle2(val, oldVal) {
-          console.log('handle2 triggered')
+          console.log('handle2 실행됨!')
         },
         {
           handler: function handle3(val, oldVal) {
-            console.log('handle3 triggered')
+            console.log('handle3 실행됨!')
           }
           /* ... */
         }
@@ -376,14 +391,14 @@
     },
     methods: {
       someMethod() {
-        console.log('b changed')
+        console.log('b 변경됨')
       },
       handle1() {
-        console.log('handle 1 triggered')
+        console.log('handle1 실행됨!')
       }
     },
     created() {
-      this.a = 3 // => new: 3, old: 1
+      this.a = 3 // => 현재 값: 3, 이전 값: 1
     }
   }
   ```
@@ -410,19 +425,24 @@
 
 - **세부 사항**:
 
-  Emitted events can be declared in two forms:
+  내보낼 이벤트는 두 가지 타입으로 선언할 수 있습니다:
 
-  - Simple form using an array of strings
-  - Full form using an object where each property key is the name of the event, and the value is either `null` or a validator function.
+  - 문자열 배열을 이용한 간단한 형태
+  - "키: prop의 이름", "값: `null` 또는 유효성 검사 함수"를 속성으로 하는 객체를 이용한 완전한 형태
 
-  The validation function will receive the additional arguments passed to the component's `$emit` call. For example, if `this.$emit('foo', 1)` is called, the corresponding validator for `foo` will receive the argument `1`. The validator function should return a boolean to indicate whether the event arguments are valid.
+  유효성 검사 함수는 컴포넌트의 `$emit` 호출에 전달된 인자를 수신합니다.
+  예를 들어 `this.$emit('foo', 1)`이 호출되면,
+  `foo`에 해당하는 유효성 검사기는 인자 `1`을 받습니다.
+  유효성 검사 함수는 이벤트 인자의 유효성을 불리언으로 반환해야 합니다.
 
-  Note that the `emits` option affects which event listeners are considered component event listeners, rather than native DOM event listeners. The listeners for declared events will be removed from the component's `$attrs` object, so they will not be passed through to the component's root element.
+  `emits` 옵션은 기본 DOM 이벤트 리스너가 아닌 컴포넌트 이벤트 리스너로 간주되는 이벤트 리스너에 영향을 미칩니다.
+  `emits`에 선언된 이벤트의 리스너는 컴포넌트의 `$attrs` 객체에서 제거되므로,
+  컴포넌트의 루트 엘리먼트로 전달되지 않습니다.
   자세한 내용은 [폴스루 속성](/guide/components/attrs.html) 참고.
 
 - **예제**:
 
-  Array syntax:
+  배열 문법:
 
   ```js
   export default {
@@ -433,20 +453,20 @@
   }
   ```
 
-  Object syntax:
+  객체 문법:
 
   ```js
   export default {
     emits: {
-      // no validation
+      // 유효성 검사 없음
       click: null,
 
-      // with validation
+      // 유효성 검사 사용
       submit: (payload) => {
         if (payload.email && payload.password) {
           return true
         } else {
-          console.warn(`Invalid submit event payload!`)
+          console.warn(`잘못된 정보 제출 이벤트!`)
           return false
         }
       }
@@ -471,17 +491,22 @@
 
 - **세부 사항**:
 
-  By default, a component instance exposes all instance properties to the parent when accessed via `$parent`, `$root`, or template refs. This can be undesirable, since a component most likely has internal state or methods that should be kept private to avoid tight coupling.
+  기본적으로 컴포넌트 인스턴스는 `$parent`, `$root` 또는 템플릿 참조(`$refs`)를 통해 접근할 때,
+  모든 인스턴스 속성을 부모에게 노출합니다.
+  자식 컴포넌트에는 긴밀한 결합을 피하기 위해 비공개로 유지되어야 하는 상태 또는 메서드가 있을 가능성이 높기 때문에 ,
+  이것은 바람직하지 않을 수 있습니다.
 
-  The `expose` option expects a list of property name strings. When `expose` is used, only the properties explicitly listed will be exposed on the component's public instance.
+  `expose` 옵션은 속성의 이름 문자열로 이루어진 배열입니다.
+  `expose`를 사용하면 명시적으로 나열된 속성만 컴포넌트의 공개 인스턴스에 노출됩니다.
 
-  `expose` only affects user-defined properties - it does not filter out built-in component instance properties.
+  `expose`는 커스텀 속성에만 영향을 미치며,
+  빌트인 컴포넌트 인스턴스 속성은 걸러내지 않습니다.
 
 - **예제**:
 
   ```js
   export default {
-    // only `publicMethod` will be available on the public instance
+    // 공개 인스턴스에서는 `publicMethod`만 접근 가능
     expose: ['publicMethod'],
     methods: {
       publicMethod() {
