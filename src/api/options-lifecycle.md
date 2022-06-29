@@ -1,12 +1,12 @@
-# Options: Lifecycle
+# 옵션: 수명주기 {#options-lifecycle}
 
-:::info See also
-For shared usage of lifecycle hooks, see [Guide - Lifecycle Hooks](/guide/essentials/lifecycle.html)
+:::info 참고
+수명주기 훅의 여러 사용법에 대해서는 [가이드 - 수명주기 훅](/guide/essentials/lifecycle.html)을 참고하십시오.
 :::
 
 ## beforeCreate
 
-Called when the instance is initialized.
+인스턴스가 초기화된 후 호출됩니다.
 
 - **타입**:
 
@@ -18,13 +18,13 @@ Called when the instance is initialized.
 
 - **세부 사항**:
 
-  Called immediately when the instance is initialized, after props resolution, before processing other options such as `data()` or `computed`.
+  인스턴스가 초기화된 다음 props가 처리된 후, `data()` 또는 `computed`와 같은 다른 옵션을 처리하기 전에 호출됩니다.
 
-  Note that the `setup()` hook of Composition API is called before any Options API hooks, even `beforeCreate()`.
+  컴포지션 API의 `setup()` 훅은 옵션 API의 어떤 훅보다 먼저 (`beforeCreate()` 훅보다 빨리) 호출됩니다.
 
 ## created
 
-Called after the instance has finished processing all state-related options.
+인스턴스가 모든 상태 관련 옵션 처리를 완료한 후 호출됩니다.
 
 - **타입**:
 
@@ -36,11 +36,12 @@ Called after the instance has finished processing all state-related options.
 
 - **세부 사항**:
 
-  When this hooks is called, the following have been set up: reactive data, computed properties, methods, and watchers. However, the mounting phase has not been started, and the `$el` property will not be available yet.
+  반응형 데이터, 계산된 속성, 메서드 및 감시자가 설정된 후, 이 훅이 호출되면 됩니다.
+  그러나 마운팅 단계가 시작되지 않았으므로, `$el` 속성을 아직 사용할 수 없습니다.
 
 ## beforeMount
 
-Called right before the component is to be mounted.
+컴포넌트가 마운트되기 직전 호출됩니다.
 
 - **타입**:
 
@@ -52,13 +53,15 @@ Called right before the component is to be mounted.
 
 - **세부 사항**:
 
-  When this hook is called, the component has finished setting up its reactive state, but no DOM nodes have been created yet. It is about to execute its DOM render effect for the first time.
+  반응형 상태 설정이 완료되면 이 훅이 호출되지만,
+  아직 DOM 노드가 생성되지는 않았으며,
+  첫 DOM 렌더 이펙트를 실행하려고 합니다.
 
-  **This hook is not called during server-side rendering.**
+  **이 훅은 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
 ## mounted
 
-Called after the component has been mounted.
+컴포넌트가 마운트된 후 호출됩니다.
 
 - **타입**:
 
@@ -78,11 +81,11 @@ Called after the component has been mounted.
 
   This hook is typically used for performing side effects that need access to the component's rendered DOM, or for limiting DOM-related code to the client in a [server-rendered application](/guide/scaling-up/ssr.html).
 
-  **This hook is not called during server-side rendering.**
+  **이 훅은 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
 ## beforeUpdate
 
-Called right before the component is about to update its DOM tree due to a reactive state change.
+반응형 상태 변경에 의한 컴포넌트 DOM 트리 업데이트 직전 호출됩니다.
 
 - **타입**:
 
@@ -94,13 +97,15 @@ Called right before the component is about to update its DOM tree due to a react
 
 - **세부 사항**:
 
-  This hook can be used to access the DOM state before Vue updates the DOM. It is also safe to modify component state inside this hook.
+  이 훅은 Vue가 DOM을 업데이트하기 전,
+  DOM 상태에 접근하는 데 사용할 수 있습니다.
+  이 훅 내부에서 컴포넌트 상태를 수정하는 것도 안전합니다.
 
-  **This hook is not called during server-side rendering.**
+  **이 훅은 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
 ## updated
 
-Called after the component has updated its DOM tree due to a reactive state change.
+반응형 상태 변경에 의한 컴포넌트 DOM 트리 업데이트 후 호출됩니다.
 
 - **타입**:
 
@@ -116,7 +121,7 @@ Called after the component has updated its DOM tree due to a reactive state chan
 
   This hook is called after any DOM update of the component, which can be caused by different state changes. If you need to access the updated DOM after a specific state change, use [nextTick()](/api/general.html#nexttick) instead.
 
-  **This hook is not called during server-side rendering.**
+  **이 훅은 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
   :::warning
   Do not mutate component state in the updated hook - this will likely lead to an infinite update loop!
@@ -138,7 +143,7 @@ Called right before a component instance is to be unmounted.
 
   When this hook is called, the component instance is still fully functional.
 
-  **This hook is not called during server-side rendering.**
+  **이 훅은 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
 ## unmounted
 
@@ -162,7 +167,7 @@ Called after the component has been unmounted.
 
   Use this hook to clean up manually created side effects such as timers, DOM event listeners or server connections.
 
-  **This hook is not called during server-side rendering.**
+  **이 훅은 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
 ## errorCaptured
 
@@ -228,7 +233,7 @@ Called when a reactive dependency has been tracked by the component's render eff
   }
   ```
 
-- **참고**: [Reactivity in Depth](/guide/extras/reactivity-in-depth.html)
+- **참고**: [가이드 - 반응형 심화](/guide/extras/reactivity-in-depth.html)
 
 ## renderTriggered <sup class="vt-badge dev-only" />
 
@@ -252,13 +257,13 @@ Called when a reactive dependency triggers the component's render effect to be r
   }
   ```
 
-- **참고**: [Reactivity in Depth](/guide/extras/reactivity-in-depth.html)
+- **참고**: [가이드 - 반응형 심화](/guide/extras/reactivity-in-depth.html)
 
 ## activated
 
 Called after the component instance is inserted into the DOM as part of a tree cached by [`<KeepAlive>`](/api/built-in-components.html#keepalive).
 
-**This hook is not called during server-side rendering.**
+**이 훅은 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
 - **타입**:
 
@@ -268,13 +273,13 @@ Called after the component instance is inserted into the DOM as part of a tree c
   }
   ```
 
-- **참고**: [Guide - Lifecycle of Cached Instance](/guide/built-ins/keep-alive.html#lifecycle-of-cached-instance)
+- **참고**: [가이드 - 캐시된 인스턴스의 수명주기](/guide/built-ins/keep-alive.html#lifecycle-of-cached-instance)
 
 ## deactivated
 
 Called after the component instance is removed from the DOM as part of a tree cached by [`<KeepAlive>`](/api/built-in-components.html#keepalive).
 
-**This hook is not called during server-side rendering.**
+**이 훅은 서버 사이드 렌더링 중에 호출되지 않습니다**.
 
 - **타입**:
 
@@ -284,9 +289,9 @@ Called after the component instance is removed from the DOM as part of a tree ca
   }
   ```
 
-- **참고**: [Guide - Lifecycle of Cached Instance](/guide/built-ins/keep-alive.html#lifecycle-of-cached-instance)
+- **참고**: [가이드 - 캐시된 인스턴스의 수명주기](/guide/built-ins/keep-alive.html#lifecycle-of-cached-instance)
 
-## serverPrefetch <sup class="vt-badge" data-text="SSR only" />
+## serverPrefetch <sup class="vt-badge" data-text="SSR 전용" />
 
 Async function to be resolved before the component instance is to be rendered on the server.
 
@@ -329,4 +334,4 @@ Async function to be resolved before the component instance is to be rendered on
   }
   ```
 
-- **참고**: [Server-Side Rendering](/guide/scaling-up/ssr.html)
+- **참고**: [가이드 - 서버 사이드 렌더링 (SSR)](/guide/scaling-up/ssr.html)
