@@ -464,7 +464,7 @@
 
 ## v-pre
 
-이 엘리먼트와 모든 자식 엘리먼트의 컴파일을 건너뜁니다.
+이 엘리먼트와 모든 자식 엘리먼트의 컴파일을 생략합니다.
 
 - **표현식을 허용하지 않습니다**.
 
@@ -519,7 +519,11 @@
 
 - **세부 사항**:
 
-  Memoize a sub-tree of the template. Can be used on both elements and components. The directive expects a fixed-length array of dependency values to compare for the memoization. If every value in the array was the same as last render, then updates for the entire sub-tree will be skipped. For example:
+  템플릿의 하위 트리를 메모합니다.
+  엘리먼트와 컴포넌트 모두에 사용할 수 있습니다.
+  디렉티브는 메모이제이션을 위해 비교할 종속성 값의 고정된 길이의 배열을 요구합니다.
+  배열의 모든 값이 마지막 렌더링과 같으면 전체 하위 트리에 대한 업데이트를 생략합니다.
+  예를 들어:
 
   ```vue-html
   <div v-memo="[valueA, valueB]">
@@ -527,45 +531,64 @@
   </div>
   ```
 
-  When the component re-renders, if both `valueA` and `valueB` remain the same, all updates for this `<div>` and its children will be skipped. In fact, even the Virtual DOM VNode creation will also be skipped since the memoized copy of the sub-tree can be reused.
+  컴포넌트가 다시 렌더링될 때 `valueA`와 `valueB`가 모두 동일하게 유지되면,
+  이 `<div>`와 하위 항목에 대한 모든 업데이트를 생략합니다.
+  사실, 하위 트리의 메모된 복사본을 재사용할 수 있기 때문에 가상 DOM VNode 생성도 생략합니다.
 
-  It is important to specify the memoization array correctly, otherwise we may skip updates that should indeed be applied. `v-memo` with an empty dependency array (`v-memo="[]"`) would be functionally equivalent to `v-once`.
+  메모이제이션 배열을 올바르게 지정하는 것이 중요합니다.
+  그렇지 않으면 실제로 적용되어야 하는 업데이트를 건너뛸 수 있습니다.
+  빈 종속성 배열(`v-memo="[]"`)이 있는 `v-memo`는 기능적으로 `v-once`와 동일합니다.
 
-  **Usage with `v-for`**
+  **`v-for`과 함께 사용하기**
 
-  `v-memo` is provided solely for micro optimizations in performance-critical scenarios and should be rarely needed. The most common case where this may prove helpful is when rendering large `v-for` lists (where `length > 1000`):
+  `v-memo`는 성능이 중요한 시나리오에서 마이크로 최적화를 위해 제공되는 것으로,
+  일반적으로 거의 필요하지 않습니다.
+  이것이 도움이 될 수 있는 가장 일반적인 경우는 큰 리스트(`length > 1000`)를 `v-for`로 렌더링할 때입니다:
 
   ```vue-html
   <div v-for="item in list" :key="item.id" v-memo="[item.id === selected]">
-    <p>ID: {{ item.id }} - selected: {{ item.id === selected }}</p>
-    <p>...more child nodes</p>
+    <p>ID: {{ item.id }} - 선택됨: {{ item.id === selected }}</p>
+    <p>...더 많은 자식 노드</p>
   </div>
   ```
 
-  When the component's `selected` state changes, a large amount of VNodes will be created even though most of the items remained exactly the same. The `v-memo` usage here is essentially saying "only update this item if it went from non-selected to selected, or the other way around". This allows every unaffected item to reuse its previous VNode and skip diffing entirely. Note we don't need to include `item.id` in the memo dependency array here since Vue automatically infers it from the item's `:key`.
+  컴포넌트의 `selected` 상태가 변경되면,
+  대부분의 아이템이 정확히 동일하게 유지되더라도 많은 양의 VNode가 생성됩니다.
+  여기서 `v-memo` 사용법은 본질적으로 "아이템의 선택여부가 바뀐 경우에만, 이 아이템을 업데이트하십시오"입니다.
+  이렇게 하면 영향을 받지 않는 모든 아이템이 이전 VNode를 재사용하고,
+  차이점 비교를 생략할 수 있습니다.
+  Vue는 아이템의 `:key`로 자동 추론하므로,
+  메모 종속성 배열에 `item.id`를 포함할 필요가 없습니다.
 
   :::warning
-  When using `v-memo` with `v-for`, make sure they are used on the same element. **`v-memo` does not work inside `v-for`.**
+  `v-for`와 함께 `v-memo`를 사용할 때,
+  동일한 엘리먼트에 사용되는지 확인이 필요합니다.
+  **`v-memo`는 `v-for` 내에서 작동하지 않습니다**.
   :::
 
-  `v-memo` can also be used on components to manually prevent unwanted updates in certain edge cases where the child component update check has been de-optimized. But again, it is the developer's responsibility to specify correct dependency arrays to avoid skipping necessary updates.
+  `v-memo`는 자식 컴포넌트 업데이트 확인이 최적화되지 않은 특정 엣지 케이스에서 원치 않는 업데이트를 수동으로 방지하기 위해 컴포넌트에 사용할 수도 있습니다.
+  그러나 필요한 업데이트를 건너뛰지 않도록 올바른 종속성 배열을 지정하는 것은 개발자의 책임입니다.
 
 - **참고**:
   - [v-once](#v-once)
 
 ## v-cloak
 
-Used to hide un-compiled template until it is ready.
+준비될 때까지 컴파일되지 않은 템플릿을 숨기는 데 사용됩니다.
 
 - **표현식을 허용하지 않습니다**.
 
 - **세부 사항**:
 
-  **This directive is only needed in no-build-step setups.**
+  **이 디렉티브는 빌드 단계가 없는 설정에서만 필요합니다**.
 
-  When using in-DOM templates, there can be a "flash of un-compiled templates": the user may see raw mustache tags until the mounted component replaces them with rendered content.
+  DOM 내 템플릿을 사용할 때,
+  "컴파일되지 않은 템플릿이 순간 보이는 현상"이 있을 수 있습니다.
+  이러면 사용자는 컴포넌트가 렌더링된 콘텐츠로 대체할 때까지 이중 중괄호 태그를 볼 수 있습니다.
 
-  `v-cloak` will remain on the element until the associated component instance is mounted. Combined with CSS rules such as `[v-cloak] { display: none }`, it can be used to hide the raw templates until the component is ready.
+  `v-cloak`은 연결된 컴포넌트 인스턴스가 마운트될 때까지 엘리먼트에 남아 있습니다.
+  `[v-cloak] { display: none }`과 같은 CSS 규칙과 결합하여,
+  컴포넌트가 준비될 때까지 템플릿을 숨기는 데 사용할 수 있습니다.
 
 - **예제**:
 
@@ -581,4 +604,4 @@ Used to hide un-compiled template until it is ready.
   </div>
   ```
 
-  The `<div>` will not be visible until the compilation is done.
+  `<div>`는 컴파일이 완료될 때까지 표시되지 않습니다.
