@@ -1,10 +1,11 @@
-# SFC Syntax Specification
+# SFC 문법 설명서 {#sfc-syntax-specification}
 
-## Overview
+## 개요 {#overview}
 
-A Vue Single File Component (SFC), conventionally using the `*.vue` file extension, is a custom file format that uses an HTML-like syntax to describe a Vue component. A Vue SFC is syntactically compatible with HTML.
+일반적으로 `*.vue` 파일 확장자를 사용하는 Vue 싱글 파일 컴포넌트(SFC)는 HTML과 유사한 문법을 사용하여 Vue 컴포넌트를 설명하는 커스텀 파일 형식입니다.
+Vue SFC는 HTML과 문법적으로 호환됩니다.
 
-Each `*.vue` file consists of three types of top-level language blocks: `<template>`, `<script>`, and `<style>`, and optionally additional custom blocks:
+각 `*.vue` 파일은 세 가지 유형의 최상위 언어 블록(`<template>`, `<script>`, `<style>`)과 선택적으로 추가 커스텀 블록으로 구성됩니다:
 
 ```vue
 <template>
@@ -15,7 +16,7 @@ Each `*.vue` file consists of three types of top-level language blocks: `<templa
 export default {
   data() {
     return {
-      msg: 'Hello world!'
+      msg: '안녕 Vue!'
     }
   }
 }
@@ -28,11 +29,11 @@ export default {
 </style>
 
 <custom1>
-  This could be e.g. documentation for the component.
+  예를 들어 컴포넌트 설명서가 될 수 있습니다.
 </custom1>
 ```
 
-## Language Blocks
+## 언어 블럭 {#language-blocks}
 
 ### `<template>`
 
@@ -60,7 +61,7 @@ export default {
 
 - A `<style>` tag can have `scoped` or `module` attributes (see [SFC Style Features](/api/sfc-css-features) for more details) to help encapsulate the styles to the current component. Multiple `<style>` tags with different encapsulation modes can be mixed in the same component.
 
-### Custom Blocks
+### 커스텀 블럭 {#custom-blocks}
 
 Additional custom blocks can be included in a `*.vue` file for any project-specific needs, for example a `<docs>` block. Some real-world examples of custom blocks include:
 
@@ -70,7 +71,7 @@ Additional custom blocks can be included in a `*.vue` file for any project-speci
 
 Handling of Custom Blocks will depend on tooling - if you want to build your own custom block integrations, see [relevant tooling section](/guide/scaling-up/tooling.html#sfc-custom-block-integrations) for more details.
 
-## Automatic Name Inference
+## 자동으로 이름 추론 {#automatic-name-inference}
 
 An SFC automatically infers the component's name from its **filename** in the following cases:
 
@@ -78,7 +79,7 @@ An SFC automatically infers the component's name from its **filename** in the fo
 - DevTools inspection
 - Recursive self-reference. E.g. a file named `FooBar.vue` can refer to itself as `<FooBar/>` in its template. This has lower priority than explicitly registered/imported components.
 
-## Pre-Processors
+## 전처리기 {#pre-processors}
 
 Blocks can declare pre-processor languages using the `lang` attribute. The most common case is using TypeScript for the `<script>` block:
 
@@ -109,7 +110,7 @@ Note that integration with various pre-processors may differ by toolchain. Check
 - [Vue CLI](https://cli.vuejs.org/guide/css.html#pre-processors)
 - [webpack + vue-loader](https://vue-loader.vuejs.org/guide/pre-processors.html#using-pre-processors)
 
-## Src Imports
+## Src 가져오기 {#src-imports}
 
 If you prefer splitting up your `*.vue` components into multiple files, you can use the `src` attribute to import an external file for a language block:
 
@@ -136,6 +137,8 @@ Beware that `src` imports follow the same path resolution rules as webpack modul
 </unit-test>
 ```
 
-## Comments
+## 주석 {#comments}
 
-Inside each block you shall use the comment syntax of the language being used (HTML, CSS, JavaScript, Pug, etc.). For top-level comments, use HTML comment syntax: `<!-- comment contents here -->`
+각 블록 내에서 사용 중인 언어(HTML, CSS, JavaScript, Pug 등)의 주석 문법을 사용해야 합니다.
+최상위 주석의 경우 HTML 주석 문법을 사용하십시오:
+`<!-- 컴포넌트 주석 -->`
