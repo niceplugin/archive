@@ -19,8 +19,8 @@ title: 템플릿에 데이터 전달하기
 `counter.js`에 `name`이라는 새로운 헬퍼를 만들어 봅시다:
 ```js
 Template.counter.helpers({
-  countedNumber() { /* ... */ },
-  name() {
+  countedNumber() { /* ...기존 코드... */ },
+  myName() {
     return Template.instance().data
   },
 })
@@ -28,7 +28,7 @@ Template.counter.helpers({
 
 그리고 `counter.html` 템플릿의 "홍길동" 부분을 다음과 같이 바꿔봅시다:
 ```html
-<p>남성 {{ name }}씨는 버튼을 {{ countedNumber }}번 클릭하였습니다.</p>
+<p>남성 {{ myName }}씨는 버튼을 {{ countedNumber }}번 클릭하였습니다.</p>
 ```
 
 이름이 "홍길동"에서 "신형만"과 "봉미선"으로 바뀐 것을 확인할 수 있습니다!
@@ -44,31 +44,32 @@ Template.counter.helpers({
 {{> counter name='봉미선' gender='여성' }}
 ```
 
-이렇게 전달된 데이터가 여러 개 일 경우,
+이렇게 전달된 데이터가 `키=값` 형식일 경우,
 해당 템플릿 인스턴스의 `data`는 객체가 되고,
 각 데이터는 `키=값` 형식으로 저장됩니다.
 
-`counter.js`에서 `name` 헬퍼를 약간 수정하고,
-`gender`라는 새로운 헬퍼를 만들어 봅시다:
+`counter.js`에서 `myName` 헬퍼를 약간 수정하고,
+`gender`라는 새로운 헬퍼는 안 만들어 봅시다:
 ```js
 Template.counter.helpers({
   countedNumber() { /* ... */ },
-  name() {
+  myName() {
     return Template.instance().data.name
-  },
-  gender() {
-    return Template.instance().data.gender
   },
 })
 ```
 
 그리고 `counter.html` 템플릿의 "남성" 부분을 다음과 같이 바꿔봅시다:
 ```html
-<p>{{ gender }} {{ name }}씨는 버튼을 {{ countedNumber }}번 클릭하였습니다.</p>
+<p>{{ gender }} {{ myName }}씨는 버튼을 {{ countedNumber }}번 클릭하였습니다.</p>
 ```
 
 정말 멋집니다!
-"봉미선"씨는 이제 "여성"으로 나오는군요.
+신기하게도 "봉미선"씨는 이제 "여성"으로 나오는군요.
+
+템플릿 인스턴스의 `data`가 객체일 경우,
+해당 키를 템플릿에서 헬퍼처럼 사용할 수 있습니다.
+단, 이것이 헬퍼인지 `data` 객체의 속성인지 혼란스러울 수 있습니다.
 
 :::info
 전달되는 정보가 변경될 경우,
@@ -82,6 +83,7 @@ Template.counter.helpers({
 > 우리는 이번 섹션에서 다음과 같은 것을 배웠습니다:
 > 1. 템플릿에 단일 데이터 전달
 > 2. 템플릿에 다중 데이터 전달
+> 3. 인스턴스의 `data` 객체의 속성은 헬퍼처럼 사용이 가능
 
 하지만 여전히 아쉽습니다.
 만약 이 두 사람의 총 클릭 수를 나타내려면 어떻게 해야 할까요?

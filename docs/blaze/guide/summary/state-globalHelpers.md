@@ -60,6 +60,7 @@ import total from './globalSum.js'
 Template.counter.events({
   'click button'(event, instance) {
     const value = instance.counted.get() + 1
+
     instance.counted.set( value )
 
     const sum = total.get() + 1 // 추가되는 코드
@@ -86,7 +87,7 @@ import { Template } from 'meteor/templating'
 import total from './globalSum.js'
 ```
 
-이것은 템플릿 헬퍼와 다르게 아래와 같이 한 번에 하나씩만 등록이 가능합니다:
+글로벌 헬퍼는 템플릿 헬퍼와 다르게 아래와 같이 한 번에 하나씩만 등록이 가능합니다:
 ```js
 Template.registerHelper( /* 글로벌 헬퍼 이름 문자열 */ , /* 값을 반환할 헬퍼 함수 */ )
 ```

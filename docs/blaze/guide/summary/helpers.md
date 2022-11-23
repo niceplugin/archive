@@ -23,7 +23,7 @@ Meteor는 불러온 템플릿을 가지고 있다가 웹 페이지에 보여줘�
 우리는 템플릿이 웹 페이지에 보여지기 위해 DOM에 생성되었을 때,
 실행되는 `onCreated`라는 이벤트를 사용할 것입니다.
 
-우선 counter라는 새로운 HTML 템플릿과 JS 파일을 만들어 봅시다:
+우선 `counter.html`라는 새로운 HTML 템플릿과 `counter.js` 파일을 만들어 봅시다:
 ```html
 <template name="counter">
   <hr>
@@ -46,14 +46,16 @@ Template.counter.onCreated(function() {
 // 주석 5
 ```
 
-이제 `main.js`에서 카운터 JS를 불러오고, `main.html`의 `<!-- 주석 2 -->`를 아래와 같이 변경합니다:
-```html
-  {{> counter }}
-  {{> counter }}
-```
+이제 `main.js`에서 카운터 JS를 불러오고:
 ```js
 // 위에 두 코드는 유지하세요.
 import './counter.js'
+```
+
+`main.html`의 `<!-- 주석 2 -->`를 아래와 같이 변경합니다:
+```html
+  {{> counter }}
+  {{> counter }}
 ```
 
 이제 브라우저에 새로운 템플릿이 보여야 합니다.
@@ -77,14 +79,6 @@ import { ReactiveVar } from 'meteor/reactive-var'
   this.counted = new ReactiveVar(0)
 ```
 
-우리는 이제 `0` 숫자 값을 가지고 있는 `counted`라는 새로운 반응형 변수를 만들었습니다.
-
-여기서 `this`는 새로 생성된 템플릿의 인스턴스입니다.
-다시말해 새로 생성된 템플릿만의 공간이라고 비유할 수 있습니다.
-
-`this`가 반드시 인스턴스를 가리켜야하므로,
-`onCreated`의 콜백 함수는 화살표 함수를 사용해서는 안되는 것입니다.
-
 :::info
 보통 Meteor 프로젝트에는 기본적으로 `ReactiveVar`가 설치되어 있지만,
 수동으로 설치가 필요할 경우 아래와 같이 설치합니다:
@@ -92,6 +86,14 @@ import { ReactiveVar } from 'meteor/reactive-var'
 meteor add reactive-var
 ```
 :::
+
+우리는 이제 숫자 `0` 값을 가지고 있는 `counted`라는 새로운 반응형 변수를 만들었습니다.
+
+여기서 `this`는 새로 생성된 템플릿의 인스턴스입니다.
+인스턴스는 새로 생성된 템플릿만의 공간이라고 생각할 수 있습니다.
+
+`this`가 반드시 인스턴스를 가리켜야하므로,
+`onCreated`의 콜백 함수는 화살표 함수를 사용해서는 안되는 것입니다.
 
 이제 헬퍼가 `counted` 반응형 변수를 사용할 수 있게 설정해 봅시다.
 
