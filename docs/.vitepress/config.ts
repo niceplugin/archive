@@ -75,29 +75,8 @@ const config = defineConfig({
             text: 'Meteor',
             link: '/meteor/api/core.md',
           },
-          // {
-          //   text: 'Blaze',
-          //   link: '/blaze/api/index.md',
-          // },
-          // {
-          //   text: 'Router',
-          //   link: '/router/api/index.md',
-          // },
         ]
       },
-      // {
-      //   text: 'API (모듈별)',
-      //   items: [
-      //     {
-      //       text: 'pinia',
-      //       link: '/api/modules/pinia/introduction.md'
-      //     },
-      //     {
-      //       text: '@pinia/nuxt',
-      //       link: '/api/modules/pinia_nuxt/introduction.md'
-      //     },
-      //   ],
-      // },
       {
         text: '변경사항',
         items: [
@@ -132,27 +111,6 @@ const config = defineConfig({
             },
           ],
         },
-        // {
-        //   text: '데이터',
-        //   items: [
-        //     {
-        //       text: '컬렉션과 스키마',
-        //       link: '/meteor/guide/data/collections-and-schemas.md',
-        //     },
-        //     {
-        //       text: '퍼블리케이션과 섭스크립션',
-        //       link: '/meteor/guide/data/publications-and-subscriptions.md',
-        //     },
-        //     {
-        //       text: '메서드',
-        //       link: '/meteor/guide/data/methods.md',
-        //     },
-        //     {
-        //       text: '유저와 계정',
-        //       link: '/meteor/guide/data/users-and-accounts.md',
-        //     },
-        //   ],
-        // },
       ],
       '/blaze/guide/': [
         {
@@ -191,29 +149,12 @@ const config = defineConfig({
               text: '6. 조건문',
               link: '/blaze/guide/summary/if-unless.md',
             },
+            {
+              text: '7. 반복문',
+              link: '/blaze/guide/summary/each.md',
+            },
           ],
         },
-        // {
-        //   text: '데이터',
-        //   items: [
-        //     {
-        //       text: '컬렉션과 스키마',
-        //       link: '/blaze/guide/data/collections-and-schemas.md',
-        //     },
-        //     {
-        //       text: '퍼블리케이션과 섭스크립션',
-        //       link: '/blaze/guide/data/publications-and-subscriptions.md',
-        //     },
-        //     {
-        //       text: '메서드',
-        //       link: '/blaze/guide/data/methods.md',
-        //     },
-        //     {
-        //       text: '유저와 계정',
-        //       link: '/blaze/guide/data/users-and-accounts.md',
-        //     },
-        //   ],
-        // },
       ],
 
       '/meteor/api/': [
@@ -228,14 +169,6 @@ const config = defineConfig({
               text: '서버 커넥션',
               link: '/meteor/api/server-connections.md'
             },
-            // {
-            //   text: '콜렉션',
-            //   link: '/meteor/api/collections.md'
-            // },
-            // {
-            //   text: '퍼블리쉬와 섭스크라입',
-            //   link: '/meteor/api/publish-and-subscribe.md'
-            // },
           ]
         },
       ],
