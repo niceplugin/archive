@@ -75,6 +75,10 @@ const config = defineConfig({
             text: 'Meteor',
             link: '/meteor/api/core.md',
           },
+          {
+            text: 'Router',
+            link: '/router/api/api-general.md',
+          },
         ]
       },
       {
@@ -169,6 +173,27 @@ const config = defineConfig({
               text: '서버 커넥션',
               link: '/meteor/api/server-connections.md'
             },
+          ]
+        },
+      ],
+      '/router/api/': [
+        {
+          text: 'API',
+          items: [
+            {
+              text: '일반적인 메서드',
+              link: '/router/api/api-general.md'
+            },
+          ]
+        },
+        {
+          text: '훅(Hooks)',
+          items: [
+          ]
+        },
+        {
+          text: '헬퍼',
+          items: [
           ]
         },
       ],
