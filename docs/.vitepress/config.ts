@@ -192,6 +192,22 @@ const config = defineConfig({
               text: '조작',
               link: '/router/api/manipulation.md'
             },
+            {
+              text: 'URL과 데이터',
+              link: '/router/api/urls-and-data.md'
+            },
+            {
+              text: '반응형',
+              link: '/router/api/reactivity.md'
+            },
+            {
+              text: '변경',
+              link: '/router/api/tweaking.md'
+            },
+            {
+              text: '애드온 개발용',
+              link: '/router/api/for-dev.md'
+            },
           ]
         },
         {
