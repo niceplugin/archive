@@ -140,7 +140,11 @@ title: 일반적인 메서드
   ```ts
   declare module Route {
     render: (
+      // 레이아웃에서는 `{{> yield }}`를 한 번 사용할 수 있습니다.
+      // 이 스페이스 문법은 테그로 감싸줘야 정상적으로 작동합니다.
       layout: templateName | Blaze.Template,
+  
+      // 레이아웃을 사용하지 않은 경우, 템플릿은 `<body>` 내부에 렌더링 될 것입니다.
       template: templateName | Blaze.Template,
   
       // `template`와 `layout`모두에서 사용될 `data` 컨텍스트 입니다.
