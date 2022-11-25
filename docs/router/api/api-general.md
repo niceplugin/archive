@@ -21,20 +21,20 @@ title: 일반적인 메서드
   ```
 - 타입:
   ```ts
-  declare module FlowRouter {
-    route: (
+  interface FlowRouter {
+    route(
       path: path,
       options: {
         name: routeName,
         [hookKey in string]?: Function, //사용 가능한 모든 훅 (훅 API 참조)
         [propKey in string]?: any       // 경로 호출 내에서 사용할 수 있는 모든 속성
       },
-    ): Route => {}
+    ): Route
   }
   
   type path = string
   type routeName = string 
-  declare module Route { /* ... */ }
+  interface Route { /* ... */ }
   ```
 - 존재하지 않는 페이지 만들기
   ```js
@@ -69,8 +69,8 @@ title: 일반적인 메서드
   ```
 - 타입:
   ```ts
-  declare module FlowRouter {
-    group: ( options?: options ): Group => { /* ... */ }
+  interface FlowRouter {
+    group( options?: options ): Group
   }
   
   type routeName = string
@@ -81,7 +81,7 @@ title: 일반적인 메서드
     [hookKey in string]?: Function, //사용 가능한 모든 훅 (훅 API 참조)
     [propKey in string]?: any       // 경로 호출 내에서 사용할 수 있는 모든 속성
   }
-  declare module Group { /* ... */ }
+  interface Group { /* ... */ }
   ```
 - 그룹 이름 가져오기:
   ```js
@@ -110,12 +110,12 @@ title: 일반적인 메서드
   ```
 - 타입:
   ```ts
-  declare module FlowRouter {
-    go: (
+  interface FlowRouter {
+    go(
       path: path | routeName,
       params?: { [key in string]: string },
       query_params?: { [key in string]: string }
-    ):void => { /* ... */ }
+    ): void
   }
   
   type path = string
@@ -138,8 +138,8 @@ title: 일반적인 메서드
   ```
 - 타입:
   ```ts
-  declare module Route {
-    render: (
+  interface Route {
+    render(
       // 레이아웃에서는 `{{> yield }}`를 한 번 사용할 수 있습니다.
       // 이 스페이스 문법은 테그로 감싸줘야 정상적으로 작동합니다.
       layout: templateName | Blaze.Template,
@@ -153,10 +153,10 @@ title: 일반적인 메서드
       // 템플릿이 렌더링되고 DOM에 배치된 후 트리거되는 콜백입니다.
       // 이 콜백에는 컨텍스트가 없습니다.
       callback?: Function,
-    ):void => { /* ... */ }
+    ):void
   }
   
   type templateName = string
-  declare module Blaze.Template { /* ... */ }
+  interface Template extends Blaze { /* ... */ }
   ```
 

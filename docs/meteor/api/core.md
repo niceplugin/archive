@@ -16,7 +16,7 @@ title: 코어
   ```
 - 타입:
   ```ts
-  declare module Meteor {
+  interface Meteor {
     isClient: boolean;
   }
   ```
@@ -33,7 +33,7 @@ title: 코어
   ```
 - 타입:
   ```ts
-  declare module Meteor {
+  interface Meteor {
     isServer: boolean;
   }
   ```
@@ -50,7 +50,7 @@ title: 코어
   ```
 - 타입:
   ```ts
-  declare module Meteor {
+  interface Meteor {
     isCordova: boolean;
   }
   ```
@@ -67,7 +67,7 @@ title: 코어
   ```
 - 타입:
   ```ts
-  declare module Meteor {
+  interface Meteor {
     isDevelopment: boolean;
   }
   ```
@@ -84,7 +84,7 @@ title: 코어
   ```
 - 타입:
   ```ts
-  declare module Meteor {
+  interface Meteor {
     isProduction: boolean;
   }
   ```
@@ -127,8 +127,11 @@ title: 코어
   ```
 - 타입:
   ```ts
-  declare module Meteor {
-    settings: any:Object;
+  interface Meteor {
+    settings: {
+      public: Object
+      [key in string]?: any 
+    }
   }
   ```
 
@@ -144,7 +147,7 @@ title: 코어
   ```
 - 타입:
   ```ts
-  declare module Meteor {
+  interface Meteor {
     release: string;
   }
   ```
@@ -166,8 +169,8 @@ title: 코어
   ```
 - 타입:
   ```ts
-  declare module Meteor {
-    function startup( callback: Function ): any;
+  interface Meteor {
+    startup( callback: Function ): any;
   }
   ```
 
@@ -188,8 +191,8 @@ title: 코어
   ```
 - 타입:
   ```ts
-  declare module Meteor {
-    function defer( callback: Function ): any;
+  interface Meteor {
+    defer( callback: Function ): any;
   }
   ```
 

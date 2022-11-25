@@ -16,11 +16,11 @@ title: 서버 커넥션
   ```
 - 타입:
   ```ts
-  declare module Meteor {
-    function status(): $status;
+  interface Meteor {
+    status(): $status;
   }
   
-  interface $status {
+  type $status = {
     connected: boolean,   // 현재 서버와 연결되어 있는지 여부
   
     retryCount: number,   // 연결이 끊어진 이후 클라이언트가 다시 연결을 시도한 횟수
@@ -50,8 +50,8 @@ title: 서버 커넥션
   ```
 - 타입:
   ```ts
-  declare module Meteor {
-    function reconnect(): void;
+  interface Meteor {
+    reconnect(): void;
   }
   ```
 
@@ -73,8 +73,8 @@ title: 서버 커넥션
   ```
 - 타입:
   ```ts
-  declare module Meteor {
-    function disconnect(): void;
+  interface Meteor {
+    disconnect(): void;
   }
   ```
 
@@ -93,8 +93,8 @@ title: 서버 커넥션
   ```
 - 타입:
   ```ts
-  declare module Meteor {
-    function onConnection( callback: ( $connection ) => void ): void;
+  interface Meteor {
+    onConnection( callback: ( $connection ) => void ): void;
   }
   
   interface $connection {
@@ -139,8 +139,8 @@ title: 서버 커넥션
   ```
 - 타입:
   ```ts
-  declare module $DDP {
-    function connect( url: string ): $provide;
+  interface $DDP {
+    connect( url: string ): $provide;
   }
   
   interface $provide {  // 아래 구성은 원래 API와 동일하게 동작하지만,
@@ -186,8 +186,8 @@ title: 서버 커넥션
   ```
 - 타입:
   ```ts
-  declare module $DDP {
-    function onReconnect( callback: ( $provide ) => void ): void;
+  interface $DDP {
+    onReconnect( callback: ( $provide ) => void ): void;
   }
   
   // $provide는 바로 위 섹션 DDP.connect()에서 정의한 객체임
