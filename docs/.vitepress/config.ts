@@ -208,16 +208,14 @@ const config = defineConfig({
               text: '애드온 개발용',
               link: '/router/api/for-dev.md'
             },
-          ]
-        },
-        {
-          text: '훅(Hooks)',
-          items: [
-          ]
-        },
-        {
-          text: '헬퍼',
-          items: [
+            {
+              text: '훅(hooks)',
+              link: '/router/api/hooks.md'
+            },
+            {
+              text: '헬퍼',
+              link: '/router/api/helpers.md'
+            },
           ]
         },
       ],

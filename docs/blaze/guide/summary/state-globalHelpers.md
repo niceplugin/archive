@@ -87,12 +87,9 @@ import { Template } from 'meteor/templating'
 import total from './globalSum.js'
 ```
 
-글로벌 헬퍼는 템플릿 헬퍼와 다르게 아래와 같이 한 번에 하나씩만 등록이 가능합니다:
-```js
-Template.registerHelper( /* 글로벌 헬퍼 이름 문자열 */ , /* 값을 반환할 헬퍼 함수 */ )
-```
+글로벌 헬퍼는 템플릿 헬퍼와 다르게 한 번에 하나씩만 등록이 가능합니다.
 
-이제 `main.js`파일의 마지막 줄에 글로벌 헬퍼를 등록할 것입니다:
+이제 `main.js`파일의 마지막 줄에 `totalNumber` 이름의 글로벌 헬퍼를 등록할 것입니다:
 ```js
 Template.registerHelper('totalNumber', function() {
   return total.get()
