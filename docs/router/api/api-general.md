@@ -13,11 +13,13 @@ title: 일반적인 메서드
 
   FlowRouter.route('/blog', {
     name: 'blogName',
-    action() { /* ... */ } })
+    action() { /* ... */ }
+  })
   
   FlowRouter.route('/blog/_id', {
     name: 'blogPost',
-    action() { /* ... */ } })
+    action() { /* ... */ }
+  })
   ```
 - 타입:
   ```ts
@@ -26,8 +28,8 @@ title: 일반적인 메서드
       path: path,
       options: {
         name: routeName,
-        [hookKey in string]?: Function, //사용 가능한 모든 훅 (훅 API 참조)
-        [propKey in string]?: any       // 경로 호출 내에서 사용할 수 있는 모든 속성
+        [hookKey: string]: Function, //사용 가능한 모든 훅 (훅 API 참조)
+        [propKey: string]: any       // 경로 호출 내에서 사용할 수 있는 모든 속성
       },
     ): Route
   }
@@ -78,8 +80,8 @@ title: 일반적인 메서드
   type options = {
     name?: routeName,
     prefix?: prefixPath,
-    [hookKey in string]?: Function, //사용 가능한 모든 훅 (훅 API 참조)
-    [propKey in string]?: any       // 경로 호출 내에서 사용할 수 있는 모든 속성
+    [hookKey: string]: Function, //사용 가능한 모든 훅 (훅 API 참조)
+    [propKey: string]: any       // 경로 호출 내에서 사용할 수 있는 모든 속성
   }
   interface Group { /* ... */ }
   ```
@@ -113,8 +115,8 @@ title: 일반적인 메서드
   interface FlowRouter {
     go(
       path: path | routeName,
-      params?: { [key in string]: string },
-      query_params?: { [key in string]: string }
+      params?: { [key: string]: string },
+      query_params?: { [key: string]: string }
     ): void
   }
   
@@ -148,7 +150,7 @@ title: 일반적인 메서드
       template: templateName | Blaze.Template,
   
       // `template`와 `layout`모두에서 사용될 `data` 컨텍스트 입니다.
-      data?: { [key in string]: string },
+      data?: { [key: string]: string },
   
       // 템플릿이 렌더링되고 DOM에 배치된 후 트리거되는 콜백입니다.
       // 이 콜백에는 컨텍스트가 없습니다.

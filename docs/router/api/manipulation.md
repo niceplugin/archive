@@ -59,5 +59,5 @@ title: 조작
     setQueryParams(queryParams: queryParams): true
   }
   
-  type queryParams = { [key in string]: string | null }
+  type queryParams = { [key: string]: string | null }
   ```

@@ -130,7 +130,7 @@ title: 코어
   interface Meteor {
     settings: {
       public: Object
-      [key in string]?: any 
+      [key: string]: any 
     }
   }
   ```

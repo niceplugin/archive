@@ -48,3 +48,11 @@
 .group + .group {
   margin-top: 10px !important;
 }
+
+/* h2 붙어있을 경우 */
+
+h2 + h2 {
+  border-top: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
