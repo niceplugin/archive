@@ -52,6 +52,31 @@ const config = defineConfig({
 
     nav: [
       {
+        text: '스타일 가이드',
+        items: [
+          {
+            text: '스타일 가이드란?',
+            link: '/styles/introduction.md',
+          },
+          {
+            text: 'HTML 가이드',
+            link: '/styles/html.md',
+          },
+          {
+            text: 'Blaze 가이드',
+            link: '/styles/blaze-spacebars.md',
+          },
+          {
+            text: 'CSS 가이드',
+            link: '/styles/css.md',
+          },
+          {
+            text: 'JavaScript 가이드',
+            link: '/styles/js.md',
+          },
+        ],
+      },
+      {
         text: '가이드',
         items: [
           {
