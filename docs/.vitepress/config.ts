@@ -24,14 +24,14 @@ const config = defineConfig({
     logo: '/logo.png',
 
     editLink: {
-      pattern: 'https://github.com/niceplugin/Meteor-KO/edit/main-ko/docs/:path',
+      pattern: 'https://github.com/Meteor-Korea/Meteor-Korean-Documents/edit/main/docs/:path',
       text: '이 페이지 편집 제안하기'
     },
 
     lastUpdatedText: '마지막 수정일',
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/niceplugin/Meteor-KO' },
+      { icon: 'github', link: 'https://github.com/Meteor-Korea/Meteor-Korean-Documents' },
       { icon: 'slack', link: 'https://join.slack.com/t/meteor-community/shared_invite/enQtODA0NTU2Nzk5MTA3LWY5NGMxMWRjZDgzYWMyMTEyYTQ3MTcwZmU2YjM5MTY3MjJkZjQ0NWRjOGZlYmIxZjFlYTA5Mjg4OTk3ODRiOTc' }
     ],
 
