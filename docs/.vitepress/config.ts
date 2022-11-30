@@ -102,7 +102,7 @@ const config = defineConfig({
           },
           {
             text: 'Router',
-            link: '/router/api/api-general.md',
+            link: '/router/api/core-methods.md',
           },
         ]
       },
@@ -206,32 +206,8 @@ const config = defineConfig({
           text: 'API',
           items: [
             {
-              text: '일반적인 메서드',
-              link: '/router/api/api-general.md'
-            },
-            {
-              text: '대안책',
-              link: '/router/api/workarounds.md'
-            },
-            {
-              text: '조작',
-              link: '/router/api/manipulation.md'
-            },
-            {
-              text: 'URL과 데이터',
-              link: '/router/api/urls-and-data.md'
-            },
-            {
-              text: '반응형',
-              link: '/router/api/reactivity.md'
-            },
-            {
-              text: '변경',
-              link: '/router/api/tweaking.md'
-            },
-            {
-              text: '애드온 개발용',
-              link: '/router/api/for-dev.md'
+              text: '코어 메서드',
+              link: '/router/api/core-methods.md'
             },
             {
               text: '훅(hooks)',
