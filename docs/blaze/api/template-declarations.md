@@ -58,11 +58,11 @@ title: 선언
   콜백 내에서 `this`는 이 템플릿의 인스턴스 객체입니다.
   이 객체에 설정한 속성은 `onRendered` 및 `onDestroyed` 메서드에서 호출되는 콜백과 이벤트 핸들러에서 조회할 수 있습니다.
 
-```js
-Template.__templateName__.onCreated(function() {
-  console.log(this)
-})
-```
+  ```js
+  Template.__templateName__.onCreated(function() {
+    console.log(this)
+  })
+  ```
 
 ## onRendered()
 
@@ -76,11 +76,11 @@ Template.__templateName__.onCreated(function() {
   인스턴스를 초기화 하려면 `onCreated` 내 콜백에서 에서 해야 하며,
   정리하려면 `onDestroyed` 내 콜백에서 해야 합니다.
 
-```js
-Template.__templateName__.onRendered(function() {
-  console.log(this)
-})
-```
+  ```js
+  Template.__templateName__.onRendered(function() {
+    console.log(this)
+  })
+  ```
 
 ## onDestroyed()
 
@@ -90,17 +90,8 @@ Template.__templateName__.onRendered(function() {
 
   여기에 등록하는 콜백은 이 템플릿 외부와 연계된 어떠한 것을 정리하거나 실행취소하기 좋은 위치입니다.
 
-```js
-Template.__templateName__.onDestroyed(function() {
-  console.log(this)
-})
-```
-
-
-
-
-
-
-
-
-
+  ```js
+  Template.__templateName__.onDestroyed(function() {
+    console.log(this)
+  })
+  ```

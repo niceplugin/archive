@@ -171,17 +171,3 @@ title: 인스턴스
 ## view()
 
 - 설명: 이 템플릿을 생성하는 [View](https://www.blazejs.org/api/blaze.html#Blaze-View) 객체입니다.
-
-
-
-
-
-
-
-
-
-
-
-
-
-

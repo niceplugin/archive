@@ -221,6 +221,10 @@ const config = defineConfig({
               text: '공통',
               link: '/blaze/api/template-common.md'
             },
+            {
+              text: '기타',
+              link: '/blaze/api/template-etc.md'
+            },
           ]
         },
         {
