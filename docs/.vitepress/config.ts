@@ -101,6 +101,10 @@ const config = defineConfig({
             link: '/meteor/api/core.md',
           },
           {
+            text: 'Blaze',
+            link: '/blaze/api/template-declarations.md',
+          },
+          {
             text: 'Router',
             link: '/router/api/core-methods.md',
           },
@@ -197,6 +201,25 @@ const config = defineConfig({
             {
               text: '서버 커넥션',
               link: '/meteor/api/server-connections.md'
+            },
+          ]
+        },
+      ],
+      '/blaze/api/': [
+        {
+          text: '템플릿',
+          items: [
+            {
+              text: '선언',
+              link: '/blaze/api/template-declarations.md'
+            },
+            {
+              text: '인스턴스',
+              link: '/blaze/api/template-instances.md'
+            },
+            {
+              text: '공통',
+              link: '/blaze/api/서.md'
             },
           ]
         },
