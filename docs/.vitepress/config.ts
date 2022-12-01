@@ -207,7 +207,7 @@ const config = defineConfig({
       ],
       '/blaze/api/': [
         {
-          text: '템플릿',
+          text: 'Template API',
           items: [
             {
               text: '선언',
@@ -219,10 +219,18 @@ const config = defineConfig({
             },
             {
               text: '공통',
-              link: '/blaze/api/서.md'
+              link: '/blaze/api/template-common.md'
             },
           ]
         },
+        {
+          text: 'Blaze API',
+          items: []
+        },
+        {
+          text: 'Spacebars API',
+          items: []
+        }
       ],
       '/router/api/': [
         {

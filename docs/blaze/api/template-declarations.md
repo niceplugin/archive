@@ -1,13 +1,8 @@
 ---
-title: 선언문
+title: 선언
 ---
 
-# 선언문 %{ #template-declarations }%
-
-:::info
-아래에서 표기하는 `Template$`은 `__myTemplateName__.html`과 같이 이미 템플릿을 선언하여,
-`Template.__myTemplateName__`을 의미합니다.
-:::
+# 선언 %{ #template-declarations }%
 
 ## events()
 
@@ -20,7 +15,7 @@ title: 선언문
 
 - 예제:
   ```js
-  Template$.events({
+  Template.__templateName__.events({
     // 템플릿 내 어떤 엘리먼트든지 클릭 시 실행
     'click'(event, instance) { /* ... */ },
     
@@ -36,3 +31,76 @@ title: 선언문
     'click/focus .accept, keypress'(event, instance) { /* ... */ }
   })
   ```
+
+## helpers()
+
+- 설명: 이 템플릿에서 사용할 수 있는 헬퍼를 정의합니다.
+  헬퍼는 인자를 받을 수 있습니다.
+
+  헬퍼는 내부적으로 `Tracker.autorun`을 실행하므로,
+  반응형 정보가 변경되면 다시 실행됩니다.
+
+- 예제:
+  ```js
+  Template.__templateName__.helper({
+    myHelperName(arguments) {
+      console.log(arguments)
+      return 123
+    }
+  })
+  ```
+
+## onCreated()
+
+- 설명: 이 템플릿 인스턴스를 생성한 후 실행할 콜백 함수를 등록합니다.
+
+  생성된 템플릿 인스턴스 내에서 단 한번만 실행됩니다.
+  콜백 내에서 `this`는 이 템플릿의 인스턴스 객체입니다.
+  이 객체에 설정한 속성은 `onRendered` 및 `onDestroyed` 메서드에서 호출되는 콜백과 이벤트 핸들러에서 조회할 수 있습니다.
+
+```js
+Template.__templateName__.onCreated(function() {
+  console.log(this)
+})
+```
+
+## onRendered()
+
+- 설명: 이 템플릿을 DOM에 삽입한 후 실행할 콜백 함수를 등록합니다.
+
+  이 템플릿 인스턴스 내에서 단 한번만 실행됩니다.
+
+  템플릿이 렌더링 되었으므로, DOM 노드를 검색할 수 있습니다.
+  따라서 렌더링 후 DOM 초기 조작 로직을 작성하기 좋은 위치입니다.
+
+  인스턴스를 초기화 하려면 `onCreated` 내 콜백에서 에서 해야 하며,
+  정리하려면 `onDestroyed` 내 콜백에서 해야 합니다.
+
+```js
+Template.__templateName__.onRendered(function() {
+  console.log(this)
+})
+```
+
+## onDestroyed()
+
+- 설명: 이 템플릿이 DOM에서 제거된 후 실행할 콜백 함수를 등록합니다.
+
+  이 템플릿 인스턴스 내에서 단 한번만 실행됩니다.
+
+  여기에 등록하는 콜백은 이 템플릿 외부와 연계된 어떠한 것을 정리하거나 실행취소하기 좋은 위치입니다.
+
+```js
+Template.__templateName__.onDestroyed(function() {
+  console.log(this)
+})
+```
+
+
+
+
+
+
+
+
+
