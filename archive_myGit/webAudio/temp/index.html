@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>8 Bit Sound</title>
+</head>
+<body>
+<div id="app">
+	<label for="ipt-fade-in">Fade In</label>
+	<input id="ipt-fade-in" type="number" step="0.1" min="0" max="10" value="0">
+	<label for="ipt-play-time">Play Time</label>
+	<input id="ipt-play-time" type="number" step="0.1" min="0" max="10" value="0">
+	<label for="ipt-fade-out">Fade Out</label>
+	<input id="ipt-fade-out" type="number" step="0.1" min="0" max="10" value="3">
+	<label for="ipt-octave">Octave</label>
+	<input id="ipt-octave" type="range" step="1" min="0" max="8" value="4">
+	<label for="slt-oscillator">Oscillator</label>
+	<select id="slt-oscillator">
+		<option value="sine">sine</option>
+		<option value="square" selected>square</option>
+		<option value="sawtooth">sawtooth</option>
+		<option value="triangle">triangle</option>
+	</select>
+	<button id="btn-set">Setting</button>
+</div>
+<script src="common.js"></script>
+</body>
+</html>
