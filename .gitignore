@@ -22,9 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-git remote add To-be-a-good-developer https://github.com/niceplugin/To-be-a-good-developer.git
-
-git fetch To-be-a-good-developer main
-
-git subtree add --prefix=archive_To-be-a-good-developer To-be-a-good-developer main
