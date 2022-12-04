@@ -1,0 +1,28 @@
+.vt-badge.wip:before {
+  content: '작업 중...';
+}
+
+.vt-badge.ts {
+  background-color: #3178c6;
+}
+.vt-badge.ts:before {
+  content: 'TS';
+}
+
+.vt-badge.dev-only,
+.vt-badge.experimental {
+  color: var(--vt-c-text-light-1);
+  background-color: var(--vt-c-yellow);
+}
+
+.vt-badge.dev-only:before {
+  content: '개발용';
+}
+
+.vt-badge.experimental:before {
+  content: '실험적';
+}
+
+.vt-badge[data-text]:before {
+  content: attr(data-text);
+}

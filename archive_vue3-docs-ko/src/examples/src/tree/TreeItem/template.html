@@ -1,0 +1,21 @@
+<li>
+  <div
+    :class="{ bold: isFolder }"
+    @click="toggle"
+    @dblclick="changeType">
+    {{ model.name }}
+    <span v-if="isFolder">[{{ isOpen ? '-' : '+' }}]</span>
+  </div>
+  <ul v-show="isOpen" v-if="isFolder">
+    <!--
+      컴포넌트는 "name" 옵션을 사용하여 자신을 재귀적으로 렌더링할
+      수 있습니다(SFC를 사용하는 경우 파일 이름에서 유추).
+    -->
+    <TreeItem
+      class="item"
+      v-for="model in model.children"
+      :model="model">
+    </TreeItem>
+    <li class="add" @click="addChild">+</li>
+  </ul>
+</li>

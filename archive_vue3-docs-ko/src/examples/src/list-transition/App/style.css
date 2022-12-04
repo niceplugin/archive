@@ -1,0 +1,32 @@
+.container {
+  position: relative;
+  padding: 0;
+}
+
+.item {
+  width: 100%;
+  height: 30px;
+  background-color: #f3f3f3;
+  border: 1px solid #666;
+  box-sizing: border-box;
+}
+
+/* 1. 트렌지션 선언 */
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+/* 2. 진입 및 진출 상태 선언 */
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01) translate(30px, 0);
+}
+
+/* 3. 진출하는 리스트 아이템이 레이아웃에서 제외되어,
+      움직이는 아이템들이 올바르게 계산되도록 합니다. */
+.fade-leave-active {
+  position: absolute;
+}
