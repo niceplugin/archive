@@ -1,0 +1,46 @@
+#Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+git remote add vue3-docs-ko https://github.com/niceplugin/vue3-docs-ko.git
+git remote add meteor_vue_2.0 https://github.com/niceplugin/meteor_vue_2.0.git
+git remote add OldProject_2017 https://github.com/niceplugin/OldProject_2017.git
+git remote add Translation_2017 https://github.com/niceplugin/Translation_2017.git
+git remote add pwa_docs https://github.com/niceplugin/pwa_docs.git
+git remote add flip_card https://github.com/niceplugin/flip_card.git
+git remote add myGit https://github.com/niceplugin/myGit.git
+git remote add etc.js https://github.com/niceplugin/etc.js.git
+git remote add howto https://github.com/niceplugin/howto.git
+git remote add template https://github.com/niceplugin/template.git
+
+git subtree add --prefix=vue3-docs-ko vue3-docs-ko main
+git subtree add --prefix=meteor_vue_2.0 meteor_vue_2.0 main
+git subtree add --prefix=OldProject_2017 OldProject_2017 main
+git subtree add --prefix=Translation_2017 Translation_2017 main
+git subtree add --prefix=pwa_docs pwa_docs main
+git subtree add --prefix=flip_card flip_card main
+git subtree add --prefix=myGit myGit main
+git subtree add --prefix=etc.js etc.js main
+git subtree add --prefix=howto howto main
+git subtree add --prefix=template template main
