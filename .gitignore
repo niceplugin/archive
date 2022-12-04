@@ -46,12 +46,12 @@ git fetch howto master
 git fetch template master
 
 git subtree add --prefix=archive_vue3-docs-ko vue3-docs-ko main
-git subtree add --prefix=archive_meteor_vue_2.0 meteor_vue_2.0 main
-git subtree add --prefix=archive_OldProject_2017 OldProject_2017 main
-git subtree add --prefix=archive_Translation_2017 Translation_2017 main
-git subtree add --prefix=archive_pwa_docs pwa_docs main
-git subtree add --prefix=archive_flip_card flip_card main
-git subtree add --prefix=archive_myGit myGit main
-git subtree add --prefix=archive_etc.js etc.js main
-git subtree add --prefix=archive_howto howto main
-git subtree add --prefix=archive_template template main
+git subtree add --prefix=archive_meteor_vue_2.0 meteor_vue_2.0 master
+git subtree add --prefix=archive_OldProject_2017 OldProject_2017 master
+git subtree add --prefix=archive_Translation_2017 Translation_2017 master
+git subtree add --prefix=archive_pwa_docs pwa_docs master
+git subtree add --prefix=archive_flip_card flip_card master
+git subtree add --prefix=archive_myGit myGit master
+git subtree add --prefix=archive_etc.js etc.js master
+git subtree add --prefix=archive_howto howto master
+git subtree add --prefix=archive_template template master
