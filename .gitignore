@@ -23,35 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-git remote add vue3-docs-ko https://github.com/niceplugin/vue3-docs-ko.git
-git remote add meteor_vue_2.0 https://github.com/niceplugin/meteor_vue_2.0.git
-git remote add OldProject_2017 https://github.com/niceplugin/OldProject_2017.git
-git remote add Translation_2017 https://github.com/niceplugin/Translation_2017.git
-git remote add pwa_docs https://github.com/niceplugin/pwa_docs.git
-git remote add flip_card https://github.com/niceplugin/flip_card.git
-git remote add myGit https://github.com/niceplugin/myGit.git
-git remote add etc.js https://github.com/niceplugin/etc.js.git
-git remote add howto https://github.com/niceplugin/howto.git
-git remote add template https://github.com/niceplugin/template.git
+git remote add To-be-a-good-developer https://github.com/niceplugin/To-be-a-good-developer.git
 
-git fetch vue3-docs-ko main
-git fetch meteor_vue_2.0 master
-git fetch OldProject_2017 master
-git fetch Translation_2017 master
-git fetch pwa_docs master
-git fetch flip_card master
-git fetch myGit master
-git fetch etc.js master
-git fetch howto master
-git fetch template master
+git fetch To-be-a-good-developer main
 
-git subtree add --prefix=archive_vue3-docs-ko vue3-docs-ko main
-git subtree add --prefix=archive_meteor_vue_2.0 meteor_vue_2.0 master
-git subtree add --prefix=archive_OldProject_2017 OldProject_2017 master
-git subtree add --prefix=archive_Translation_2017 Translation_2017 master
-git subtree add --prefix=archive_pwa_docs pwa_docs master
-git subtree add --prefix=archive_flip_card flip_card master
-git subtree add --prefix=archive_myGit myGit master
-git subtree add --prefix=archive_etc.js etc.js master
-git subtree add --prefix=archive_howto howto master
-git subtree add --prefix=archive_template template master
+git subtree add --prefix=archive_To-be-a-good-developer To-be-a-good-developer main
