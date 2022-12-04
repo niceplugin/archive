@@ -1,0 +1,6 @@
+import './confirm.html'
+// import './confirmEvents.js'
+// import './confirmHelpers.js'
+// import './confirmOnCreated.js'
+// import './confirmOnRendered.js'
+// import './confirmOnDestroyed.js'

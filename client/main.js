@@ -1,0 +1,5 @@
+import './main.html'
+import '/imports/collections'
+import '/imports/client/styles'
+import '/imports/routes'
+import 'bootstrap'

@@ -1,0 +1,7 @@
+import './signOutPage.html'
+// import './signOutPageEvents.js'
+// import './signOutPageHelpers.js'
+// import './signOutPageOnCreated.js'
+// import './signOutPageOnRendered.js'
+// import './signOutPageOnDestroyed.js'
+// import './signOutPageStyle.css'
