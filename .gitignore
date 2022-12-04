@@ -34,13 +34,24 @@ git remote add etc.js https://github.com/niceplugin/etc.js.git
 git remote add howto https://github.com/niceplugin/howto.git
 git remote add template https://github.com/niceplugin/template.git
 
-git subtree add --prefix=vue3-docs-ko vue3-docs-ko main
-git subtree add --prefix=meteor_vue_2.0 meteor_vue_2.0 main
-git subtree add --prefix=OldProject_2017 OldProject_2017 main
-git subtree add --prefix=Translation_2017 Translation_2017 main
-git subtree add --prefix=pwa_docs pwa_docs main
-git subtree add --prefix=flip_card flip_card main
-git subtree add --prefix=myGit myGit main
-git subtree add --prefix=etc.js etc.js main
-git subtree add --prefix=howto howto main
-git subtree add --prefix=template template main
+git fetch vue3-docs-ko main
+git fetch meteor_vue_2.0 master
+git fetch OldProject_2017 master
+git fetch Translation_2017 master
+git fetch pwa_docs master
+git fetch flip_card master
+git fetch myGit master
+git fetch etc.js master
+git fetch howto master
+git fetch template master
+
+git subtree add --prefix=archive_vue3-docs-ko vue3-docs-ko main
+git subtree add --prefix=archive_meteor_vue_2.0 meteor_vue_2.0 main
+git subtree add --prefix=archive_OldProject_2017 OldProject_2017 main
+git subtree add --prefix=archive_Translation_2017 Translation_2017 main
+git subtree add --prefix=archive_pwa_docs pwa_docs main
+git subtree add --prefix=archive_flip_card flip_card main
+git subtree add --prefix=archive_myGit myGit main
+git subtree add --prefix=archive_etc.js etc.js main
+git subtree add --prefix=archive_howto howto main
+git subtree add --prefix=archive_template template main
