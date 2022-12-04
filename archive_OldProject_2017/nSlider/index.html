@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="IE=edge" >
+    <style>
+        * {margin: 0; padding: 0; list-style: none}
+        *:focus {outline: 6px solid blue}
+        .sWrap>ul:not(.carousel) {border: 1px solid black}
+        .box_3 {display: inline-block; width: 33%}
+        
+        .section {padding: 5%; width: 100%; box-sizing: border-box; border: 4px solid tomato}
+        pre {margin: 4px; padding: 4px;  width: 100%; border: 1px solid gray; border-radius: 4px; background-color: gainsboro}
+        q {display: block; margin-left: 2em; margin-right: 1em; padding: 1em; border-left: 4px solid gray; background-color: gainsboro}
+        q:before {content: ''}
+        q:after {content: ''}
+
+        .conBtn {top: 0; right: 0; width: 4rem; height: 2rem}
+        .playOn:before {content: 'Stop'}
+        .playOff:before {content: 'Play'}
+
+        ul>li:nth-child(1) {background-color: tomato}
+        ul>li:nth-child(2) {background-color: lawngreen}
+        ul>li:nth-child(3) {background-color: deepskyblue}
+        
+        .prevBtn {top: 50%; left: 0; width: 2rem; height: 2rem}
+        .prevBtn:before {content: '<'}
+        .nextBtn {top: 50%; right: 0; width: 2rem; height: 2rem}
+        .nextBtn:before {content: '>'}
+        
+        .carousel {bottom: 2rem; width: 100%; height: 0; overflow: visible; text-align: center}
+        .carousel li {display: inline-block; width: 1rem; height: 1rem; margin: 0 .2rem; cursor: pointer}
+        .carousel li:not(.showing) {background-color: lightgray; border: 4px solid white; border-radius: 50%}
+        .carousel li.showing {background-color: black; border: 4px solid white; border-radius: 50%}
+        .carousel li:hover {border: 4px solid blue}
+
+        .sBg li:nth-child(1) {background-color: tomato}
+        .sBg li:nth-child(2) {background-color: lawngreen}
+        .sBg li:nth-child(3) {background-color: deepskyblue}
+    </style>
+    <title>nSlider Demo</title>
+</head>
+<body>
+    <div class="section">
+        <h1>Notes</h1>
+        <p>This ghost page uses CSS that does not consider IE8. (IE9 + support)</p>
+        <p>All the sliders in the ghost page have the following css.</p>
+        <pre><code>&#60;style&#62;
+    * {margin: 0; padding: 0; list-style: none}
+    *:focus {outline: 6px solid blue}
+    ul {border: 1px solid black}
+
+    .section {padding: 5%; width: 100%; border: 4px solid tomato}
+    pre {margin: 4px; padding: 4px;  width: 100%; border: 1px solid gray; border-radius: 4px; background-color: gainsboro}
+    q {display: block; margin-left: 2em; margin-right: 1em; padding: 1em; border-left: 4px solid gray; background-color: gainsboro}
+    q:before {content: ''}
+    q:after {content: ''}
+
+    .conBtn {top: 0; right: 0; width: 4rem; height: 2rem}
+    .playOn:before {content: 'Stop'}
+    .playOff:before {content: 'Play'}
+
+    ul>li:nth-child(1) {background-color: tomato}
+    ul>li:nth-child(2) {background-color: lawngreen}
+    ul>li:nth-child(3) {background-color: deepskyblue}
+
+    .prevBtn {top: 50%; left: 0; width: 2rem; height: 2rem}
+    .prevBtn:before {content: '&#60;'}
+    .nextBtn {top: 50%; right: 0; width: 2rem; height: 2rem}
+    .nextBtn:before {content: '&#62;'}
+
+    .carousel {bottom: 2rem; width: 100%; height: 0; overflow: visible; text-align: center}
+    .carousel li {display: inline-block; width: 1rem; height: 1rem; margin: 0 .2rem; cursor: pointer}
+    .carousel li:not(.showing) {background-color: lightgray; border: 4px solid white; border-radius: 50%}
+    .carousel li.showing {background-color: black; border: 4px solid white; border-radius: 50%}
+    .carousel li:hover {border: 4px solid blue}
+
+    .sBg li:nth-child(1) {background-color: tomato}
+    .sBg li:nth-child(2) {background-color: lawngreen}
+    .sBg li:nth-child(3) {background-color: deepskyblue}
+&#60;/style&#62;</code></pre>
+    </div>
+    <div class="section">
+        <p>The 'myS1' slider is sized.</p>
+        <p>Contains content that allows you to focus on the inside.</p>
+        <pre><code>&#60;ul id="myS1"&#62;
+    &#60;li&#62;
+        &#60;a href="#"&#62;link1&#60;/a&#62;
+        &#60;input type="checkbox"&#62;
+    &#60;/li&#62;
+    &#60;li&#62;
+        &#60;button&#62;BTN1&#60;/button&#62;
+        &#60;input type="radio"&#62;
+    &#60;/li&#62;
+    &#60;li&#62;
+        &#60;input type="text"&#62;
+        &#60;p&#62;The slide transform function by focus supports almost any object that the tag can take focus.&#60;/p&#62;
+    &#60;/li&#62;
+&#60;/ul&#62;
+&#60;script&#62;
+    NP.Slider.set(
+        {
+            id: 'myS1',
+            width: 320,
+            height: 240,
+        }
+    );
+&#60;/script&#62;</code></pre>
+        <p>The 'myS2' slider is ratio size.</p>
+        <p>The inside does not contain content that can take focus.</p>
+        <pre><code>&#60;ul id="myS2"&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+&#60;/ul&#62;
+&#60;script&#62;
+    NP.Slider.set(
+        {
+            id: 'myS2',
+            ratio: '10:1'
+        }
+    );
+&#60;/script&#62;</code></pre>
+        <p>Try resizing the window.</p>
+        <p>Check what happens when you move to content using the tab key.</p>
+    </div>
+    <ul id="myS1">
+        <li>
+            <a href="#">link1</a>
+            <input type="checkbox">
+        </li>
+        <li>
+            <button>BTN1</button>
+            <input type="radio">
+        </li>
+        <li>
+            <input type="text">
+            <p>The slide transform function by focus supports almost any object that the tag can take focus.</p>
+        </li>
+    </ul>
+    <ul id="myS2">
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    
+    <div class="section">
+        <p>The 'myS3' slider enabled the background property.</p>
+        <p>In a demo page, content and background are the same color, so they can be confusing.</p>
+        <p>When customizing, you can show brilliant performance by applying background image etc. to background &#60;li&#62; tag.</p>
+        <pre><code>&#60;ul id="myS3"&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+&#60;/ul&#62;
+&#60;script&#62;
+    NP.Slider.set(
+        {
+            id: 'myS3',
+            width: 640,
+            height: 320
+            code: {
+                duration: 1000,
+                bgAnimation: 0,
+                background: 1
+            }
+        }
+    );
+&#60;/script&#62;</code></pre>
+    </div>
+    <ul id="myS3">
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    
+    <div class="section">
+        <p>The 'myS4, myS5, myS6' sliders each applied different loop.</p>
+        <p>If loop 0 is the first or last page, the 'notBtn' class name is added to the corresponding pnBtn.</p>
+        <p>Check with the developer tools.</p>
+        <p>Loops 1 and 2 have slight differences in repeat playback animation for the first or last page.</p>
+        <pre><code>&#60;ul id="myS4 || myS5 || myS6"&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+&#60;/ul&#62;
+&#60;script&#62;
+    NP.Slider.set(
+        {
+            id: 'myS4',
+            width: 320,
+            height: 240
+            code: {
+                loop: 0,
+            }
+        },
+        {
+            id: 'myS5',
+            width: 320,
+            height: 240
+            code: {
+                loop: 1,
+            }
+        },
+        {
+            id: 'myS6',
+            width: 320,
+            height: 240
+            code: {
+                loop: 2,
+            }
+        }
+    );
+&#60;/script&#62;</code></pre>
+    </div>
+    <div class="wrap">
+        <div class="box_3">
+            <ul id="myS4">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="box_3">
+            <ul id="myS5">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="box_3">
+            <ul id="myS6">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="section">
+        <p>The 'myS7' slider run the myFunc1 custom function.</p>
+        <p>Check with the developer tools.</p>
+        <pre><code>&#60;ul id="myS7"&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+&#60;/ul&#62;
+&#60;script&#62;
+    NP.Slider.set(
+        {
+            id: 'myS7',
+            width: 320,
+            height: 240,
+            event: myFunc1,
+            code: {
+                autoplay: 0,
+            }
+        }
+    );
+&#60;/script&#62;</code></pre>
+    </div>
+    <ul id="myS7">
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    
+    <div class="section">
+        <p>Control 'myS8' slider using the 'NP.Slider.ctrl ()' API.</p>
+        <pre><code>&#60;button onclick="NP.Slider.ctrl('myS8', 'playToggle')"&#62;playback&#60;/button&#62;
+&#60;button onclick="NP.Slider.ctrl('myS8', 'goTo', 0)"&#62;go to page 0&#60;/button&#62;
+&#60;button onclick="NP.Slider.ctrl('myS8', 'goTo', 1)"&#62;go to page 1&#60;/button&#62;
+&#60;button onclick="NP.Slider.ctrl('myS8', 'goTo', 2)"&#62;go to page 2&#60;/button&#62;
+&#60;ul id="myS8"&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+&#60;/ul&#62;
+&#60;script&#62;
+    NP.Slider.set(
+        {
+            id: 'myS8',
+            width: 320,
+            height: 240,
+            code: {
+                term: 1000,
+            }
+        }
+    );
+&#60;/script&#62;</code></pre>
+        <button onclick="NP.Slider.ctrl('myS8', 'playToggle')">playback</button>
+        <button onclick="NP.Slider.ctrl('myS8', 'goTo', 0)">go to page 0</button>
+        <button onclick="NP.Slider.ctrl('myS8', 'goTo', 1)">go to page 1</button>
+        <button onclick="NP.Slider.ctrl('myS8', 'goTo', 2)">go to page 2</button>
+    </div>
+    <ul id="myS8">
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    
+    <div class="section">
+        <p>The 'myS9' slider uses the YouTube Player API.</p>
+        <p>See YouTube Player API. <a href="https://developers.google.com/youtube/iframe_api_reference">link</a></p>
+        <p>Though not implemented on the demo site, you can visually disable the slider control buttons when playing a movie, depending on your abilities.</p>
+        <pre><code>&#60;ul id="myS9"&#62;
+    &#60;li&#62;
+        &#60;div id="YTdemo"&#62;&#60;/div&#62;
+    &#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+    &#60;li&#62;&#60;/li&#62;
+&#60;/ul&#62;
+&#60;script&#62;
+    NP.Slider.set(
+        {
+            id: 'myS9',
+            width: 640,
+            height: 480,
+            event: myFunc2,
+            code: {
+                autoplay: 0
+            }
+        }
+    );
+    function myFunc2(a, b, c) {
+        if (a === 'myS9' && b === 0 && myYTplayer.getPlayerState() === 1) {
+            myYTplayer.pauseVideo();
+        }
+    }
+
+    //About YouTube
+    var myYTplayer,
+        tag = document.createElement('script'),
+        firstScriptTag = document.getElementsByTagName('script')[0];
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onYouTubeIframeAPIReady() {
+      myYTplayer = new YT.Player('YTdemo', {
+        height: '100%',
+        width: '640',
+        videoId: '9g2U12SsRns'
+      });
+    }
+&#60;/script&#62;</code></pre>
+    </div>
+    <ul id="myS9">
+        <li>
+            <div id="YTdemo"></div>
+        </li>
+        <li></li>
+        <li></li>
+    </ul>
+    
+    <script src="./nSlider.js"></script>
+    <script>
+        NP.Slider.set(
+            {
+                id: 'myS1',
+                width: 320,
+                height: 240,
+            },
+            {
+                id: 'myS2',
+                ratio: '10:1'
+            },
+            {
+                id: 'myS3',
+                width: 640,
+                height: 320,
+                code: {
+                    duration: 1000,
+                    bgAnimation: 0,
+                    background: 1
+                }
+            },
+            {
+                id: 'myS4',
+                width: 320,
+                height: 240,
+                code: {
+                    loop: 0
+                }
+            },
+            {
+                id: 'myS5',
+                width: 320,
+                height: 240,
+                code: {
+                    loop: 1
+                }
+            },
+            {
+                id: 'myS6',
+                width: 320,
+                height: 240,
+                code: {
+                    loop: 2
+                }
+            },
+            {
+                id: 'myS7',
+                width: 320,
+                height: 240,
+                event: myFunc1,
+                code: {
+                    autoplay: 0,
+                }
+            },
+            {
+                id: 'myS8',
+                width: 320,
+                height: 240,
+                code: {
+                    term: 1000,
+                }
+            },
+            {
+                id: 'myS9',
+                width: 640,
+                height: 480,
+                event: myFunc2,
+                code: {
+                    autoplay: 0
+                }
+            }
+        );
+        function myFunc1(a, b, c) {
+            console.log('Custom function runed. Returned arguments are follow.');
+            console.log('1th, 2th, 3th = ' + a + ', ' + b + ', ' + c);
+        }
+        function myFunc2(a, b, c) {
+            if (a === 'myS9' && b === 0 && myYTplayer.getPlayerState() === 1) {
+                myYTplayer.pauseVideo();
+            }
+        }
+        
+        //About YouTube
+        var myYTplayer,
+            tag = document.createElement('script'),
+            firstScriptTag = document.getElementsByTagName('script')[0];
+        
+        tag.src = "https://www.youtube.com/iframe_api";
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        
+        function onYouTubeIframeAPIReady() {
+          myYTplayer = new YT.Player('YTdemo', {
+            height: '100%',
+            width: '640',
+            videoId: '9g2U12SsRns'
+          });
+        }
+    </script>
+</body>
+</html>

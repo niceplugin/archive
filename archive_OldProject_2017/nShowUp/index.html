@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="IE=edge" >
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box}
+        .section {padding: 5%; width: 100%; min-height: 51vh; border: 4px solid tomato}
+        .end {padding: 5%; width: 100%; min-height: 100vh; border: 4px solid tomato}
+        pre {margin: 4px; padding: 4px;  width: 100%; border: 1px solid gray; border-radius: 4px; background-color: gainsboro}
+        .box {display: inline-block; margin: 0 5%; padding: 30px; width: 39%; height: 300px; background-color: darkseagreen; font-size: 24px; font-weight: bold; text-align: center}
+        .parallax_box {position: relative; width: 100%; height: 400px; border: 4px solid tomato; overflow: hidden}
+        .bg {position: absolute; width: 50%; height: 400px; box-sizing: content-box; text-align: center; overflow: hidden}
+        #bg1 {left: 0; background-color: aquamarine}
+        #bg2 {right: 0; background-color: cadetblue}
+        .showup {transition: all 1.5s ease; transform: rotate(360deg)}
+    </style>
+    <title>nShowUp Demo</title>
+</head>
+<body>
+    <div class="section">
+        <p>The plugin supports IE8+.</p>
+        <p>But test page did not consider IE9-.</p>
+    </div>
+    <div class="section">
+        <p>The following box is coded as follows.</p>
+        <pre><code>NP.ShowUp.set(
+    {
+        content: '#box1',
+        expos: 'part'
+    },
+    {
+        content: '#box2',
+        expos: 'whole'
+    }
+);</code></pre>
+        <p>The differences in the 'expos' properties are shown in the box below.</p>
+    </div>
+    <div id="box1" class="box">box1</div>
+    <div id="box2" class="box">box2</div>
+    <div class="section">
+        <p>The following box is coded as follows.</p>
+        <pre><code>NP.ShowUp.set(
+    {
+        content: '#box3',
+        run: 'once'
+    },
+    {
+        content: '#box4',
+        run: 'always'
+    }
+);</code></pre>
+        <p>The differences in the 'run' properties are shown in the box below.</p>
+    </div>
+    <div id="box3" class="box">box3</div>
+    <div id="box4" class="box">box4</div>
+    <div class="section">
+        <p>The following box is coded as follows.</p>
+        <pre><code>NP.ShowUp.set(
+    {
+        content: '#box5',
+        run: 'always',
+        add: 'myClassName'
+    },
+    {
+        content: '#box6',
+        run: 'always',
+        event: myFunc1
+    }
+);
+function myFunc1(x) {
+    console.log("box6 is run 'myFunc1' function and The first argument returns box6.");
+    console.log(x);
+}</code></pre>
+        <p>box5 adds a custom class name.</p>
+        <p>box6 run the custom function.</p>
+        <p>Check with developer tools.</p>
+    </div>
+    <div id="box5" class="box">box5</div>
+    <div id="box6" class="box">box6</div>
+    <div class="section">
+        <p>The following box is coded as follows.</p>
+        <pre><code>NP.ShowUp.set(
+    {
+        content: '#box7',
+        run: 'always',
+        event: myFunc2,
+        realTime: true
+    }
+);
+function myFunc2(x, y, z) {
+    console.log(x, y, z);
+}</code></pre>
+        <p>box7 uses realTime.</p>
+        <p>Check the first, second and third argument values.</p>
+        <p>Do not worry if the CPU is overloaded.</p>
+        <p>This is because you are viewing the console log by outputting it to the developer tool.</p>
+    </div>
+    <div id="box7" class="box">box7</div>
+    <div class="section">
+        <p>This is a simple example for the implementation of 'parallax'.</p>
+        <pre><code>NP.ShowUp.set(
+    {
+        content: '.parallax_box',
+        add: 'noneAni',
+        run: 'always',
+        event: parallax_box,
+        realTime: true
+    }
+);
+function parallax_box(o, b, s) {
+    var bg1 = document.getElementById('bg1'),
+        bg2 = document.getElementById('bg2'),
+
+        //The Y coordinate of the center content .
+        m = (b.bottom - b.top) / 2,
+        
+        //The distance to move.
+        //The number 4 indicates the level of movement.
+        x = (b.top - m) / 4;
+
+    bg1.style.top = x + 'px';
+    bg2.style.top = -x + 'px';
+}</code></pre>
+    </div>
+    <div class="parallax_box">
+         <div id="bg1" class="bg">
+             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit fugit error doloremque, commodi officiis reprehenderit ex facilis fugiat repellendus iste pariatur autem earum aperiam est excepturi quidem possimus eum, perspiciatis voluptatum unde. Ducimus quidem, sapiente, possimus harum, culpa reiciendis ab perspiciatis beatae minima autem labore provident nobis eveniet saepe voluptas corporis voluptatem explicabo est vel qui magnam suscipit error voluptatibus fugit. Nobis labore, consectetur dignissimos facere consequatur deserunt odio animi nam maxime rem est a inventore exercitationem reprehenderit quasi, repellendus officiis quam saepe qui ad iusto quia, dicta magnam. Tenetur et voluptas quia. Eaque reiciendis, vel ut. Quibusdam sapiente doloremque nesciunt, maxime dolores rem necessitatibus, commodi maiores ullam cumque, vel consequuntur numquam adipisci fuga iure quis consectetur dolorem magnam unde sit. Quos autem odit, rerum vel vitae, porro provident obcaecati ipsam mollitia repellat, excepturi minima. Optio officia iste quam aliquam enim architecto doloribus assumenda ea accusamus facilis nihil impedit maxime at adipisci voluptates cum, aperiam laborum consequuntur neque incidunt tempora, atque ipsam quidem molestiae? Impedit necessitatibus esse veniam, aut tempora consectetur deleniti, error ducimus provident quod iste consequatur ea distinctio? Accusamus quo, maiores ratione repellat cupiditate, quasi voluptatem rem velit inventore, magnam sunt eaque facilis cum earum vel quae laboriosam. Sit in nobis impedit repudiandae voluptatem quia voluptas doloremque ducimus, cum debitis natus blanditiis deleniti magni aliquam atque consequatur modi, praesentium voluptatum reiciendis. Sequi fugit eos consequatur aliquid et libero minus enim harum, vitae esse veniam maxime dolorum fuga explicabo nihil ea excepturi assumenda ad impedit, sunt alias minima quasi voluptatibus. Minus laborum sapiente quos aliquid architecto assumenda quibusdam illum officiis eius, eum, ipsum neque quo nesciunt eaque aut rerum velit voluptate mollitia reprehenderit recusandae reiciendis voluptatum? Inventore odio obcaecati nisi dignissimos beatae mollitia illum consequuntur voluptas ipsa eligendi deserunt, laudantium voluptates cum sunt doloremque itaque. Molestiae non hic distinctio itaque asperiores porro accusamus rem dignissimos natus a quae dolorem culpa assumenda quisquam corporis, fugit similique repudiandae debitis deserunt in velit cupiditate, eos laudantium ullam eveniet. Nam vel dolor reiciendis et quisquam magnam dolores nesciunt explicabo, quas optio rem quam laborum amet non! Inventore aliquam laborum exercitationem dolor ipsum debitis, molestias, ab consequatur vel iusto, consectetur magni dolorum quos reprehenderit. Unde est accusamus adipisci ea nostrum sapiente nemo, asperiores non voluptatem distinctio! Neque laudantium officia natus quidem ut, accusantium ipsa distinctio debitis maxime accusamus in vitae explicabo omnis voluptate voluptatibus adipisci incidunt itaque! Beatae voluptas iste perspiciatis magni quas commodi nesciunt dolores, soluta cumque, alias eveniet? Quasi, pariatur esse modi autem temporibus, minima ullam fugit minus dicta magnam neque. Distinctio consectetur accusamus vitae dolore esse ex reiciendis! Eaque aspernatur suscipit delectus nostrum, sit reprehenderit dicta totam vero harum, qui quam natus, tempora magnam, saepe. Est architecto recusandae quasi, iste temporibus. Natus deleniti labore ipsam iure iusto maiores, perspiciatis molestias, rerum officiis assumenda reiciendis autem, a, consequuntur quam magnam voluptate itaque tempora. Culpa dolorum, ipsa tempora sequi eius distinctio. Asperiores vitae voluptatem nisi ratione doloribus velit animi id laborum quae excepturi dicta porro magnam unde et, blanditiis necessitatibus aliquam veniam assumenda?</p>
+         </div>
+         <div id="bg2" class="bg">
+             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit fugit error doloremque, commodi officiis reprehenderit ex facilis fugiat repellendus iste pariatur autem earum aperiam est excepturi quidem possimus eum, perspiciatis voluptatum unde. Ducimus quidem, sapiente, possimus harum, culpa reiciendis ab perspiciatis beatae minima autem labore provident nobis eveniet saepe voluptas corporis voluptatem explicabo est vel qui magnam suscipit error voluptatibus fugit. Nobis labore, consectetur dignissimos facere consequatur deserunt odio animi nam maxime rem est a inventore exercitationem reprehenderit quasi, repellendus officiis quam saepe qui ad iusto quia, dicta magnam. Tenetur et voluptas quia. Eaque reiciendis, vel ut. Quibusdam sapiente doloremque nesciunt, maxime dolores rem necessitatibus, commodi maiores ullam cumque, vel consequuntur numquam adipisci fuga iure quis consectetur dolorem magnam unde sit. Quos autem odit, rerum vel vitae, porro provident obcaecati ipsam mollitia repellat, excepturi minima. Optio officia iste quam aliquam enim architecto doloribus assumenda ea accusamus facilis nihil impedit maxime at adipisci voluptates cum, aperiam laborum consequuntur neque incidunt tempora, atque ipsam quidem molestiae? Impedit necessitatibus esse veniam, aut tempora consectetur deleniti, error ducimus provident quod iste consequatur ea distinctio? Accusamus quo, maiores ratione repellat cupiditate, quasi voluptatem rem velit inventore, magnam sunt eaque facilis cum earum vel quae laboriosam. Sit in nobis impedit repudiandae voluptatem quia voluptas doloremque ducimus, cum debitis natus blanditiis deleniti magni aliquam atque consequatur modi, praesentium voluptatum reiciendis. Sequi fugit eos consequatur aliquid et libero minus enim harum, vitae esse veniam maxime dolorum fuga explicabo nihil ea excepturi assumenda ad impedit, sunt alias minima quasi voluptatibus. Minus laborum sapiente quos aliquid architecto assumenda quibusdam illum officiis eius, eum, ipsum neque quo nesciunt eaque aut rerum velit voluptate mollitia reprehenderit recusandae reiciendis voluptatum? Inventore odio obcaecati nisi dignissimos beatae mollitia illum consequuntur voluptas ipsa eligendi deserunt, laudantium voluptates cum sunt doloremque itaque. Molestiae non hic distinctio itaque asperiores porro accusamus rem dignissimos natus a quae dolorem culpa assumenda quisquam corporis, fugit similique repudiandae debitis deserunt in velit cupiditate, eos laudantium ullam eveniet. Nam vel dolor reiciendis et quisquam magnam dolores nesciunt explicabo, quas optio rem quam laborum amet non! Inventore aliquam laborum exercitationem dolor ipsum debitis, molestias, ab consequatur vel iusto, consectetur magni dolorum quos reprehenderit. Unde est accusamus adipisci ea nostrum sapiente nemo, asperiores non voluptatem distinctio! Neque laudantium officia natus quidem ut, accusantium ipsa distinctio debitis maxime accusamus in vitae explicabo omnis voluptate voluptatibus adipisci incidunt itaque! Beatae voluptas iste perspiciatis magni quas commodi nesciunt dolores, soluta cumque, alias eveniet? Quasi, pariatur esse modi autem temporibus, minima ullam fugit minus dicta magnam neque. Distinctio consectetur accusamus vitae dolore esse ex reiciendis! Eaque aspernatur suscipit delectus nostrum, sit reprehenderit dicta totam vero harum, qui quam natus, tempora magnam, saepe. Est architecto recusandae quasi, iste temporibus. Natus deleniti labore ipsam iure iusto maiores, perspiciatis molestias, rerum officiis assumenda reiciendis autem, a, consequuntur quam magnam voluptate itaque tempora. Culpa dolorum, ipsa tempora sequi eius distinctio. Asperiores vitae voluptatem nisi ratione doloribus velit animi id laborum quae excepturi dicta porro magnam unde et, blanditiis necessitatibus aliquam veniam assumenda?</p>
+         </div>
+    </div>
+    <div class="end"></div>
+    
+    <script src="./nShowUp.js"></script>
+    <script>
+        NP.ShowUp.set(
+            {
+                content: '#box1',
+                expos: 'part'
+            },
+            {
+                content: '#box2',
+                expos: 'whole'
+            },
+            {
+                content: '#box3',
+                run: 'once'
+            },
+            {
+                content: '#box4',
+                run: 'always'
+            },
+            {
+                content: '#box5',
+                run: 'always',
+                add: 'myClassName'
+            },
+            {
+                content: '#box6',
+                run: 'always',
+                event: myFunc1
+            },
+            {
+                content: '#box7',
+                run: 'always',
+                event: myFunc2,
+                realTime: true
+            },
+            {
+                content: '.parallax_box',
+                add: 'noneAni',
+                run: 'always',
+                event: parallax_box,
+                realTime: true
+            }
+        );
+
+        function myFunc1(x) {
+            console.log("box6 is run 'myFunc1' function and The first argument returns box6.");
+            console.log(x);
+        }
+
+        function myFunc2(x, y, z) {
+            console.log(x, y, z);
+        }
+        function parallax_box(o, b, s) {
+            var bg1 = document.getElementById('bg1'),
+                bg2 = document.getElementById('bg2'),
+                
+                //The Y coordinate of the center content .
+                m = (b.bottom - b.top) / 2,
+                
+                //The distance to move.
+                //The number 4 indicates the level of movement.
+                x = (b.top - m) / 4;
+            
+            bg1.style.top = x + 'px';
+            bg2.style.top = -x + 'px';
+        }
+    </script>
+</body>
+</html>
