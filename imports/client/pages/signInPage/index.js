@@ -1,5 +1,5 @@
 import './signInPage.html'
-// import './signInPageEvents.js'
+import './signInPageEvents.js'
 // import './signInPageHelpers.js'
 // import './signInPageOnCreated.js'
 // import './signInPageOnRendered.js'

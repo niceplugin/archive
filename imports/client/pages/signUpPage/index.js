@@ -1,5 +1,5 @@
 import './signUpPage.html'
-// import './signUpPageEvents.js'
+import './signUpPageEvents.js'
 // import './signUpPageHelpers.js'
 // import './signUpPageOnCreated.js'
 // import './signUpPageOnRendered.js'
