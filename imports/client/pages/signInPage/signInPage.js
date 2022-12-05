@@ -34,4 +34,10 @@ Template.signInPage.events({
   },
 })
 
+Template.signInPage.helpers({})
 
+Template.signInPage.onCreated(function() {})
+
+Template.signInPage.onDestroyed(function() {})
+
+Template.signInPage.onRendered(function() {})

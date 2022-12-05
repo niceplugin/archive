@@ -71,3 +71,11 @@ Template.signUpPage.events({
 //       }, false)
 //     })
 // })()
+
+Template.signUpPage.helpers({})
+
+Template.signUpPage.onCreated(function() {})
+
+Template.signUpPage.onRendered(function() {})
+
+Template.signUpPage.onDestroyed(function() {})

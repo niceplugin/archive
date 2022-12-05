@@ -22,3 +22,15 @@ Template.roomListPage.events({
   //   }
   // },
 });
+
+Template.roomListPage.helpers({})
+
+// todo - 미사용 상태라 파일 합치면서 주석 처리 했습니다. 확인 필요합니다.
+// Template.roomListPage.onCreated(function() {
+//   var self = this;
+//   self.roomListSub = self.subscribe("roomList",{profession:up})
+// })
+
+Template.roomListPage.onDestroyed(function() {})
+
+Template.roomListPage.onRendered(function() {})
