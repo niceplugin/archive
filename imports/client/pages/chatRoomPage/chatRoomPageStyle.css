@@ -1,0 +1,19 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+ul,li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.speech_bubble {
+  position: relative;
+  background: #00aabb;
+  border-radius: .4em;
+}
+
