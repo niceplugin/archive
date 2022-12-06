@@ -10,7 +10,7 @@ export const rooms = {
   lastUserName: String,
   lastMessage: String,
   updatedAt: Date,
-  joiner: Array(userId),
+  joiner: Array( /* userId */ ),
 }
 
 export const messages = {
@@ -29,5 +29,5 @@ export const reads = {
   userId: String,
   roomId: String,
   lastAt: Date,
-  updateAt: Date,
+  updatedAt: Date,
 }

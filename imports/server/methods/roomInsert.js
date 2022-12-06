@@ -17,7 +17,7 @@ Meteor.methods({
       userId: this.userId,
       roomId: room_id,
       lastAt: time,
-      updateAt: time,
+      updatedAt: time,
     })
 
     return room_id

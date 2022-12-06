@@ -61,7 +61,7 @@ Template.roomListPage.helpers({
     const ms_read = Read.findOne({ userId: Meteor.userId(), roomId: room_id })
     if (!ms_read) return
 
-    if (ms_read.lastAt === ms_read.updateAt) {
+    if (ms_read.lastAt === ms_read.updatedAt) {
       console.log('메세지 다 읽음')
       return true
     }
