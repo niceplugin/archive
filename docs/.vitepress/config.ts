@@ -52,6 +52,23 @@ const config = defineConfig({
 
     nav: [
       {
+        text: '공식 사이트',
+        items: [
+          {
+            text: 'Meteor',
+            link: 'https://www.meteor.com/',
+          },
+          {
+            text: 'Blaze',
+            link: 'https://www.blazejs.org/',
+          },
+          {
+            text: 'Router',
+            link: 'https://github.com/veliovgroup/flow-router',
+          },
+        ],
+      },
+      {
         text: '스타일 가이드',
         items: [
           {
