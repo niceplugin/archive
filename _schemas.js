@@ -17,6 +17,7 @@ export const messages = {
   _id: String,
   roomId: String,
   userId: String,
+  username:String,
   userAvatar: String,
   userLevel: Number,
   createdAt: Date,

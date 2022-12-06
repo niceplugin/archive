@@ -1,41 +1,54 @@
 <template name="chatRoomPage">
-  <div class="w-100 h-100">
-{{!--    헤더--}}
-    <div class="p-1 d-flex justify-content-between sticky-top w-100 border">
+  <div class="d-flex justify-content-between flex-column  w-100 vh-100 ">
+    {{!--    헤더--}}
+    <div class="p-1 d-flex justify-content-between w-100 border">
       <button class="btn btn-dark">뒤로</button>
       <h3>CHAT</h3>
       <button class="btn btn-dark">나가기</button>
     </div>
-{{!--    메인--}}
-    <div class="d-flex justify-content-between">
-      <ul class="p-4">
-        <li>
-          예린
-        </li>
-        <li class="speech_bubble">
-          하이루
-        </li>
-        <li>
-          2012-02-12 2시1분
-        </li>
-      </ul>
-      <ul class="p-4">
-        <li>
-          그
-        </li>
-        <li class="speech_bubble">
-          방가방가
-        </li>
-        <li>
-          2012-02-12 2시 2분
-        </li>
-      </ul>
+
+    {{!--    메인--}}
+    <div class="flex-grow-1 position-relative">
+      <div class="overflow-auto position-absolute top-0 bottom-0 start-0 end-0">
+        {{#if Template.subscriptionsReady }}
+          {{#each item in list }}
+            <ul class="p-4">
+              {{!--                      {{#if division item.userId }}--}}
+              <li>
+                소고기양양
+              </li>
+              <li class="speech_bubble">
+                하이루
+              </li>
+              <li>
+                2022-12-22/12:12
+              </li>
+            </ul>
+            {{!--                    {{ else }}--}}
+            <ul class="p-4 ">
+              <li class="d-flex flex-row-reverse">
+                {{ item.username }}
+              </li>
+              <li class="speech_bubble d-flex flex-row-reverse">
+                {{ item.message }}
+              </li>
+              <li class="d-flex flex-row-reverse">
+                {{ getDate item.createdAt }}
+              </li>
+              {{!--          {{/if}}--}}
+            </ul>
+          {{/each}}
+        {{ else }}
+          Loading...
+        {{/if}}
+      </div>
     </div>
-{{!--    입력창--}}
-    <form class="chat_form d-flex w-100 position-absolute bottom-0">
-      <textarea autofocus class="sticky-bottom form-control p-3" rows="5" aria-label="With textarea"
-                placeholder="채팅을 입력해주세요"></textarea>
-      <input class="chat_button p-2 btn btn-outline-dark" type="submit" value="전송">
+
+    {{!--    입력창--}}
+    <form class="d-flex w-100 ">
+      <textarea autofocus class="form-control p-3" rows="5" aria-label="With textarea"
+                name="text" placeholder="채팅을 입력해주세요"></textarea>
+      <input class="chat_button p-2 btn btn-outline-dark" type="button" value="전송">
     </form>
   </div>
 </template>
