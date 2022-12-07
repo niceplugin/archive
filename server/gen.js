@@ -5,6 +5,18 @@ const UID = []
 const MSG = ['동해물과백두산이', '마르고닳도록', '하느님이보우하사', '우리나라만세', '남산위에저소나무', '철갑을두른듯', '바람서리불변함은', '우리기상일세', '무궁화삼천리화려강산', '대한사람대한으로길이보전하세', '가을하늘공활한데', '높고구름없이', '밝은달은우리가슴', '일편단심일세', '이기상과이맘으로', '충성을다하여', '괴로우나즐거우나', '나라사랑하세']
 
 if (Meteor.isDevelopment && !Rooms.find({}).count()) {
+  createData()
+}
+// removeDate()
+function removeDate() {
+  console.log('모든 데이터 삭제를 시작합니다.')
+  Messages.remove({})
+  Rooms.remove({})
+  Read.remove({})
+  console.log('모든 데이터 삭제 완료.')
+}
+
+function createData() {
   getUID()
   createRooms(20)
   createMsg(2000)
@@ -124,6 +136,7 @@ function updateRooms() {
     const docs = {
       lastUserId: msg.userId,
       lastUserName: msg.userName,
+      lastUserAvatar: msg.lastUserAvatar,
       lastMessage: msg.message,
       updatedAt: msg.createdAt,
     }
