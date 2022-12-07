@@ -1,6 +1,13 @@
 <template name="roomListPage" xmlns="http://www.w3.org/1999/html">
   <div class="d-flex justify-content-between">
+    {{!-- todo - 에밀리
+            버튼 좌측 상하단의 둥그런 모서리를 부트스트렙으로 각지게 변경합시다
+    --}}
     <button type="button" class="btn btn-primary" name="btn_new">
+      {{!-- todo - 에밀리
+              코드가 불필요하게 번잡해 보입니다..
+              아이콘을 모두 찾아서 svg에서 <i ~></i> 형식으로 바꿔 봅시다.
+      --}}
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
            class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
         <path
@@ -8,9 +15,13 @@
       </svg>
       Create chat room
     </button>
-
+    {{!-- todo - 에밀리
+            인라인 스타일은 부트스트렙 클레스로 변경합시다.
+    --}}
     <h2 style="text-align:center">ChatRooms</h2>
-
+    {{!-- todo - 에밀리
+            버튼 우측 상하단의 둥그런 모서리를 부트스트렙으로 각지게 변경합시다
+    --}}
     <button type="button" class="btn btn-warning" name="btn_logout">
       {{!-- 아이콘 넣는 방법.. 왜 간결한거는 적용이 안되는건지..?  --}}
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right"
@@ -22,18 +33,26 @@
       </svg>
       Log out
     </button>
-
+    {{!-- todo - 에밀리
+            삭제하세요.
+            그리고 왜 이것을 넣었는지 구두로 설명해주세요.
+    --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous"></script>
 
   </div>
+  {{!-- todo - 에밀리
+          인라인 스타일은 부트스트렙 클레스로 변경합시다.
+  --}}
   <section style="background-color: black;">
     <div class="container py-5">
 
       <div class="row">
         <div class="col-md-12">
-
+          {{!-- todo - 에밀리
+                  인라인 스타일은 부트스트렙 클레스로 변경합시다.
+          --}}
           <div class="card" id="chat3" style="border-radius: 15px;">
             <div class="card-body">
 
@@ -41,7 +60,9 @@
                 <div class="col-md-12 col-lg-12 col-xl-12 mb-4 mb-md-0">
 
                   <div class="p-3">
-
+                    {{!-- todo - 에밀리
+                            검색 관련 UI를 계속 유지하는 이유를 구두로 설명해주세요.
+                    --}}
                     <div class="input-group rounded mb-12">
                       <input type="text" class="form-control rounded" placeholder="Search" aria-label="Search"
                              aria-describedby="search-addon" name="username"/>
@@ -57,7 +78,9 @@
                       </button>
 
                     </div>
-
+                    {{!-- todo - 에밀리
+                            인라인 스타일은 부트스트렙 클레스로 변경합시다.
+                    --}}
                     <div class="overflow-auto" style="position: relative; height: 530px">
                       <ul class="list-unstyled mb-0">
 
@@ -66,27 +89,46 @@
                             <li class="p-3 border-bottom d-flex justify-content-between">
                               <div class="d-flex flex-row">
                                 <div>
+                                  {{!-- todo - 에밀리
+                                          아바타 정보로 바꿔 넣도록 합시다.
+                                  --}}
+                                  {{!-- todo - 에밀리
+                                          태그의 속성은 한줄로 표현하거나, 각 한줄에 하나의 속성만 표기하도록 합니다.
+                                          아래와 같이 한줄에 하나, 한줄에 3개 섞어서 사용하지 않습니다.
+                                  --}}
                                   <img
                                       src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
                                       alt="avatar" class="d-flex align-self-center me-3" width="60">
                                   <span class="badge bg-success badge-dot"></span>
                                 </div>
                                 <div class="pt-1">
+                                  {{!-- todo - 에밀리
+                                          이름에 p 태그를 사용하는게 맞나요? p 태그는 문단을 의미합니다. 수정해주세요
+                                  --}}
                                   <p class="fw-bold mb-0">{{data.lastUserName}}</p>
                                   <p class="small text-muted">{{data.lastMessage}}</p>
                                 </div>
                               </div>
                               <div class="pt-1">
                                 <p class="small text-muted mb-1">{{getDate data.updatedAt}}</p>
-                              <div>
-                                {{#if isRead data._id}}
-                                  <span class="badge bg-danger rounded-pill float-end">읽지 않음</span>
-                                {{else}}
-                                  <span class="badge bg-primary rounded-pill float-end">다 읽음</span>
-                                {{/if}}
-                              </div>
+                                <div>
+                                  {{!-- todo - 에밀리
+                                          방에 참여하지 않은 사람은 "읽지 않음" 표시가 필요 없습니다.
+                                          고려해서 기능을 구현하도록 합시다.
+                                  --}}
+                                  {{#if isRead data._id}}
+                                    <span class="badge bg-danger rounded-pill float-end">읽지 않음</span>
+                                  {{else}}
+                                    <span class="badge bg-primary rounded-pill float-end">다 읽음</span>
+                                  {{/if}}
+                                </div>
                                 <br>
-
+                                {{!-- todo - 에밀리
+                                        시작과 끝 태그가 한줄로 표현되지 않는 경우,
+                                        끝 태그는 시작태그와 세로로 같은 라인에 위치해야 합니다.
+                                        그리고 컨텐츠는 두 태그 사이에 위치해야 가독성이 좋습니다.
+                                        코드를 고쳐봅시다.
+                                --}}
                                 <div class="btn btn-warning btn-sm float-end"
                                      name="btn_join">{{isJoin data.joiner}}</div>
 
@@ -108,6 +150,9 @@
       </div>
     </div>
   </section>
+  {{!-- todo - 에밀리
+          주석 삭제하고, HTML 주석 쓰지 않도록 합니다.
+  --}}
   <!--    <h3>채팅</h3>-->
   <!--    <ul class="list-group">-->
   <!--      <li class="list-group-item">An item</li>-->

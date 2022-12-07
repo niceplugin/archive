@@ -24,7 +24,7 @@ export const messages = {
   message: String,
 }
 
-export const reads = {
+export const read = {
   _id: String,
   userId: String,
   roomId: String,

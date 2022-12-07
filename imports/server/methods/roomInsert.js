@@ -1,15 +1,15 @@
 import { Meteor } from 'meteor/meteor'
-import { Rooms,Read } from '/imports/collections'
+import { Read, Rooms } from '/imports/collections'
 
 Meteor.methods({
   roomInsert() {
-    const time=new Date
-    const roomsData ={
-      lastUserId: "",
-      lastUserName: "new chat room",
-      lastMessage: "새로운 채팅방이 생성되었습니다!",
-      updatedAt:time,
-      joiner:[this.userId],
+    const time = new Date
+    const roomsData = {
+      lastUserId: '',
+      lastUserName: 'new chat room',
+      lastMessage: '새로운 채팅방이 생성되었습니다!',
+      updatedAt: time,
+      joiner: [this.userId],
     }
     const room_id = Rooms.insert(roomsData)
 
@@ -21,6 +21,6 @@ Meteor.methods({
     })
 
     return room_id
-  }
+  },
 
 })
