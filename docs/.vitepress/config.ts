@@ -246,7 +246,12 @@ const config = defineConfig({
         },
         {
           text: 'Blaze API',
-          items: []
+          items: [
+            {
+              text: '기본',
+              link: '/blaze/api/spacebars-common.md'
+            },
+          ]
         },
         {
           text: 'Spacebars API',
