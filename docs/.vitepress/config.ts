@@ -251,6 +251,14 @@ const config = defineConfig({
               text: '기본',
               link: '/blaze/api/spacebars-common.md'
             },
+            {
+              text: '블럭',
+              link: '/blaze/api/spacebars-block.md'
+            },
+            {
+              text: '기타',
+              link: '/blaze/api/spacebars-etc.md'
+            },
           ]
         },
         {
