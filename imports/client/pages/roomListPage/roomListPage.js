@@ -5,15 +5,13 @@ import { Read, Rooms } from "/imports/collections";
 import { ALERT } from "../../ui/alert/alertEvents";
 
 Template.roomListPage.events({
-  "click img": function (event, tmpl) {
-    //프로필 수정버튼 필요 !
-  },
-  "click button[name=btn_search]": function (evt, tmpl) {
-    //서치 기능은 채팅기능 다 구현되면..해볼 것
-    const search_name = tmpl.find("input[name=username]").value;
-    console.log(search_name);
-    Session.set("searchName", search_name);
-    tmpl.find("input[name=username]").value = "";
+  'click button[name=btn_search]': function(evt, tmpl) {  //서치 기능은 채팅기능 다 구현되면..해볼 것
+    const search_name = tmpl.find('input[name=username]').value
+
+    Meteor.call('searchUserId', search_name, function(err, result_id){
+      Session.set("userIds", result_id);
+      console.log(Session.get('userIds'))
+    })
   },
 
   "click button[name=btn_logout]": function () {
@@ -29,11 +27,12 @@ Template.roomListPage.events({
 
   "click li": function () {
     const room_id = this._id;
-
-    Meteor.call("joinerUpdate", room_id);
+    const click_time = new Date()
+    Meteor.call('joinerUpdate', room_id)
+    Meteor.call('readLastAtUpdate', room_id, click_time)
     ALERT("🚀채팅방에 입장하셨습니다", "Welcome Room!");
-    FlowRouter.go("/chatRoom/" + room_id);
-  },
+    FlowRouter.go('/chatRoom/' + room_id)
+  }
 });
 
 Template.roomListPage.helpers({
@@ -60,23 +59,19 @@ Template.roomListPage.helpers({
     const my_id = Meteor.userId();
 
     return joiner.includes(my_id) ? "참여중" : "참여하기"; // 삼항연산자
-  },
+  }
 
-  // SearchID(){
-  //   const user_id = Meteor.user().findOne({ roomId: room_id })
-  // },
+})
 
-  isIncludeRoom(joiner) {
-    const name = Session.get("searchName");
-    // if(joiner.includes(join))
-  },
-});
+Template.roomListPage.onCreated(function() {
+  const instance = this
+  this.subscribe('messageRead', Meteor.userId())
+  this.subscribe('userIdSearch', Session.get('userIds'))
+  this.autorun(function(){
+    instance.subscribe('roomList', Session.get('userIds'))
+  })
 
-Template.roomListPage.onCreated(function () {
-  self.roomListSub = this.subscribe("roomList");
-  self.messageReadSub = this.subscribe("messageRead", Meteor.userId());
-  // self.SearchUserIdSub = this.subscribe('userIdSearch')
-});
+})
 
 Template.roomListPage.onDestroyed(function () {});
 
