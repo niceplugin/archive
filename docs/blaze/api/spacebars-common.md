@@ -4,6 +4,10 @@ title: Spacebars
 
 # Spacebars %{ #spacebars-common }%
 
+스페이스바는 [핸들바](https://handlebarsjs.com/)에서 영감을 받은 Meteor 언어입니다.
+핸들바의 사상과 문법을 일부 공유하지만,
+컴파일 시 반응형 Meteor 템플릿을 생성하도록 수정되었습니다.
+
 ## `{​{ }}` 이중 중괄호 테그 %{ #double-braces-tag }%
 
 - 설명: 기본적으로 이중 중괄호 태그 내부의 값은 문자열로 평가됩니다.

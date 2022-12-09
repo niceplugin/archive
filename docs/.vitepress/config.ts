@@ -245,11 +245,6 @@ const config = defineConfig({
           ]
         },
         {
-          text: 'Blaze API',
-          items: [
-          ]
-        },
-        {
           text: 'Spacebars API',
           items: [
             {
