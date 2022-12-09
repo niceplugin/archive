@@ -2,31 +2,37 @@ import { Template } from "meteor/templating";
 import "./roomListPage.html";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { Read, Rooms } from "/imports/collections";
+import { ALERT } from "../../ui/alert/alertEvents";
 
 Template.roomListPage.events({
-  'click button[name=btn_search]': function(evt, tmpl) {  //서치 기능은 채팅기능 다 구현되면..해볼 것
-    const search_name = tmpl.find('input[name=username]').value
-    console.log(search_name)
+  "click img": function (event, tmpl) {
+    //프로필 수정버튼 필요 !
+  },
+  "click button[name=btn_search]": function (evt, tmpl) {
+    //서치 기능은 채팅기능 다 구현되면..해볼 것
+    const search_name = tmpl.find("input[name=username]").value;
+    console.log(search_name);
     Session.set("searchName", search_name);
-    tmpl.find('input[name=username]').value = ''
+    tmpl.find("input[name=username]").value = "";
   },
 
-  'click button[name=btn_logout]': function() {
-    FlowRouter.go('/signout')
+  "click button[name=btn_logout]": function () {
+    FlowRouter.go("/signout");
   },
 
-  'click button[name=btn_new]': function() {
-    Meteor.call('roomInsert', (err, room_id) => {
-      err ? alert(err) : FlowRouter.go('/chatRoom/' + room_id)
-    })
+  "click button[name=btn_new]": function () {
+    Meteor.call("roomInsert", (err, room_id) => {
+      err ? alert(err) : FlowRouter.go("/chatRoom/" + room_id);
+      ALERT("🚀채팅방이 생성되셨습니다.", "Welcome Your Room!");
+    });
   },
 
   "click li": function () {
     const room_id = this._id;
 
-    Meteor.call('joinerUpdate', room_id)
-    FlowRouter.go('/chatRoom/' + room_id)
-
+    Meteor.call("joinerUpdate", room_id);
+    ALERT("🚀채팅방에 입장하셨습니다", "Welcome Room!");
+    FlowRouter.go("/chatRoom/" + room_id);
   },
 });
 
@@ -40,15 +46,14 @@ Template.roomListPage.helpers({
   },
 
   isJoinRead(join_bool) {
-    return (join_bool === "참여중") ? true : false
+    return join_bool === "참여중" ? true : false;
   },
 
-  isRead(room_id){
-    const ms_read = Read.findOne({ roomId: room_id })
-    const rooms_data = Rooms.findOne({ _id: room_id })
+  isRead(room_id) {
+    const ms_read = Read.findOne({ roomId: room_id });
+    const rooms_data = Rooms.findOne({ _id: room_id });
 
-    return (ms_read?.lastAt <= rooms_data.updatedAt) ? true : false
-
+    return ms_read?.lastAt <= rooms_data.updatedAt ? true : false;
   },
 
   isJoin(joiner) {
@@ -61,19 +66,17 @@ Template.roomListPage.helpers({
   //   const user_id = Meteor.user().findOne({ roomId: room_id })
   // },
 
-  isIncludeRoom(joiner){
-    const name = Session.get('searchName')
+  isIncludeRoom(joiner) {
+    const name = Session.get("searchName");
     // if(joiner.includes(join))
-  }
+  },
+});
 
-})
-
-Template.roomListPage.onCreated(function() {
-  self.roomListSub = this.subscribe('roomList')
-  self.messageReadSub = this.subscribe('messageRead', Meteor.userId())
+Template.roomListPage.onCreated(function () {
+  self.roomListSub = this.subscribe("roomList");
+  self.messageReadSub = this.subscribe("messageRead", Meteor.userId());
   // self.SearchUserIdSub = this.subscribe('userIdSearch')
-})
-
+});
 
 Template.roomListPage.onDestroyed(function () {});
 
