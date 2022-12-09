@@ -15,16 +15,15 @@ Template.chatRoomPage.onRendered(function () {
   const roomId = FlowRouter.getParam("_id");
 
   this.autorun(function () {
-    Messages.find({}).count();
-    Meteor.call("messageReadUpdate", roomId);
-
+    Messages.find({}).count()
+    Meteor.call('messageReadUpdate', roomId)
     const scroll = self.find("#scroll-box");
     setTimeout(function () {
-      const msg_height = scroll.scrollHeight;
-      scroll.scrollTo(0, msg_height);
-    }, 100);
-  });
-});
+      const msg_height = scroll.scrollHeight
+      scroll.scrollTo(0, msg_height)
+    }, 100)
+  })
+})
 
 Template.chatRoomPage.helpers({
   list() {
@@ -61,10 +60,38 @@ Template.chatRoomPage.helpers({
     }
   },
 
+  text_date(index) {
+    const roomId = FlowRouter.getParam('_id')
+    const arr = Messages.find({roomId}, {sort: {createdAt: 1}, fields: {userId: true, createdAt: true}}).fetch()
+
+    const alone = arr.length <= 1
+    const differ_person = arr[index].userId !== arr[index + 1]?.userId
+
+    if (alone || differ_person) {
+      return true
+    }
+
+    //같은사람이고 글이 2개이상일떄 아래코드실행
+    const timeNow = text_time(arr[index].createdAt)
+    const timeNext = text_time(arr[index + 1].createdAt)
+    console.log(index)
+    console.log(timeNow,timeNext)
+
+    return timeNow !== timeNext
+  },
+
   getDate(date) {
-    return date.toLocaleString();
+    return text_time(date)
   },
 });
+
+function text_time(date) {
+  const hours = date.getHours() % 12 ? date.getHours() % 12 : 12;
+  const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+
+  return `${ampm} ${hours}:${minutes} `;
+}
 
 Template.chatRoomPage.events({
   "click img": function () {
@@ -92,13 +119,9 @@ Template.chatRoomPage.events({
     FlowRouter.go("/roomList");
   },
 
-  "click .chat_button": function (evt, ins) {
-    chat_room(evt, ins);
-  },
-
-  "keyup #chat-box": function (evt, ins) {
-    let text = ins.find("#chat-box").value;
-    text = text.replace(/^[\s]+$/, "");
+  'keyup #chat-box': function (evt, ins) {
+    let text = ins.find('#chat-box').value
+    text = text.replace(/^\s+/, "");
 
     if (evt.keyCode === 13 && text !== "") {
       chat_room(evt, ins);
@@ -114,7 +137,7 @@ function chat_room(evt, ins) {
   let text = ins.find("#chat-box").value;
   const roomId = FlowRouter.getParam("_id");
 
-  text = text.replace(/\s/g, "");
+  text = text.replace(/^\s+/, "");
 
   const data = {
     roomId: roomId,
@@ -125,9 +148,9 @@ function chat_room(evt, ins) {
   };
 
   if (text === "" || text === undefined || text === null) {
-    return;
+    return
   }
 
-  Meteor.call("messageInsert", data);
-  ins.find("#chat-box").value = "";
+  Meteor.call('messageInsert', data)
+  ins.find('#chat-box').value = ""
 }
