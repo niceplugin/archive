@@ -4,15 +4,15 @@ import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { ALERT } from "../../ui/alert/alertEvents";
 import { PROFILE } from "../../ui/profile/profileEvents";
 
+let roomId
 Template.chatRoomPage.onCreated(function () {
-  const roomId = FlowRouter.getParam("_id");
+  roomId = FlowRouter.getParam("_id");
 
   this.subscribe("chatMsg", roomId);
 });
 
 Template.chatRoomPage.onRendered(function () {
   const self = this;
-  const roomId = FlowRouter.getParam("_id");
 
   this.autorun(function () {
     Messages.find({}).count()
@@ -61,7 +61,9 @@ Template.chatRoomPage.helpers({
   },
 
   text_date(index) {
-    const roomId = FlowRouter.getParam('_id')
+    // todo - 설명:
+    //  코참님 코드인데 roomId 받는 이곳에서 라우트 변경시 undefined 값을 참조함
+    //  따라서 명시적으로 최초에 roomId 스크립트 내 글로벌 변수로 선언.
     const arr = Messages.find({roomId}, {sort: {createdAt: 1}, fields: {userId: true, createdAt: true}}).fetch()
 
     const alone = arr.length <= 1
@@ -74,8 +76,6 @@ Template.chatRoomPage.helpers({
     //같은사람이고 글이 2개이상일떄 아래코드실행
     const timeNow = text_time(arr[index].createdAt)
     const timeNext = text_time(arr[index + 1].createdAt)
-    console.log(index)
-    console.log(timeNow,timeNext)
 
     return timeNow !== timeNext
   },
@@ -113,7 +113,6 @@ Template.chatRoomPage.events({
   },
 
   "click .room_out": function () {
-    const roomId = FlowRouter.getParam("_id");
     Meteor.call("roomExit", roomId);
     ALERT("🚀 채팅방을 나가셨습니다!", "Thanks!");
     FlowRouter.go("/roomList");
@@ -135,12 +134,11 @@ function chat_room(evt, ins) {
   const avatar = user.profile.avatar;
   const level = user.profile.level;
   let text = ins.find("#chat-box").value;
-  const roomId = FlowRouter.getParam("_id");
 
   text = text.replace(/^\s+/, "");
 
   const data = {
-    roomId: roomId,
+    roomId,
     username: username,
     userAvatar: avatar,
     userLevel: level,

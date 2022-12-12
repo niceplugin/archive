@@ -2,16 +2,13 @@ import { Template } from "meteor/templating";
 import "./roomListPage.html";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { Read, Rooms } from "/imports/collections";
-import { ALERT } from "../../ui/alert/alertEvents";
+// todo - 설명: 미사용 모듈 삭제
 
 Template.roomListPage.events({
   'click button[name=btn_search]': function(evt, tmpl) {  //서치 기능은 채팅기능 다 구현되면..해볼 것
     const search_name = tmpl.find('input[name=username]').value
-
-    Meteor.call('searchUserId', search_name, function(err, result_id){
-      Session.set("userIds", result_id);
-      console.log(Session.get('userIds'))
-    })
+    Session.set("searchName", search_name);
+    // todo - 설명: 주석 삭제
   },
 
   "click button[name=btn_logout]": function () {
@@ -20,18 +17,21 @@ Template.roomListPage.events({
 
   "click button[name=btn_new]": function () {
     Meteor.call("roomInsert", (err, room_id) => {
+      // todo - 설명: 주석 풀었음
       err ? alert(err) : FlowRouter.go("/chatRoom/" + room_id);
-      ALERT("🚀채팅방이 생성되셨습니다.", "Welcome Your Room!");
     });
   },
 
   "click li": function () {
     const room_id = this._id;
-    const click_time = new Date()
-    Meteor.call('joinerUpdate', room_id)
-    Meteor.call('readLastAtUpdate', room_id, click_time)
-    ALERT("🚀채팅방에 입장하셨습니다", "Welcome Room!");
-    FlowRouter.go('/chatRoom/' + room_id)
+
+    // todo - 설명
+    //  명확하게 하기 위해서 call 끝나는 시점의 콜백에서 기존 로직 실행되도록 변경.
+    //  번잡해서 에이든 ALERT 삭제
+    //  joinerUpdate와 readLastAtUpdate 두 개의 메서드를 joinerUpdate 하나로 병합함.
+    Meteor.call('joinerUpdate', room_id, err => {
+      err ? alert(err) : FlowRouter.go("/chatRoom/" + room_id);
+    })
   }
 });
 
@@ -45,14 +45,26 @@ Template.roomListPage.helpers({
   },
 
   isJoinRead(join_bool) {
-    return join_bool === "참여중" ? true : false;
+    // todo - 설명: 변경 없음. 코드 단순화.
+    return join_bool === "참여중";
   },
 
-  isRead(room_id) {
-    const ms_read = Read.findOne({ roomId: room_id });
-    const rooms_data = Rooms.findOne({ _id: room_id });
+  isRead(roomId) {
+    const selector1 = {
+      // todo - 설명: 자신의 아이디가 들어가야 본인의 read를 찾을 수 있음
+      userId: Meteor.userId(),
+      roomId,
+    }
+    const selector2 = {
+      _id: roomId
+    }
+    const read_data = Read.findOne(selector1);
+    const rooms_data = Rooms.findOne(selector2);
 
-    return ms_read?.lastAt <= rooms_data.updatedAt ? true : false;
+    // todo - 설명
+    //  A가 B 보다 클때 읽지 않음(O).
+    //  A가 B 보다 크거나 같을때, 여기서 같으면 읽음이 되어야 함. 따라서 <= 잘못됨(X)
+    return (read_data?.lastAt) < (rooms_data.updatedAt);
   },
 
   isJoin(joiner) {
@@ -64,12 +76,8 @@ Template.roomListPage.helpers({
 })
 
 Template.roomListPage.onCreated(function() {
-  const instance = this
+  this.subscribe('roomList')
   this.subscribe('messageRead', Meteor.userId())
-  this.subscribe('userIdSearch', Session.get('userIds'))
-  this.autorun(function(){
-    instance.subscribe('roomList', Session.get('userIds'))
-  })
 
 })
 
