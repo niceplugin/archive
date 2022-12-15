@@ -4,6 +4,13 @@ title: 선언
 
 # 선언 %{ #template-declarations }%
 
+## 템플릿 라이프사이클 %{ #template-lifecycle }%
+
+![blaze template life cycle.png](./images/blaze-life-cycle.png)
+
+<!-- https://drive.google.com/file/d/19lM71AOeMGSlX1gtIb__hkSyrux_QaV9/view?usp=sharing -->
+
+
 ## events()
 
 - 설명: 이 템플릿에 대한 이벤트 헨들러를 등록합니다.
