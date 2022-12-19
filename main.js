@@ -6,5 +6,5 @@ const btnDo = document.getElementById('btn-do');
 btnInit.addEventListener('click', async () => {
   await guitar.init();
   btnDo.disabled = false;
-  guitar.play()
+  guitar.play('C')
 });

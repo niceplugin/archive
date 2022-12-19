@@ -1,5 +1,7 @@
 import * as Tone from 'tone';
 import lineNoteSource from './lineNoteSource.js';
+import lineNoteFret from './lineNoteFret.js';
+import codeInfo from './codeInfo.js';
 
 class Guitar {
   #line = [];
@@ -22,7 +24,20 @@ class Guitar {
     return Tone.loaded();
   }
 
-
+  play(code) {
+    const cloneCodeInfo = codeInfo[code].slice();
+    let i = cloneCodeInfo.length;
+    let delay = 0;
+    while (i--) {
+      const flat = cloneCodeInfo[i];
+      const note = lineNoteFret[i][flat];
+      if (flat == null) {
+        continue;
+      }
+      this.#line[i].triggerAttack(note, Tone.now() + delay);
+      delay += 0.015;
+    }
+  }
 }
 
 const guitar = new Guitar();
