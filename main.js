@@ -6,8 +6,10 @@ const btnDo = document.getElementById('btn-do')
 btnInit.addEventListener('click', async () => {
   await guitar.init()
   btnDo.disabled = false
-  guitar.play('C')
+  guitar.setCode('G7')
+  guitar.playStroke(-1, 0)
 })
-const temp = {
 
-}
+btnDo.addEventListener('click', () => {
+  guitar.playTick()
+})
