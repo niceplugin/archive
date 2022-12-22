@@ -1,65 +1,65 @@
 <template>
   <div class="key-pad-grid">
     <v-btn
-      @click="guitar.playStroke(-1, 0)"
+      @touchstart="guitar.playStroke(-1, 0)"
       class="pad-side-stroke grid-start text-h2"
     >∏
     </v-btn>
 
     <v-btn
-      @click="setCode('A')"
+      @touchstart="setCode('A')"
       class="pad-key"
     >A/Am
     </v-btn>
     <v-btn
-      @click="setCode('C')"
+      @touchstart="setCode('C')"
       class="pad-key"
     >C/Cm
     </v-btn>
     <v-btn
-      @click="setCode('F')"
+      @touchstart="setCode('F')"
       class="pad-key"
     >F/Fm
     </v-btn>
     <v-btn
-      @click="setCode('B')"
+      @touchstart="setCode('B')"
       class="pad-key"
     >B/Bm
     </v-btn>
     <v-btn
-      @click="setCode('D')"
+      @touchstart="setCode('D')"
       class="pad-key"
     >D/Dm
     </v-btn>
     <v-btn
-      @click="setCode('G')"
+      @touchstart="setCode('G')"
       class="pad-key"
     >G/Gm
     </v-btn>
     <v-btn
-      @click="setSeven()"
+      @touchstart="setSeven()"
       class="pad-key"
     >7
     </v-btn>
     <v-btn
-      @click="setCode('E')"
+      @touchstart="setCode('E')"
       class="pad-key"
     >E/Em
     </v-btn>
     <v-btn
-      @click="setSeven()"
+      @touchstart="setSeven()"
       class="pad-key"
     >7
     </v-btn>
 
     <v-btn
-      @click="guitar.playStroke(1, 0)"
+      @touchstart="guitar.playStroke(1, 0)"
       class="pad-side-stroke grid-end text-h1"
     >∨
     </v-btn>
 
     <v-btn
-      @click="guitar.playTick()"
+      @touchstart="guitar.playTick()"
       class="pad-bottom-tick"
     >Hand
     </v-btn>

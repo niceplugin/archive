@@ -7,7 +7,7 @@ class Guitar {
   #line = []
   #currentCode = []
   #currentVolume = []
-  #gap = 0.02
+  #gap = 0.05
 
   init() {
     if (this.#line.length) {
@@ -77,6 +77,8 @@ class Guitar {
       line.volume.value = 0
       code && line.triggerAttackRelease(code, duration)
     })
+
+    window.navigator.vibrate(50)
   }
 
   playStroke(direction, accent) {
@@ -92,10 +94,12 @@ class Guitar {
       let now = direction === 1 ?
         Tone.now() + Math.abs(gap * i) :
         Tone.now() + Math.abs(gap * (max - i))
-      this.#line[i].releaseAll()
+      // this.#line[i].releaseAll()
       this.#line[i].volume.value = this.#currentVolume[i]
       code && this.#line[i].triggerAttack(code, now)
     }
+
+    window.navigator.vibrate(50)
   }
 }
 
