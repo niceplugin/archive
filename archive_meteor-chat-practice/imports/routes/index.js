@@ -1,0 +1,8 @@
+import '/imports/client/layout/baseLayout'
+import './chatRoom'
+import './roomList'
+import './signIn'
+import './signUp'
+import './signOut'
+import './notFound'
+import './main'

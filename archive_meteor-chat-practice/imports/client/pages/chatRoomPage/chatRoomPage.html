@@ -1,0 +1,62 @@
+<template name="chatRoomPage">
+  <div class="d-flex justify-content-between flex-column  w-100 vh-100 ">
+    {{!--    헤더--}}
+    <div class="p-1 d-flex justify-content-between w-100 border">
+      <button class="room_back btn btn-dark">뒤로</button>
+      <h3>😺CHAT😺</h3>
+      <button class="room_out btn btn-dark">나가기</button>
+    </div>
+
+    {{!--    메인--}}
+    <div class="flex-grow-1 position-relative">
+      <div id="scroll-box" class="overflow-auto position-absolute top-0 bottom-0 start-0 end-0">
+        {{#if Template.subscriptionsReady }}
+          <ul class="p-4">
+            {{#each item in list }}
+              <li class="p-2 d-flex {{ text_location item @index }} gap-2">
+                <div>
+
+                  <img id="imageCheck" class="chat-room-img ratio ratio-1x1 rounded-4" src={{ item.userAvatar }}>
+
+                </div>
+                <div class="d-flex flex-column {{ text_align item }}">
+                    <span class="chat-item p-1">
+                      {{ item.username }}
+                    </span>
+                  <span class="p-2 rounded-2 shadow-sm text-white  {{ text_color item }} ">
+                    {{ item.message }}
+                  </span>
+                  {{#if text_date @index }}
+                    <span class="chat-item p-1">
+                      {{ getDate item.createdAt }}
+                    </span>
+                  {{ else }}
+
+                  {{/if}}
+                </div>
+              </li>
+            {{/each}}
+          </ul>
+        {{ else }}
+          <div class="d-flex align-items-center justify-content-center h-100">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!--    입력창--}}
+    <form class="d-flex w-100 ">
+      <textarea id="chat-box"
+                class="chat-window form-control p-3 bi-textarea-resize"
+                rows="5"
+                aria-label="With textarea"
+                placeholder="채팅을 입력해주세요">
+      </textarea>
+      <input class="chat_button p-2 btn btn-outline-dark" type="button" value="전송">
+    </form>
+  </div>
+</template>
+
